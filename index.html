@@ -2679,7 +2679,7 @@ function getDynamicAIASolutions(diffLife, diffHealth, diffCI, personaType, netCa
     // 💉 [อัปเกรด] ฟังก์ชันเภสัชกรค่อยๆ ปรับโดสยา (พร้อมเช็คเพดานรายได้ + Downgrade Protocol)
     function optimizeDosage(productName, gender, age, startSA, targetGap, budget, customerData) {
         if (!productName || productName === "ไม่แนบเพิ่มเติม") {
-            return { finalPlan: "ไม่แนบเพิ่มเติม", finalSA: 0 };
+            return { finalPlan: "ไม่สามารถนำเสนอแบบประกันได้", finalSA: 0 };
         }
 
         let currentPlan = productName;
@@ -2689,26 +2689,32 @@ function getDynamicAIASolutions(diffLife, diffHealth, diffCI, personaType, netCa
         let currentMinSA = planData.minSA || 100000;
         let currentPremium = getSafePremium(currentPlan, gender, age, currentMinSA);
 
-        // 🚨 2. THE DOWNGRADE PROTOCOL: ถ้างบน้อยจนซื้อขั้นต่ำไม่ได้ ให้ยอมลดเกรดแผน
-        if (currentPremium > budget && planData.fallback) {
+        // 🚨 2. THE DOWNGRADE PROTOCOL: ถ้างบน้อยจนซื้อขั้นต่ำไม่ได้ หรือผิดเงื่อนไขอายุ (เบี้ยเป็น 0)
+        if ((currentPremium === 0 || currentPremium > budget) && planData.fallback) {
             currentPlan = planData.fallback; 
             planData = aiaBaseProductMatrix[currentPlan] || {};
             currentMinSA = planData.minSA || 100000;
             currentPremium = getSafePremium(currentPlan, gender, age, currentMinSA);
         }
 
-        // ถ้าลดเกรดแล้วก็ยังไม่มีเงินซื้อขั้นต่ำ (งบน้อยมาก) ให้คืนค่า 0
-        if (currentPremium > budget) {
-            return { finalPlan: currentPlan, finalSA: 0 };
+        // 🛑 ดักจับ Logic Bug ชั้นเด็ดขาด:
+        // - ลดเกรดแล้วเบี้ยก็ยังเกินงบ (currentPremium > budget)
+        // - งบที่ให้มาเป็น 0 หรือติดลบ (budget <= 0)
+        // - ผิดเงื่อนไข Business Rule เช่น อายุไม่อยู่ในเกณฑ์ (currentPremium === 0)
+        if (currentPremium === 0 || currentPremium > budget || budget <= 0) {
+            return { 
+                finalPlan: "ไม่สามารถนำเสนอแบบประกันได้ (งบประมาณ/เงื่อนไขไม่ผ่านเกณฑ์)", 
+                finalSA: 0 
+            };
         }
 
         // ==========================================
-        // 🚀 3. TITRATION LOOP: ระบบของคุณ! (ดันทุนประกันขึ้นให้คุ้มงบที่สุด)
+        // 🚀 3. TITRATION LOOP: ดันทุนประกันขึ้นให้คุ้มงบที่สุด
         // ==========================================
         let currentSA = currentMinSA; 
         let maxProductSA = planData.maxSA || Infinity;
 
-        // 🌟 ดึงข้อมูลรายได้มาคำนวณเพดาน Underwriting ตามคู่มือบริษัท (ลอจิกเทพของคุณ)
+        // 🌟 ดึงข้อมูลรายได้มาคำนวณเพดาน Underwriting ตามคู่มือบริษัท
         let annualIncome = (customerData.Income_Monthly || 0) * 12;
         let isWorking = annualIncome > 0 && customerData.Age < 75; 
         
@@ -2726,15 +2732,15 @@ function getDynamicAIASolutions(diffLife, diffHealth, diffCI, personaType, netCa
             let testSA = currentSA + step;
             let testPremium = getSafePremium(currentPlan, gender, age, testSA);
 
-            if (testPremium <= budget) {
-                currentSA = testSA; // งบยังเหลือ ดันทุนขึ้น!
+            // เช็คว่า testPremium ต้องไม่เป็น 0 (เผื่อข้ามขั้น) และต้องอยู่ในงบ
+            if (testPremium > 0 && testPremium <= budget) {
+                currentSA = testSA; 
             } else {
-                break; // งบหมดแล้ว หยุดอยู่แค่นี้!
+                break; 
             }
             loopCount++;
         }
 
-        // 🌟 ส่งค่ากลับเป็น Object เพื่อให้ตะกร้าเอาไปใช้งานได้โดยไม่ Error
         return {
             finalPlan: currentPlan,
             finalSA: currentSA
@@ -2770,7 +2776,11 @@ function getDynamicAIASolutions(diffLife, diffHealth, diffCI, personaType, netCa
         if (row.dataset.cat === 'รายจ่ายเพื่อออม/ลงทุน' || name.includes('ออม')) savingsAmt += val;
     });
 
-    let realDti = realInc > 0 ? (monthlyDebtPmt / realInc) : 0;
+    let realDti = 0; 
+    if (realInc > 0) {realDti = monthlyDebtPmt / realInc; // กรณีปกติ
+        } else if (realInc === 0 && monthlyDebtPmt > 0) {realDti = 1.0; // ⚠️ วิกฤต: ไม่มีรายได้แต่มีหนี้ (ดึง DTI ให้พุ่งชนเพดาน 100%)
+        } else { realDti = 0;} // ไม่มีรายได้ และไม่มีหนี้ 
+
     let realSr = realInc > 0 ? (savingsAmt / realInc) : 0;
     let safeAge = typeof currentAge !== 'undefined' ? currentAge : (typeof rawAge !== 'undefined' ? rawAge : 30);
 
@@ -2955,15 +2965,15 @@ function getDynamicAIASolutions(diffLife, diffHealth, diffCI, personaType, netCa
         let scoredPlans = [];
         Object.entries(aiaBaseProductMatrix).forEach(([name, attr]) => {
             let score = 100;
-            let estPrem = (attr.minSA || 100000) * 0.04; 
-            
-            // ⬛ กฎเหล็ก
-            if (attr.businessRule && (safeAge < attr.businessRule.minAge || safeAge > attr.businessRule.maxAge)) return;
+            let estPrem = (attr.minSA || 100000) * 0.04;
+
+            // ⬛ กฎเหล็ก (อัปเกรด: บังคับเช็คอายุจาก attr โดยตรง)
+            if (safeAge < (attr.minAge || 0) || safeAge > (attr.maxAge || 99)) return;
             if (attr.type && attr.type.includes("Unit-Linked") && safeAge < 18) return;
-            
+
             // ⬜ กฎเฉดสี
-            if (estPrem > maxBudget) score -= 80; 
-            else if (estPrem > maxBudget * 0.7) score -= 20; 
+            if (estPrem > maxBudget) score -= 80;
+            else if (estPrem > maxBudget * 0.7) score -= 20;
 
             // ==========================================
             // 🌟 กฎพิเศษสำหรับ UHNW / VIP (VIP Override Rules)
@@ -3205,12 +3215,12 @@ function getDynamicAIASolutions(diffLife, diffHealth, diffCI, personaType, netCa
         let basePremium = getSafePremium(dose.finalPlan, gender, safeAge, dose.finalSA);
         let totalPremium = basePremium + riderPremium;
 
-        // 🚨 ดักวิกฤต: ถ้างบรวมทะลุ 150% ของที่ตั้งไว้ หรือสถานะการเงินวิกฤต บังคับถอดยาเสริมทิ้งเพื่อรักษาชีพ
-        if (financialHealth === 'severe' || totalPremium > budgetLimit * 1.5) { 
-            riders.healthUI = "ไม่แนบเพิ่มเติม"; 
-            riders.ciUI = "ไม่แนบเพิ่มเติม"; 
-            riderPremium = 0; 
-            totalPremium = basePremium;
+        // 🚨 ดักวิกฤต: ถ้างบรวมทะลุ 150% ของที่ตั้งไว้ หรือสถานะการเงินวิกฤต หรือ ซื้อสัญญาหลักไม่ได้ (finalSA = 0)
+        if (financialHealth === 'severe' || totalPremium > budgetLimit * 1.5 || dose.finalSA === 0) {
+            riders.healthUI = "ไม่แนบเพิ่มเติม";
+            riders.ciUI = "ไม่แนบเพิ่มเติม";
+            riderPremium = 0;
+            totalPremium = basePremium; 
         }
 
         return {
@@ -3371,7 +3381,17 @@ function getDynamicAIASolutions(diffLife, diffHealth, diffCI, personaType, netCa
     </div>`;
 
     // 🧠 ML Peer Insight (NLG)
-    let clusterName = window.latestMLFeatures ? classifyUserKMeans(window.latestMLFeatures.age, window.latestMLFeatures.inc, window.latestMLFeatures.nw, window.latestMLFeatures.risk, window.latestMLFeatures.dti) : "ผู้ที่มีโปรไฟล์ใกล้เคียงคุณ";
+    let clusterName = window.latestMLFeatures ? classifyUserKMeans(
+        window.latestMLFeatures.age, 
+        window.latestMLFeatures.inc, 
+        window.latestMLFeatures.nw, 
+        window.latestMLFeatures.risk, 
+        window.latestMLFeatures.dti,
+        window.latestMLFeatures.recency, 
+        window.latestMLFeatures.frequency, 
+        window.latestMLFeatures.discipline
+    ) : "ผู้ที่มีโปรไฟล์ใกล้เคียงคุณ";
+
     html += `
     <div class="mx-6 mb-6 p-4 bg-blue-50 border border-blue-100 rounded-xl flex items-start gap-3 shadow-sm">
         <span class="text-2xl">🧠</span>
@@ -4220,7 +4240,7 @@ function calculateAdvancedLogisticRegression(age, savingsRate, dti, debtAssetRat
         ];
     }
 
-    // ==========================================
+// ==========================================
 // 🔍 TIER 2: พฤติกรรม (Risk & Behavior Profile) - Rule-based 4 มิติ
 // ==========================================
 function analyzeBehaviorProfile(income, debtRatio, saveRate, riskScore, dependents) {
@@ -4264,91 +4284,124 @@ function analyzeBehaviorProfile(income, debtRatio, saveRate, riskScore, dependen
     return behaviors;
 }
     // 2. K-Means Prediction (8 มิติ) - อัปเดตชื่อกลุ่มมีภาษาไทยกำกับ
-    function classifyUserKMeans(age, inc, nw, risk, dti, recency, frequency, discipline) {
-        window.latestMLFeatures = { age, inc, nw, risk, dti, recency, frequency, discipline };
-        
-        let features = normalizeFeatures(age, inc, nw, risk, dti, recency, frequency, discipline);
-        
-    // ดึง Centroids ที่ระบบเคยเรียนรู้จาก LocalStorage
-        let centroids = JSON.parse(localStorage.getItem('fa_dynamic_centroids'));
-        if (!centroids) {
-            // 🧠 ตำราเรียนใหม่จาก Data 200,000 คน (AI Model v4)
-            centroids = [
-                { name: "ผู้สูงอายุรายได้พื้นฐาน (Basic Retiree)", vec: [0.8453, 0.0369, 0.0196, 0.5, 0.5, 0.0, 0.5, 0.5] },
-                { name: "วัยเริ่มต้นครอบครัวภาระน้อย (Early Family)", vec: [0.2338, 0.0366, 0.0205, 0.5, 0.5, 0.25, 0.5, 0.5] },
-                { name: "ครอบครัววัยทำงานภาระสูง (High-Burden Family)", vec: [0.2950, 0.0354, 0.0198, 0.5, 0.5, 0.75, 0.5, 0.5] },
-                { name: "ผู้บริหาร/เจ้าของธุรกิจสร้างครอบครัว (Wealthy Family Builder)", vec: [0.3080, 0.6904, 0.4437, 0.5, 0.5, 0.6564, 0.5, 0.5] },
-                { name: "วัยเตรียมเกษียณโสด (Pre-Retiree Single)", vec: [0.5558, 0.0360, 0.0199, 0.5, 0.5, 0.0, 0.5, 0.5] },
-                { name: "นักศึกษาจบใหม่ / First-Jobber (Gen Z Starter)", vec: [0.1174, 0.0362, 0.0202, 0.5, 0.5, 0.0, 0.5, 0.5] },
-                { name: "ครอบครัววัยทำงานภาระปานกลาง (Standard Family)", vec: [0.3090, 0.0369, 0.0206, 0.5, 0.5, 0.5, 0.5, 0.5] },
-                { name: "วัยกลางคนภาระน้อย (Mid-Life Independent)", vec: [0.4955, 0.0361, 0.0203, 0.5, 0.5, 0.25, 0.5, 0.5] },
-                { name: "เศรษฐีวัยเกษียณ (HNW Retiree)", vec: [0.6170, 0.6904, 0.4375, 0.5, 0.5, 0.0292, 0.5, 0.5] },
-                { name: "เดอะแบกวัยทำงาน (The Sandwich Generation)", vec: [0.3456, 0.0373, 0.0207, 0.5, 0.5, 1.0, 0.5, 0.5] },
-                { name: "วัยทำงานโสด / DINKs (Independent Pro)", vec: [0.3514, 0.0356, 0.0199, 0.5, 0.5, 0.0, 0.5, 0.5] },
-                { name: "อายุน้อยร้อยล้าน (Young Executive / Success)", vec: [0.1781, 0.6775, 0.4348, 0.5, 0.5, 0.0538, 0.5, 0.5] }
-            ];
-        }
-
-        const weights = [1.0, 1.5, 2.0, 1.0, 2.0, 0.5, 1.0, 1.5];
-
-        let minDist = Infinity;
-        let predictedCluster = "Standard Accumulation (สะสมความมั่งคั่งตามมาตรฐาน)";
-
-        centroids.forEach(c => {
-            let distSq = 0;
-            for (let i = 0; i < 8; i++) {
-                let diff = features[i] - c.vec[i];
-                distSq += (diff * diff) * weights[i]; // Weighted Euclidean Distance
-            }
-            let distance = Math.sqrt(distSq);
-            
-            if (distance < minDist) {
-                minDist = distance;
-                predictedCluster = c.name;
-            }
-        });
-        return predictedCluster;
+function classifyUserKMeans(age, inc, nw, risk, dti, recency, frequency, discipline) {
+    window.latestMLFeatures = { age, inc, nw, risk, dti, recency, frequency, discipline };
+    
+    // --- 🛡️ 1. ป้องกันค่า NaN และ Infinity ตั้งแต่ต้นทาง ---
+    // ใช้ ?? 0 เพื่อรับประกันว่าถ้าดึงค่าไม่ได้ (undefined) จะกลายเป็น 0 แทนที่จะทำให้สมการพัง
+    let safeAge = age ?? 0;
+    let safeInc = inc ?? 0;
+    let safeNw = nw ?? 0;
+    let safeRisk = risk ?? 10; // ความเสี่ยงกลางๆ
+    
+    // ดักจับค่า DTI ที่อาจพังจากการหารด้วย 0 (Infinity หรือ NaN)
+    let safeDti = dti ?? 0;
+    if (!isFinite(safeDti) || (safeInc === 0 && safeDti > 0)) {
+        safeDti = 1.0; // ชนเพดานหนี้ 100%
     }
+    
+    let safeRecency = recency ?? 0;
+    let safeFrequency = frequency ?? 0;
+    let safeDiscipline = discipline ?? 0;
+
+    // นำค่าที่ปลอดภัยแล้วไปแปลงสเกล
+    let features = normalizeFeatures(safeAge, safeInc, safeNw, safeRisk, safeDti, safeRecency, safeFrequency, safeDiscipline);
+    
+    // --- 🛡️ 2. เช็คอีกชั้น หากยังมี NaN หลุดมาให้แจ้งเตือนชัดเจน ---
+    if (features.some(isNaN)) {
+        console.error("ML Error: ตรวจพบค่า NaN ในข้อมูล Features", features);
+        return "ข้อมูลไม่สมบูรณ์ กรุณาตรวจสอบตัวเลขอีกครั้ง"; 
+    }
+
+    // ดึง Centroids ที่ระบบเคยเรียนรู้จาก LocalStorage
+    let centroids = JSON.parse(localStorage.getItem('fa_dynamic_centroids'));
+    if (!centroids) {
+        // 🧠 ตำราเรียนใหม่จาก Data 200,000 คน (AI Model v4)
+        centroids = [
+            { name: "ผู้สูงอายุรายได้พื้นฐาน (Basic Retiree)", vec: [0.8453, 0.0369, 0.0196, 0.5, 0.5, 0.0, 0.5, 0.5] },
+            { name: "วัยเริ่มต้นครอบครัวภาระน้อย (Early Family)", vec: [0.2338, 0.0366, 0.0205, 0.5, 0.5, 0.25, 0.5, 0.5] },
+            { name: "ครอบครัววัยทำงานภาระสูง (High-Burden Family)", vec: [0.2950, 0.0354, 0.0198, 0.5, 0.5, 0.75, 0.5, 0.5] },
+            { name: "ผู้บริหาร/เจ้าของธุรกิจสร้างครอบครัว (Wealthy Family Builder)", vec: [0.3080, 0.6904, 0.4437, 0.5, 0.5, 0.6564, 0.5, 0.5] },
+            { name: "วัยเตรียมเกษียณโสด (Pre-Retiree Single)", vec: [0.5558, 0.0360, 0.0199, 0.5, 0.5, 0.0, 0.5, 0.5] },
+            { name: "นักศึกษาจบใหม่ / First-Jobber (Gen Z Starter)", vec: [0.1174, 0.0362, 0.0202, 0.5, 0.5, 0.0, 0.5, 0.5] },
+            { name: "ครอบครัววัยทำงานภาระปานกลาง (Standard Family)", vec: [0.3090, 0.0369, 0.0206, 0.5, 0.5, 0.5, 0.5, 0.5] },
+            { name: "วัยกลางคนภาระน้อย (Mid-Life Independent)", vec: [0.4955, 0.0361, 0.0203, 0.5, 0.5, 0.25, 0.5, 0.5] },
+            { name: "เศรษฐีวัยเกษียณ (HNW Retiree)", vec: [0.6170, 0.6904, 0.4375, 0.5, 0.5, 0.0292, 0.5, 0.5] },
+            { name: "เดอะแบกวัยทำงาน (The Sandwich Generation)", vec: [0.3456, 0.0373, 0.0207, 0.5, 0.5, 1.0, 0.5, 0.5] },
+            { name: "วัยทำงานโสด / DINKs (Independent Pro)", vec: [0.3514, 0.0356, 0.0199, 0.5, 0.5, 0.0, 0.5, 0.5] },
+            { name: "อายุน้อยร้อยล้าน (Young Executive / Success)", vec: [0.1781, 0.6775, 0.4348, 0.5, 0.5, 0.0538, 0.5, 0.5] }
+        ];
+    }
+
+    const weights = [1.0, 1.5, 2.0, 1.0, 2.0, 0.5, 1.0, 1.5];
+
+    let minDist = Infinity;
+    // เปลี่ยนค่าตั้งต้น หากระบบรันถูกตรรกะ ค่านี้จะถูกเขียนทับเสมอ
+    let predictedCluster = "ไม่สามารถวิเคราะห์ข้อมูลได้"; 
+
+    centroids.forEach(c => {
+        let distSq = 0;
+        for (let i = 0; i < 8; i++) {
+            let diff = features[i] - c.vec[i];
+            distSq += (diff * diff) * weights[i]; // Weighted Euclidean Distance
+        }
+        let distance = Math.sqrt(distSq);
+        
+        // --- 🛡️ 3. ตรวจสอบให้มั่นใจว่า distance เป็นตัวเลขก่อนเปรียบเทียบ ---
+        if (!isNaN(distance) && distance < minDist) {
+            minDist = distance;
+            predictedCluster = c.name;
+        }
+    });
+    return predictedCluster;
+}
 
     // 3. ระบบสอน AI (Feedback Loop / Human-in-the-loop)
-    window.teachAI = function(confirmedCluster) {
-        if (!window.latestMLFeatures) return;
-        
-        let dataset = JSON.parse(localStorage.getItem('fa_learning_set') || '[]');
-        dataset.push({ features: window.latestMLFeatures, label: confirmedCluster });
-        localStorage.setItem('fa_learning_set', JSON.stringify(dataset));
-        
-        // ให้ AI สังเคราะห์สมองใหม่ (Re-train) ทุกๆ 5 เคส
-        if (dataset.length % 5 === 0) { recalculateDynamicCentroids(dataset); }
-        
-        document.getElementById('ml_knn_profile').innerHTML = `<span class="text-green-400 font-bold text-sm">✅ เรียนรู้พฤติกรรมแล้ว (${confirmedCluster})</span>`;
-        alert(`🧠 ขอบคุณครับ! ระบบบันทึกว่าข้อมูลลักษณะนี้คือกลุ่ม "${confirmedCluster}"\n(AI จะฉลาดขึ้นและอัปเดตแกนวิเคราะห์อัตโนมัติเมื่อสะสมครบทุกๆ 5 เคส)`);
+window.teachAI = function(confirmedCluster) {
+    if (!window.latestMLFeatures) return;
+    
+    let dataset = JSON.parse(localStorage.getItem('fa_learning_set') || '[]');
+    dataset.push({ features: window.latestMLFeatures, label: confirmedCluster });
+    localStorage.setItem('fa_learning_set', JSON.stringify(dataset));
+    
+    // ให้ AI สังเคราะห์สมองใหม่ (Re-train) ทุกๆ 5 เคส
+    if (dataset.length % 5 === 0) { recalculateDynamicCentroids(dataset); }
+    
+    // ✅ แก้ไข: เปลี่ยน ID จาก ml_knn_profile ไปชี้ที่กล่อง Cluster แทน (ใช้ profile_cluster)
+    let clusterBox = document.getElementById('profile_cluster');
+    if (clusterBox) {
+        clusterBox.innerHTML = `<span class="text-green-600 font-bold text-sm">✅ เรียนรู้แล้ว (${confirmedCluster.split('(')[0].trim()})</span>`;
     }
+    
+    alert(`🧠 ขอบคุณครับ! ระบบบันทึกว่าข้อมูลลักษณะนี้คือกลุ่ม "${confirmedCluster}"\n(AI จะฉลาดขึ้นและอัปเดตแกนวิเคราะห์อัตโนมัติเมื่อสะสมครบทุกๆ 5 เคส)`);
+}
 
-    window.openTeachModal = function() {
+window.openTeachModal = function() {
+    // ✅ แก้ไข: ปรับรายชื่อ 12 กลุ่มให้ตรงกับฟังก์ชัน classifyUserKMeans เป๊ะๆ ทุกตัวอักษร!
     let clusters = [
-        "First-Jobber / Early Starter (วัยเริ่มต้นทำงาน)",
-        "Young Professional (วัยทำงานสร้างตัว/รายได้สูง)",
-        "Gig Economy / Independent Pro (ฟรีแลนซ์/อาชีพอิสระ)",
-        "DINKs / Premium Lifestyle (คู่รักรายได้สองทางไม่มีบุตร)",
-        "Family Builder / Mass Affluent (สร้างครอบครัว/สร้างฐานะ)",
-        "🥪 The Sandwich Generation (เดอะแบก/ดูแลสองเจเนอเรชัน)",
-        "🏢 SME / Business Owner (เจ้าของกิจการ)",
-        "Corporate Executive / C-Level (ผู้บริหารระดับสูง)",
-        "👴 Pre-Retiree / Wealth Accumulator (เตรียมเกษียณ)",
-        "Retiree / Golden Years (วัยเกษียณ)",
-        "HNW / Wealth Preserver (เศรษฐี/ปกป้องความมั่งคั่ง)",
-        "UHNW / Legacy Planner (มหาเศรษฐี/ส่งมอบมรดก)"
+        "ผู้สูงอายุรายได้พื้นฐาน (Basic Retiree)",
+        "วัยเริ่มต้นครอบครัวภาระน้อย (Early Family)",
+        "ครอบครัววัยทำงานภาระสูง (High-Burden Family)",
+        "ผู้บริหาร/เจ้าของธุรกิจสร้างครอบครัว (Wealthy Family Builder)",
+        "วัยเตรียมเกษียณโสด (Pre-Retiree Single)",
+        "นักศึกษาจบใหม่ / First-Jobber (Gen Z Starter)",
+        "ครอบครัววัยทำงานภาระปานกลาง (Standard Family)",
+        "วัยกลางคนภาระน้อย (Mid-Life Independent)",
+        "เศรษฐีวัยเกษียณ (HNW Retiree)",
+        "เดอะแบกวัยทำงาน (The Sandwich Generation)",
+        "วัยทำงานโสด / DINKs (Independent Pro)",
+        "อายุน้อยร้อยล้าน (Young Executive / Success)"
     ];
     
     let promptText = "AI คาดการณ์อัตลักษณ์ผิดพลาด กรุณาระบุกลุ่มที่ถูกต้อง:\n";
-    clusters.forEach((c, i) => promptText += `${i+1}. ${c}\n`);
+    clusters.forEach((c, i) => promptText += `${i+1}. ${c.split('(')[0].trim()}\n`); // ซ่อนวงเล็บภาษาอังกฤษให้ Popup ดูคลีนขึ้น
     promptText += `\nพิมพ์หมายเลข (1-${clusters.length}) หรือพิมพ์ชื่อกลุ่มแบบใหม่ของคุณเอง:`;
     
     let choice = prompt(promptText);
     let idx = parseInt(choice) - 1;
-    if (!isNaN(idx) && clusters[idx]) { teachAI(clusters[idx]); } 
-    else if (choice && choice.trim() !== '') { teachAI(choice); } 
+    
+    if (!isNaN(idx) && clusters[idx]) {teachAI(clusters[idx]);} 
+        else if (choice && choice.trim() !== '') {teachAI(choice);} 
 }
 
     // 4. K-Means Re-Training (ขยับจุดศูนย์กลางด้วย Learning Rate / EMA Smoothing)
@@ -4375,14 +4428,19 @@ function analyzeBehaviorProfile(income, debtRatio, saveRate, riskScore, dependen
         let defaultCentroids = JSON.parse(localStorage.getItem('fa_dynamic_centroids')) || [];
         if (defaultCentroids.length === 0) {
             defaultCentroids = [
-                { name: "UHNW Legacy Planner (ผู้วางแผนส่งมอบมรดก)", vec: [0.60, 0.50, 0.80, 0.90, 0.05, 0.8, 0.8, 0.9] },
-                { name: "High-Earner Aggressive (รายได้สูงเน้นรุกสร้างตัว)", vec: [0.40, 0.15, 0.15, 0.85, 0.20, 0.9, 0.9, 0.7] },
-                { name: "Young Wealth Builder (คนรุ่นใหม่เริ่มสร้างตัว)", vec: [0.30, 0.03, 0.01, 0.75, 0.35, 0.7, 0.6, 0.6] },
-                { name: "Standard Accumulation (สะสมความมั่งคั่งตามมาตรฐาน)", vec: [0.35, 0.01, 0.005, 0.50, 0.45, 0.5, 0.5, 0.5] },
-                { name: "🛑 Overleveraged / High Risk (หนี้เกินตัว/ความเสี่ยงสูง)", vec: [0.30, 0.02, 0.001, 0.90, 0.80, 0.9, 0.9, 0.1] }, 
-                { name: "💰 Cash Hoarder (เศรษฐีเงินสดล้น/กลัวความเสี่ยง)", vec: [0.50, 0.10, 0.10, 0.20, 0.10, 0.2, 0.2, 0.8] }, 
-                { name: "🥂 DINKs / Premium Lifestyle (คู่รักรายได้สองทางไม่มีบุตร)", vec: [0.38, 0.05, 0.05, 0.60, 0.30, 0.6, 0.4, 0.4] }
-            ];
+    { name: "ผู้สูงอายุรายได้พื้นฐาน (Basic Retiree)", vec: [0.8453, 0.0369, 0.0196, 0.5, 0.5, 0.5, 0.5, 0.5] },
+    { name: "วัยเริ่มต้นครอบครัวภาระน้อย (Early Family)", vec: [0.2338, 0.0366, 0.0205, 0.5, 0.5, 0.5, 0.5, 0.5] },
+    { name: "ครอบครัววัยทำงานภาระสูง (High-Burden Family)", vec: [0.2950, 0.0354, 0.0198, 0.5, 0.5, 0.5, 0.5, 0.5] },
+    { name: "ผู้บริหาร/เจ้าของธุรกิจสร้างครอบครัว (Wealthy Family Builder)", vec: [0.3080, 0.6904, 0.4437, 0.5, 0.5, 0.5, 0.5, 0.5] },
+    { name: "วัยเตรียมเกษียณโสด (Pre-Retiree Single)", vec: [0.5558, 0.0360, 0.0199, 0.5, 0.5, 0.5, 0.5, 0.5] },
+    { name: "นักศึกษาจบใหม่ / First-Jobber (Gen Z Starter)", vec: [0.1174, 0.0362, 0.0202, 0.5, 0.5, 0.5, 0.5, 0.5] },
+    { name: "ครอบครัววัยทำงานภาระปานกลาง (Standard Family)", vec: [0.3090, 0.0369, 0.0206, 0.5, 0.5, 0.5, 0.5, 0.5] },
+    { name: "วัยกลางคนภาระน้อย (Mid-Life Independent)", vec: [0.4955, 0.0361, 0.0203, 0.5, 0.5, 0.5, 0.5, 0.5] },
+    { name: "เศรษฐีวัยเกษียณ (HNW Retiree)", vec: [0.6170, 0.6904, 0.4375, 0.5, 0.5, 0.5, 0.5, 0.5] }, // 🔥 แก้เป็น 0.5 เพื่อให้รองรับ Active Retiree
+    { name: "เดอะแบกวัยทำงาน (The Sandwich Generation)", vec: [0.3456, 0.0373, 0.0207, 0.5, 0.5, 0.5, 0.5, 0.5] }, // 🔥 แก้เป็น 0.5
+    { name: "วัยทำงานโสด / DINKs (Independent Pro)", vec: [0.3514, 0.0356, 0.0199, 0.5, 0.5, 0.5, 0.5, 0.5] },
+    { name: "อายุน้อยร้อยล้าน (Young Executive / Success)", vec: [0.1781, 0.6775, 0.4348, 0.5, 0.5, 0.5, 0.5, 0.5] }
+];
         }
         
         // ---------------------------------------------------------
@@ -5243,6 +5301,7 @@ function analyzeBehaviorProfile(income, debtRatio, saveRate, riskScore, dependen
                 p_contact: document.getElementById('p_contact').value,
                 p_unitlinked: document.getElementById('p_unitlinked').value,
                 
+                
                 // 🧠 เปลี่ยนมาเก็บข้อมูลจาก 10 คำถามใหม่ (Behavioral Profiling)
                 bq_1: getSafeVal('bq_1'),
                 bq_2: getSafeVal('bq_2'),
@@ -5589,7 +5648,7 @@ function analyzeBehaviorProfile(income, debtRatio, saveRate, riskScore, dependen
     // ==========================================
     // 🎯 ฟังก์ชันคำนวณช่วงความเชื่อมั่น 95% (Confidence Interval 95%)
     // ==========================================
-    function calculateCI95(meanProb, iterations = 2000) {
+    function calculateCI95(meanProb, iterations = 20000) {
         if (meanProb <= 0) return "0.00% - 0.00%";
         if (meanProb >= 100) return "99.90% - 100.00%";
         
@@ -5882,40 +5941,105 @@ function analyzeBehaviorProfile(income, debtRatio, saveRate, riskScore, dependen
         // =========================================================
         // 🚀 อัปเกรดระบบเป็น 2-Tier Analysis (อัตลักษณ์ + พฤติกรรม)
         // =========================================================
+        
         // 1. เรียกใช้ ML แกนที่ 1 (อัตลักษณ์ / Persona) 
-        // 💡 สังเกตว่าเราเปลี่ยน recency เป็น numDependents แล้ว เพื่อให้ตรงกับตำราเรียนใหม่ 2 แสนคน
-        const userCluster = classifyUserKMeans(rawAge, totalInc, netWorth, riskScore, dti, numDependents, frequency, discipline);
+        let dependentsCount = typeof numDependents !== 'undefined' ? numDependents : 0;
+        let safeSr = typeof sr !== 'undefined' ? sr : 0;
+
+        // ===============================================================
+        // 🧠 HOLISTIC AI MAPPING: สกัดค่าพฤติกรรมจากคำถามทั้ง 10 ข้อ
+        // ===============================================================
+        let q1 = parseInt(document.getElementById('bq_1') ? document.getElementById('bq_1').value : "0");
+        let q2 = parseInt(document.getElementById('bq_2') ? document.getElementById('bq_2').value : "0");
+        let q3 = parseInt(document.getElementById('bq_3') ? document.getElementById('bq_3').value : "0");
+        let q4 = parseInt(document.getElementById('bq_4') ? document.getElementById('bq_4').value : "0");
+        let q5 = document.getElementById('bq_5') ? document.getElementById('bq_5').value : "self";
+        let q9 = parseInt(document.getElementById('bq_9') ? document.getElementById('bq_9').value : "1");
+        let q10 = document.getElementById('bq_10') ? document.getElementById('bq_10').value : "hybrid";
+
+        // --- แกนที่ 8: วินัย (Discipline) คิดจาก Q1 ถึง Q4 ---
+        let totalDisc = q1 + q2 + q3 + q4;
+        let safeDisc = 0.5;
+        if (totalDisc >= 10) safeDisc = 0.9;
+        else if (totalDisc >= 7) safeDisc = 0.7;
+        else if (totalDisc >= 4) safeDisc = 0.5;
+        else safeDisc = 0.2;
+
+        // --- แกนที่ 7: ความถี่ (Frequency) คิดจากสไตล์และความรู้ (Q9, Q10) ---
+        let safeFreq = 2; // ค่ามาตรฐานปีละ 2 ครั้ง
+        if (q10 === 'diy' || q9 === 3) {
+            safeFreq = 12; // สายเทรด สายลุย ดูทุกเดือน
+        } else if (q10 === 'hybrid') {
+            safeFreq = 4;  // สายลูกผสม รีวิวทุกไตรมาส
+        } else if (q10 === 'delegator') {
+            safeFreq = 1;  // สายปล่อยวาง ปีละครั้งพอ
+        }
+
+        // --- แกนที่ 6: ความใหม่ (Recency) คิดจากสไตล์และความกังวล (Q5, Q10) ---
+        let safeRecency = 12; // ค่ามาตรฐาน
+        if (q10 === 'diy') safeRecency = 1;       // เพิ่งอัปเดตไปหมาดๆ
+        else if (q10 === 'hybrid') safeRecency = 3; // อัปเดตเมื่อไตรมาสที่แล้ว
+        else if (q10 === 'delegator') safeRecency = 12; // อัปเดตเมื่อปีที่แล้ว
+        
+        // ถ้ากำลังช็อต/หมุนเงินไม่ทัน มักจะทิ้งแผนการเงิน (หนีปัญหา)
+        if (q5 === 'survive') {
+            safeRecency += 6; 
+            safeFreq = Math.max(0, safeFreq - 1);
+        }
+
+        // 🟢 อัปเดตข้อมูลให้ระบบอื่นๆ รู้จักตัวแปรทั้ง 8 มิติ
+        window.latestMLFeatures = {
+            age: rawAge, inc: totalInc, nw: netWorth, risk: riskScore, dti: dti,
+            recency: safeRecency, frequency: safeFreq, discipline: safeDisc
+        };
+
+        // 🚨 ล้างความจำ AI ที่เคยจำผิดพลาดทิ้ง (Reset Corrupted Memory)
+        localStorage.removeItem('fa_dynamic_centroids');
+
+        // 🟢 ส่งพารามิเตอร์ 8 มิติเข้า AI K-Means 
+        const userCluster = classifyUserKMeans(rawAge, totalInc, netWorth, riskScore, dti, safeRecency, safeFreq, safeDisc);
         
         // 2. เรียกใช้ Rule-based แกนที่ 2 (พฤติกรรม / Behavior)
-        // ตรวจสอบตัวแปรภาระผู้อยู่ในอุปการะ (ถ้าไม่มีตัวแปรนี้ให้ default เป็น 0 ไปก่อน)
-        let dependentsCount = typeof numDependents !== 'undefined' ? numDependents : 0;
-        const userBehaviors = analyzeBehaviorProfile(totalInc, dti, sr, riskScore, dependentsCount);
+        const userBehaviors = analyzeBehaviorProfile(totalInc, dti, safeSr, riskScore, dependentsCount);
         
-        // 3. แสดงผลลัพธ์ 2 แกน พร้อมปุ่ม Feedback ให้ FA ช่วยสอน AI (Human-in-the-loop)
-        document.getElementById('ml_knn_profile').innerHTML = `
-            <div class="mb-2 font-bold text-sm text-blue-800 border-b border-gray-300 pb-1">
-                📍 ${userCluster.split('(')[0].trim()} </div>
-            <div class="text-[11px] text-gray-700 space-y-1 mb-2">
-                ${userBehaviors.map(b => `<div>${b}</div>`).join('')}
-            </div>
-            <div class="mt-2 flex gap-1 no-print">
-                <button type="button" onclick="teachAI('${userCluster}')" class="text-[9px] bg-green-600 hover:bg-green-500 text-white px-2 py-1 rounded shadow transition">✅ อัตลักษณ์ถูกต้อง</button>
-                <button type="button" onclick="openTeachModal()" class="text-[9px] bg-yellow-600 hover:bg-yellow-500 text-white px-2 py-1 rounded shadow transition">✏️ แก้ไขกลุ่ม</button>
-            </div>
-        `;
+        // 3. แสดงผลลัพธ์แบบแยกส่วน (Single Responsibility)
+        
+        // 🔵 ส่วนที่ 3.1: นำชื่ออัตลักษณ์ (Cluster) ไปอัปเดตในกล่อง Cluster (profile_cluster)
+        let clusterBox = document.getElementById('profile_cluster');
+        if (clusterBox) {
+            clusterBox.innerHTML = `
+                <div class="text-white text-lg font-bold">${userCluster.split('(')[0].trim()}</div>
+                <div class="mt-2 flex gap-1 no-print">
+                    <button type="button" onclick="teachAI('${userCluster}')" class="text-[10px] bg-green-600 hover:bg-green-500 text-white px-2 py-1 rounded shadow transition">✅ อัตลักษณ์ถูกต้อง</button>
+                    <button type="button" onclick="openTeachModal()" class="text-[10px] bg-yellow-600 hover:bg-yellow-500 text-white px-2 py-1 rounded shadow transition">✏️ แก้ไขกลุ่ม</button>
+                </div>
+            `;
+        }
 
+        // 🔴 ส่วนที่ 3.2: นำพฤติกรรมความเสี่ยง ไปอัปเดตในกล่อง Risk Profile (ml_knn_profile)
+        let riskBox = document.getElementById('ml_knn_profile');
+        if (riskBox) {
+            riskBox.innerHTML = `
+                <div class="text-[11px] text-gray-400 space-y-1 mt-1">
+                    ${userBehaviors.map(b => `<div>${b}</div>`).join('')}
+                </div>
+            `;
+        }
+
+        // =========================================================
         // ปรับแต่งคำแนะนำผลตอบแทนตาม Cluster ที่ AI วิเคราะห์ได้ (Dynamic ROI Tuning)
-        if (userCluster.includes('UHNW') || userCluster.includes('Legacy')) {
+        // =========================================================
+        if (userCluster.includes('UHNW') || userCluster.includes('Legacy') || userCluster.includes('เศรษฐี')) {
             sdEst += 3.5;
-        } else if (userCluster.includes('High-Earner') || userCluster.includes('DINKs')) {
+        } else if (userCluster.includes('High-Earner') || userCluster.includes('DINKs') || userCluster.includes('อายุน้อยร้อยล้าน')) {
             sdEst += 2.0;
-        } else if (userCluster.includes('Young Wealth Builder')) {
+        } else if (userCluster.includes('Young Wealth Builder') || userCluster.includes('Family Builder')) {
             sdEst += 1.0;
-        } else if (userCluster.includes('Overleveraged') || userCluster.includes('Cash Hoarder')) {
+        } else if (userCluster.includes('Overleveraged') || userCluster.includes('Cash Hoarder') || userCluster.includes('เดอะแบก')) {
             // Anomaly Penalty: กลุ่มเสี่ยงสูง หรือกลัวความเสี่ยง ระบบจะบังคับกดผลตอบแทนลงเพื่อเน้นความปลอดภัย (Safety First)
             sdEst = Math.max(3, sdEst - 4.0);
         }
-        // Cluster 4 (Standard Accumulation) คงค่า Target ROI ตามเดิม
+        // Cluster อื่นๆ คงค่า Target ROI ตามเดิม
 
         const isHNW = netWorth >= 50000000 || totalInc >= 500000;
         const isUHNW = netWorth >= 100000000;
@@ -5971,8 +6095,16 @@ function analyzeBehaviorProfile(income, debtRatio, saveRate, riskScore, dependen
         // ดึงชื่อกลุ่มจากโมเดล K-Means ของคุณ (ใช้ตัวแปรเดียวกับที่คุณใช้ในฟังก์ชันหลัก)
         if(document.getElementById('profile_cluster')) {
             let clusterForProfile = window.latestMLFeatures ? 
-                classifyUserKMeans(window.latestMLFeatures.age, window.latestMLFeatures.inc, window.latestMLFeatures.nw, window.latestMLFeatures.risk, window.latestMLFeatures.dti) : 
-                "ผู้ที่มีไลฟ์สไตล์ใกล้เคียงคุณ";
+                classifyUserKMeans(
+                    window.latestMLFeatures.age, 
+                    window.latestMLFeatures.inc, 
+                    window.latestMLFeatures.nw, 
+                    window.latestMLFeatures.risk, 
+                    window.latestMLFeatures.dti,
+                    window.latestMLFeatures.recency,     // เพิ่มมิติที่ 6
+                    window.latestMLFeatures.frequency,   // เพิ่มมิติที่ 7
+                    window.latestMLFeatures.discipline   // เพิ่มมิติที่ 8
+                ) : "ผู้ที่มีไลฟ์สไตล์ใกล้เคียงคุณ";
             document.getElementById('profile_cluster').innerText = clusterForProfile.split('(')[0].trim();
         }
 
@@ -7613,9 +7745,9 @@ function analyzeBehaviorProfile(income, debtRatio, saveRate, riskScore, dependen
         let actualPmtOther = annualDebtPmtTotal * (estPmtOther / totalEstPmt);
         // =====================================================================
 
-        // ฟังก์ชันจำลอง Monte Carlo ขนาดเล็กเฉพาะสำหรับ 5 ปี (รัน 2,000 รอบ)
+        // ฟังก์ชันจำลอง Monte Carlo ขนาดเล็กเฉพาะสำหรับ 5 ปี (รัน 20,000 รอบ)
         function runMiniMonteCarlo5Y(initW, roi, sd, baseSavePerYear, isCurrent) {
-            let iterations = 2000;
+            let iterations = 20000;
             let resultsByYear = { 1: [], 2: [], 3: [], 4: [], 5: [] };
             
             let _skew = isCurrent ? 0 : skew;
@@ -7842,7 +7974,7 @@ const defaultCentroids = [
 
 // 2. ฟังก์ชันโหลดสมองของระบบ (Model Loading)
 function loadModelWeights() {
-    let learnedWeights = localStorage.getItem('fa_learned_centroids');
+    let learnedWeights = localStorage.getItem('fa_dynamic_centroids');
     
     if (learnedWeights === null) {
         // กรณีไม่มีข้อมูลในเครื่อง (ลูกค้าคนแรกๆ): ใช้ตำราเดิม (Warm Start)
@@ -7899,7 +8031,7 @@ function updateClusterWeights(assignedCluster, newCustomerData) {
         c.dep = (c.dep * (1 - lr)) + (newCustomerData.dep * lr);
         
         // บันทึกค่าน้ำหนักใหม่ลงเครื่อง
-        localStorage.setItem('fa_learned_centroids', JSON.stringify(currentCentroids));
+        localStorage.setItem('fa_dynamic_centroids', JSON.stringify(currentCentroids));
         console.log(`🟣 [AI ML] Updated Weights for Cluster: ${assignedCluster}`);
     }
 }
@@ -8412,9 +8544,7 @@ const dashboardHtml = `
     let textConclusion = `
         <b>บทสรุปจากการวิเคราะห์:</b><br>
         หากคุณ${nlg_clientName} เริ่มดำเนินการตามแนวทางแนะนำด้านบน โมเดลคณิตศาสตร์ของเราคำนวณว่า <b>"โอกาสสำเร็จของเป้าหมาย"</b> จะถูกยกระดับจาก <span class="text-amber-500 font-bold">${nlg_probBefore.toFixed(1)}%</span> ทะยานสู่ <b><span class="text-emerald-500 text-lg">${nlg_probAfter.toFixed(1)}%</span></b> อย่างชัดเจนครับ<br><br>
-        <div class="text-center p-3 bg-indigo-600 text-white rounded-xl mt-2 text-sm font-light print-bg-exact">
-            "วิเคราะห์จากความจริง เพื่อสร้างผลลัพธ์ที่ลงมือทำได้ทันที"
-        </div>
+        
     `;
 
     // 4. 🖥️ แสดงผล UI (แบ่งโซน หน้าจอ 🆚 พรินต์)
@@ -8465,7 +8595,7 @@ const dashboardHtml = `
                         📊<span class="absolute bottom-0 right-0 w-3 h-3 bg-emerald-400 border-2 border-white rounded-full"></span>
                     </div>
                     <div>
-                        <h3 class="text-xl font-bold text-slate-800">Fact-Based AI Analyst</h3>
+                        <h3 class="text-xl font-bold text-slate-800">สรุปแผนการเงินโดยผู้ช่วยส่วนตัว (AI Financial Agent)</h3>
                         <p class="text-[11px] text-emerald-500 font-semibold tracking-wider uppercase" id="ai_status_text">System: Ready</p>
                     </div>
                 </div>
