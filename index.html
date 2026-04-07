@@ -1330,7 +1330,7 @@
         </div>
 
         <div class="print-page avoid-break mt-4">
-            <h2 class="text-2xl font-bold mb-4 text-gray-800 border-b-2 border-red-600 pb-2">8. ตารางคาดการณ์กระแสเงินสดล่วงหน้า (Cashflow Forecast)</h2>
+            <h2 class="text-2xl font-bold mb-4 text-gray-800 border-b-2 border-red-600 pb-2">8. ตารางคาดการณ์กระแสเงินสดและพอร์ตสินทรัพย์ลงทุนล่วงหน้า (Cashflow and Investment Portfolio Projection Forecast)</h2>
             
             <h3 class="font-bold text-gray-700 mb-2">8.1 งบประมาณการกระแสเงินสด 12 เดือนล่วงหน้า (12-Month Cash Flow Projection)</h3>
             <div class="bg-white rounded-xl shadow-sm border overflow-hidden mb-8 hover-scale">
@@ -1339,29 +1339,13 @@
                     </div>
             </div>
 
-            <h3 class="font-bold text-gray-700 mb-2">8.2 ตารางคาดการณ์พอร์ตสินทรัพย์ลงทุนล่วงหน้า 5 ปี (5-Year Investment Portfolio Projection)</h3>
+        <h3 class="font-bold text-gray-700 mb-2">8.2 ตารางคาดการณ์พอร์ตสินทรัพย์ลงทุนล่วงหน้า 5 ปี (5-Year Investment Portfolio Projection)</h3>
 <div class="bg-white rounded-xl shadow-sm border overflow-hidden mb-8 hover-scale">
     <div id="forecast_5yr_desc"></div>
-    <div class="overflow-x-auto">
-        <table class="w-full text-sm mb-0">
-            <thead class="bg-indigo-50 text-indigo-800 border-b">
-                <tr>
-                    <th class="py-2 px-3 text-center border-r border-indigo-200 align-middle" rowspan="2">ปีที่</th>
-                    <th class="py-1 px-3 text-center border-b border-r border-indigo-200" colspan="2">พอร์ตปัจจุบัน (Current)</th>
-                    <th class="py-1 px-3 text-center border-b border-indigo-200" colspan="2">แผนแนะนำ ⭐ (Optimized)</th>
-                </tr>
-                <tr class="text-[11px] md:text-xs">
-                    <th class="py-2 px-2 text-right text-gray-600 bg-white/50">โอกาสเติบโตปกติ (Median)</th>
-                    <th class="py-2 px-2 text-right text-red-600 border-r border-indigo-200 bg-red-50/50" title="ค่าเฉลี่ยการขาดทุนในโซน 5% ที่เลวร้ายที่สุด">เจอวิกฤตหนัก (CVaR 95%)</th>
-                    <th class="py-2 px-2 text-right text-blue-700 bg-white/50">โอกาสเติบโตปกติ (Median)</th>
-                    <th class="py-2 px-2 text-right text-orange-600 bg-orange-50/50" title="ค่าเฉลี่ยการขาดทุนในโซน 5% ที่เลวร้ายที่สุด">เจอวิกฤตหนัก (CVaR 95%)</th>
-                </tr>
-            </thead>
-            <tbody id="tb_5yr_forecast_body" class="divide-y divide-gray-100"></tbody>
-        </table>
-    </div>
+    <div id="smart_allocation_container" class="p-4 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-indigo-50"></div>
+    <div id="tb_5yr_forecast_container"></div> 
+    
 </div>
-        </div>
 
         <div class="print-page avoid-break mt-4">
             <h2 class="text-2xl font-bold mb-4 text-gray-800 border-b-2 border-red-600 pb-2">9. บทวิเคราะห์และแผนการเงินเชิงลึก (Expert Financial Analysis)</h2>
@@ -7975,146 +7959,416 @@ if (typeof classifyUserKMeans === 'function' && window.latestMLFeatures) {
         }
 
         // =====================================================================
-        // 🧠 [NEW] Cashflow Release Engine: จัดกลุ่มหนี้เพื่อปลดล็อกเงินสดในอนาคต
+        // 8.2 Forecast 5 Years Wealth (Ultimate Edition)
         // =====================================================================
+        // 🚨 [FIX] ประกาศตัวแปร investableAssets เผื่อไว้ในกรณีที่ระบบเดิมไม่มี
+        let investableAssets = 0;
+        // ---------------------------------------------------------------------
+        // 🧠 1. [AI ENGINE] Smart Asset Allocation Parser (อัปเกรดพจนานุกรม UHNW)
+        // ---------------------------------------------------------------------
+        let parsedTotalAssets = 0;
+        let weightedRoiSum = 0;
+        let weightedSdSum = 0;
 
-        // 8.2 Forecast 5 Years Wealth (Upgraded with Monte Carlo, CVaR & Cashflow Release)
-        let fc5Html = '';
-        let currentAge_5Y = parseInt(document.getElementById('p_age').value) || 35;
-        let retAge_5Y = parseInt(document.getElementById('r_retAge').value) || 60;
-        let annualDebtPmtTotal = (propDebt || 0) * 12; // ใช้ยอดหนี้รายเดือนรวมของพอร์ตปัจจุบัน
+        // 🚨 [UPGRADE] พจนานุกรม AI ที่ครอบคลุมสินทรัพย์ระดับ High Net Worth
+        const assetKnowledgeBase = [
+            // 💰 สภาพคล่อง & ความเสี่ยงต่ำ
+            { keywords: ['เงินสด', 'ฝาก', 'ออมทรัพย์', 'เผื่อเรียก', 'สภาพคล่อง', 'fcd', 'เงินตราต่างประเทศ'], roi: 0.5, sd: 0.0 },
+            { keywords: ['ประจำ', 'ฝากประจำ', 'สลาก', 'ออมสิน', 'เงินฝาก'], roi: 1.5, sd: 0.0 },
+            { keywords: ['ตราสารหนี้', 'พันธบัตร', 'หุ้นกู้', 'สหกรณ์', 'bond', 'debenture', 'fixed income'], roi: 3.0, sd: 2.0 },
+            
+            // 📈 การลงทุนทั่วไป & อสังหาฯ
+            { keywords: ['กองทุนรวม', 'ssf', 'rmf', 'ผสม', 'esg', 'mutual fund', 'กองทุน'], roi: 5.0, sd: 8.0 },
+            { keywords: ['อสังหา', 'reit', 'property fund', 'กองทุนรวมอสังหา', 'โครงสร้างพื้นฐาน'], roi: 6.0, sd: 10.0 },
+            { keywords: ['หุ้นไทย', 'หุ้นสามัญ', 'ตราสารทุน', 'pvd', 'กบข', 'equity', 'stock'], roi: 8.0, sd: 15.0 },
+            
+            // 🌐 การลงทุนต่างประเทศ & UHNW Assets (สินทรัพย์ซับซ้อน)
+            { keywords: ['ต่างประเทศ', 'offshore', 'เทค', 's&p', 'global', 'dr', 'drx'], roi: 10.0, sd: 18.0 },
+            { keywords: ['private fund', 'hedge fund', 'กองทุนส่วนบุคคล'], roi: 8.5, sd: 14.0 },
+            { keywords: ['structured', 'eln', 'derivative', 'อนุพันธ์', 'หุ้นกู้ที่มีอนุพันธ์', 'note'], roi: 7.0, sd: 12.0 },
+            { keywords: ['private equity', 'vc', 'venture', 'startup', 'angel'], roi: 15.0, sd: 30.0 },
+            
+            // 💎 สินทรัพย์ทางเลือก
+            { keywords: ['คริปโต', 'crypto', 'บิทคอยน์', 'bitcoin', 'eth', 'digital'], roi: 15.0, sd: 40.0 },
+            { keywords: ['ทองคำ', 'gold', 'นาฬิกา', 'ของสะสม', 'art', 'ทางเลือก'], roi: 4.0, sd: 15.0 }
+        ];
 
+        if(document.getElementById('c_assets')) {
+            document.getElementById('c_assets').querySelectorAll('.data-row, .input-row').forEach(row => {
+                let cat = row.dataset.cat || "";
+                if (cat.includes('สภาพคล่อง') || cat.includes('ลงทุน') || cat.includes('ต่างประเทศ')) {
+                    let nameInput = row.querySelector('.col-name');
+                    let valInput = row.querySelector('.col-val');
+                    let name = nameInput ? nameInput.value.toLowerCase() : "";
+                    let val = valInput ? Number(valInput.value.replace(/,/g, '')) || 0 : 0;
+                    
+                    if (val > 0) {
+                        // 🚨 [UPGRADE] เอา "ชื่อที่ FA พิมพ์" + "หมวดหมู่ในระบบ" มารวมกันเพื่อค้นหา ป้องกัน FA พิมพ์ชื่อย่อ
+                        let searchText = (name + " " + cat).toLowerCase();
+                        
+                        // 🚨 [UPGRADE] Smart Fallback กำหนดค่าพื้นฐานตาม "หมวดหมู่" เผื่อหาในพจนานุกรมไม่เจอเลย
+                        let matchedRoi = cat.includes('สภาพคล่อง') ? 1.0 : (cat.includes('ต่างประเทศ') ? 8.0 : 5.0);
+                        let matchedSd = cat.includes('สภาพคล่อง') ? 0.5 : (cat.includes('ต่างประเทศ') ? 15.0 : 8.0);
+                        
+                        // กวาดหาคีย์เวิร์ด
+                        for (let rule of assetKnowledgeBase) {
+                            if (rule.keywords.some(kw => searchText.includes(kw))) {
+                                matchedRoi = rule.roi; 
+                                matchedSd = rule.sd; 
+                                break;
+                            }
+                        }
+                        parsedTotalAssets += val;
+                        row.dataset.tempRoi = matchedRoi;
+                        row.dataset.tempSd = matchedSd;
+                        row.dataset.tempVal = val;
+                    }
+                }
+            });
+
+            if (parsedTotalAssets > 0) {
+                document.getElementById('c_assets').querySelectorAll('.data-row, .input-row').forEach(row => {
+                    let val = Number(row.dataset.tempVal) || 0;
+                    if (val > 0) {
+                        let weight = val / parsedTotalAssets; 
+                        weightedRoiSum += weight * Number(row.dataset.tempRoi);
+                        weightedSdSum += weight * Number(row.dataset.tempSd);
+                    }
+                });
+                currentPortfolioRoiEst = weightedRoiSum;
+                currentSdEst = Math.max(0.1, weightedSdSum); 
+                investableAssets = parsedTotalAssets; 
+            }
+        }
+
+        // ---------------------------------------------------------------------
+        // 🎯 2. [ACTIONABLE] Smart Portfolio Allocation Engine (Dynamic แบบรายบุคคล)
+        // ---------------------------------------------------------------------
+        let totalWealthToAllocate = investableAssets || 0; 
+        let monthlySavingToAllocate = (typeof propSave !== 'undefined' ? propSave : 0); 
+        
+        // ดึงข้อมูลส่วนตัวลูกค้าเพื่อวิเคราะห์
+        let ageForAlloc = parseInt(document.getElementById('p_age') ? document.getElementById('p_age').value : 35) || 35;
+        let monthlyExpForAlloc = (typeof totalOut !== 'undefined' ? totalOut : 50000); 
+        let annualDebtForAlloc = (typeof propDebt !== 'undefined' ? propDebt * 12 : 0);
+
+        // 🧠 AI Logic 1: คำนวณถังสภาพคล่อง (เป้าหมาย 6 เท่าของรายจ่ายรายเดือน)
+        let emergencyFundTarget = monthlyExpForAlloc * 6;
+        let dynamicLiqPct = totalWealthToAllocate > 0 ? (emergencyFundTarget / totalWealthToAllocate) : 0.25;
+        // ควบคุมขอบเขตไม่ให้เพี้ยน (ขั้นต่ำ 10% สูงสุด 40%)
+        dynamicLiqPct = Math.max(0.10, Math.min(0.40, dynamicLiqPct));
+
+        // 🧠 AI Logic 2: คำนวณถังปกป้องความเสี่ยง (ผันแปรตามอายุและภาระหนี้)
+        let dynamicProPct = 0.15; // ฐานเริ่มต้น
+        if (ageForAlloc >= 50) dynamicProPct += 0.05; // อายุ 50+ เน้นปกป้องมรดกและสุขภาพมากขึ้น
+        if (annualDebtForAlloc > 0 && totalWealthToAllocate > 0) {
+            let debtRiskRatio = (annualDebtForAlloc * 5) / totalWealthToAllocate; // สมมติฐานคุ้มครองหนี้ 5 ปี
+            dynamicProPct = Math.max(dynamicProPct, Math.min(0.35, debtRiskRatio)); // ไม่เกิน 35%
+        }
+
+        // 🧠 AI Logic 3: ถังความมั่งคั่ง (ส่วนที่เหลือทั้งหมด)
+        let dynamicWealthPct = 1.0 - (dynamicLiqPct + dynamicProPct);
+
+        // 🧠 AI Logic 4: ปรับแต่งพอร์ต "สร้างการเติบโต" ตามช่วงอายุลูกค้า (Dynamic ROI / SD / Asset Class)
+        let wealthRoi = 9.0;
+        let wealthSd = 14.0;
+        let wealthDesc = "กองทุนตราสารทุน / หุ้นต่างประเทศ";
+
+        if (ageForAlloc < 40) {
+            // วัยรุ่น/วัยทำงานตอนต้น: รับความเสี่ยงได้สูงมาก เน้น Growth
+            wealthRoi = 11.0; 
+            wealthSd = 18.0; 
+            wealthDesc = "หุ้น Growth / เทคโนโลยี / คริปโตบางส่วน (Aggressive)";
+        } else if (ageForAlloc >= 55) {
+            // วัยใกล้เกษียณ/เกษียณแล้ว: รับความเสี่ยงได้จำกัด เน้นปกป้องเงินต้นและกระแสเงินสด
+            wealthRoi = 6.0; 
+            wealthSd = 8.0; 
+            wealthDesc = "กองทุนหุ้นปันผล / หุ้นกู้เรตติ้งสูง / REITs (Conservative)";
+        } else {
+            // วัยกลางคน (40-54 ปี): รับความเสี่ยงได้ปานกลาง เน้นสมดุล
+            wealthRoi = 8.5; 
+            wealthSd = 12.0; 
+            wealthDesc = "กองทุนผสม / หุ้นไทยพื้นฐานดี / Global Equity (Moderate)";
+        }
+
+        // 🚨 นำตัวแปร Dynamic มาใส่ใน ถังที่ 3 (Wealth)
+        let allocationRules = [
+            { 
+                name: "🛡️ ถังปกป้องความมั่งคั่ง", 
+                desc: "Unit Linked / บำนาญ / สุขภาพ", 
+                pct: dynamicProPct, 
+                roi: 4.5, sd: 3.0, color: "text-blue-700", bg: "bg-blue-100" 
+            },
+            { 
+                name: "🎯 ถังสภาพคล่อง & Smart Goals", 
+                desc: "กองทุนตลาดเงิน / ตราสารหนี้ระยะสั้น", 
+                pct: dynamicLiqPct, 
+                roi: 2.5, sd: 1.0, color: "text-green-700", bg: "bg-green-100" 
+            },
+            { 
+                name: "🚀 ถังสร้างการเติบโต", 
+                desc: wealthDesc, // เปลี่ยนคำอธิบายตามวัย
+                pct: dynamicWealthPct, 
+                roi: wealthRoi,   // เปลี่ยนผลตอบแทนตามวัย
+                sd: wealthSd,     // เปลี่ยนความเสี่ยงตามวัย
+                color: "text-orange-700", bg: "bg-orange-100" 
+            }
+        ];
+
+        let allocHtml = `
+    <div class="mb-4 bg-indigo-50/50 p-4 rounded-lg border-l-4 border-indigo-500">
+        <h4 class="font-bold text-indigo-900 flex items-center text-lg">
+            <span class="mr-2">🧮</span> AI Mathematical Reality Check
+        </h4>
+        <p class="text-sm text-gray-700 mt-1 leading-relaxed">
+            ระบบได้วิเคราะห์กระแสเงินสดและสินทรัพย์ปัจจุบันของคุณ และได้คำนวณ 
+            <span class="font-semibold text-indigo-700">"3 ตะกร้าสินค้า (Wealth Pyramid)"</span> 
+            ที่เหมาะสมที่สุด <span class="underline decoration-indigo-300 decoration-2">ภายใต้งบประมาณของคุณ</span> ดังนี้:
+        </p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+`;
+        let newBlendedRoi = 0; let newBlendedSd = 0;
+
+        allocationRules.forEach(bucket => {
+            let lumpSumAmt = totalWealthToAllocate * bucket.pct;
+            let dcaAmt = monthlySavingToAllocate * bucket.pct;
+            newBlendedRoi += (bucket.roi * bucket.pct);
+            newBlendedSd += (bucket.sd * bucket.pct);
+
+            allocHtml += `
+                <div class="bg-white p-3 rounded-lg border border-gray-200 shadow-sm">
+                    <div class="text-xs font-bold ${bucket.color} ${bucket.bg} inline-block px-2 py-1 rounded mb-2">${bucket.name} (${(bucket.pct * 100).toFixed(1)}%)</div>
+                    <p class="text-[10px] text-gray-500 mb-2 h-6">${bucket.desc}</p>
+                    <div class="border-t border-gray-100 pt-2 flex justify-between items-center"><span class="text-xs text-gray-600">จัดสรรเงินก้อน:</span><span class="font-bold text-gray-800">${fmt(lumpSumAmt)} ฿</span></div>
+                    <div class="flex justify-between items-center mt-1"><span class="text-xs text-gray-600">ออมเพิ่ม (DCA):</span><span class="font-bold text-indigo-600">${fmt(dcaAmt)} ฿/ด.</span></div>
+                    <div class="text-[9px] text-gray-400 text-right mt-1">*คาดหวังผลตอบแทน ${bucket.roi}% ต่อปี</div>
+                </div>`;
+        });
+        allocHtml += `</div>`;
+
+        let containerAlloc = document.getElementById('smart_allocation_container');
+        if (containerAlloc) containerAlloc.innerHTML = allocHtml;
+
+        // อัปเดตเป้าหมายพอร์ตใหม่ให้ Monte Carlo นำไปใช้
+        targetRoiEst = newBlendedRoi;
+        sdEst = newBlendedSd;
+
+        // ---------------------------------------------------------------------
+        // 💸 3. [CASHFLOW] Cashflow Release Engine (อัปเกรดรองรับหนี้ธุรกิจ/Lombard)
+        // ---------------------------------------------------------------------
+        let currentAge_5Y = parseInt(document.getElementById('p_age') ? document.getElementById('p_age').value : 35) || 35;
+        let retAge_5Y = parseInt(document.getElementById('r_retAge') ? document.getElementById('r_retAge').value : 60) || 60;
+        let annualDebtPmtTotal = (typeof propDebt !== 'undefined' ? propDebt : 0) * 12;
+
+        // 🚨 [NEW] เพิ่มถัง interestOnly ที่ตั้งอายุไว้ 99 ปี (ไม่หมดใน 5 ปี และจ่ายแต่ดอกเบี้ย)
         let debtBuckets = {
-            shortTerm: { val: 0, assumeYears: 1 },    // หนี้บัตร/นอกระบบ หมดใน 1 ปี
-            car:       { val: 0, assumeYears: 5 },    // หนี้รถ หมดใน 5 ปี
-            home:      { val: 0, assumeYears: Math.max(10, retAge_5Y - currentAge_5Y) }, // หนี้บ้าน
-            other:     { val: 0, assumeYears: 10 }    // หนี้อื่นๆ
+            shortTerm: { val: 0, assumeYears: 1 }, 
+            car: { val: 0, assumeYears: 5 }, 
+            home: { val: 0, assumeYears: Math.max(10, retAge_5Y - currentAge_5Y) }, 
+            other: { val: 0, assumeYears: 10 },
+            interestOnly: { val: 0, assumeYears: 99 } 
         };
 
-        // กวาดข้อมูลหนี้สินจากตาราง UI
-        document.querySelectorAll('#c_liab .data-row').forEach(row => {
-            let cat = row.dataset.cat || "";
-            let name = row.querySelector('.col-name').value || "";
-            let val = parseNum(row.querySelector('.col-val').value) || 0;
+        if(document.getElementById('c_liab')) {
+            document.getElementById('c_liab').querySelectorAll('.data-row, .input-row').forEach(row => {
+                let cat = row.dataset.cat || "";
+                let nameInput = row.querySelector('.col-name');
+                let valInput = row.querySelector('.col-val');
+                let name = nameInput ? nameInput.value.toLowerCase() : "";
+                let val = valInput ? Number(valInput.value.replace(/,/g, '')) || 0 : 0;
 
-            if (cat.includes("สั้น") || name.includes("บัตร") || name.includes("บุคคล") || name.includes("นอกระบบ")) {
-                debtBuckets.shortTerm.val += val;
-            } else if (name.includes("รถ")) {
-                debtBuckets.car.val += val;
-            } else if (cat.includes("ยาว") || name.includes("บ้าน") || name.includes("คอนโด") || name.includes("ที่อยู่")) {
-                debtBuckets.home.val += val;
-            } else {
-                debtBuckets.other.val += val;
-            }
-        });
+                // 🚨 ดักจับ Keyword หี้ธุรกิจ หรือ Lombard Loan ให้อยู่ในถัง Interest-Only
+                if (name.includes("lombard") || name.includes("margin") || name.includes("ธุรกิจ") || name.includes("od") || name.includes("เบิกเกินบัญชี") || cat.includes("ธุรกิจ")) {
+                    debtBuckets.interestOnly.val += val;
+                }
+                else if (cat.includes("สั้น") || name.includes("บัตร") || name.includes("บุคคล") || name.includes("นอกระบบ")) debtBuckets.shortTerm.val += val;
+                else if (name.includes("รถ")) debtBuckets.car.val += val;
+                else if (cat.includes("ยาว") || name.includes("บ้าน") || name.includes("คอนโด") || name.includes("ที่อยู่")) debtBuckets.home.val += val;
+                else debtBuckets.other.val += val;
+            });
+        }
 
-        // คำนวณน้ำหนักเพื่อเกลี่ยยอดผ่อนให้แต่ละถังหนี้
+        // ประเมินยอดผ่อนต่อปีเพื่อนำไปหาน้ำหนัก (Weight)
         let estPmtShort = debtBuckets.shortTerm.val / debtBuckets.shortTerm.assumeYears;
         let estPmtCar   = debtBuckets.car.val / debtBuckets.car.assumeYears;
         let estPmtHome  = debtBuckets.home.val / debtBuckets.home.assumeYears;
         let estPmtOther = debtBuckets.other.val / debtBuckets.other.assumeYears;
-        let totalEstPmt = (estPmtShort + estPmtCar + estPmtHome + estPmtOther) || 1; // กันหาร 0
+        // 🚨 หนี้ธุรกิจ สมมติว่าจ่ายแต่ดอกเบี้ยเฉลี่ย 5% ต่อปี เพื่อเอายอดไปคำนวณ Weight
+        let estPmtInterestOnly = debtBuckets.interestOnly.val * 0.05; 
+        
+        let totalEstPmt = (estPmtShort + estPmtCar + estPmtHome + estPmtOther + estPmtInterestOnly) || 1;
 
         let actualPmtShort = annualDebtPmtTotal * (estPmtShort / totalEstPmt);
         let actualPmtCar   = annualDebtPmtTotal * (estPmtCar / totalEstPmt);
         let actualPmtHome  = annualDebtPmtTotal * (estPmtHome / totalEstPmt);
         let actualPmtOther = annualDebtPmtTotal * (estPmtOther / totalEstPmt);
-        // =====================================================================
+        let actualPmtInterestOnly = annualDebtPmtTotal * (estPmtInterestOnly / totalEstPmt); // 🚨 ยอดผ่อนส่วนหนี้ธุรกิจ
 
-        // ฟังก์ชันจำลอง Monte Carlo ขนาดเล็กเฉพาะสำหรับ 5 ปี (รัน 20,000 รอบ)
+        // ---------------------------------------------------------------------
+        // 🎲 4. [SIMULATION] Monte Carlo Simulation (รัน 20,000 รอบ)
+        // ---------------------------------------------------------------------
         function runMiniMonteCarlo5Y(initW, roi, sd, baseSavePerYear, isCurrent) {
             let iterations = 20000;
             let resultsByYear = { 1: [], 2: [], 3: [], 4: [], 5: [] };
             
-            let _skew = isCurrent ? 0 : skew;
-            let _kurt = isCurrent ? 0 : kurt;
-            let _jumpF = isCurrent ? 0.01 : jumpF;
+            let _skew = isCurrent ? 0 : typeof skew !== 'undefined' ? skew : 0;
+            let _kurt = isCurrent ? 0 : typeof kurt !== 'undefined' ? kurt : 0;
+            let _jumpF = isCurrent ? 0.01 : typeof jumpF !== 'undefined' ? jumpF : 0;
+            let _jumpM = typeof jumpM !== 'undefined' ? jumpM : 0;
+            let _jumpS = typeof jumpS !== 'undefined' ? jumpS : 0;
             
             for (let i = 0; i < iterations; i++) {
                 let w = initW;
                 let isBull = Math.random() > 0.3; 
                 
                 for (let y = 1; y <= 5; y++) {
-                    if (isBull) isBull = Math.random() < 0.8;
-                    else isBull = Math.random() < 0.4;
+                    if (isBull) isBull = Math.random() < 0.8; else isBull = Math.random() < 0.4;
 
-                    // 🌟 [UPGRADE] ตรวจสอบอายุหนี้ เพื่อปลดล็อกเงินสดในปีนั้นๆ
                     let currentYearDebtPmt = 0;
                     if (y <= debtBuckets.shortTerm.assumeYears) currentYearDebtPmt += actualPmtShort;
                     if (y <= debtBuckets.car.assumeYears)       currentYearDebtPmt += actualPmtCar;
                     if (y <= debtBuckets.home.assumeYears)      currentYearDebtPmt += actualPmtHome;
                     if (y <= debtBuckets.other.assumeYears)     currentYearDebtPmt += actualPmtOther;
+                    if (y <= debtBuckets.interestOnly.assumeYears) currentYearDebtPmt += actualPmtInterestOnly; // 🚨 จะถูกหักออกตลอดกาล เพราะอายุ 99 ปี
                     
-                    // เงินที่เคยจ่ายหนี้ จะเปลี่ยนกลับมาเป็นเงินออมที่ลงทุนเพิ่มได้
                     let freedUpCashflow = annualDebtPmtTotal - currentYearDebtPmt;
                     let actualSavePerYear = baseSavePerYear + freedUpCashflow;
 
-                    let simulatedRoi = getAdvancedReturn(roi, sd, _skew, _kurt, _jumpF, jumpM, jumpS, isBull);
+                    let simulatedRoi = roi;
+                    if (typeof getAdvancedReturn === 'function') {
+                        simulatedRoi = getAdvancedReturn(roi, sd, _skew, _kurt, _jumpF, _jumpM, _jumpS, isBull);
+                    } else {
+                        let u = 0, v = 0; while(u === 0) u = Math.random(); while(v === 0) v = Math.random();
+                        let num = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+                        simulatedRoi = roi + (sd * num);
+                    }
                     
-                    // 🌟 ทบต้นความมั่งคั่งด้วย "เงินออมตั้งต้น + เงินที่ปลดหนี้แล้ว"
                     w = (w * (1 + simulatedRoi)) + actualSavePerYear;
                     resultsByYear[y].push(w);
                 }
             }
             
-            // สกัดค่าสถิติออกมา (Median และ CVaR)
             let stats = {};
             for (let y = 1; y <= 5; y++) {
                 let sorted = resultsByYear[y].sort((a, b) => a - b);
                 let expected = sorted[Math.floor(iterations * 0.5)]; 
-                
                 let cutoffIndex = Math.floor(iterations * 0.05);
                 let worst5Percent = sorted.slice(0, cutoffIndex);
                 let cvar = worst5Percent.reduce((sum, val) => sum + val, 0) / worst5Percent.length;
-                
                 stats[y] = { expected: expected, cvar: Math.max((initW + (baseSavePerYear * y)) * 0.3, cvar) }; 
             }
             return stats;
         }
 
-        let annualSaveC = expSave * 12;
-        let annualSaveR = propSave * 12;
+        // ---------------------------------------------------------------------
+        // 🛠️ [FIX] ตรวจสอบกระแสเงินสดสุทธิ (Net Cash Flow) ป้องกันการพยากรณ์โลกสวย
+        // ---------------------------------------------------------------------
+        let totalIncomeMonthly = (typeof totalInc !== 'undefined' ? totalInc : 0);
+        let totalExpenseMonthly = (typeof totalOut !== 'undefined' ? totalOut : 0);
+        
+        // คำนวณกระแสเงินสดสุทธิต่อปี (ถ้ารายจ่ายมากกว่ารายรับ ค่านี้จะติดลบ)
+        let netCashflowYearly = (totalIncomeMonthly - totalExpenseMonthly) * 12;
 
-        let investableAssets = astLiquid + astInvest + astOffshore; 
+        let annualSaveC = typeof expSave !== 'undefined' ? expSave * 12 : 0;
+        let annualSaveR = typeof propSave !== 'undefined' ? propSave * 12 : 0;
+        
+        // ป้องกัน Error หากไม่มีตัวแปรให้ยึดค่า propSave เป็นหลัก
+        if(annualSaveC === 0 && annualSaveR > 0) annualSaveC = annualSaveR; 
 
+        // 🧠 AI Logic: ถ้าเงินช็อต (Net CF ติดลบ) เงินออมเพื่อลงทุนประจำปีจะถูกกลืนกิน และกลายเป็นยอดถอน (Negative Save)
+        if (netCashflowYearly < 0) {
+            annualSaveC = netCashflowYearly; // พอร์ตปัจจุบัน: บังคับให้ระบบถอนเงินออกจากพอร์ตมาอุดรอยรั่วทุกปี
+        }
+
+        // โยนตัวเลขเข้าสู่ระบบจำลอง Monte Carlo 20,000 รอบ
         let mcStatsC = runMiniMonteCarlo5Y(investableAssets, currentPortfolioRoiEst / 100, currentSdEst / 100, annualSaveC, true);
         let mcStatsR = runMiniMonteCarlo5Y(investableAssets, targetRoiEst / 100, sdEst / 100, annualSaveR, false);
 
+        // ---------------------------------------------------------------------
+        // 📊 5. [RENDER] สร้างตาราง HTML พร้อมระบุ ROI, SD และ % ความคลาดเคลื่อน 
+        // ---------------------------------------------------------------------
+        let cRoi = Number(currentPortfolioRoiEst || 0).toFixed(2);
+        let cSd = Number(currentSdEst || 0).toFixed(2);
+        let rRoi = Number(targetRoiEst || 0).toFixed(2);
+        let rSd = Number(sdEst || 0).toFixed(2);
+
+        let cfWarningHtml = "";
+        if (netCashflowYearly < 0) {
+            cfWarningHtml = `
+                <div class="bg-red-50 border-l-4 border-red-500 p-3 mb-3 rounded-r text-sm text-red-700 flex items-start">
+                    <span class="mr-2 text-lg">⚠️</span>
+                    <div><strong>AI Warning: กระแสเงินสดรายเดือนติดลบ!</strong><br>
+                    <span class="text-xs">ระบบตรวจพบรอยรั่วทางการเงิน จึงจำลองการ "ถอนเงิน" ออกจากพอร์ตปัจจุบันมาใช้จ่ายปีละ ${Number(Math.abs(netCashflowYearly)).toLocaleString()} บาท ซึ่งส่งผลกระทบรุนแรงต่อการเติบโตในอนาคต</span></div>
+                </div>
+            `;
+        }
+        let fc5Html = `
+            <div class="overflow-x-auto w-full pb-2 mt-4">
+                <table class="w-full text-sm text-left border-collapse mb-0">
+                    <thead class="bg-gray-100 text-gray-800 border-b-2 border-gray-300">
+                        <tr>
+                            <th rowspan="2" class="p-3 w-1/5 text-center font-bold border-r border-gray-200 align-middle">ระยะเวลา</th>
+                            <th colspan="2" class="p-2 text-center font-bold border-r border-gray-200 bg-gray-50">
+                                📊 พฤติกรรมเดิม (Status Quo)<br>
+                                <span class="text-[10px] font-normal text-gray-500">ผลตอบแทนคาดหวัง ${cRoi}% | ความผันผวน (SD) ${cSd}%</span>
+                            </th>
+                            <th colspan="2" class="p-2 text-center font-bold text-blue-800 bg-blue-50/50">
+                                🚀 แผนแนะนำ (Proposed Plan)<br>
+                                <span class="text-[10px] font-normal text-blue-500">ผลตอบแทนคาดหวัง ${rRoi}% | ความผันผวน (SD) ${rSd}%</span>
+                            </th>
+                        </tr>
+                        <tr class="text-xs">
+                            <th class="p-2 text-right text-gray-700 bg-gray-50 border-t border-gray-200">เติบโตคาดหวัง (Expected)</th>
+                            <th class="p-2 text-right text-red-700 bg-red-50 border-t border-r border-gray-200">กรณีเลวร้ายสุด 5% (CVaR)</th>
+                            <th class="p-2 text-right text-blue-700 bg-blue-50/50 border-t border-gray-200">เติบโตคาดหวัง (Expected)</th>
+                            <th class="p-2 text-right text-orange-700 bg-orange-50 border-t border-gray-200">กรณีเลวร้ายสุด 5% (CVaR)</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200 bg-white">
+        `;
+
+        const fmt2 = (num) => Number(num).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
         for(let y = 1; y <= 5; y++) {
+            let expC = mcStatsC[y].expected; let cvarC = mcStatsC[y].cvar;
+            let expR = mcStatsR[y].expected; let cvarR = mcStatsR[y].cvar;
+
+            let dropC_pct = (((cvarC - expC) / expC) * 100).toFixed(1);
+            let dropR_pct = (((cvarR - expR) / expR) * 100).toFixed(1);
+
             fc5Html += `
-                <tr class="hover:bg-gray-50 transition border-b border-gray-100">
-                    <td class="py-3 px-3 text-center font-bold text-gray-700 bg-gray-50 border-r border-gray-200">ปีที่ ${y}</td>
-                    <td class="py-3 px-3 text-right text-gray-600 font-medium">${fmt(mcStatsC[y].expected)}</td>
-                    <td class="py-3 px-3 text-right text-red-600 bg-red-50/40 font-bold border-r border-gray-200">${fmt(mcStatsC[y].cvar)}</td>
-                    <td class="py-3 px-3 text-right text-blue-700 font-bold">${fmt(mcStatsR[y].expected)}</td>
-                    <td class="py-3 px-3 text-right text-orange-600 bg-orange-50/40 font-bold">${fmt(mcStatsR[y].cvar)}</td>
+                <tr class="hover:bg-gray-50 transition">
+                    <td class="p-3 text-center font-bold text-gray-700 bg-gray-50 border-r border-gray-200">สิ้นปีที่ ${y}</td>
+                    <td class="p-3 text-right text-gray-700 font-medium">${fmt2(expC)}</td>
+                    <td class="p-3 text-right text-red-600 bg-red-50/30 border-r border-gray-200">
+                        <span class="font-bold">${fmt2(cvarC)}</span><br><span class="text-[10px] text-red-400 font-normal">(${dropC_pct}%)</span>
+                    </td>
+                    <td class="p-3 text-right text-blue-700 font-bold">${fmt2(expR)}</td>
+                    <td class="p-3 text-right text-orange-600 bg-orange-50/30">
+                        <span class="font-bold">${fmt2(cvarR)}</span><br><span class="text-[10px] text-orange-400 font-normal">(${dropR_pct}%)</span>
+                    </td>
                 </tr>
             `;
         }
-        document.getElementById('tb_5yr_forecast_body').innerHTML = fc5Html;
+        fc5Html += `</tbody></table></div>`;
+        
+        let container82 = document.getElementById('tb_5yr_forecast_container');
+        if (container82) container82.innerHTML = fc5Html;
 
-        // =====================================================================
-        // 🤖 [NLG] AI สวมรอยเขียนทับคำอธิบายตาราง 5 ปี (Updated Version)
-        // =====================================================================
+        // ---------------------------------------------------------------------
+        // 🤖 6. [NLG] AI Insight (อัปเดตคำอธิบายให้เข้าใจง่าย)
+        // ---------------------------------------------------------------------
         let targetDescElement = document.getElementById('forecast_5yr_desc');
-
         if (targetDescElement) {
-            // ใช้คำอธิบายใหม่ที่คุณร่างมา เพื่อให้ลูกค้าเข้าใจง่ายขึ้น
             targetDescElement.innerHTML = `
                 <div class="flex flex-col gap-2">
-                    <p class="font-bold text-indigo-700 flex items-center">
-                        <span class="mr-2">💡</span> AI Insight: ตารางคาดการณ์พอร์ตสินทรัพย์ลงทุนล่วงหน้า 5 ปี
-                    </p>
-                    <p class="leading-relaxed">
-                        ตั้งบนสมมติฐานว่า <span class="text-indigo-800 font-semibold">"ถ้าคุณเอาเงินเก็บที่มีตอนนี้ บวกกับเงินออมรายเดือน และเงินที่เหลือจากการผ่อนหนี้หมด ไปลงทุนต่อเนื่อง... พอร์ตการเงินและเงินสดของคุณจะงอกเงยไปแตะหลักเท่าไหร่ในอีก 5 ปีข้างหน้าเป็นอย่างไร"</span> 
-                    </p>
-                    <p class="text-xs text-gray-500 italic border-t pt-2 mt-1">
-                        *ประมวลผลผ่านโมเดลทางสถิติขั้นสูง Monte Carlo Simulation (2,000 Scenarios) และ Jump Diffusion เพื่อจำลองความผันผวนของตลาด พร้อมประเมินความเสี่ยงขาลงด้วย Expected Shortfall (CVaR 95%) เพื่อเตรียมรับมือกับสถานการณ์ 5% ที่เลวร้ายที่สุด
-                    </p>
+                    <p class="font-bold text-indigo-700 flex items-center"><span class="mr-2">💡</span> AI Insight: ตารางคาดการณ์พอร์ตสินทรัพย์ลงทุนล่วงหน้า 5 ปี</p>
+                    <p class="leading-relaxed text-gray-800">ตั้งบนสมมติฐานว่า <span class="font-semibold text-indigo-900">"ถ้าคุณเอาเงินเก็บที่มีตอนนี้ บวกกับเงินออมรายเดือน และเงินที่เหลือจากการผ่อนหนี้หมด ไปลงทุนต่อเนื่อง... พอร์ตการเงินและเงินสดของคุณจะงอกเงยไปแตะหลักเท่าไหร่ในอีก 5 ปีข้างหน้าเป็นอย่างไร โดยอาศัยหลักการจัดพอร์ตระดับสากลที่เรียกว่า 'พีระมิดความมั่งคั่ง (Wealth Pyramid)' หรือ Core & Satellite Strategy ที่เหมาะสมกับแต่ละบุคคล"</span></p>
+                    <p class="text-xs text-gray-500 italic border-t border-gray-200 pt-2 mt-1">*ประมวลผลผ่านโมเดลทางสถิติขั้นสูง Monte Carlo Simulation (2,000 Scenarios) และ Jump Diffusion เพื่อจำลองความผันผวนของตลาด พร้อมประเมินความเสี่ยงขาลงด้วย Expected Shortfall (CVaR 95%) เพื่อเตรียมรับมือกับสถานการณ์ 5% ที่เลวร้ายที่สุด</p>
                 </div>
             `;
-            // ปรับแต่งสีพื้นหลังให้ดูพรีเมียม
-            targetDescElement.className = "text-sm text-gray-700 p-5 bg-indigo-50/50 border-l-4 border-indigo-500 rounded-r-xl shadow-sm mb-4";
+            targetDescElement.className = "text-sm p-5 bg-indigo-50/50 border-l-4 border-indigo-500 rounded-r-xl shadow-sm mb-4";
         }
 
         // 🧠 [NLG] AI Expert Analysis (Behavioral/DISC focus)
