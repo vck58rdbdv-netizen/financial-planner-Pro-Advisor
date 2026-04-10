@@ -1317,7 +1317,7 @@
                     <tbody id="tb_retire_body" class="divide-y"></tbody>
                     <tfoot class="bg-gray-100 border-t-2">
                         <tr>
-                            <td colspan="2" class="py-3 px-2 text-right font-bold text-gray-800">โอกาสความสำเร็จทางการเงิน:</td>
+                            <td colspan="2" class="py-3 px-2 text-right font-bold text-gray-800">โอกาสสำเร็จแผนเกษียณ:</td>
                             <td class="py-3 px-2 text-right font-black text-purple-700 text-lg" id="td_prob_diy">รอคำนวณ...</td>
                             <td class="py-3 px-2 text-right font-black text-blue-700 text-lg" id="td_prob_rec">รอคำนวณ...</td>
                             <td class="py-3 px-2 text-right font-bold text-gray-600 text-lg" id="td_prob_cur">รอคำนวณ...</td>
@@ -1624,7 +1624,7 @@
             highlight: "เหมาจ่ายค่ารักษาพยาบาลวงเงินสูงลิ่ว ครอบคลุมทั่วโลก สู้เงินเฟ้อได้สบาย",
             tier: "Premium", coverageStyle: "Reimbursement", targetGap: "Global Healthcare",
             hasDeductible: false, isUDR: false, 
-            taxDeductible: "Partial", // 🌟 ลดหย่อนได้บางส่วน (อิงตามหน้า 12)
+            taxDeductible: "Partial", // 🌟 ลดหย่อนได้บางส่วน 
             features: { comp: 10, deduct: 0, stab: 5, inf: 10 },
             businessRule: { type: "fixed_plan", plans: [60000000, 120000000] },
             defaultSA: 60000000
@@ -1656,7 +1656,7 @@
             hasDeductible: false, isUDR: false,
             taxDeductible: "Full", // 🌟
             features: { comp: 6, deduct: 8, stab: 3, inf: 5 },
-            businessRule: { type: "fixed_plan", plans: [200000, 400000, 500000] },
+            businessRule: { type: "fixed_plan", plans: [200000,  300000, 400000, 500000] },
             defaultSA: 400000
         },
 
@@ -1846,11 +1846,24 @@
     // ==========================================
     const riderRateMatrix = {
         "AIA Infinite Care": { type: "flat","M": { 20: 78480, 30: 88860, 40: 102420, 50: 138300, 60: 222000 },"F": { 20: 87180, 30: 94680, 40: 109560, 50: 139560, 60: 224040 } },
-        "AIA Health Starter": { type: "flat","M": { 20: 12800, 30: 14500, 40: 15800, 50: 17600, 60: 32100, 75: 85800},"F": { 20: 14800, 30: 16600, 40: 18000, 50: 21800, 60: 35100, 75: 95200} },
+        "AIA Health Starter": { type: "fixed_plan",
+            "1500": {"M": { 21: 3800, 31: 4300, 41: 4900, 51: 7100, 61: 13700, 71: 29700 },"F": { 21: 4200, 31: 4800, 41: 5500, 51: 7700, 61: 15000, 71: 32400 }},
+            "2000": {"M": { 21: 6400, 31: 7300, 41: 8200, 51: 11900, 61: 20900, 71: 41100 },"F": { 21: 7700, 31: 8300, 41: 9200, 51: 13000, 61: 22500, 71: 44600 }},
+            "2500": {"M": { 21: 7800, 31: 9000, 41: 10100, 51: 14500, 61: 25600, 71: 50200 },"F": { 21: 9000, 31: 10100, 41: 11400, 51: 16000, 61: 27700, 71: 54700 }},
+            "3500": {"M": { 21: 9900, 31: 11700, 41: 13000, 51: 18700, 61: 33000, 71: 65200 },"F": { 21: 11900, 31: 13400, 41: 15000, 51: 20700, 61: 36200, 71: 72200 }},
+            "4500": {"M": { 21: 11700, 31: 13700, 41: 15300, 51: 22000, 61: 39000, 71: 77300 },"F": { 21: 14500, 31: 15700, 41: 17600, 51: 24500, 61: 42900, 71: 85700 }}},
         "AIA Health Cancer": { type: "flat","M": { 20: 3500, 30: 5500, 40: 9500, 50: 18500 },"F": { 20: 4200, 30: 6800, 40: 12000, 50: 22000 } },
         "AIA CI Plus & AIA CI Top up": { type: "per_thousand","M": { 20: 3.33, 30: 4.30, 40: 7.75, 50: 28.44, 60: 77.93 },"F": { 20: 3.10, 30: 5.23, 40: 7.86, 50: 15.51, 60: 38.23 } },
-        "AIA Health Saver": { type: "flat", "M": { 20: 13500, 30: 16200, 40: 21500, 50: 32400 }, "F": { 20: 15800, 30: 19500, 40: 26800, 50: 38500 } },
-        "AIA Health Happy": { type: "flat", "M": { 20: 18500, 30: 22400, 40: 29800, 50: 45600 }, "F": { 20: 21200, 30: 26500, 40: 36200, 50: 52400 } },
+        "AIA Health Saver": { type: "fixed_plan",
+            "200000": {"M": { 21: 6900, 31: 7500, 41: 10000, 51: 15400, 61: 27300, 71: 53700 },"F": { 21: 8600, 31: 9200, 41: 12100, 51: 15500, 61: 27600, 71: 54200 }},
+            "300000": {"M": { 21: 8400, 31: 9300, 41: 11400, 51: 17200, 61: 31000, 71: 67400 },"F": { 21: 10600, 31: 11700, 41: 13800, 51: 17200, 61: 31300, 71: 68100 }},
+            "400000": {"M": { 21: 10400, 31: 14700, 41: 17100, 51: 24300, 61: 47000, 71: 94400 },"F": { 21: 14400, 31: 18000, 41: 21700, 51: 25600, 61: 47500, 71: 95300 }},
+            "500000": {"M": { 21: 13400, 31: 18900, 41: 21600, 51: 30900, 61: 56600, 71: 115800 },"F": { 21: 18100, 31: 22700, 41: 26500, 51: 34100, 61: 57200, 71: 117000 }}},
+        "AIA Health Happy": { type: "fixed_plan",
+            "1000000": { "M": { 21: 13700, 31: 15100, 41: 19200, 51: 28300, 61: 40900, 71: 85400 },"F": { 21: 17200, 31: 18400, 41: 22300, 51: 28500, 61: 41500, 71: 88200 }},
+            "5000000": { "M": { 21: 16900, 31: 18900, 41: 23800, 51: 35000, 61: 50600, 71: 104000 },"F": { 21: 21500, 31: 22700, 41: 27800, 51: 35200, 61: 50800, 71: 107500 }},
+            "15000000": {"M": { 21: 21600, 31: 29400, 41: 36000, 51: 50100, 61: 72300, 71: 152100 },"F": { 21: 27000, 31: 34200, 41: 42900, 51: 50700, 61: 73500, 71: 155700 }},
+            "25000000": {"M": { 21: 28000, 31: 37800, 41: 47300, 51: 65300, 61: 94100, 71: 197800 },"F": { 21: 35300, 31: 42300, 41: 53600, 51: 65500, 61: 95700, 71: 202000 }}},
         "AIA CI Plus": { type: "per_thousand", "M": { 20: 1.85, 30: 2.65, 40: 5.45, 50: 12.80 }, "F": { 20: 1.95, 30: 2.90, 40: 6.10, 50: 11.50 } },
         "AIA Multi-Pay CI Plus": { type: "per_thousand", "M": { 20: 3.50, 30: 5.20, 40: 10.80, 50: 25.40 }, "F": { 20: 3.80, 30: 5.80, 40: 12.20, 50: 23.50 } },
         "AIA Care for Cancer": { type: "per_thousand", "M": { 20: 1.10, 30: 1.60, 40: 3.50, 50: 8.20 }, "F": { 20: 1.25, 30: 2.10, 40: 4.80, 50: 9.50 } },
@@ -1859,70 +1872,56 @@
     };
 
     function calculateRiderPremium(riderName, gender, age, planOrSA) {
-    // 🌟 1. ดักจับ Health Starter ที่เป็น Age Band (อัปเกรดอุดรอยรั่ว)
-    if (riderName === "AIA Health Starter") {
-        // เช็คเพศ
-        let genderKey = (gender === "หญิง" || gender === "F") ? "F" : "M";
+    if (typeof riderRateMatrix === 'undefined' || !riderRateMatrix[riderName]) return 0;
+    
+    // 1. แปลงค่าเพศเป็นมาตรฐาน M, F
+    let genderKey = (gender === "หญิง" || gender === "F") ? "F" : "M";
+    
+    let productType = riderRateMatrix[riderName].type;
+    let matrix;
+
+    // 2. เลือกดึงข้อมูลตามประเภทให้ถูกต้อง (รองรับ fixed_plan ทุกรูปแบบ)
+    if (productType === "fixed_plan") {
+        let planKey = planOrSA.toString();
         
-        // 🌟 ล็อกสเปก: บังคับใช้แผน 4500 เท่านั้น ป้องกัน AI ส่งแผนอื่นมาแล้วเบี้ยกลายเป็น 0
-        let targetPlan = "4500"; 
-        
-        // ถ้าไม่มีฐานข้อมูลอยู่เลย ให้พ่นค่า Fallback กลางๆ ออกไป (ห้ามเป็น 0)
-        if (typeof aiaHealthStarterRates === 'undefined' || !aiaHealthStarterRates[genderKey]) {
-            return (age > 50) ? 25000 : 15000; 
-        }
-        
-        let genderTable = aiaHealthStarterRates[genderKey];
-        
-        // ก. ลองหาช่วงอายุ (Age Band) ที่ตรงกับอายุลูกค้าแบบเป๊ะๆ
-        let ageBand = genderTable.find(band => age >= band.minAge && age <= band.maxAge);
-        
-        if (ageBand && ageBand.rates && ageBand.rates[targetPlan]) {
-            return ageBand.rates[targetPlan];
-        }
-        
-        // ข. [อุดรอยรั่ว] ถ้าอายุตกขอบ หรือแหว่งหายไป ให้ดึงเบี้ยของช่วงอายุที่ใกล้ที่สุดมาใช้แทน
-        if (!ageBand && genderTable.length > 0) {
-            let closestBand = genderTable.reduce((prev, curr) => {
-                // เทียบระยะห่างของอายุลูกค้า กับขอบของแต่ละ Band
-                let distPrev = Math.min(Math.abs(age - prev.minAge), Math.abs(age - prev.maxAge));
-                let distCurr = Math.min(Math.abs(age - curr.minAge), Math.abs(age - curr.maxAge));
-                return (distCurr < distPrev) ? curr : prev;
-            });
+        // ถ้าไม่มีระบุแผนตามที่ค้นหาเป๊ะๆ ให้หาแผนที่ใกล้เคียงที่สุด (Fallback) ป้องกัน Error หรือเบี้ยเป็น 0
+        if (!riderRateMatrix[riderName][planKey]) {
+            let availablePlans = Object.keys(riderRateMatrix[riderName])
+                                       .filter(k => k !== "type")
+                                       .map(Number)
+                                       .sort((a,b) => a-b);
             
-            if (closestBand && closestBand.rates && closestBand.rates[targetPlan]) {
-                return closestBand.rates[targetPlan];
-            }
+            if (availablePlans.length === 0) return 0;
+            
+            let closestPlan = availablePlans.reduce((prev, curr) => 
+                Math.abs(curr - planOrSA) < Math.abs(prev - planOrSA) ? curr : prev
+            );
+            planKey = closestPlan.toString();
         }
         
-        // ค. [กันเหนียวชั้นสุดท้าย] ถ้ายังหาไม่ได้อีก ให้พ่นค่าประมาณการ
-        return (age > 50) ? 25000 : 15000; 
+        matrix = riderRateMatrix[riderName][planKey][genderKey];
+    } else {
+        // กลุ่ม flat และ per_thousand ดึงฐานข้อมูลตามเพศได้เลย
+        matrix = riderRateMatrix[riderName][genderKey];
     }
 
-    // 🌟 2. ถ้าเป็น Rider ตัวอื่นๆ ให้รันระบบเดิม (Linear Interpolation)
-    if (typeof riderRateMatrix === 'undefined' || !riderRateMatrix[riderName] || !riderRateMatrix[riderName][gender]) return 0;
-    
-    let matrix = riderRateMatrix[riderName][gender];
+    if (!matrix) return 0;
+
+    // 3. ระบบประมาณค่าเบี้ยประกันตามช่วงอายุ (Linear Interpolation)
     let ageKeys = Object.keys(matrix).map(Number).sort((a, b) => a - b);
     let rate = 0;
 
-    // ==========================================
-    // 📈 ระบบประมาณค่าเบี้ยประกัน (Linear Interpolation)
-    // ==========================================
     if (matrix[age] !== undefined) {
         // ตรงกับเลขอายุเป๊ะๆ
         rate = matrix[age];
-    } 
-    else if (age <= ageKeys[0]) {
-        // อายุน้อยกว่าช่วงที่มี
+    } else if (age <= ageKeys[0]) {
+        // อายุน้อยกว่าช่วงที่มี (ดึงเรทต่ำสุด)
         rate = matrix[ageKeys[0]];
-    } 
-    else if (age >= ageKeys[ageKeys.length - 1]) {
-        // อายุมากกว่าช่วงที่มี
+    } else if (age >= ageKeys[ageKeys.length - 1]) {
+        // อายุมากกว่าช่วงที่มี (ดึงเรทสูงสุด)
         rate = matrix[ageKeys[ageKeys.length - 1]];
-    } 
-    else {
-        // อายุอยู่ระหว่างกลาง (คำนวณสัดส่วนสมการเส้นตรง)
+    } else {
+        // อายุอยู่ระหว่างกลาง คำนวณสัดส่วนสมการเส้นตรง
         let age1 = ageKeys[0];
         let age2 = ageKeys[ageKeys.length - 1];
         
@@ -1936,15 +1935,16 @@
         
         let rate1 = matrix[age1];
         let rate2 = matrix[age2];
-        
-        // 🧮 สูตรสมการเส้นตรง
         rate = rate1 + ((rate2 - rate1) * (age - age1) / (age2 - age1));
     }
-    // ==========================================
 
-    // คำนวณเบี้ยตามประเภทของสินค้า (flat หรือ per_thousand)
-    if (riderRateMatrix[riderName].type === "flat") return rate; 
-    if (riderRateMatrix[riderName].type === "per_thousand") return (planOrSA / 1000) * rate;
+    // 4. คำนวณค่าเบี้ยสุดท้ายตาม Type ของสินค้า
+    if (productType === "flat" || productType === "fixed_plan") {
+        return rate; 
+    }
+    if (productType === "per_thousand") {
+        return (planOrSA / 1000) * rate;
+    }
     
     return 0;
 }
@@ -2292,74 +2292,71 @@ function getDynamicAIASolutions(diffLife, diffHealth, diffCI, personaType, netCa
 
     // 2. จัดกลุ่ม Persona และดึงข้อมูลพื้นฐาน
     let isHNW = ['HNW_Biz', 'HNW_Founder', 'HNW_Rentier', 'UHNW_Elite', 'Executive', 'Specialist', 'MNC_Corp'].some(c => personaType.includes(c)) || personaType.includes('HNW');
-    const isGrassroots = ['Grassroots', 'Daily', 'Informal', 'merchant'].some(c => personaType.includes(c));
-    const isCivil = personaType.includes('Civil');
-    const isRetiree = personaType.toLowerCase().includes('retiree');
-
-    // ดึงความกังวลหลัก (bq_5) และวินัยการออม (bq_1)
     let primaryFear = document.getElementById('bq_5') ? document.getElementById('bq_5').value : "family"; 
-    let savingsDiscipline = document.getElementById('bq_1') ? document.getElementById('bq_1').value : "2";
 
-    // 🧠 ตรวจจับความสนใจด้านการลงทุน (Unit Linked)
-    let ulInput = document.getElementById('p_unitlinked');
-    let isULInterested = ulInput ? (ulInput.value.includes('สนใจ') && !ulInput.value.includes('ไม่สนใจ')) : false;
-
-    // 🌟 [The Bulletproof Data Fetcher] ดึงรายได้จาก JSON ในหน่วยความจำโดยตรง
-    let inc = 30000; 
-    if (window.dynamicData && window.dynamicData.c_inc && window.dynamicData.c_inc.length > 0) {
-        let totalInc = window.dynamicData.c_inc.reduce((sum, item) => sum + Number(item.val || 0), 0);
-        if (totalInc > 0) inc = totalInc; // คุณบอสจะได้ inc = 4,258,000 ทันที
-    } else {
-        // สำรองเผื่อกรณีพิมพ์มือผ่านหน้าจอ
-        let realIncVal = 0;
-        document.querySelectorAll('#c_inc .col-val, .inc-val').forEach(input => {
-            realIncVal += Number(input.value.replace(/,/g, '')) || 0;
+    // =====================================================================
+    // 🌟 [Single Source of Truth] กวาดข้อมูลจากหน้าจอ (DOM Scraping) ไว้ที่เดียว
+    // ยกเลิกการใช้ window.dynamicData เพื่อดึงข้อมูล Real-time บนหน้าจอ 100%
+    // =====================================================================
+    const getSum = (selector) => {
+        let sum = 0;
+        document.querySelectorAll(selector).forEach(input => {
+            sum += Number(input.value.replace(/,/g, '')) || 0;
         });
-        if (realIncVal > 0) inc = realIncVal;
-    }
+        return sum;
+    };
 
-    // 🌟 ดึงรายจ่าย (Expense) จาก JSON โดยตรงเช่นกัน
-    let monthlyExpense = 15000; 
-    if (window.dynamicData && window.dynamicData.c_exp && window.dynamicData.c_exp.length > 0) {
-        let expNoTaxDebt = window.dynamicData.c_exp
-            .filter(e => !e.catValue.includes('ภาษี') && !e.catValue.includes('หนี้'))
-            .reduce((sum, item) => sum + Number(item.val || 0), 0);
-        if (expNoTaxDebt > 0) monthlyExpense = expNoTaxDebt;
-    } else {
-        let realExpVal = 0;
-        document.querySelectorAll('#c_exp .col-val, .exp-val').forEach(input => {
-            realExpVal += Number(input.value.replace(/,/g, '')) || 0;
-        });
-        if (realExpVal > 0) monthlyExpense = realExpVal;
-    }
+    let inc = getSum('#c_inc .col-val, .inc-val') || 30000;
+    let monthlyExpense = getSum('#c_exp .col-val, .exp-val') || 15000;
+    
+    let totalLiabilities = getSum('#c_liab .col-val') || 0;
+    let realAst = getSum('#c_assets .col-val') || 0;
+    let safeNetWorth = realAst - totalLiabilities;
+    
+    let liquidAssets = 0;
+    document.querySelectorAll('#c_assets > div, .asset-row, .custom-row').forEach(row => {
+        let valInput = row.querySelector('.col-val, .asset-val');
+        let text = row.innerText || "";
+        if (valInput && (text.includes('สภาพคล่อง') || text.includes('เงินฝาก') || text.includes('ออมทรัพย์'))) {
+            liquidAssets += Number(valInput.value.replace(/,/g, '')) || 0;
+        }
+    });
 
+    let monthlyDebtPmt = 0;
+    let savingsAmt = 0;
+    let expNoTaxDebt = 0; 
+    document.querySelectorAll('#c_exp .data-row, #c_exp .custom-row, #c_exp > div, .exp-row').forEach(row => {
+        let nameElem = row.querySelector('.col-name');
+        let name = nameElem ? nameElem.value : (row.innerText || "");
+        let val = Number((row.querySelector('.col-val, .exp-val') || {value:'0'}).value.replace(/,/g, '')) || 0;
+        
+        if (row.dataset?.cat === 'เงินชำระคืนหนี้สิน' || name.includes('หนี้')) {
+            monthlyDebtPmt += val;
+        } else if (row.dataset?.cat === 'รายจ่ายเพื่อออม/ลงทุน' || name.includes('ออม')) {
+            savingsAmt += val;
+        } 
+        if (!name.includes('ภาษี') && !name.includes('หนี้')) {
+            expNoTaxDebt += val;
+        }
+    });
+
+    let currentAge = parseInt(document.getElementById('p_age')?.value) || rawAge || 26;
+    let safeAge = currentAge;
     let gender = document.getElementById('p_gender') ? document.getElementById('p_gender').value : "M";
+    let depStr = document.getElementById('p_dep') ? document.getElementById('p_dep').value : "0";
+    let dependentCount = parseInt(depStr.replace(/\D/g, '')) || 0;
+    let retireAge = parseInt(document.getElementById('r_retAge')?.value) || 55;
+    let medInfRate = parseFloat(document.getElementById('r_med_inf')?.value) || 8.0;
+    // =====================================================================
 
     // =====================================================================
     // 🔄 [NEW] DYNAMIC NET RISK GAP CALCULATION (Goal-Based Earmarking)
-    // ประเมินช่องว่างความเสี่ยงใหม่ โดยจัดกลุ่มสินทรัพย์ตามวัตถุประสงค์ (Earmarking)
     // =====================================================================
-    let currentAge = parseInt(document.getElementById('p_age')?.value) || rawAge || 26;
-    let retireAge = parseInt(document.getElementById('r_retAge')?.value) || 55;
-    let medInfRate = parseFloat(document.getElementById('r_med_inf')?.value) || 8.0;
+    let investmentAssets = 0; 
+    let availableInvestmentsForLifeGap = 0; 
+    let legacyAssetsValue = 0; 
 
-    let totalLiabilities = 0;
-    let liquidAssets = 0;
-    let investmentAssets = 0; // ยอดรวมสินทรัพย์ลงทุนทั้งหมด
-    let availableInvestmentsForLifeGap = 0; // สินทรัพย์ที่ยอมให้ครอบครัวเทขายได้เมื่อเสียชีวิต
-    let legacyAssetsValue = 0; // สินทรัพย์มรดก/ธุรกิจ (ไม่ให้ครอบครัวขายกิน)
-
-    // 1. ดึงข้อมูลหนี้สิน และ เงินฝาก (สภาพคล่อง)
-    if (window.dynamicData) {
-        if (window.dynamicData.c_liab) totalLiabilities = window.dynamicData.c_liab.reduce((sum, item) => sum + Number(item.val), 0);
-        if (window.dynamicData.c_exp) monthlyExpense = window.dynamicData.c_exp.reduce((sum, item) => sum + Number(item.val), 0);
-        if (window.dynamicData.c_assets) {
-            let liqItems = window.dynamicData.c_assets.filter(a => a.catValue === "สินทรัพย์สภาพคล่อง");
-            liquidAssets = liqItems.reduce((sum, item) => sum + Number(item.val), 0);
-        }
-    }
-
-    // 🌟 2. [Earmarking Logic] ดึงข้อมูลจากตาราง UI 3.3 (การลงทุนปัจจุบัน)
+    // 🌟 2. [Earmarking Logic] ดึงข้อมูลจากตาราง UI 3.3
     let investRows = document.querySelectorAll('#c_invest_current .custom-row');
     if (investRows.length > 0) {
         investRows.forEach(row => {
@@ -2367,157 +2364,77 @@ function getDynamicAIASolutions(diffLife, diffHealth, diffCI, personaType, netCa
             let val = Number(valStr.replace(/,/g, '')) || 0;
             let obj = row.querySelector('.col-inv-obj')?.value || "";
 
-            investmentAssets += val; // รวมไว้โชว์สถานะความมั่งคั่ง
+            investmentAssets += val; 
 
             if (obj === 'ส่งมอบความมั่งคั่ง/ธุรกิจ') {
-                // 🔴 กลุ่ม 3: มรดก / ธุรกิจ -> ไม่ตั้งใจละลายมาใช้กินอยู่ -> ตีมูลค่าช่วยชีวิต = 0
                 legacyAssetsValue += val; 
-
             } else if (obj === 'สำรองฉุกเฉิน/สภาพคล่อง') {
-                // 🟢 กลุ่ม 1: พร้อมใช้ทันที -> นำมาหักลบ Gap ได้เต็ม 100%
                 availableInvestmentsForLifeGap += val; 
-
             } else {
-                // 🟡 กลุ่ม 2: เป้าหมายอื่นๆ (เกษียณ, ภาษี) ยอมละลายเผื่อครอบครัวได้ แต่เผื่อหุ้นตก 20%
                 availableInvestmentsForLifeGap += (val * 0.80); 
             }
         });
-    } else if (window.dynamicData && window.dynamicData.c_assets) {
-        // Fallback: ถ้าลูกค้าไม่ได้กรอกหน้า 3.3 ให้ดึงยอดรวมจาก 2.1 แทน แล้วเหมาลดทอน 20%
-        let invItems = window.dynamicData.c_assets.filter(a => a.catValue === "สินทรัพย์ลงทุน" || a.catValue === "สินทรัพย์ต่างประเทศ");
-        investmentAssets = invItems.reduce((sum, item) => sum + Number(item.val), 0);
+    } else if (realAst > liquidAssets) {
+        // Fallback: ถ้าลูกค้าไม่ได้กรอก Earmarking ให้เอายอดรวมลบสภาพคล่อง เหมาลดทอน 20%
+        investmentAssets = realAst - liquidAssets;
         availableInvestmentsForLifeGap = investmentAssets * 0.80;
     }
 
-    // 3. ประเมินมูลค่า "สวัสดิการที่มี" (Welfare Valuation)
+    // 3. ประเมินมูลค่า "สวัสดิการที่มี"
     let welfareText = document.getElementById('p_welfare')?.value || "";
     let welfareLifeValue = 0;
     let welfareHealthValue = 0;
-
-    // ดึงค่าเป้าหมายค่ารักษาพยาบาลตั้งต้น (สมมติว่าถ้าหาตัวแปรไม่เจอ ให้ค่าเฉลี่ยที่ 5 ล้านบาท)
     let currentTargetHealth = typeof targetHealthBase !== 'undefined' ? targetHealthBase : 5000000;
 
     if (welfareText.includes("ข้าราชการ") || welfareText.includes("รัฐวิสาหกิจ")) {
-        welfareLifeValue = inc * 3; // เงินบำเหน็จตกทอด (ประมาณ 3 เท่าของรายได้)
-        
-        // 🌟 [Gap-based] สร้างรอยรั่วยานอกบัญชี/ห้องพิเศษ ประมาณ 1.5 ล้านบาท
-        // เพื่อดันให้ AI เสนอประกันโรคร้ายแรง (CI) หรือ Health Saver แบบ Deductible
+        welfareLifeValue = inc * 3; 
         welfareHealthValue = Math.max(0, currentTargetHealth - 1500000); 
-
     } else if (welfareText.includes("ประกันกลุ่ม") || welfareText.includes("สวัสดิการพนักงาน")) {
-        // 🌟 ตีมูลค่าสวัสดิการบริษัทที่ 500,000 บาท 
-        // รอยรั่วที่เหลือจะใหญ่พอให้ AI เสนอประกันสุขภาพเหมาจ่ายเพื่อโปะส่วนเกิน
         welfareHealthValue = 500000; 
-
     } else if (welfareText.includes("ประกันสังคม")) {
-        // 🌟 ตีมูลค่าประกันสังคมแค่ 300,000 บาท 
-        // เพราะรอยรั่วที่แท้จริงคือ "การเข้าถึง รพ.เอกชน และคุณภาพชีวิตยามวิกฤต"
         welfareHealthValue = 300000; 
     }
 
-    // 🛡️ สมการที่ 1: Net Life Gap Override (Single Source of Truth)
-    // ✅ [FIX LAYER 3] ใช้เป้าหมาย targetLife ที่คำนวณหักภาษีแล้วจากระบบหลัก (ถ้ามี) เพื่อไม่ให้ตัวเลขขัดแย้งกับตาราง UI
+    // 🛡️ สมการที่ 1: Net Life Gap Override
     let safeTargetLife = typeof targetLife !== 'undefined' ? targetLife : 0; 
-    
-    // ถ้าหน้าจอไม่มี targetLife ให้คำนวณใหม่โดยหักหมวด "ภาษี" และ "ชำระหนี้" ออกจากรายจ่ายต่อเดือน
-    if (safeTargetLife === 0 && window.dynamicData && window.dynamicData.c_exp) {
-        let expNoTaxDebt = window.dynamicData.c_exp.filter(e => !e.catValue.includes('ภาษี') && !e.catValue.includes('หนี้')).reduce((sum, item) => sum + Number(item.val), 0);
-        
-        let dependentYears = 5; // ค่ามาตรฐานให้คนข้างหลังตั้งตัว (กรณีไม่มีภาระอุปการะ)
-        
-        // ดึงจำนวนผู้อุปการะ
-        let depText = window.dynamicData.profile && window.dynamicData.profile.p_dep ? window.dynamicData.profile.p_dep : "0";
-        let dependentCount = parseInt(depText.replace(/\D/g, '')) || 0;
-        
-        // 🌟 [UPGRADE: Dynamic CFP Needs Approach]
-        if (numDep > 0) {
-            // ดึงอายุลูกค้ามาวิเคราะห์
-            let clientAge = parseInt(window.dynamicData.profile.p_age) || 35; 
-            
-            if (clientAge <= 35) {
-                // ลูกค้าวัยเริ่มสร้างครอบครัว: ลูกน่าจะยังเล็ก (0-5 ขวบ) หรือพ่อแม่เพิ่งเกษียณ (60)
-                dependentYears = 20; 
-            } else if (clientAge <= 45) {
-                // ลูกค้าวัยกลางคน: ลูกน่าจะอยู่ประถม/มัธยม หรือพ่อแม่อายุ 65-70
-                dependentYears = 15; 
-            } else if (clientAge <= 55) {
-                // ลูกค้าวัยผู้ใหญ่: ลูกน่าจะใกล้จบ ป.ตรี หรือพ่อแม่อายุ 75+
-                dependentYears = 10; 
-            } else {
-                // ลูกค้าใกล้เกษียณ: ลูกดูแลตัวเองได้แล้ว ภาระอุปการะน่าจะเป็นดูแลพ่อแม่วัยชราตอนปลาย
-                dependentYears = 5; 
-            }
+    if (safeTargetLife === 0 && expNoTaxDebt > 0) {
+        let dependentYears = 5; 
+        if (dependentCount > 0) {
+            if (currentAge <= 35) dependentYears = 20; 
+            else if (currentAge <= 45) dependentYears = 15; 
+            else if (currentAge <= 55) dependentYears = 10; 
+            else dependentYears = 5; 
         }
-        
         safeTargetLife = totalLiabilities + (expNoTaxDebt * 12 * dependentYears);
     }
     
-    // ✅ [FIX LAYER 3] ต้องนำ "ประกันชีวิตเดิม (insLife)" ที่ลูกค้ามีอยู่แล้ว มารวมเป็นทรัพยากรด้วย!
     let existingInsLife = typeof insLife !== 'undefined' ? insLife : 0;
-    
-    // รวมสภาพคล่อง + สินทรัพย์ที่ยอมให้ครอบครัวขายได้ + สวัสดิการ + ประกันชีวิตที่มีอยู่
     let existingLifeResource = liquidAssets + availableInvestmentsForLifeGap + welfareLifeValue + existingInsLife; 
     
     diffLife = safeTargetLife - existingLifeResource;
     if (diffLife < 0) diffLife = 0; 
 
-    // =====================================================================
-    // 🏥 สมการที่ 2: Net Health & CI Gap Override (ปรับตรรกะใหม่ สมจริง ไม่ขู่ให้กลัว)
-    // =====================================================================
+    // 🏥 สมการที่ 2: Net Health & CI Gap Override 
+    let currentCICost = 2000000; 
+    if (isHNW) currentCICost = 5000000; 
+    if (safeNetWorth >= 50000000 || inc >= 200000) currentCICost = 15000000; 
     
-    // 🌟 [แก้บั๊ก Case 4: The Income-Based Hospital]
-    // จัดเกรดโรงพยาบาลตามสถานะความมั่งคั่ง (Wealth Tier)
-    let currentCICost = 2000000; // ขั้นต่ำ 2 ล้านบาท (รพ.รัฐพรีเมียม / เอกชนระดับกลาง)
-    
-    if (typeof isHNW !== 'undefined' && isHNW) {
-        currentCICost = 5000000; // เหมาจ่าย 5 ล้านบาท (รพ.เอกชนชั้นนำ)
-    }
-    // เช็คกลุ่มมหาเศรษฐี UHNW (ทรัพย์สิน > 50 ล้าน หรือ รายได้ > 200,000/เดือน)
-    if ((typeof netWorth !== 'undefined' && netWorth >= 50000000) || (typeof totalInc !== 'undefined' && totalInc >= 200000)) {
-        currentCICost = 15000000; // เหมาจ่าย VIP 15 - 100 ล้านบาท (สำหรับกลุ่ม UHNW)
-    }
-    
-    // ✅ 1. คำนวณความต้องการ "ความคุ้มครอง" (Protection Gap) เผื่อเงินเฟ้อระยะสั้นแค่ 5 ปี
     let shortTermProtectionYears = 5; 
     let targetHealthCostShortTerm = currentCICost * Math.pow((1 + (medInfRate / 100)), shortTermProtectionYears);
     
-    // ✅ 2. คำนวณความต้องการ "กองทุนสุขภาพยามเกษียณ" (เพื่อเตรียมไว้ให้ AI นำเสนอแผนการลงทุน)
-    let yearsToRetire = Math.max(retireAge - currentAge, 1);
-    let targetHealthCostRetirement = currentCICost * Math.pow((1 + (medInfRate / 100)), yearsToRetire);
-    
-    // 🌟 [แก้บั๊ก Case 2: The Self-Insured Billionaire]
-    // ยอมละลายเงินฝาก 20% และพอร์ตลงทุนที่ขายได้ 10% มารักษาตัว
     let disposableAssets = (liquidAssets * 0.20) + (availableInvestmentsForLifeGap * 0.10); 
+    let maxSelfFund = 500000; 
+    if (isHNW) maxSelfFund = 2000000; 
+    if (safeNetWorth >= 50000000 || inc >= 200000) maxSelfFund = 5000000; 
+    if (disposableAssets > maxSelfFund) disposableAssets = maxSelfFund; 
     
-    // 🌟 [ปรับปรุงความสมจริงเชิงจิตวิทยา]
-    // ตั้งเพดาน "เงินที่ลูกค้ายอมจ่ายเอง (Self-Fund)" ให้สมฐานะ ไม่ดูแคลนลูกค้า
-    let maxSelfFund = 500000; // คนทั่วไป ควักเนื้อสูงสุด 5 แสนบาท
-    
-    if (typeof isHNW !== 'undefined' && isHNW) {
-        maxSelfFund = 2000000; // HNW จ่ายเองได้ 2 ล้านบาทสบายๆ
-    }
-    if ((typeof netWorth !== 'undefined' && netWorth >= 50000000) || (typeof totalInc !== 'undefined' && totalInc >= 200000)) {
-        maxSelfFund = 5000000; // UHNW ระดับ 50 ล้าน จ่ายเอง 5 ล้านได้ชิลๆ (เป้าหมายคือให้เสนอแผน VIP 15-100 ล้าน)
-    }
-    
-    if (disposableAssets > maxSelfFund) {
-        disposableAssets = maxSelfFund; 
-    } 
-    
-    // ✅ 3. หา Gap ณ ปัจจุบัน (ใช้ระยะสั้น) ทำให้เบี้ยประกันที่ลูกค้าต้องจ่ายสมเหตุสมผล
-    // 🌟 [แก้บั๊ก: The Invisible Health Insurance]
-    // นำมูลค่าประกันสุขภาพส่วนตัว (insHealth) ที่ลูกค้ามีอยู่แล้ว มาหักลบด้วยเพื่อไม่ให้เกิดการเสนอขายซ้ำซ้อน
     let existingHealthCoverage = (typeof insHealth !== 'undefined' ? insHealth : 0);
-        
     diffHealth = targetHealthCostShortTerm - (welfareHealthValue + disposableAssets + existingHealthCoverage);
-    diffHealth = Math.max(0, diffHealth); // ป้องกันค่าติดลบกรณีคุ้มครองเกิน (Over-insured)
-    
+    diffHealth = Math.max(0, diffHealth); 
     if (typeof diffCI !== 'undefined' && diffCI < 0) diffCI = 0;
-    // =====================================================================
 
     // 4. ตรวจสอบ Gap (ถ้าไม่มีช่องโหว่เลย)
     if (diffLife <= 0 && diffHealth <= 0 && diffCI <= 0) {
-        // ดักจับเศรษฐีที่ตั้งใจเก็บมรดกไว้ (Legacy > 10 ล้าน) หรือมีสินทรัพย์รวมสูง
         if (legacyAssetsValue >= 10000000 || investmentAssets >= 15000000) {
             let legacyText = legacyAssetsValue > 0 ? `${(legacyAssetsValue/1000000).toFixed(1)} ล้านบาท` : `${(investmentAssets/1000000).toFixed(1)} ล้านบาท`;
             return `<div class="bg-purple-50 border border-purple-200 p-6 rounded-2xl text-center shadow-sm animate-fade-in">
@@ -2536,342 +2453,43 @@ function getDynamicAIASolutions(diffLife, diffHealth, diffCI, personaType, netCa
         }
     }
 
-    // 🟢 ระบบแต่งประโยค Cashflow NLG
-    let cashflowNLG = netCashflow > 0 
-        ? `สภาวะกระแสเงินสดของคุณมีแนวโน้ม <b>คงเหลืออยู่ประมาณ</b> <b class="text-green-600 text-base">${netCashflow.toLocaleString()} บาท/เดือน</b>` 
-        : (netCashflow < 0 ? `สภาวะกระแสเงินสดของคุณ <b>ขาดไปประมาณ</b> <b class="text-red-600 text-base underline decoration-red-300">${Math.abs(netCashflow).toLocaleString()} บาท/เดือน</b>` : `สภาวะกระแสเงินสดของคุณอยู่ในจุด <b>สมดุลพอดีเป๊ะ</b>`);
-
     // ==========================================
-    // 🩺 4. การวินิจฉัยโรคทางการเงิน (Financial Triage & Dosage Planning)
+    // 🩺 4. การวินิจฉัยโรคทางการเงิน (Financial Triage)
     // ==========================================
     const lifestyleBufferMonthly = inc * 0.10;
     const availableSurplusMonthly = netCashflow - lifestyleBufferMonthly; 
-    
     let financialHealth = 'mild'; 
     let maxSafePremiumYearly = 0; 
-    let doseRatios = [1.0, 0.7, 0.4]; // 💊 โดสยา [ตะกร้า 1, ตะกร้า 2, ตะกร้า 3]
+    let doseRatios = [1.0, 0.7, 0.4];
 
     if (netCashflow <= 0) {
-        // 🔴 อาการโคม่า (Severe): กระแสเงินสดติดลบ
         financialHealth = 'severe';
-        // ✅ [แก้ไข] ลดโดสยาลงขั้นสุด และตะกร้าที่ 3 (0.0) คือไม่จ่ายยาเลย
         doseRatios = [0.2, 0.1, 0.0]; 
-        // ✅ [แก้ไข] ตามหลักการ ไม่ควรมีค่ายาเพิ่ม เพดานเบี้ยปลอดภัยคือ 0
         maxSafePremiumYearly = 0; 
-    } 
-    else if (availableSurplusMonthly < (inc * 0.05)) {
-        // 🟡 อาการเฝ้าระวัง (Moderate): เงินเหลือแบบปริ่มน้ำ
+    } else if (availableSurplusMonthly < (inc * 0.05)) {
         financialHealth = 'moderate';
-        doseRatios = [0.7, 0.5, 0.3]; // ลดโดสยาครึ่งหนึ่งเพื่อประคองตัว
+        doseRatios = [0.7, 0.5, 0.3]; 
         maxSafePremiumYearly = Math.min(availableSurplusMonthly * 12, inc * 12 * 0.08); 
-    } 
-    else {
-        // 🟢 อาการปกติ (Mild): สุขภาพการเงินแข็งแรงดี
+    } else {
         financialHealth = 'mild';
-        // ดึงทฤษฎีความกลัว (Prospect Theory) เดิมมาใช้ในเคสที่เงินพร้อม
         let lossAversionLambda = 1.0; 
         if (primaryFear === 'family') lossAversionLambda = 2.5;      
         else if (primaryFear === 'survive') lossAversionLambda = 2.0;
         else if (primaryFear === 'self') lossAversionLambda = 1.5; 
-
         maxSafePremiumYearly = Math.min(availableSurplusMonthly * 12 * lossAversionLambda, inc * 12 * 0.25); 
     }
 
-    // ตัวแปรกันเหนียว เผื่อลูปคำนวณด้านล่างมีการเรียกใช้
-    let midSafePremiumYearly = maxSafePremiumYearly * 0.6;
-
     // ==========================================
-    // 🧠 5. Helper Engine สำหรับคำนวณเบี้ย
+    // 🧮 THE ELASTIC BUDGET ENGINE 
     // ==========================================
-    // ==========================================
-    // 🛠️ UPGRADED RIDER PREMIUM CALCULATOR (V2 - AI Ready)
-    // ==========================================
-    function getRiderPremiumTotal(riderName, gender, age, actualCoverage = null) {
-        // 1. ตรวจสอบเบื้องต้น (Validation)
-        if (!riderName || riderName === "ไม่แนบเพิ่มเติม" || typeof calculateRiderPremium !== 'function') return 0;
-
-        let productData = aiaRiderMatrix[riderName];
-        let defaultCoverage = productData ? productData.defaultSA : 1000000;
-        let coverageBase = actualCoverage || defaultCoverage;
-
-        // 2. จัดการกรณีส่งมาเป็นชื่อเดียว หรือชื่อประกอบ (Support legacy string)
-        // แยกชื่อสินค้าด้วย "+" เพื่อรองรับการคำนวณแบบผสม
-        let riders = riderName.split('+').map(s => s.trim());
-        let totalPremium = 0;
-        riders.forEach(name => {
-            let cleanName = Object.keys(aiaRiderMatrix).find(key => name.includes(key));
-            if (cleanName) {
-                let productData = aiaRiderMatrix[cleanName];
-                let defaultSA = productData ? productData.defaultSA : 1000000;
-                let planOrSA = actualCoverage || defaultSA;
-                totalPremium += calculateRiderPremium(cleanName, gender, age, planOrSA);
-            }
-        });
-
-        return totalPremium;
-    }
-
-    // ==========================================
-    // 🧠 6. AI RECOMMENDATION ENGINE (PHARMACIST ML + BUSINESS RULES)
-    // ==========================================
-
-    // 🛡️ ฟังก์ชันย่อยสำหรับดึงค่าเบี้ยหลักอย่างปลอดภัย
-    function getSafePremium(productName, g, a, sa) {
-        if (!productName || productName === "ไม่แนบเพิ่มเติม") return 0;
-        let result = calculateExactPremium(productName, g, a, sa);
-        return result.success ? result.premium : 0;
-    }
-
-    // ⚖️ [เพิ่มใหม่] ฟังก์ชันคำนวณเพดานรับประกัน (Financial Underwriting) อิงตามคู่มือพิจารณารับประกัน
-    function getFinancialUWLimit(productCategory, age, annualIncome, netWorth, isWorking) {
-        let maxLimit = Infinity;
-
-       // กฎการรับประกันสัญญาหลัก 
-        if (productCategory === "Base") {
-            if (isWorking) {
-                if (age >= 16 && age <= 45) maxLimit = annualIncome * 30; // 30 เท่าของรายได้ 
-                else if (age >= 46 && age <= 50) maxLimit = annualIncome * 25; // 25 เท่าของรายได้ 
-                else if (age >= 51) maxLimit = annualIncome * 15; // 15 เท่าของรายได้ 
-            } else {
-                // 🌟 [แก้บั๊ก Case 3] กลุ่มไม่มีรายได้/ตกงาน/เกษียณ: 
-                // ปลดล็อคเพดานขั้นต่ำให้ซื้อได้อย่างน้อย 1,000,000 บาท หรือ 30% ของสินทรัพย์สุทธิ (เลือกค่าที่มากกว่า)
-                maxLimit = Math.max(1000000, netWorth * 0.30); 
-            }
-        }
-        // กฎการรับประกันโรคร้ายแรง (CI) [cite: 38, 42]
-        else if (productCategory === "CI") {
-            if (isWorking) {
-                if (age >= 16 && age <= 45) maxLimit = annualIncome * 18; // 18 เท่าของรายได้ [cite: 38]
-                else if (age >= 46 && age <= 50) maxLimit = annualIncome * 12; // 12 เท่าของรายได้ [cite: 38]
-                else if (age >= 51 && age <= 65) maxLimit = annualIncome * 10; // 10 เท่าของรายได้ [cite: 38]
-                else if (age >= 66) maxLimit = annualIncome * 5; // 5 เท่าของรายได้ [cite: 38]
-                
-                maxLimit = Math.min(maxLimit, 50000000); // เพดานสูงสุดคนทำงาน 50 ล้าน [cite: 60]
-            } else {
-                maxLimit = netWorth * 0.30; // กลุ่มไม่มีรายได้/เกษียณ: 30% ของสินทรัพย์สุทธิ [cite: 42]
-                maxLimit = Math.min(maxLimit, 30000000); // เพดานสูงสุดคนไม่มีรายได้ 30 ล้าน [cite: 60]
-            }
-        }
-        return maxLimit;
-    }
-
-    // 💉 [อัปเกรด] ฟังก์ชันเภสัชกรค่อยๆ ปรับโดสยา (พร้อมเช็คเพดานรายได้ + Downgrade Protocol)
-    function optimizeDosage(productName, gender, age, startSA, targetGap, budget, customerData) {
-        if (!productName || productName === "ไม่แนบเพิ่มเติม") {
-            return { finalPlan: "ไม่สามารถนำเสนอแบบประกันได้", finalSA: 0 };
-        }
-
-        let currentPlan = productName;
-        let planData = aiaBaseProductMatrix[currentPlan] || {};
-        
-        // 1. หาขั้นต่ำที่ต้องซื้อให้ได้ก่อน
-        let currentMinSA = planData.minSA || 100000;
-        let currentPremium = getSafePremium(currentPlan, gender, age, currentMinSA);
-
-        // 🚨 2. THE DOWNGRADE PROTOCOL: ถ้างบน้อยจนซื้อขั้นต่ำไม่ได้ หรือผิดเงื่อนไขอายุ (เบี้ยเป็น 0)
-        if ((currentPremium === 0 || currentPremium > budget) && planData.fallback) {
-            currentPlan = planData.fallback; 
-            planData = aiaBaseProductMatrix[currentPlan] || {};
-            currentMinSA = planData.minSA || 100000;
-            currentPremium = getSafePremium(currentPlan, gender, age, currentMinSA);
-        }
-
-        // 🛑 ดักจับ Logic Bug ชั้นเด็ดขาด:
-        // - ลดเกรดแล้วเบี้ยก็ยังเกินงบ (currentPremium > budget)
-        // - งบที่ให้มาเป็น 0 หรือติดลบ (budget <= 0)
-        // - ผิดเงื่อนไข Business Rule เช่น อายุไม่อยู่ในเกณฑ์ (currentPremium === 0)
-        if (currentPremium === 0 || currentPremium > budget || budget <= 0) {
-            return { 
-                finalPlan: "ไม่สามารถนำเสนอแบบประกันได้ (งบประมาณ/เงื่อนไขไม่ผ่านเกณฑ์)", 
-                finalSA: 0 
-            };
-        }
-
-        // ==========================================
-        // 🚀 3. TITRATION LOOP: ดันทุนประกันขึ้นให้คุ้มงบที่สุด
-        // ==========================================
-        let currentSA = currentMinSA; 
-        let maxProductSA = planData.maxSA || Infinity;
-
-        // 🌟 ดึงข้อมูลรายได้มาคำนวณเพดาน Underwriting ตามคู่มือบริษัท
-        let annualIncome = (customerData.Income_Monthly || 0) * 12;
-        let isWorking = annualIncome > 0 && customerData.Age < 75; 
-        
-        let uwMaxLimit = getFinancialUWLimit("Base", age, annualIncome, customerData.Net_Worth || 0, isWorking);
-
-        // 🛑 เพดานที่แท้จริง = ต่ำที่สุดระหว่าง (เพดานโปรดักส์ vs เพดานกฎบริษัท vs ความต้องการจริง)
-        let absoluteMaxSA = Math.min(maxProductSA, uwMaxLimit, targetGap);
-
-        let step = 100000; 
-        let maxLoops = 1000; 
-        let loopCount = 0;
-        
-        // AI จะดันทุนประกันขึ้นไปเรื่อยๆ จนกว่าจะชนเพดาน หรือชนงบ!
-        while ((currentSA + step <= absoluteMaxSA) && (loopCount < maxLoops)) {
-            let testSA = currentSA + step;
-            let testPremium = getSafePremium(currentPlan, gender, age, testSA);
-
-            // เช็คว่า testPremium ต้องไม่เป็น 0 (เผื่อข้ามขั้น) และต้องอยู่ในงบ
-            if (testPremium > 0 && testPremium <= budget) {
-                currentSA = testSA; 
-            } else {
-                break; 
-            }
-            loopCount++;
-        }
-
-        return {
-            finalPlan: currentPlan,
-            finalSA: currentSA
-        };
-    }
-
-    // 📦 1. กวาดข้อมูลจากหน้าจอ (DOM Scraping) เพื่อสร้างแฟ้มประวัติให้เภสัชกรโดยตรง
-    const getSum = (selector) => {
-        let sum = 0;
-        document.querySelectorAll(selector).forEach(input => {
-            sum += Number(input.value.replace(/,/g, '')) || 0;
-        });
-        return sum;
-    };
-
-    let realInc = getSum('#c_inc .col-val');
-    let realExp = getSum('#c_exp .col-val');
-    let realAst = getSum('#c_assets .col-val');
-    let realLiab = getSum('#c_liab .col-val');
-    let realNetWorth = realAst - realLiab;
-    
-    // ดึงจำนวนผู้อุปการะ
-    let depStr = document.getElementById('p_dep') ? document.getElementById('p_dep').value : "0";
-    let realDep = parseInt(depStr.replace(/\D/g, '')) || 0;
-
-    // หาภาระหนี้สินต่อเดือน และเงินออม
-    let monthlyDebtPmt = 0;
-    let savingsAmt = 0;
-    document.querySelectorAll('#c_exp .data-row').forEach(row => {
-        let name = row.querySelector('.col-name').value;
-        let val = Number(row.querySelector('.col-val').value.replace(/,/g, '')) || 0;
-        if (row.dataset.cat === 'เงินชำระคืนหนี้สิน' || name.includes('หนี้')) monthlyDebtPmt += val;
-        if (row.dataset.cat === 'รายจ่ายเพื่อออม/ลงทุน' || name.includes('ออม')) savingsAmt += val;
-    });
-
-    let realDti = 0; 
-    if (realInc > 0) {realDti = monthlyDebtPmt / realInc; // กรณีปกติ
-        } else if (realInc === 0 && monthlyDebtPmt > 0) {realDti = 1.0; // ⚠️ วิกฤต: ไม่มีรายได้แต่มีหนี้ (ดึง DTI ให้พุ่งชนเพดาน 100%)
-        } else { realDti = 0;} // ไม่มีรายได้ และไม่มีหนี้ 
-
-    let realSr = realInc > 0 ? (savingsAmt / realInc) : 0;
-    let safeAge = typeof currentAge !== 'undefined' ? currentAge : (typeof rawAge !== 'undefined' ? rawAge : 30);
-
-    // 📝 2. สร้างแฟ้มประวัติ 15 มิติ ให้ AI อ่าน
-    let safeNetWorth = realNetWorth || 0;
-    let safeLiab = realLiab || 0;
-    let totalAssetsVal = safeNetWorth + safeLiab; 
-
-    const customerDataForAI = {
-        "Age": safeAge || 0, 
-        "Income_Monthly": realInc || 0,  
-        "Dependents": realDep || 0,
-        "Total_Debt": safeLiab, 
-        "Debt_Payment_Monthly": monthlyDebtPmt || 0,
-        "Total_Expenses_Monthly": realExp || 0,
-        "Savings_Monthly": savingsAmt || 0,
-        
-        // 🌟 [แก้ไขบั๊กตัวแปร] ใช้ชื่อที่ถูกต้องของระบบ (astLiquid, astInvest)
-        "Liquid_Cash": typeof astLiquid !== 'undefined' ? (astLiquid || 0) : 0,
-        "Investments": typeof astInvest !== 'undefined' ? ((astInvest + (typeof astOffshore !== 'undefined' ? astOffshore : 0)) || 0) : 0,
-        
-        "Net_Worth": safeNetWorth,
-        "DTI_Ratio": realDti || 0,
-        "Debt_Asset_Ratio": totalAssetsVal > 0 ? (safeLiab / totalAssetsVal) : 0, 
-        "Savings_Ratio": realSr || 0,
-        "Is_Struggling": (realInc < 30000 && realDep > 0) ? 1 : 0,
-        "Is_Wealthy": (realInc >= 200000 || safeNetWorth >= 50000000) ? 1 : 0
-    };
-
-    // ==========================================
-    // 🧠 PURE AI ENGINE: ฟังก์ชันค้นหายาอัจฉริยะ (Budget-Aware & Attribute Scoring)
-    // ==========================================
-    
-    // 1. ค้นหาสัญญาหลัก (อัปเกรด: กรองด้วยงบประมาณและให้คะแนนตาม Attribute!)
-    function findBestBasePlan(tier, isHNW, age, isTaxFocus, budget, gender) {
-        let bestPlan = null;
-        let highestScore = -1;
-
-        for (let planName in aiaBaseProductMatrix) {
-            let attr = aiaBaseProductMatrix[planName];
-            let score = 0;
-
-            // 🛑 ด่านที่ 1: กรองอายุ (Hard Constraints)
-            if (age < (attr.minAge || 0) || age > (attr.maxAge || 99)) continue;
-
-            // 🛑 ด่านที่ 2: กรองงบประมาณ (Budget-Aware) - สำคัญที่สุด!
-            // ถ้าซื้อขั้นต่ำแล้วเบี้ยยังแพงกว่างบที่มี ให้เตะทิ้งทันที AI จะไม่เสียเวลาพิจารณา
-            let minSA = attr.minSA || 100000;
-            let basePremium = getSafePremium(planName, gender, age, minSA);
-            if (basePremium > budget) continue; 
-
-            // 🛑 ด่านที่ 3: กรองชนชั้น (HNW vs Standard)
-            let isPlanHNW = attr.type && attr.type.includes("HNW");
-            if (isPlanHNW && !isHNW) continue;
-
-            // 🎯 ด่านที่ 4: ให้คะแนนตามสเปกตะกร้า (Tier Scoring)
-            if (tier === "Prestige") {
-                if (isPlanHNW) score += 100; 
-                else if (attr.type === "WholeLife" || attr.type === "ตลอดชีพ" || (attr.type && attr.type.includes("CIBase"))) score += 50; 
-            } 
-            else if (tier === "Standard") {
-                if (!isPlanHNW && (attr.type === "WholeLife" || attr.type === "ตลอดชีพ" || (attr.type && attr.type.includes("CIBase")))) score += 100;
-            } 
-            else if (tier === "Economy") { 
-                if (attr.type === "WholeLife" || attr.type === "ตลอดชีพ") score += 100; 
-                else score += 10;
-            }
-
-            // 🧬 ด่านที่ 5: ตรวจสอบ DNA ของลูกค้า
-            if (isTaxFocus && attr.taxDeductible === "Full") {
-                score += 20;
-            }
-
-            // 🏆 ประกาศผลผู้ชนะ
-            if (score > highestScore) {
-                highestScore = score;
-                bestPlan = planName;
-            }
-        }
-
-        return bestPlan; 
-    }
-
-    // 2. ค้นหาสัญญาเพิ่มเติม (คงเดิมตามระบบของคุณ)
-    function findBestRiders(tier, needHealth, needCI, needComp, age, isTaxFocus = false) {
-        let selectedRiders = [];
-        for (let riderName in aiaRiderMatrix) {
-            let rider = aiaRiderMatrix[riderName];
-            if (age >= rider.minAge && age <= rider.maxAge) {
-                if (isTaxFocus && rider.taxDeductible === "None") continue;
-
-                if (rider.tier === tier || !rider.tier) {
-                    if (needHealth && rider.category === "Health" && !selectedRiders.some(r => aiaRiderMatrix[r].category === "Health")) selectedRiders.push(riderName);
-                    if (needCI && rider.category === "CI" && !selectedRiders.some(r => aiaRiderMatrix[r].category === "CI")) selectedRiders.push(riderName);
-                    if (needComp && rider.category === "Compensation" && !selectedRiders.some(r => aiaRiderMatrix[r].category === "Compensation")) selectedRiders.push(riderName);
-                }
-            }
-        }
-        return selectedRiders; 
-    }
-
-    // =========================================================================
-    // 🧮 THE ELASTIC BUDGET ENGINE (คำนวณงบประมาณก่อน AI ทำงาน!)
-    // =========================================================================
-    let elasticLiquidAssets = 0;
-    document.querySelectorAll('#c_assets > div, .asset-row').forEach(row => {
-        let valInput = row.querySelector('.col-val, .asset-val');
-        let text = row.innerText || "";
-        if (valInput && (text.includes('สภาพคล่อง') || text.includes('เงินฝาก') || text.includes('ออมทรัพย์'))) {
-            elasticLiquidAssets += Number(valInput.value.replace(/,/g, '')) || 0;
-        }
-    });
+    let incAnnual = inc * 12; 
+    let expAnnual = monthlyExpense * 12; 
+    let debtAnnual = monthlyDebtPmt * 12;
+    let baseFCF = incAnnual - expAnnual - debtAnnual;
+    let safeBudgetFromFCF = Math.max(0, baseFCF * 0.5); 
+    let requiredEmergencyFund = ((expAnnual + debtAnnual) / 12) * 6;
+    let excessLiquidity = Math.max(0, liquidAssets - requiredEmergencyFund);
+    let budgetFromLiquidity = excessLiquidity * 0.20;
 
     let budgetFromWants = 0;
     document.querySelectorAll('#c_goals > div, .goal-row').forEach(row => {
@@ -2885,174 +2503,218 @@ function getDynamicAIASolutions(diffLife, diffHealth, diffCI, personaType, netCa
         }
     });
 
-    let incAnnual = (typeof realInc !== 'undefined' ? realInc : 30000) * 12; 
-    let expAnnual = (typeof monthlyExpense !== 'undefined' ? monthlyExpense : 15000) * 12; 
-    
-    let debtAnnual = 0;
-    document.querySelectorAll('#c_exp > div, .exp-row').forEach(row => {
-        let valInput = row.querySelector('.col-val, .exp-val');
-        let text = row.innerText || "";
-        if (valInput && text.includes('หนี้')) {
-            debtAnnual += (Number(valInput.value.replace(/,/g, '')) || 0) * 12;
-        }
-    });
-
-    let baseFCF = incAnnual - expAnnual - debtAnnual;
-    let safeBudgetFromFCF = Math.max(0, baseFCF * 0.5); 
-
-    let requiredEmergencyFund = ((expAnnual + debtAnnual) / 12) * 6;
-    let excessLiquidity = Math.max(0, elasticLiquidAssets - requiredEmergencyFund);
-    let budgetFromLiquidity = excessLiquidity * 0.20;
-
     let theoreticalMax = incAnnual * 0.15; 
     let realityMax = safeBudgetFromFCF + budgetFromLiquidity + budgetFromWants;
-    
     let masterSafePremiumYearly = Math.min(theoreticalMax, realityMax);
-    if (masterSafePremiumYearly < 10000) {
-        masterSafePremiumYearly = Math.max(12000, incAnnual * 0.05); 
-    }
+    if (masterSafePremiumYearly < 10000) masterSafePremiumYearly = Math.max(12000, incAnnual * 0.05); 
 
-    // 🌟 กำหนดงบประมาณให้แต่ละตะกร้า (Budget Allocation)
+    // 📝 สร้างแฟ้มประวัติ 15 มิติ ให้ AI 
+    let realDti = inc > 0 ? (monthlyDebtPmt / inc) : (monthlyDebtPmt > 0 ? 1.0 : 0); 
+    let realSr = inc > 0 ? (savingsAmt / inc) : 0;
+    let totalAssetsVal = safeNetWorth + totalLiabilities; 
+
+    const customerDataForAI = {
+        "Age": safeAge, 
+        "Income_Monthly": inc,  
+        "Dependents": dependentCount,
+        "Total_Debt": totalLiabilities, 
+        "Debt_Payment_Monthly": monthlyDebtPmt,
+        "Total_Expenses_Monthly": monthlyExpense,
+        "Savings_Monthly": savingsAmt,
+        "Liquid_Cash": liquidAssets,
+        "Investments": investmentAssets,
+        "Net_Worth": safeNetWorth,
+        "DTI_Ratio": realDti,
+        "Debt_Asset_Ratio": totalAssetsVal > 0 ? (totalLiabilities / totalAssetsVal) : 0, 
+        "Savings_Ratio": realSr,
+        "Is_Struggling": (inc < 30000 && dependentCount > 0) ? 1 : 0,
+        "Is_Wealthy": (inc >= 200000 || safeNetWorth >= 50000000) ? 1 : 0
+    };
+
     let budget1 = masterSafePremiumYearly;           
     let budget2 = masterSafePremiumYearly * 0.75;    
     let budget3 = masterSafePremiumYearly * 0.45;    
-
-    // 🚨 ถ้าวิกฤตหนัก (หนี้ท่วม) บังคับหั่นงบ เพื่อรักษาชีพ
-    if (customerDataForAI.Is_Struggling === 1 || customerDataForAI.Debt_Ratio > 0.45) {
+    if (customerDataForAI.Is_Struggling === 1 || customerDataForAI.Debt_Asset_Ratio > 0.45) {
         budget1 = Math.min(budget1, incAnnual * 0.05); 
         budget2 = Math.min(budget2, incAnnual * 0.03); 
         budget3 = Math.min(budget3, incAnnual * 0.02); 
     }
-
-    // ==========================================
-    // --- สเตป A & B: AI Scoring Engine (จัดพอร์ตด้วยเฉดสี) ---
-    // ==========================================
 
     let dynamicGap = 0;
     if (customerDataForAI.Is_Wealthy === 1) {
         let estateTaxGap = customerDataForAI.Net_Worth > 100000000 ? (customerDataForAI.Net_Worth - 100000000) * 0.05 : 0;
         let wealthTransferGap = customerDataForAI.Net_Worth * 0.10; 
         dynamicGap = Math.max(estateTaxGap, wealthTransferGap, 10000000); 
-    } else if (customerDataForAI.Is_Struggling === 1 || customerDataForAI.Debt_Ratio > 0.45) {
+    } else if (customerDataForAI.Is_Struggling === 1 || customerDataForAI.Debt_Asset_Ratio > 0.45) {
         dynamicGap = customerDataForAI.Total_Debt * 1.2; 
     } else {
-        // ใช้ diffLife หรือค่าเริ่มต้น 5 แสน
         dynamicGap = Math.max((typeof diffLife !== 'undefined' ? diffLife : 500000), 500000); 
     }
-    // 🧠 1. เครื่องยนต์ให้คะแนนสัญญาหลัก (Base Plan Scoring)
+
+    // ==========================================
+    // 🧠 5. Helper & Pharmacy AI
+    // ==========================================
+    function getSafePremium(productName, g, a, sa) {
+        if (!productName || productName === "ไม่แนบเพิ่มเติม") return 0;
+        let result = calculateExactPremium(productName, g, a, sa);
+        return result.success ? result.premium : 0;
+    }
+
+    function getFinancialUWLimit(productCategory, age, annualIncome, netWorth, isWorking) {
+        let maxLimit = Infinity;
+        if (productCategory === "Base") {
+            if (isWorking) {
+                if (age >= 16 && age <= 45) maxLimit = annualIncome * 30; 
+                else if (age >= 46 && age <= 50) maxLimit = annualIncome * 25; 
+                else if (age >= 51) maxLimit = annualIncome * 15; 
+            } else {
+                maxLimit = Math.max(1000000, netWorth * 0.30); 
+            }
+        } else if (productCategory === "CI") {
+            if (isWorking) {
+                if (age >= 16 && age <= 45) maxLimit = annualIncome * 18; 
+                else if (age >= 46 && age <= 50) maxLimit = annualIncome * 12; 
+                else if (age >= 51 && age <= 65) maxLimit = annualIncome * 10; 
+                else if (age >= 66) maxLimit = annualIncome * 5; 
+                maxLimit = Math.min(maxLimit, 50000000); 
+            } else {
+                maxLimit = netWorth * 0.30; 
+                maxLimit = Math.min(maxLimit, 30000000); 
+            }
+        }
+        return maxLimit;
+    }
+
+    function optimizeDosage(productName, gender, age, startSA, targetGap, budget, customerData) {
+        if (!productName || productName === "ไม่แนบเพิ่มเติม") return { finalPlan: "ไม่แนบเพิ่มเติม", finalSA: 0 };
+        
+        let currentPlan = productName;
+        let planData = aiaBaseProductMatrix[currentPlan] || {};
+        let minBaseSA = planData.minSA || 100000;
+        let currentPremium = getSafePremium(currentPlan, gender, age, minBaseSA);
+
+        if ((currentPremium === 0 || currentPremium > budget) && planData.fallback) {
+            currentPlan = planData.fallback; 
+            planData = aiaBaseProductMatrix[currentPlan] || {};
+            minBaseSA = planData.minSA || 100000;
+            currentPremium = getSafePremium(currentPlan, gender, age, minBaseSA);
+        }
+
+        let currentSA = Math.max(minBaseSA, startSA || minBaseSA);
+
+        if (getSafePremium(currentPlan, gender, age, currentSA) > budget) {
+            currentSA = minBaseSA; 
+        } else {
+            let maxProductSA = planData.maxSA || Infinity;
+            let annualIncome = (customerData.Income_Monthly || 0) * 12;
+            let isWorking = annualIncome > 0 && customerData.Age < 75; 
+            let uwMaxLimit = typeof getFinancialUWLimit === 'function' ? getFinancialUWLimit("Base", age, annualIncome, customerData.Net_Worth || 0, isWorking) : Infinity;
+
+            let absoluteMaxSA = Math.min(maxProductSA, uwMaxLimit, Math.max(targetGap, currentSA));
+            let step = 100000; 
+            let loopCount = 0;
+            
+            while ((currentSA + step <= absoluteMaxSA) && (loopCount < 1000)) {
+                if (currentSA >= 10000000) step = 500000;
+                else if (currentSA >= 5000000) step = 200000;
+                else step = 100000;
+
+                let testSA = currentSA + step;
+                let testPremium = getSafePremium(currentPlan, gender, age, testSA);
+
+                if (testPremium > 0 && testPremium <= budget) currentSA = testSA; 
+                else break; 
+                
+                loopCount++;
+            }
+        }
+        return { finalPlan: currentPlan, finalSA: currentSA };
+    }
+
     function scoreBasePlans(purpose, maxBudget) {
         let scoredPlans = [];
+        let prefWholeLife = 0.5, prefSavings = 0.5, prefUL = 0.5, prefHNW = 0.5;
+
+        if (typeof pharmacistWeights !== 'undefined' && pharmacistWeights !== null && typeof dotProductBias === 'function') {
+            try {
+                let customerFeatures = extractCustomerFeaturesForML(customerDataForAI); 
+                let h1 = reluArray(dotProductBias(customerFeatures, pharmacistWeights.layer_0.weights, pharmacistWeights.layer_0.biases));
+                let nnOutput = sigmoidArray(dotProductBias(h1, pharmacistWeights.layer_N.weights, pharmacistWeights.layer_N.biases));
+                prefWholeLife = nnOutput[0]; prefSavings = nnOutput[1]; prefUL = nnOutput[2]; prefHNW = nnOutput[3];       
+            } catch (e) {
+                if (customerDataForAI.Is_Wealthy === 1) { prefHNW = 0.95; prefUL = 0.85; }
+            }
+        }
+
         Object.entries(aiaBaseProductMatrix).forEach(([name, attr]) => {
-            let score = 100;
-            let estPrem = (attr.minSA || 100000) * 0.04;
+            let aiScore = 0;
+            if (attr.type === "ตลอดชีพ" || attr.type === "WholeLife") aiScore += (prefWholeLife * 100);
+            if (attr.type === "สะสมทรัพย์") aiScore += (prefSavings * 100);
+            let isUL = attr.isUnitLinked || (attr.type && attr.type.includes("UnitLinked"));
+            if (isUL) aiScore += (prefUL * 200);
+            if (attr.targetTier === "HNW" || name.includes("Prestige")) aiScore += (prefHNW * 150);
+            if (attr.targetTier === "Mass") aiScore += ((1 - prefHNW) * 100); 
 
-            // ⬛ กฎเหล็ก (อัปเกรด: บังคับเช็คอายุจาก attr โดยตรง)
-            if (safeAge < (attr.minAge || 0) || safeAge > (attr.maxAge || 99)) return;
-            if (attr.type && attr.type.includes("Unit-Linked") && safeAge < 18) return;
+            let estPrem = (attr.minSA || 100000) * 0.04; 
+            let isApproved = true;
+            if (safeAge < (attr.minAge || 0) || safeAge > (attr.maxAge || 99)) isApproved = false;
+            if (estPrem > maxBudget) isApproved = false;
+            if (attr.type && attr.type.includes("Unit-Linked") && safeAge < 18) isApproved = false;
 
-            // ⬜ กฎเฉดสี
-            if (estPrem > maxBudget) score -= 80;
-            else if (estPrem > maxBudget * 0.7) score -= 20;
-
-            // ==========================================
-            // 🌟 กฎพิเศษสำหรับ UHNW / VIP (VIP Override Rules)
-            // ==========================================
-            // [แก้บั๊ก] ดึงค่าสถานะเศรษฐีจากสมองส่วนกลางให้ถูกต้อง 100%
-            let isWealthyClient = (customerDataForAI.Is_Wealthy === 1); 
-
-            if (isWealthyClient) {
-                // 1. ดันสินค้ากลุ่ม Legacy / Prestige ให้ชนะขาดลอย!
-                if (attr.targetTier === "HNW" || name.includes("Prestige") || name.includes("Legacy")) {
-                    score += 150; // 🚀 บังคับชนะ! (อัดไป 150 คะแนน กลบจุดอ่อนเรื่องเบี้ยเกินงบมิดเลย)
-                }
-                
-                if (attr.targetTier === "Mass") score -= 50; // ถ้ารวยแล้วห้ามเอาของ Mass มาปน
-
-                // 2. ดัน Unit-Linked ให้สุดกราฟ (ถ้าลูกค้าสนใจ)
-                let isUL = attr.isUnitLinked || (attr.type && (attr.type.includes("UnitLinked") || attr.type.includes("Unit-Linked") || attr.type.includes("UnitLinked_HNW")));
-                
-                if (isUL) {
-                    let wantsUL = (customerDataForAI.p_unitlinked === "สนใจ" || customerDataForAI.p_unitlinked === "ใช่");
-                    if (wantsUL) {
-                        score += 200; // 🚀🚀 ระเบิดคะแนน! Unit-Linked ต้องขึ้นอันดับ 1 ในตะกร้า 3 แน่นอน!
-                    }
-                }
-            } else {
-                // ถ้าไม่ใช่คนรวย แล้วไปจับสินค้า HNW ให้หักคะแนนทิ้ง
-                if (attr.targetTier === "HNW") score -= 60; 
+            if (isApproved) {
+                if (estPrem > maxBudget * 0.7) aiScore -= 20;
+                scoredPlans.push({ name, attr, score: aiScore });
             }
-            // ==========================================
-            if (purpose === "Basket1_Life" || purpose === "Basket2_Core") {
-                if (attr.type === "ตลอดชีพ" || attr.type === "WholeLife") score += 20;
-                if (attr.type === "สะสมทรัพย์") score -= 50;
-            } else if (purpose === "Basket3_Eco") {
-                if (attr.type === "ตลอดชีพ" || attr.type === "WholeLife") score += 40; 
-                if (attr.type === "สะสมทรัพย์") score -= 40; 
-            }
-            if (name.includes("20 Pay Life") || name.includes("20 Pay")) {
-                score += 50; // โบนัสพิเศษให้เป็นตัวเลือกแรกเสมอ
-            }
-
-            if (name.includes("Protector 70") && safeAge < 30) score -= 30;
-
-            scoredPlans.push({ name, attr, score });
         });
         return scoredPlans.sort((a, b) => b.score - a.score);
     }
 
-    // 🧠 2. สั่งจัดตะกร้าทั้ง 3 ใบ (เพิ่มระบบ Anti-Duplicate ป้องกันสินค้าซ้ำ)
-    
-    // ตะกร้า 1: The Ultimate Shield
     let b1_candidates = scoreBasePlans("Basket1_Life", budget1);
     let base1 = b1_candidates.length > 0 ? b1_candidates[0].name : "ไม่แนบเพิ่มเติม";
     
-    // ตะกร้า 2: The Smart Core
     let b2_candidates = scoreBasePlans("Basket2_Core", budget2);
     let base2 = "ไม่แนบเพิ่มเติม";
     for (let candidate of b2_candidates) {
-        if (candidate.name !== base1) { // หาตัวที่ไม่ซ้ำกับตะกร้า 1
-            base2 = candidate.name;
-            break;
-        }
+        if (candidate.name !== base1) { base2 = candidate.name; break; }
     }
 
-    // ตะกร้า 3: The Tactical Essential
     let b3_candidates = scoreBasePlans("Basket3_Eco", budget3);
     let base3 = "ไม่แนบเพิ่มเติม";
     for (let candidate of b3_candidates) {
-        if (candidate.name !== base1 && candidate.name !== base2) { // หาตัวที่ไม่ซ้ำกับ 1 และ 2
-            base3 = candidate.name;
-            break;
-        }
+        if (candidate.name !== base1 && candidate.name !== base2) { base3 = candidate.name; break; }
     }
 
-    // 🧠 3. สร้างฟังก์ชัน Build Basket เพื่อส่งค่าให้ UI (อัปเกรด: ดึงยาจริงจาก Matrix และกันงบซื้อยาก่อน)
+    function getRiderPremiumTotal(riderName, gender, age, actualCoverage = null) {
+        if (!riderName || riderName === "ไม่แนบเพิ่มเติม" || typeof calculateRiderPremium !== 'function') return 0;
+        let productData = aiaRiderMatrix[riderName];
+        let defaultCoverage = productData ? productData.defaultSA : 1000000;
+        let coverageBase = actualCoverage || defaultCoverage;
+        let riders = riderName.split('+').map(s => s.trim());
+        let totalPremium = 0;
+        riders.forEach(name => {
+            let cleanName = Object.keys(aiaRiderMatrix).find(key => name.includes(key));
+            if (cleanName) {
+                let productData = aiaRiderMatrix[cleanName];
+                let defaultSA = productData ? productData.defaultSA : 1000000;
+                let planOrSA = actualCoverage || defaultSA;
+                totalPremium += calculateRiderPremium(cleanName, gender, age, planOrSA);
+            }
+        });
+        return totalPremium;
+    }
 
-        // ==========================================
-    // 🛡️ กู้คืนฟังก์ชันผู้ช่วย (Helper Functions สำหรับจัดยา)
-    // ==========================================
-    
-    // 1. ฟังก์ชันคุมกำเนิดยาย่อย (Rider Underwriting Limits) อิงตามกฎคู่มือบริษัท
     function getRiderUWLimit(riderName, category, customerData, baseSA) {
         let annualIncome = (customerData.Income_Monthly || 0) * 12;
         let isWorking = annualIncome > 0 && customerData.Age < 60; 
         let age = customerData.Age;
         let netWorth = customerData.Net_Worth || 0;
 
-        if (category === "Health") {
-            if (baseSA < 100000) return 0; 
-            return Infinity; 
-        }
-
+        if (category === "Health") return (baseSA < 100000) ? 0 : Infinity; 
         if (category === "Compensation") {
             if (baseSA < 100000) return 0; 
             if (isWorking) return 10000; 
-            else {
-                if (baseSA >= 200000) return 4000; 
-                else return 1000; 
-            }
+            else return (baseSA >= 200000) ? 4000 : 1000; 
         }
-
         if (category === "CI") {
             let maxCILimit = 0;
             if (isWorking) {
@@ -3063,22 +2725,14 @@ function getDynamicAIASolutions(diffLife, diffHealth, diffCI, personaType, netCa
             } else {
                 maxCILimit = netWorth * 0.30; 
             }
-
-            if (riderName.includes("CI Plus")) {
-                let prodLimit = isWorking ? 25000000 : 15000000; 
-                maxCILimit = Math.min(maxCILimit, prodLimit);
-            } else if (riderName.includes("Multi-Pay")) {
-                let prodLimit = isWorking ? 8000000 : 4000000; 
-                maxCILimit = Math.min(maxCILimit, prodLimit);
-            } else if (riderName.includes("Care for Cancer")) {
-                maxCILimit = Math.min(maxCILimit, 10000000); 
-            }
+            if (riderName.includes("CI Plus")) maxCILimit = Math.min(maxCILimit, isWorking ? 25000000 : 15000000);
+            else if (riderName.includes("Multi-Pay")) maxCILimit = Math.min(maxCILimit, isWorking ? 8000000 : 4000000);
+            else if (riderName.includes("Care for Cancer")) maxCILimit = Math.min(maxCILimit, 10000000);
             return maxCILimit;
         }
         return Infinity;
     }
 
-    // 2. ฟังก์ชันย่อย: แกะกล่องยาเสริม (Riders Array)
     function processRidersForUI(ridersArray, inc, exp, ratio, customerData, baseSA, gender, age) {
         let healthTexts = [];
         let ciTexts = [];
@@ -3087,12 +2741,10 @@ function getDynamicAIASolutions(diffLife, diffHealth, diffCI, personaType, netCa
         ridersArray.forEach(riderName => {
             let riderInfo = aiaRiderMatrix[riderName];
             if (!riderInfo) return;
-
             let uwLimit = getRiderUWLimit(riderName, riderInfo.category, customerData, baseSA);
             if (uwLimit <= 0) return; 
 
             let coverage = calculateDynamicCoverage(riderName, riderInfo.category, inc, exp, ratio, uwLimit);
-            
             if (coverage) {
                 let highlightText = riderInfo.highlight ? `<div class="text-[11px] text-slate-500 italic mt-0.5 leading-tight ml-4">💡 เหตุผล: ${riderInfo.highlight}</div>` : "";
                 let displayText = `<div class="mb-2"><span class="font-medium text-slate-700">+ ${riderName}</span> <span class="text-blue-600 font-semibold text-sm">(${coverage.text})</span>${highlightText}</div>`;
@@ -3112,89 +2764,28 @@ function getDynamicAIASolutions(diffLife, diffHealth, diffCI, personaType, netCa
         };
     }
 
-    // 🧠 3. สมองกลปรับโดสยา (Titration) - [อัปเกรด: บังคับขั้นต่ำ ห้ามจ่ายโดส 0]
-    function optimizeDosage(productName, gender, age, startSA, targetGap, budget, customerData) {
-        if (!productName || productName === "ไม่แนบเพิ่มเติม") {
-            return { finalPlan: "ไม่แนบเพิ่มเติม", finalSA: 0 };
-        }
-
-        let planData = aiaBaseProductMatrix[productName] || {};
-        let minBaseSA = planData.minSA || 100000; // ขั้นต่ำสุดที่กฎหมาย/โปรดักส์อนุญาต
-        let currentSA = Math.max(minBaseSA, startSA || minBaseSA); // ทุนตั้งต้นที่ตะกร้าอยากได้
-        
-        // 🚨 1. ตรวจสอบว่าทุนตั้งต้น (currentSA) เบี้ยทะลุงบไหม?
-        if (getSafePremium(productName, gender, age, currentSA) > budget) {
-            // ถ้างบน้อยเกินไป -> ให้ถอยกลับมาที่ "ขั้นต่ำสุดของโปรดักส์ (minBaseSA)" เสมอ!
-            // ❌ ห้ามเป็น 0 เด็ดขาด เพราะสัญญาหลักต้องมีอยู่เพื่อแบกสัญญาเพิ่มเติม
-            currentSA = minBaseSA; 
-        } else {
-            // 🌟 2. ถ้างบยังเหลือ -> ให้ AI ทำการดันทุนขึ้นไปเรื่อยๆ (Titration)
-            let maxProductSA = planData.maxSA || Infinity;
-            
-            let annualIncome = (customerData.Income_Monthly || 0) * 12;
-            let isWorking = annualIncome > 0 && customerData.Age < 75; 
-            let uwMaxLimit = typeof getFinancialUWLimit === 'function' ? getFinancialUWLimit("Base", age, annualIncome, customerData.Net_Worth || 0, isWorking) : Infinity;
-
-            let absoluteMaxSA = Math.min(maxProductSA, uwMaxLimit, Math.max(targetGap, currentSA));
-            let step = 100000; 
-            let loopCount = 0;
-            
-            while ((currentSA + step <= absoluteMaxSA) && (loopCount < 1000)) {
-                let testSA = currentSA + step;
-                let testPremium = getSafePremium(productName, gender, age, testSA);
-
-                if (testPremium <= budget) {
-                    currentSA = testSA; 
-                } else {
-                    break; // ชนเพดานงบแล้ว หยุดดันทุน
-                }
-                loopCount++;
-            }
-        }
-
-        return {
-            finalPlan: productName,
-            finalSA: currentSA
-        };
-    }
-
     function buildSmartBasket(baseName, budgetLimit, tierLevel) {
         if (baseName === "ไม่แนบเพิ่มเติม") return { base: baseName, sa: 0, healthUI: "ไม่แนบเพิ่มเติม", ciUI: "ไม่แนบเพิ่มเติม", totalPremium: 0 };
         
-        let tierIndex = tierLevel - 1; // แปลงลำดับ 1,2,3 เป็น index 0,1,2 
+        let tierIndex = tierLevel - 1; 
         let planData = aiaBaseProductMatrix[baseName] || {};
-        
-        // 1. กำหนดทุนตั้งต้น (Base SA)
         let initialSA = planData.minSA || 100000;
-        if (customerDataForAI.Is_Wealthy === 1) {
-            initialSA = Math.max(initialSA, 5000000); // มหาเศรษฐี เริ่มคุยกันที่ 5 ล้านขึ้นไป
-        }
-        if (tierLevel === 1 && eligibleScores[tierIndex].cat === 'Prestige') {
-            initialSA = Math.max(initialSA, 10000000); // ถ้าเป็นตะกร้า 1 และเป็น Prestige บังคับทุนเริ่ม 10 ล้าน
-        }
+        if (customerDataForAI.Is_Wealthy === 1) initialSA = Math.max(initialSA, 5000000); 
+        if (tierLevel === 1 && eligibleScores[tierIndex].cat === 'Prestige') initialSA = Math.max(initialSA, 10000000); 
 
-        // 2. กฎการจัดยาเสริม (Riders Rules)
         let actualRiderScores = eligibleScores[tierIndex].riders;
-        if (customerDataForAI.Is_Wealthy === 1) {
-            actualRiderScores = []; // 🌟 UHNW Wealth Transfer: เตะยาเสริมทิ้งทั้งหมด
-        }
+        if (customerDataForAI.Is_Wealthy === 1) actualRiderScores = []; 
 
-        // 🌟 3. คืนชีพยาเสริม: ประมวลผล Riders และกันงบประมาณ (ประกาศแค่ครั้งเดียว!)
-        let riders = processRidersForUI(actualRiderScores, realInc, realExp, doseRatios[tierIndex], customerDataForAI, initialSA, gender, safeAge);
+        let riders = processRidersForUI(actualRiderScores, inc, monthlyExpense, doseRatios[tierIndex], customerDataForAI, initialSA, gender, safeAge);
         let riderPremium = riders.totalPremium || 0;
 
-        // 🌟 4. หักงบประมาณค่ายาออก เพื่อหากระแสเงินสดที่เหลือไปซื้อสัญญาหลัก
         let remainingBudgetForBase = budgetLimit - riderPremium;
         if (remainingBudgetForBase < 0) remainingBudgetForBase = 0; 
 
-        // 🌟 5. ส่งงบที่ "เหลือ" ไปให้ AI ปรับโดสสัญญาหลัก (Titration)
         let dose = optimizeDosage(baseName, gender, safeAge, initialSA, dynamicGap, remainingBudgetForBase, customerDataForAI);
-        
-        // คำนวณเบี้ยรวมตัวจริง
         let basePremium = getSafePremium(dose.finalPlan, gender, safeAge, dose.finalSA);
         let totalPremium = basePremium + riderPremium;
 
-        // 🚨 ดักวิกฤต: ถ้างบรวมทะลุ 150% ของที่ตั้งไว้ หรือสถานะการเงินวิกฤต หรือ ซื้อสัญญาหลักไม่ได้ (finalSA = 0)
         if (financialHealth === 'severe' || totalPremium > budgetLimit * 1.5 || dose.finalSA === 0) {
             riders.healthUI = "ไม่แนบเพิ่มเติม";
             riders.ciUI = "ไม่แนบเพิ่มเติม";
@@ -3211,32 +2802,40 @@ function getDynamicAIASolutions(diffLife, diffHealth, diffCI, personaType, netCa
         };
     }
 
-    // ==========================================
-    // 🌟 [แก้บั๊ก] คืนชีพตัวจัดยาเสริม (Rider Assembly) ให้แต่ละตะกร้า
-    // ==========================================
+    function findBestRiders(tier, needHealth, needCI, needComp, age, isTaxFocus = false) {
+        let selectedRiders = [];
+        for (let riderName in aiaRiderMatrix) {
+            let rider = aiaRiderMatrix[riderName];
+            if (age >= rider.minAge && age <= rider.maxAge) {
+                if (isTaxFocus && rider.taxDeductible === "None") continue;
+                if (rider.tier === tier || !rider.tier) {
+                    if (needHealth && rider.category === "Health" && !selectedRiders.some(r => aiaRiderMatrix[r].category === "Health")) selectedRiders.push(riderName);
+                    if (needCI && rider.category === "CI" && !selectedRiders.some(r => aiaRiderMatrix[r].category === "CI")) selectedRiders.push(riderName);
+                    if (needComp && rider.category === "Compensation" && !selectedRiders.some(r => aiaRiderMatrix[r].category === "Compensation")) selectedRiders.push(riderName);
+                }
+            }
+        }
+        return selectedRiders; 
+    }
+
     let wantsHealth = true; 
     let wantsCI = true;
-    let wantsComp = (typeof realInc !== 'undefined' ? realInc : 30000) > 50000; 
+    let wantsComp = inc > 50000; 
     let isTaxFocus = incAnnual >= 500000;
 
-    // AI จัดเตรียมสูตรยาเสริม (Riders) ไว้ 3 ระดับ (Premium, Standard, Economy)
     let eligibleScores = [
         { cat: 'Prestige', riders: findBestRiders("Premium", wantsHealth, wantsCI, wantsComp, safeAge, isTaxFocus) },
         { cat: 'Standard', riders: findBestRiders("Standard", wantsHealth, wantsCI, false, safeAge, isTaxFocus) },
         { cat: 'Economy',  riders: findBestRiders("Economy", wantsHealth, false, false, safeAge, isTaxFocus) } 
     ];
-    // ==========================================
 
-    // สร้าง 3 ตะกร้าแบบไร้รอยต่อ!
     let basket1 = buildSmartBasket(base1, budget1, 1);
     let basket2 = buildSmartBasket(base2, budget2, 2);
     let basket3 = buildSmartBasket(base3, budget3, 3);
 
-
     // ==========================================
-    // 🎨 3. GENERATE DYNAMIC UI (Financial Prescription)
+    // 🎨 6. GENERATE DYNAMIC UI (Financial Prescription)
     // ==========================================
-    
     let severeWarningHTML = financialHealth === 'severe' 
         ? `<div class="bg-red-50 border-l-4 border-red-500 p-4 mb-4 mx-6 mt-4 text-red-800 text-sm shadow-sm animate-pulse rounded-r-lg">
              <span class="text-lg">🚨</span> <b>AI Financial Alert (คำเตือน):</b> สภาวะกระแสเงินสดของคุณกำลังติดลบ ตามหลักการวางแผนการเงิน <b>"ไม่แนะนำให้สร้างภาระผูกพันระยะยาวเพิ่ม"</b> ควรโฟกัสที่การลดรายจ่ายหรือเคลียร์หนี้สินก่อน อย่างไรก็ตาม AI ได้จัดเตรียมแผนความคุ้มครองเริ่มต้น (Basic Protection) เพื่ออุดรอยรั่วชั่วคราวไว้ให้พิจารณาเท่านั้นครับ
@@ -3359,89 +2958,6 @@ function getDynamicAIASolutions(diffLife, diffHealth, diffCI, personaType, netCa
         </div>
     </div>`;
 
-    // 🧠 ML Peer Insight (NLG)
-let clusterName = window.latestMLFeatures ? classifyUserKMeans(
-    window.latestMLFeatures.age, 
-    window.latestMLFeatures.inc, 
-    window.latestMLFeatures.nw, 
-    window.latestMLFeatures.risk, 
-    window.latestMLFeatures.dti, 
-    window.latestMLFeatures.recency, 
-    window.latestMLFeatures.frequency, 
-    window.latestMLFeatures.discipline,
-    window.latestMLFeatures.dep           // 🌟 เติมแกนที่ 9 เข้าไปต่อท้าย
-) : "ผู้ที่มีโปรไฟล์ใกล้เคียงคุณ";
-
-    html += `
-    <div class="mx-6 mb-6 p-4 bg-blue-50 border border-blue-100 rounded-xl flex items-start gap-3 shadow-sm">
-        <span class="text-2xl">🧠</span>
-        <div>
-            <p class="text-[10px] font-bold text-blue-900 uppercase tracking-widest">AI Personalization Insight</p>
-            <p class="text-xs text-blue-800">จากการวินิจฉัยข้อมูลกลุ่ม <b>${clusterName.split('(')[0]}</b> ร่วมกับสภาวะกระแสเงินสดของคุณ พบว่าตะกร้า <b>The Smart Core</b> มีอัตราส่วนการจ่ายยา (Dosage) และค่าใช้จ่ายที่ตอบโจทย์ความต้องการเชิงลึกของคุณได้สมดุลที่สุดครับ</p>
-        </div>
-    </div>`;
-
-    // ==========================================
-    // 📊 ฟีเจอร์ใหม่: ระบบเปรียบเทียบ Risk Gap (XAI Visualizer)
-    // ==========================================
-    
-    // คำนวณเปอร์เซ็นต์การปิดความเสี่ยง (ห้ามเกิน 100%)
-    let percent1 = Math.min(100, ((basket1.sa || 0) / dynamicGap) * 100) || 0;
-    let percent2 = Math.min(100, ((basket2.sa || 0) / dynamicGap) * 100) || 0;
-    let percent3 = Math.min(100, ((basket3.sa || 0) / dynamicGap) * 100) || 0;
-
-    html += `
-    <div class="mx-6 mb-6 bg-white border border-slate-200 p-6 rounded-2xl shadow-sm animate-fade-in">
-        <div class="flex items-center gap-3 mb-4">
-            <span class="text-2xl">📊</span>
-            <div>
-                <h4 class="font-bold text-slate-800 text-lg">บทวิเคราะห์การปิดความเสี่ยง (Risk Gap Analysis)</h4>
-                <p class="text-xs text-slate-500">มูลค่าความเสี่ยงทางการเงินที่แท้จริงของคุณคือ <b>${(dynamicGap/1000000).toFixed(2)} ล้านบาท</b></p>
-            </div>
-        </div>
-
-        <div class="space-y-5 mt-6">
-            <div>
-                <div class="flex justify-between text-sm mb-1">
-                    <span class="font-semibold text-slate-700">🏆 ตะกร้าที่ 1: The Ultimate Shield</span>
-                    <span class="text-blue-600 font-bold">${percent1.toFixed(0)}% <span class="text-xs font-normal text-slate-500">ปกป้องความเสี่ยง</span></span>
-                </div>
-                <div class="w-full bg-slate-100 rounded-full h-3.5 shadow-inner">
-                    <div class="bg-gradient-to-r from-blue-500 to-indigo-600 h-3.5 rounded-full transition-all duration-1000" style="width: ${percent1}%"></div>
-                </div>
-                <p class="text-[11px] text-slate-400 mt-1 text-right">ทุนชีวิต: ${((basket1.sa || 0)/1000000).toFixed(2)} ล้านบาท</p>
-            </div>
-
-            <div>
-                <div class="flex justify-between text-sm mb-1">
-                    <span class="font-semibold text-slate-700">⚖️ ตะกร้าที่ 2: The Smart Core</span>
-                    <span class="text-teal-600 font-bold">${percent2.toFixed(0)}% <span class="text-xs font-normal text-slate-500">ปกป้องความเสี่ยง</span></span>
-                </div>
-                <div class="w-full bg-slate-100 rounded-full h-3.5 shadow-inner">
-                    <div class="bg-gradient-to-r from-teal-400 to-teal-500 h-3.5 rounded-full transition-all duration-1000" style="width: ${percent2}%"></div>
-                </div>
-                <p class="text-[11px] text-slate-400 mt-1 text-right">ทุนชีวิต: ${((basket2.sa || 0)/1000000).toFixed(2)} ล้านบาท</p>
-            </div>
-
-            <div>
-                <div class="flex justify-between text-sm mb-1">
-                    <span class="font-semibold text-slate-700">🛡️ ตะกร้าที่ 3: The Tactical Essential</span>
-                    <span class="text-orange-500 font-bold">${percent3.toFixed(0)}% <span class="text-xs font-normal text-slate-500">ปกป้องความเสี่ยง</span></span>
-                </div>
-                <div class="w-full bg-slate-100 rounded-full h-3.5 shadow-inner">
-                    <div class="bg-gradient-to-r from-orange-400 to-rose-400 h-3.5 rounded-full transition-all duration-1000" style="width: ${percent3}%"></div>
-                </div>
-                <p class="text-[11px] text-slate-400 mt-1 text-right">ทุนชีวิต: ${((basket3.sa || 0)/1000000).toFixed(2)} ล้านบาท</p>
-            </div>
-        </div>
-        
-        <div class="mt-5 p-3 bg-slate-50 rounded-lg border border-slate-100">
-            <p class="text-xs text-slate-600 leading-relaxed italic">
-                <b>💡 คำแนะนำจาก AI:</b> การเลือกตะกร้าที่มีเปอร์เซ็นต์การปิดความเสี่ยงใกล้เคียง 100% มากที่สุด จะช่วยให้คุณมั่นใจได้ว่า หากเกิดเหตุไม่คาดฝัน ครอบครัวและสินทรัพย์ของคุณจะได้รับผลกระทบน้อยที่สุดครับ
-            </p>
-        </div>
-    </div>`;
-
     return html;
 }
 // -----------------------------------------------------------------------------------------------//
@@ -3492,10 +3008,10 @@ function generateSmartThreeBaskets() {
     // 1. ดึงบริบทของลูกค้า (Client Context)
     let c_age = parseInt(document.getElementById('p_age').value) || 35;
     let c_income = parseNum(document.getElementById('tb_c_inc')?.innerText) || 500000;
-    let isHNW = c_income >= 1200000; // รายได้เกิน 1.2 ล้าน/ปี ถือเป็นกลุ่ม Wealth
+    let isHNW = c_income >= 100000; // รายได้เกิน 1.2 ล้าน/ปี ถือเป็นกลุ่ม Wealth
     
     // คำนวณงบประมาณสูงสุดที่ไม่ทำให้ DTI พัง (สมมติให้งบซื้อประกันใหม่ไม่เกิน 15% ของรายได้)
-    let maxBudget = c_income * 0.15; 
+    let maxBudget = c_income * 12 * 0.15; 
 
     // ดึง Risk Gap (สมมติว่าคุณคำนวณไว้ในตัวแปรเหล่านี้แล้ว)
     let gapLife = targetLife - currentLife;
@@ -4977,15 +4493,13 @@ function classifyUserKMeans(age, inc, nw, risk, dti, recency, frequency, discipl
     if(typeof clearDataForLoad === 'function') clearDataForLoad();
     if(document.getElementById('mainForm')) document.getElementById('mainForm').reset();
 
-    // 🟢 ฟังก์ชันเดิม (Uniform Random - สุ่มโอกาสเท่ากันหมด)
     const rand = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
     const pickStr = (arr) => arr[Math.floor(Math.random() * arr.length)];
     const roundTo = (num, step) => Math.round(num / step) * step;
 
     // ==========================================
-    // 🔔 สถิติขั้นสูง: Gaussian/Normal Distribution
+    // 🔔 สถิติขั้นสูง: Gaussian Distribution
     // ==========================================
-    // 1. ฟังก์ชัน Box-Muller แปลง Math.random() ให้เป็นระฆังคว่ำ
     const gaussianRandom = (mean = 0, stdev = 1) => {
         const u = 1 - Math.random(); 
         const v = Math.random();
@@ -4993,10 +4507,9 @@ function classifyUserKMeans(age, inc, nw, risk, dti, recency, frequency, discipl
         return z * stdev + mean;
     };
 
-    // 2. ฟังก์ชันสุ่มค่าที่กระจุกตัวตรงกลาง (Mean) และไม่ทะลุขอบ (Min/Max)
     const randNormal = (min, max) => {
         let mean = (min + max) / 2;
-        let stdev = (max - min) / 6; // ตามกฎ 6-Sigma
+        let stdev = (max - min) / 6; 
         let val;
         do {
             val = gaussianRandom(mean, stdev);
@@ -5004,7 +4517,7 @@ function classifyUserKMeans(age, inc, nw, risk, dti, recency, frequency, discipl
         return Math.floor(val);
     };
 
-    // 🟢 มิติที่ 1: กลุ่มระดับความมั่งคั่งและอาชีพ (Wealth & Occupation Matrix - อัปเกรด 18 กลุ่ม)
+    // 🟢 มิติที่ 1: กลุ่มระดับความมั่งคั่งและอาชีพ
     const jobMatrix = [
         { class: "Grassroots_Daily", occs: ["แรงงานรายวัน/ลูกจ้างชั่วคราว", "พนักงานทำความสะอาด/รปภ."], incRange: [9000, 15000] },
         { class: "Grassroots", occs: ["พนักงานโรงงาน", "เกษตรกร/ทำไร่ทำนา", "Gig Worker/ขับรถส่งของ"], incRange: [12000, 25000] },
@@ -5026,7 +4539,7 @@ function classifyUserKMeans(age, inc, nw, risk, dti, recency, frequency, discipl
         { class: "UHNW_Elite", occs: ["ทายาทธุรกิจกงสีระดับประเทศ", "ประธานกรรมการบริษัทมหาชน", "เศรษฐีที่ดิน"], incRange: [1500000, 5000000] }
     ];
 
-    // 🟢 มิติที่ 2: ช่วงวัยและสถานะครอบครัว (Life Stage & Dependents Matrix) - อัปเกรด 14 รูปแบบ
+    // 🟢 มิติที่ 2: ช่วงวัยและสถานะครอบครัว 
     const stageMatrix = [
         { stage: "GenZ_Starter", minAge: 20, maxAge: 24, dep: 0, desc: "เพิ่งเรียนจบ/เริ่มทำงานปีแรก" },
         { stage: "FirstJobber", minAge: 25, maxAge: 28, dep: 0, desc: "วัยเริ่มสร้างตัว" },
@@ -5044,43 +4557,41 @@ function classifyUserKMeans(age, inc, nw, risk, dti, recency, frequency, discipl
         { stage: "LateRetiree", minAge: 71, maxAge: 85, dep: 0, desc: "วัยชรา (เตรียมส่งมอบมรดก/ค่ารักษา)" }
     ];
 
-    // สุ่มเลือกองค์ประกอบหลัก (สร้างความหลากหลาย 10 เท่า = 10 x 7 x ตัวแปรซ่อนเร้น)
-    const selectedJob = pickStr(jobMatrix); // 1. สุ่มกลุ่มอาชีพมาก่อนเป็นแกนหลัก
+    const selectedJob = pickStr(jobMatrix); 
     const occ = pickStr(selectedJob.occs);
-    let validStages = stageMatrix.filter(stage => { // 2. 🌟 สร้างตัวกรอง (Filter) ช่วงวัย ให้สอดคล้องกับระดับความอาวุโสของอาชีพ
+    let validStages = stageMatrix.filter(stage => { 
         const jobClass = selectedJob.class;
         if (["Executive", "Civil_Senior", "Specialist", "MNC_Corp", "HNW_Biz", "UHNW_Elite", "HNW_Founder"].includes(jobClass)) {
-            return stage.minAge >= 35; // กลุ่มผู้บริหารระดับสูง, ข้าราชการผู้ใหญ่, แพทย์ หรือ เจ้าของธุรกิจ HNW ต้องมีอายุสะสมประสบการณ์ (35 ปีขึ้นไป)
+            return stage.minAge >= 35; 
         }
         if (jobClass === "EntryCorp" || stage.stage === "GenZ_Starter") {
-            return stage.maxAge <= 30; // กลุ่มเด็กจบใหม่/เริ่มทำงาน (ไม่ควรเกิน 30 ปี)
+            return stage.maxAge <= 30; 
         }
         if (stage.stage === "Retiree" || stage.stage === "LateRetiree") {
-             return ["HNW_Rentier", "UHNW_Elite", "Informal_Ecom", "Freelance_Creative"].includes(jobClass); // กลุ่มวัยเกษียณ จะต้องไม่มาสุ่มโดนอาชีพพนักงานประจำทั่วไป (เว้นแต่เป็น HNW/เสือนอนกิน)
+             return ["HNW_Rentier", "UHNW_Elite", "Informal_Ecom", "Freelance_Creative"].includes(jobClass); 
         }
-        return stage.maxAge <= 60; // อาชีพอื่นๆ ทั่วไป อนุญาตให้อยู่ในช่วงวัยไหนก็ได้ (ที่ยังไม่เกษียณ)
+        return stage.maxAge <= 60; 
     });
     if(validStages.length === 0) {
-        validStages = stageMatrix.filter(s => s.minAge >= 30 && s.maxAge <= 55); // Fallback: กันเหนียวกรณีสุ่มแล้วไม่มีช่วงวัยที่ตรงเงื่อนไขเลย ให้สุ่มผู้ใหญ่ทั่วไป
+        validStages = stageMatrix.filter(s => s.minAge >= 30 && s.maxAge <= 55); 
     }
-    const selectedStage = pickStr(validStages); // 3. สุ่มช่วงวัยจากตัวเลือกที่ "ผ่านการกรองแล้ว" เท่านั้น
+    const selectedStage = pickStr(validStages); 
     const age = rand(selectedStage.minAge, selectedStage.maxAge);
-    const inc = roundTo(randNormal(selectedJob.incRange[0], selectedJob.incRange[1]), 1000); // 4. สุ่มรายได้และกำหนดค่าอื่นๆ ตามปกติ
+    const inc = roundTo(randNormal(selectedJob.incRange[0], selectedJob.incRange[1]), 1000); 
     const dep = selectedStage.dep;
     const isRetiree = selectedStage.stage === "Retiree" || selectedStage.stage === "LateRetiree";
 
-    // กำหนดจังหวัดและสวัสดิการ
     const provs = [
-    "กรุงเทพมหานคร", "กระบี่", "กาญจนบุรี", "กาฬสินธุ์", "กำแพงเพชร", "ขอนแก่น", "จันทบุรี", "ฉะเชิงเทรา", "ชลบุรี", "ชัยนาท", "ชัยภูมิ", "ชุมพร", "เชียงราย", "เชียงใหม่", "ตรัง", "ตราด", "ตาก", "นครนายก", "นครปฐม", "นครพนม", "นครราชสีมา", "นครศรีธรรมราช", "นครสวรรค์", "นนทบุรี", "นราธิวาส", "น่าน", "บึงกาฬ", "บุรีรัมย์", "ปทุมธานี", "ประจวบคีรีขันธ์", "ปราจีนบุรี", "ปัตตานี", "พระนครศรีอยุธยา", "พะเยา", "พังงา", "พัทลุง", "พิจิตร", "พิษณุโลก", "เพชรบุรี", "เพชรบูรณ์", "แพร่", "ภูเก็ต", "มหาสารคาม", "มุกดาหาร", "แม่ฮ่องสอน", "ยโสธร", "ยะลา", "ร้อยเอ็ด", "ระนอง", "ระยอง", "ราชบุรี", "ลพบุรี", "ลำปาง", "ลำพูน", "เลย", "ศรีสะเกษ", "สกลนคร", "สงขลา", "สตูล", "สมุทรปราการ", "สมุทรสงคราม", "สมุทรสาคร", "สระแก้ว", "สระบุรี", "สิงห์บุรี", "สุโขทัย", "สุพรรณบุรี", "สุราษฎร์ธานี", "สุรินทร์", "หนองคาย", "หนองบัวลำภู", "อ่างทอง", "อำนาจเจริญ", "อุดรธานี", "อุตรดิตถ์","อุทัยธานี", "อุบลราชธานี"
-];
-    // กำหนดสวัสดิการ (รองรับ Class ใหม่ที่ขยายเป็น 18 กลุ่ม)
+    "กรุงเทพมหานคร", "กระบี่", "กาญจนบุรี", "กาฬสินธุ์", "กำแพงเพชร", "ขอนแก่น", "จันทบุรี", "ฉะเชิงเทรา", "ชลบุรี", "ชัยนาท", "ชัยภูมิ", "ชุมพร", "เชียงราย", "เชียงใหม่", "นครปฐม", "นครราชสีมา", "นครสวรรค์", "นนทบุรี", "ปทุมธานี", "พระนครศรีอยุธยา", "พิษณุโลก", "ภูเก็ต", "ระยอง", "ราชบุรี", "สงขลา", "สมุทรปราการ", "สมุทรสาคร", "สระบุรี", "สุราษฎร์ธานี", "อุดรธานี", "อุบลราชธานี"
+    ];
+    
     let welf = "ไม่มีสวัสดิการ (จ่ายเอง/บัตรทอง)";
     if(selectedJob.class.includes("Corp")) welf = pickStr(["สิทธิประกันสังคม", "ประกันกลุ่มองค์กร"]);
     if(selectedJob.class.includes("Civil")) welf = "สิทธิข้าราชการ/รัฐวิสาหกิจ";
     if(selectedJob.class.includes("Executive") || selectedJob.class.includes("HNW") || selectedJob.class.includes("UHNW")) welf = pickStr(["สวัสดิการระดับผู้บริหาร", "ประกันชีวิต/สุขภาพ (ส่วนตัว)"]);
     if(selectedJob.class.includes("Grassroots")) welf = pickStr(["สิทธิประกันสังคม (ม.39/ม.40)", "ไม่มีสวัสดิการ (จ่ายเอง/บัตรทอง)"]);
 
-    // 🟢 มิติที่ 3: พฤติกรรมและวินัยทางการเงิน (Behavioral & Risk Matrix)
+    // 🟢 มิติที่ 3: พฤติกรรมและวินัยทางการเงิน
     let bq1, bq2, bq3, bq4, bq5, bq6, bq7, bq8, bq9, bq10;
     const isStruggling = (inc < 30000 && dep > 0) || selectedJob.class.includes("Grassroots");
     const isWealthy = inc >= 200000 || selectedJob.class.includes("HNW") || selectedJob.class.includes("UHNW");
@@ -5095,43 +4606,40 @@ function classifyUserKMeans(age, inc, nw, risk, dti, recency, frequency, discipl
     bq9 = selectedJob.class.includes("HNW") || occ.includes("แพทย์") ? "3" : (inc > 40000 ? "2" : "1");
     bq10 = (isWealthy || occ.includes("แพทย์")) ? "delegator" : (selectedJob.class.includes("Freelance") ? "diy" : "hybrid");
 
-    // 🟢 มิติที่ 4: ภาระหนี้สินซ่อนเร้น (Hidden Debt Constraints)
+    // 🟢 มิติที่ 4: ภาระหนี้สินซ่อนเร้น
     let cLiab = [];
     let debtPmt = 0;
     let debtTotal = 0;
     let maxDTI = inc * 0.6;
+    let hasCar = rand(1, 10) > 3; // โอกาสมีรถ 70%
     
     if(!isRetiree) {
-        // หนี้บ้าน
         if(inc >= 25000 && age >= 27 && rand(1,10) > 4) {
             let housePmt = roundTo(inc * (rand(20, 40) / 100), 1000); 
             if(debtPmt + housePmt <= maxDTI) {
-                let initialHouseDebt = (housePmt / 7000) * 1000000; // คิดเรทผ่อนล้านละ 7,000 (ประมาณการ)
-                let yearsWorked = Math.max(0, age - 25); // สมมติว่าคนเริ่มซื้อบ้านเร็วสุดตอน 25
-                let debtReductionRatio = Math.max(0.5, 1 - (yearsWorked * 0.03)); // หนี้ลดลงปีละ 3% แต่ไม่ต่ำกว่าครึ่งนึง
+                let initialHouseDebt = (housePmt / 7000) * 1000000; 
+                let yearsWorked = Math.max(0, age - 25); 
+                let debtReductionRatio = Math.max(0.5, 1 - (yearsWorked * 0.03)); 
                 let currentHouseDebt = roundTo(initialHouseDebt * debtReductionRatio, 100000);
 
                 cLiab.push({cat: "หนี้สินระยะยาว", name: "สินเชื่อบ้าน/คอนโด", val: currentHouseDebt});
                 debtPmt += housePmt; debtTotal += currentHouseDebt;
             }
         }
-        // หนี้รถ
-        if(inc >= 15000 && rand(1,10) > 3 && selectedJob.class !== "UHNW_Elite") {
-            let carPmt = roundTo(inc * (rand(15, 25) / 100), 500); // สุ่มยอดผ่อน 15-25% ของรายได้
+        if(inc >= 15000 && hasCar && selectedJob.class !== "UHNW_Elite") {
+            let carPmt = roundTo(inc * (rand(15, 25) / 100), 500); 
             if(debtPmt + carPmt <= maxDTI) {
-                let carDebt = carPmt * 60; // ผ่อน 5 ปี
+                let carDebt = carPmt * 60; 
                 cLiab.push({cat: "หนี้สินระยะยาว", name: "สินเชื่อรถยนต์", val: carDebt});
                 debtPmt += carPmt; debtTotal += carDebt;
             }
         }
-        // หนี้ฉุกเฉิน / บริโภค / นอกระบบ (สำหรับรากหญ้า หรือคนหมุนเงิน)
         if(isStruggling && rand(1,10) > 5) {
             let badDebt = roundTo(rand(30000, 150000), 5000);
             let badPmt = roundTo(badDebt * 0.05, 500);
             cLiab.push({cat: "หนี้สินระยะสั้น", name: pickStr(["หนี้นอกระบบ", "บัตรกดเงินสด/สหกรณ์"]), val: badDebt});
             debtPmt += badPmt; debtTotal += badDebt;
         }
-        // หนี้เพื่อธุรกิจ (Lombard/SME)
         if(selectedJob.class.includes("HNW") || occ.includes("ธุรกิจ")) {
             let bizDebt = roundTo(inc * rand(20, 50), 1000000);
             let bizPmt = roundTo(bizDebt * 0.01, 10000);
@@ -5140,14 +4648,13 @@ function classifyUserKMeans(age, inc, nw, risk, dti, recency, frequency, discipl
         }
     }
 
-    // 🟢 มิติที่ 5: โครงสร้างค่าใช้จ่าย (Cost of Living Matrix)
+    // 🟢 มิติที่ 5: โครงสร้างค่าใช้จ่าย 
     let basicExp = roundTo(inc * (isWealthy ? 0.15 : (isStruggling ? 0.50 : 0.35)), 500);
     let socialTax = (selectedJob.class === "Civil" || selectedJob.class.includes("Corp")) ? roundTo(inc * 0.05, 500) : 0;
     let parentCare = (selectedStage.stage === "Sandwich" || selectedStage.stage === "Single") ? roundTo(inc * 0.15, 1000) : 0;
     let childCare = (dep > 0 && selectedStage.stage !== "Sandwich") ? roundTo(inc * 0.20 * dep, 1000) : 0;
     let totalExp = basicExp + socialTax + parentCare + childCare + debtPmt;
-    let savings = Math.max(0, inc - totalExp);
-
+    
     let cExp = [
         {cat: "รายจ่ายประจำ/ใช้ชีวิต", name: "ค่าใช้จ่ายอุปโภคบริโภคพื้นฐาน", val: basicExp}
     ];
@@ -5156,17 +4663,10 @@ function classifyUserKMeans(age, inc, nw, risk, dti, recency, frequency, discipl
     if(parentCare > 0) cExp.push({cat: "รายจ่ายประจำ/ใช้ชีวิต", name: "ดูแลบุพการี", val: parentCare});
     if(childCare > 0) cExp.push({cat: "รายจ่ายอื่น", name: "ค่าเทอม/เลี้ยงดูบุตร", val: childCare});
     
-    // ==========================================
-    // 🏛️ ภาษีแบบขั้นบันไดจริง (Progressive Tax ปี 2567)
-    // ==========================================
     function calculateThaiTax(monthlyIncome) {
         let annualIncome = monthlyIncome * 12;
-        
-        // หักค่าใช้จ่ายเหมา 50% (สูงสุด 100,000) + ลดหย่อนส่วนตัว 60,000
         let netIncome = annualIncome - Math.min(annualIncome * 0.5, 100000) - 60000;
-        
-        if (netIncome <= 150000) return 0; // ยกเว้น 1.5 แสนแรก
-
+        if (netIncome <= 150000) return 0; 
         let tax = 0;
         if (netIncome > 150000) tax += (Math.min(netIncome, 300000) - 150000) * 0.05;
         if (netIncome > 300000) tax += (Math.min(netIncome, 500000) - 300000) * 0.10;
@@ -5175,18 +4675,15 @@ function classifyUserKMeans(age, inc, nw, risk, dti, recency, frequency, discipl
         if (netIncome > 1000000) tax += (Math.min(netIncome, 2000000) - 1000000) * 0.25;
         if (netIncome > 2000000) tax += (Math.min(netIncome, 5000000) - 2000000) * 0.30;
         if (netIncome > 5000000) tax += (netIncome - 5000000) * 0.35;
-
-        // คืนค่าเป็นภาษีรายเดือน (ปัดเศษให้สวยงาม)
         return roundTo(tax / 12, 100); 
     }
 
-    // คำนวณและเพิ่มลงในตารางค่าใช้จ่าย
     let monthlyTax = calculateThaiTax(inc);
     if(monthlyTax > 0) {
         cExp.push({cat: "ภาษี", name: "ภาษีหัก ณ ที่จ่าย (คำนวณตามขั้นบันได)", val: monthlyTax});
     }
 
-    // 🟢 มิติที่ 6: ทรัพย์สินและพอร์ตการลงทุน (Wealth & Asset Allocation - อัปเกรดความสมจริง)
+    // 🟢 มิติที่ 6: ทรัพย์สินและพอร์ตการลงทุน 
     let cAssets = [];
     let cInvest = [];
     let liqCash = roundTo(inc * rand(1, isWealthy ? 20 : 5), 5000);
@@ -5214,183 +4711,26 @@ function classifyUserKMeans(age, inc, nw, risk, dti, recency, frequency, discipl
         cAssets.push({cat: "สินทรัพย์ส่วนตัว", name: "อสังหาริมทรัพย์/รถยนต์ (ตีมูลค่า)", val: roundTo(debtTotal * 1.2, 100000)});
     }
 
-    // 🟢 มิติที่ 7: ความคุ้มครองและเป้าหมายชีวิต (Protection & Goals)
-    let cIns = [];
-    let cGoals = [];
-    let currentYearThai = new Date().getFullYear() + 543;
-
-    // จำลองเป้าหมายทางการเงิน (ปรับปรุงใหม่ตาม Life Stage)
-    if (dep > 0) {cGoals.push(["ทุนการศึกษาบุตร", roundTo(1000000 * dep, 100000), rand(5, 15), 1]);} // 1. ทุนการศึกษาบุตร (ถ้ามีลูก) - ความสำคัญระดับ 1
-    if (age >= 25 && age <= 40 && inc >= 30000) {cGoals.push(["ดาวน์บ้าน / ซื้อที่อยู่อาศัย", roundTo(inc * 25, 100000), rand(3, 7), 2]);} // 2. เป้าหมายซื้อที่อยู่อาศัย (สำหรับคนวัยเริ่มต้น - วัยกลางคน ที่มีรายได้ระดับนึง) สุ่มเป้าหมายดาวน์บ้านหรือซื้อคอนโด (ประมาณ 20-30 เท่าของรายได้เดือน)
-    if (age >= 30 && age <= 50 && inc >= 50000) {cGoals.push(["เงินดาวน์เปลี่ยนรถยนต์คันใหม่", roundTo(inc * 10, 50000), rand(3, 5), 3]);} // 3. เป้าหมายเปลี่ยนรถยนต์ (สำหรับวัยทำงาน) สุ่มตั้งเป้าเปลี่ยนรถในอีก 3-5 ปีข้างหน้า
-    if (age >= 35 && age <= 50 && selectedJob && !selectedJob.class.includes("HNW")) {if (Math.random() > 0.6) {cGoals.push(["เงินทุนสำรองเริ่มธุรกิจส่วนตัว", roundTo(inc * 24, 100000), rand(5, 10), 2]);}} // 4. เป้าหมายเริ่มธุรกิจส่วนตัว (สุ่มให้วัยทำงานบางคนมีความฝันอยากเปิดร้าน) โอกาส 40% ที่จะสุ่มเจอเป้าหมายนี้
-    if (inc >= 80000 && !isRetiree) {cGoals.push(["กองทุนท่องเที่ยวต่างประเทศ", roundTo(inc * 2, 10000), rand(1, 3), 3]);} // 5. เป้าหมายท่องเที่ยวต่างประเทศ / ให้รางวัลชีวิต (สำหรับคนรายได้สูง)
-    if (age >= 45 && age <= 60) {cGoals.push(["กองทุนฉุกเฉินค่ารักษาพยาบาล (ครอบครัว)", roundTo(inc * 12, 100000), rand(5, 10), 1]);} // 6. กองทุนดูแลสุขภาพ / ดูแลบุพการี (สำหรับวัยกลางคนขึ้นไป)
-    if (selectedJob && selectedJob.class.includes("HNW")) {cGoals.push(["เตรียมเงินสดส่งมอบมรดก / จ่ายภาษี", roundTo(inc * 50, 1000000), Math.max(85 - age, 5), 1]);} // 7. เป้าหมายส่งมอบความมั่งคั่ง / ภาษีมรดก (สำหรับกลุ่ม High Net Worth) ใช้ Math.max เพื่อป้องกันระยะเวลาติดลบ กรณีลูกค้าอายุเกิน 85
-
-    // 🟢 จำลองพอร์ตกรมธรรม์เดิม (Expert Selection: ดึงข้อมูลและกรองด้วย Business Rule ก่อนสุ่ม)
-    if(inc > 20000 && rand(1,10) > 3) { // โอกาส 70% ที่จะเคยทำประกันมาบ้าง
-        
-        // 🌟 1. กำหนดอายุกรมธรรม์และอายุตอนที่ซื้อ (Issue Age)
-        // จำลองให้กรมธรรม์ไม่เก่าเกินไปจนลูกค้าซื้อเองไม่ได้ (ให้เก่าสุดไม่เกินอายุตอน 20 ปี เว้นแต่สุ่มได้แบบเด็ก)
-        let maxPolicyAge = Math.max(1, age - 20); 
-        let policyAge = rand(1, Math.min(12, maxPolicyAge)); 
-        let issueAge = age - policyAge; 
-
-        // --- 2. สุ่มสัญญาหลัก (Base Plan) ด้วยเงื่อนไขจาก Matrix ---
-        // ใช้ Object.entries เพื่อดึงทั้ง "ชื่อแบบประกัน" และ "Attributes" ออกมาตรวจเช็ค
-        let eligibleBases = Object.entries(aiaBaseProductMatrix).filter(([name, attr]) => {
-            
-            // กฎข้อ 1: ตรวจสอบอายุรับประกัน (Age Limit)
-            if (attr.businessRule) {
-                if (attr.businessRule.minAge !== undefined && issueAge < attr.businessRule.minAge) return false;
-                if (attr.businessRule.maxAge !== undefined && issueAge > attr.businessRule.maxAge) return false;
-            }
-            // ดักจับจากชื่อแผนเผื่อ Matrix ไม่ได้ระบุ
-            if ((name.includes("Senior") || name.includes("ซีเนียร์")) && issueAge < 50) return false;
-            if (name.includes("Kids") && issueAge > 15) return false;
-
-            // กฎข้อ 2: อายุต่ำกว่า 18 ไม่ควรทำ Unit-Linked ด้วยตัวเอง
-            let isUnitLinked = (attr.type && attr.type.includes("Unit-Linked")) || name.includes("Issara");
-            if (isUnitLinked && issueAge < 18) return false;
-
-            // กฎข้อ 3: ความสามารถในการชำระเบี้ย (Affordability)
-            let minSA = attr.minSA || 100000;
-            let estPrem = minSA * 0.03; 
-            if (estPrem > (inc * 12) * 0.15) return false; // เบี้ยขั้นต่ำไม่ควรเกิน 15% ของรายได้ต่อปี
-
-            // กฎข้อ 4: ความสอดคล้องกับกลุ่มฐานะ
-            if (attr.targetTier === "HNW" && !isWealthy) return false;
-            if (attr.targetTier === "Mass" && isWealthy) return false;
-
-            return true; // ผ่านทุกด่านถึงจะเข้าตะกร้าสุ่ม
-        });
-
-        if(eligibleBases.length > 0) {
-            // สุ่มเลือก 1 แผนจากตะกร้าที่ผ่านเกณฑ์แล้ว
-            let selectedBase = pickStr(eligibleBases);
-            let baseName = selectedBase[0];
-            let baseDef = selectedBase[1];
-            
-            let minSA = baseDef.minSA || 100000;
-            let maxSA = baseDef.maxSA || (inc * 100); 
-            let wlVal = Math.max(minSA, roundTo(inc * rand(5, 20), 50000)); 
-            if(wlVal > maxSA) wlVal = maxSA; // คุมไม่ให้ทุนประกันเกินเพดานของสินค้านั้นๆ
-
-            let wlPrem = roundTo(wlVal * 0.03, 1000); 
-            let baseType = baseDef.type || 'ตลอดชีพ/สะสมทรัพย์';
-
-            let startYear = currentYearThai - policyAge;
-            let endYear = currentYearThai + 20; 
-
-            // คำนวณมูลค่าเวนคืน (CSV)
-            let csv = 0;
-            if (baseType !== "Term" && baseDef.hasCashValue !== false) {
-                if (policyAge >= 2) { 
-                    let totalPremiumPaid = wlPrem * policyAge; 
-                    let cashValueRatio = Math.min(0.85, (policyAge * 0.08)); 
-                    csv = roundTo(totalPremiumPaid * cashValueRatio, 1000);
-                    if(csv > wlVal) csv = wlVal; 
-                }
-            }
-
-            cIns.push(['สัญญาหลัก', baseType, `${baseName} (เดิม)`, wlVal, csv, startYear, endYear, wlPrem]);
-            
-            // --- 3. สุ่มสัญญาเพิ่มเติม (Riders) โดยพิจารณา Business Rule ของยาแต่ละตัว ---
-            if(inc > 30000) {
-                let targetTier = isWealthy ? "Premium" : (inc > 50000 ? "Standard" : pickStr(["Economy", "Entry", "Standard"]));
-
-                // ฟังก์ชันช่วยกรองอายุสำหรับ Rider
-                const checkRiderAgeLimit = (attr) => {
-                    if (attr.businessRule) {
-                        if (attr.businessRule.minAge !== undefined && issueAge < attr.businessRule.minAge) return false;
-                        if (attr.businessRule.maxAge !== undefined && issueAge > attr.businessRule.maxAge) return false;
-                    }
-                    return true;
-                };
-
-                // 🩺 สุ่มค่ารักษาพยาบาล (Health)
-                if(rand(1,10) > 4) { 
-                    let healthOpts = Object.entries(aiaRiderMatrix).filter(([k, attr]) => 
-                        attr.category === "Health" && 
-                        (!attr.tier || attr.tier === targetTier) &&
-                        checkRiderAgeLimit(attr)
-                    );
-                    
-                    if(healthOpts.length > 0) {
-                        let [hName, hDef] = pickStr(healthOpts);
-                        let hSA = hDef.defaultSA || (isWealthy ? 15000000 : 5000000);
-                        let hPrem = roundTo((inc * 12) * (isWealthy ? 0.03 : 0.05), 1000); // ปรับเบี้ยรายปีตามหลักความจริง
-                        
-                        cIns.push(['สัญญาเพิ่มเติม', 'สุขภาพ (Health)', `${hName} (เดิม)`, hSA, 0, currentYearThai, currentYearThai + 1, hPrem]);
-                    }
-                }
-
-                // 🛏️ สุ่มชดเชยรายได้ (HB)
-                if(rand(1,10) > 7) { 
-                    let hbOpts = Object.entries(aiaRiderMatrix).filter(([k, attr]) => 
-                        attr.category === "Compensation" && checkRiderAgeLimit(attr)
-                    );
-
-                    if(hbOpts.length > 0) {
-                        let [hbName, hbDef] = pickStr(hbOpts);
-                        let minHB = hbDef.businessRule?.min || 500;
-                        let maxHB = hbDef.businessRule?.max || (inc / 30); // ชดเชยรายวันไม่ควรเกินรายได้ต่อวัน
-                        let hbSA = Math.max(minHB, Math.min(maxHB, roundTo(inc / 30, 500))); 
-                        let hbPrem = roundTo(hbSA * 4, 100);
-                        
-                        cIns.push(['สัญญาเพิ่มเติม', 'ชดเชยรายได้ (HB)', `${hbName} (เดิม)`, hbSA, 0, currentYearThai, currentYearThai + 1, hbPrem]);
-                    }
-                }
-                
-                // 🛡️ สุ่มโรคร้ายแรง (CI)
-                let numCIRiders = rand(0, 2);
-                if(numCIRiders > 0) {
-                    let ciOpts = Object.entries(aiaRiderMatrix).filter(([k, attr]) => 
-                        attr.category === "CI" && checkRiderAgeLimit(attr)
-                    );
-                    
-                    ciOpts.sort(() => 0.5 - Math.random()); 
-                    let limit = Math.min(numCIRiders, ciOpts.length); 
-
-                    for(let i = 0; i < limit; i++) {
-                        let [ciName, ciDef] = ciOpts[i];
-                        let minCI = ciDef.businessRule?.min || 500000;
-                        let ciSA = Math.max(minCI, roundTo(inc * rand(10, 20), 100000)); 
-                        let ciPrem = roundTo(ciSA * 0.005, 500);
-                        
-                        cIns.push(['สัญญาเพิ่มเติม', 'โรคร้ายแรง (CI)', `${ciName} (เดิม)`, ciSA, 0, currentYearThai, currentYearThai + 1, ciPrem]);
-                    }
-                }
-            }
-        }
-    }
-
     // สร้างชื่อจำลอง
     const namePrefix = occ.includes("แพทย์") ? "นพ./พญ." : (occ.includes("ครู") ? "ครู" : (isWealthy ? "คุณ(VIP)" : "คุณ"));
     const mockNames = [
-    // ชื่อชุดเดิม
-    "กิตติ", "สมชาย", "อารยา", "จิราพร", "วิทย์", "พลอย", "ณัฐ", "ชัย", "มินท์", "เอก", "จอย", "แอน",
-    // เพิ่มเติม: กลุ่มผู้ชาย (วัยทำงาน/ผู้ใหญ่/วัยรุ่น)
-    "ภูมิ", "ศักดิ์", "วีระ", "ตั้ม", "บอย", "เก่ง", "นนท์", "พีร์", "ก้อง", "ต้น", "เต้ย", "แบงค์", "อาร์ต", "ป๊อป", "วิน", "แม็ค", "โอ๊ต", "บอส", "เจมส์", "พงศ์", "วุฒิ", "กฤษณ์", "ท็อป", "พีท", "นพ",
-    // เพิ่มเติม: กลุ่มผู้หญิง (วัยทำงาน/ผู้ใหญ่/วัยรุ่น)
-    "เมย์", "นุ่น", "โบว์", "แนน", "ฟ้า", "น้ำ", "ป่าน", "ตาล", "กิ๊ฟ", "ส้ม", "ชมพู่", "พิม", "แพร", "หญิง", "มายด์", "ปุ๊ก", "ก้อย", "ตูน", "เจน", "แพท", "มุก", "อร", "รัตน์", "วิภา", "สุ", "ดา",
-    // เพิ่มเติม: กลุ่มชื่อ Unisex หรือชื่อจริงสั้นๆ ที่ดูเป็นทางการขึ้นมานิดหน่อย
-    "ภัทร", "กานต์", "รวิ", "ธาม", "ศร", "อิน", "ชล", "วศิน", "ธร", "พอร์ช", "ปราชญ์", "จิณณ์"
-];
+        "กิตติ", "สมชาย", "อารยา", "จิราพร", "วิทย์", "พลอย", "ณัฐ", "ชัย", "มินท์", "เอก", "จอย", "แอน",
+        "ภูมิ", "ศักดิ์", "วีระ", "ตั้ม", "บอย", "เก่ง", "นนท์", "พีร์", "ก้อง", "ต้น", "เต้ย", "แบงค์", "อาร์ต", "ป๊อป", "วิน", "แม็ค", "โอ๊ต", "บอส", "เจมส์", "พงศ์", "วุฒิ", "กฤษณ์", "ท็อป", "พีท", "นพ",
+        "เมย์", "นุ่น", "โบว์", "แนน", "ฟ้า", "น้ำ", "ป่าน", "ตาล", "กิ๊ฟ", "ส้ม", "ชมพู่", "พิม", "แพร", "หญิง", "มายด์", "ปุ๊ก", "ก้อย", "ตูน", "เจน", "แพท", "มุก", "อร", "รัตน์", "วิภา", "สุ", "ดา",
+        "ภัทร", "กานต์", "รวิ", "ธาม", "ศร", "อิน", "ชล", "วศิน", "ธร", "พอร์ช", "ปราชญ์", "จิณณ์"
+    ];
     const p_name = `${namePrefix}${pickStr(mockNames)} [${selectedStage.desc} - ${selectedJob.class}]`;
 
     // 🌟 ยัดข้อมูลทั้งหมดลงฟอร์ม
-        // กำหนดค่าครองชีพพื้นฐานตาม Tier ของจังหวัด
-        const highCostProvs = ["กรุงเทพมหานคร", "นนทบุรี", "ปทุมธานี", "สมุทรปราการ", "ภูเก็ต", "ชลบุรี", "ระยอง"];
-        const midCostProvs = ["เชียงใหม่", "ขอนแก่น", "นครราชสีมา", "สงขลา", "สุราษฎร์ธานี", "พระนครศรีอยุธยา"];
-        const selectedProv = pickStr(provs);
-        let livingCostByProvince = 15000; // Tier 3: จังหวัดทั่วไป
-        if (highCostProvs.includes(selectedProv)) {
-            livingCostByProvince = 30000; // Tier 1: เมืองค่าครองชีพสูง
-        } else if (midCostProvs.includes(selectedProv)) {
-            livingCostByProvince = 22000; // Tier 2: หัวเมืองใหญ่
-        }
+    const highCostProvs = ["กรุงเทพมหานคร", "นนทบุรี", "ปทุมธานี", "สมุทรปราการ", "ภูเก็ต", "ชลบุรี", "ระยอง"];
+    const midCostProvs = ["เชียงใหม่", "ขอนแก่น", "นครราชสีมา", "สงขลา", "สุราษฎร์ธานี", "พระนครศรีอยุธยา"];
+    const selectedProv = pickStr(provs);
+    let livingCostByProvince = 15000; 
+    if (highCostProvs.includes(selectedProv)) {
+        livingCostByProvince = 30000; 
+    } else if (midCostProvs.includes(selectedProv)) {
+        livingCostByProvince = 22000; 
+    }
         
     const data = {
         p_name: p_name,
@@ -5415,30 +4755,124 @@ function classifyUserKMeans(age, inc, nw, risk, dti, recency, frequency, discipl
     });
 
     let genInc = [{catValue: "รายได้จากการทำงาน", catText: "รายได้จากการทำงาน", name: "รายได้หลัก", val: inc}];
-        if (isWealthy || selectedJob.class.includes("Rentier")) {
-            let passiveVal = roundTo(inc * (rand(10, 40) / 100), 5000);
-            genInc.push({catValue: "รายได้จากสินทรัพย์", catText: "รายได้จากสินทรัพย์", name: "ค่าเช่า/เงินปันผล", val: passiveVal});
-        }
+    if (isWealthy || selectedJob.class.includes("Rentier")) {
+        let passiveVal = roundTo(inc * (rand(10, 40) / 100), 5000);
+        genInc.push({catValue: "รายได้จากสินทรัพย์", catText: "รายได้จากสินทรัพย์", name: "ค่าเช่า/เงินปันผล", val: passiveVal});
+    }
     
-    // โหลดลงตาราง (อิงฟังก์ชันเดิม 100%)
+    // โหลดลงตารางปกติ
     loadStandardRows('c_assets', cAssets.map(x => ({catValue: x.cat, catText: x.cat, name: x.name, val: x.val})), ['ชื่อรายการ', 'มูลค่า (บาท)'], 'ast_list');
     loadStandardRows('c_liab', cLiab.map(x => ({catValue: x.cat, catText: x.cat, name: x.name, val: x.val})), ['ชื่อรายการ', 'ยอดคงเหลือ (บาท)'], 'liab_list');
     loadStandardRows('c_inc', genInc, ['ชื่อรายการ', 'จำนวน (บาท/เดือน)'], 'inc_list');
     loadStandardRows('c_exp', cExp.map(x => ({catValue: x.cat, catText: x.cat, name: x.name, val: x.val})), ['ชื่อรายการ', 'จำนวน (บาท/เดือน)'], 'exp_list');
-
-    cIns.forEach(vals => {
-        if (vals[0] === 'สัญญาหลัก' && typeof addBasePolicy === 'function') {
-            addBasePolicy(vals[2], vals[1], vals[3].toString(), vals[7].toString(), vals[5], vals[6], vals[4].toString());
-        } else if (vals[0] === 'สัญญาเพิ่มเติม' && typeof addRiderPolicy === 'function') {
-            addRiderPolicy(vals[2], vals[3].toString(), vals[7].toString());
-        }
-    });
-
+    
+    let cGoals = [];
+    if (dep > 0) {cGoals.push(["ทุนการศึกษาบุตร", roundTo(1000000 * dep, 100000), rand(5, 15), 1]);} 
+    if (age >= 25 && age <= 40 && inc >= 30000) {cGoals.push(["ดาวน์บ้าน / ซื้อที่อยู่อาศัย", roundTo(inc * 25, 100000), rand(3, 7), 2]);} 
     cGoals.forEach(vals => addCustomRow('c_goals', ['ชื่อเป้าหมาย (Specific)', 'จำนวนเงินที่ต้องการ (Measurable)', 'ระยะเวลา/ปี (Time-bound)', 'ระดับความสำคัญ (1=สูงสุด)'], vals, ['goal_list', '', '', '']));
     cInvest.forEach(vals => addInvestRow(vals[0], vals[1], vals[2], vals[3]));
 
+    // ==========================================
+    // 🚨 8. จำลองพอร์ตกรมธรรม์เดิม (ใช้วิธี UI Binding แบบดั้งเดิม)
+    // ==========================================
+    let currentYearThai = new Date().getFullYear() + 543;
+
+    if(inc > 15000 && rand(1,10) > 2) { 
+        let maxPolicyAge = Math.max(1, age - 20); 
+        let policyAge = rand(1, Math.min(12, maxPolicyAge)); 
+        let issueAge = age - policyAge; 
+
+        let eligibleBases = Object.entries(aiaBaseProductMatrix).filter(([name, attr]) => {
+            if (attr.businessRule) {
+                if (attr.businessRule.minAge !== undefined && issueAge < attr.businessRule.minAge) return false;
+                if (attr.businessRule.maxAge !== undefined && issueAge > attr.businessRule.maxAge) return false;
+            }
+            if ((name.includes("Senior") || name.includes("ซีเนียร์")) && issueAge < 50) return false;
+            if (name.includes("Kids") && issueAge > 15) return false;
+            let isUnitLinked = (attr.type && attr.type.includes("Unit-Linked")) || name.includes("Issara");
+            if (isUnitLinked && issueAge < 18) return false;
+            let minSA = attr.minSA || 100000;
+            let estPrem = minSA * 0.03; 
+            if (estPrem > (inc * 12) * 0.15) return false; 
+            if (attr.targetTier === "HNW" && !isWealthy) return false;
+            if (attr.targetTier === "Mass" && isWealthy) return false;
+            return true; 
+        });
+
+        if(eligibleBases.length > 0) {
+            let selectedBase = pickStr(eligibleBases);
+            let baseName = selectedBase[0];
+            let baseDef = selectedBase[1];
+            let minSA = baseDef.minSA || 100000;
+            let maxSA = baseDef.maxSA || (inc * 100); 
+            let wlVal = Math.max(minSA, roundTo(inc * rand(5, 20), 50000)); 
+            if(wlVal > maxSA) wlVal = maxSA; 
+            let wlPrem = roundTo(wlVal * 0.03, 1000); 
+            let baseType = baseDef.type || 'ตลอดชีพ/สะสมทรัพย์';
+            let startYear = currentYearThai - policyAge;
+            let endYear = currentYearThai + 20; 
+            
+            let csv = 0;
+            if (baseType !== "Term" && baseDef.hasCashValue !== false && policyAge >= 2) { 
+                let totalPremiumPaid = wlPrem * policyAge; 
+                csv = roundTo(totalPremiumPaid * Math.min(0.85, (policyAge * 0.08)), 1000);
+                if(csv > wlVal) csv = wlVal; 
+            }
+
+            // 🎯 ท่าไม้ตายดั้งเดิม: สร้าง Base Plan และเก็บ Element ปุ่มไว้เลย!
+            if (typeof addBasePolicy === 'function') {
+                let p1 = addBasePolicy(`${baseName} (เดิม)`, baseType, wlVal.toString(), wlPrem.toString(), startYear, endYear, csv.toString());
+                
+                // --- สุ่มและเพิ่ม Rider ลงไปในปุ่มของ p1 ทันที! ---
+                if (p1 && inc > 15000) {
+                    let btn = p1.querySelector('button'); // ดึงปุ่ม "เพิ่มสัญญาเพิ่มเติม" ของกล่องนั้นมา
+                    let targetTier = isWealthy ? "Premium" : (inc > 50000 ? "Standard" : pickStr(["Economy", "Entry", "Standard"]));
+                    const checkRiderAgeLimit = (attr) => (!attr.businessRule || ((attr.businessRule.minAge === undefined || issueAge >= attr.businessRule.minAge) && (attr.businessRule.maxAge === undefined || issueAge <= attr.businessRule.maxAge)));
+
+                    // สุขภาพ
+                    if(rand(1,10) > 3) { 
+                        let hOpts = Object.entries(aiaRiderMatrix).filter(([k, attr]) => attr.category === "Health" && checkRiderAgeLimit(attr));
+                        let tMatch = hOpts.filter(([k, attr]) => !attr.tier || attr.tier === targetTier);
+                        if (tMatch.length > 0) hOpts = tMatch;
+                        if(hOpts.length > 0 && typeof addRiderRow === 'function') {
+                            let [hName, hDef] = pickStr(hOpts);
+                            let hSA = hDef.defaultSA || (isWealthy ? 15000000 : 5000000);
+                            let hPrem = roundTo((inc * 12) * (isWealthy ? 0.03 : 0.05), 1000); 
+                            addRiderRow(btn, `${hName} (เดิม)`, 'สุขภาพ (Health)', hSA.toString(), hPrem.toString());
+                        }
+                    }
+
+                    // ชดเชยรายได้
+                    if(rand(1,10) > 5) { 
+                        let hbOpts = Object.entries(aiaRiderMatrix).filter(([k, attr]) => attr.category === "Compensation" && checkRiderAgeLimit(attr));
+                        if(hbOpts.length > 0 && typeof addRiderRow === 'function') {
+                            let [hbName, hbDef] = pickStr(hbOpts);
+                            let hbSA = Math.max(hbDef.businessRule?.min || 500, Math.min(hbDef.businessRule?.max || (inc / 30), roundTo(inc / 30, 500))); 
+                            addRiderRow(btn, `${hbName} (เดิม)`, 'ชดเชยรายได้ (HB)', hbSA.toString(), roundTo(hbSA * 4, 100).toString());
+                        }
+                    }
+                    
+                    // โรคร้ายแรง
+                    let numCI = rand(0, 2);
+                    if(numCI > 0) {
+                        let ciOpts = Object.entries(aiaRiderMatrix).filter(([k, attr]) => attr.category === "CI" && checkRiderAgeLimit(attr));
+                        if(ciOpts.length > 0 && typeof addRiderRow === 'function') {
+                            ciOpts.sort(() => 0.5 - Math.random()); 
+                            let limit = Math.min(numCI, ciOpts.length); 
+                            for(let i = 0; i < limit; i++) {
+                                let [ciName, ciDef] = ciOpts[i];
+                                let ciSA = Math.max(ciDef.businessRule?.min || 500000, roundTo((inc * 12) * rand(3, 10), 100000)); 
+                                addRiderRow(btn, `${ciName} (เดิม)`, 'โรคร้ายแรง (CI)', ciSA.toString(), roundTo(ciSA * 0.005, 500).toString());
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     if(typeof syncAgeToRisk === 'function') syncAgeToRisk();
-    alert(`✅ สร้างกรณีศึกษา: ${p_name} สำเร็จ!\n\n(AI จำลองข้อมูลระดับ 7 มิติ: กลุ่มความมั่งคั่ง, ช่วงวัย, วินัย/ความเสี่ยง, ภาระหนี้ซ่อนเร้น, โครงสร้างรายจ่าย, พอร์ตลงทุน, และเป้าหมายชีวิต ครอบคลุมความหลากหลายระดับพันรูปแบบ)`);
+    alert(`✅ สร้างกรณีศึกษา: ${p_name} สำเร็จ!\n\n(AI จำลองข้อมูลระดับ 7 มิติ พร้อมสุ่มพอร์ตกรมธรรม์เดิมให้เรียบร้อย)`);
 }
 //-------------------------- สิ้นสุดการสร้างกรณีศึกษา -------------------------------------------//
 
@@ -6000,7 +5434,7 @@ function classifyUserKMeans(age, inc, nw, risk, dti, recency, frequency, discipl
 
         const expSave = getSumByCat('c_exp', 'รายจ่ายเพื่อออม/ลงทุน');
         const expDebt = getSumByCat('c_exp', 'เงินชำระคืนหนี้สิน');
-        let expLive = getSumByCat('c_exp', 'รายจ่ายประจำ/ใช้ชีวิต');
+        const expLive = getSumByCat('c_exp', 'รายจ่ายประจำ/ใช้ชีวิต');
         const expTax = getSumByCat('c_exp', 'ภาษี');
         const expOther = getSumByCat('c_exp', 'รายจ่ายอื่น');
 
@@ -9781,6 +9215,8 @@ async function recalcMonteCarloAuto() {
     // 3. ฟังก์ชันคณิตศาสตร์ของ Neural Network (ไม่ต้องง้อไลบรารีภายนอก)
     const relu = (x) => Math.max(0, x);
     const sigmoid = (x) => 1 / (1 + Math.exp(-x));
+    const reluArray = (arr) => arr.map(relu);
+    const sigmoidArray = (arr) => arr.map(sigmoid);
 
     function dotProductBias(inputs, weights, biases) {
         let output = new Array(biases.length).fill(0);
@@ -10027,8 +9463,8 @@ function toggleAdvancedEcon() {
             
             "k-means-8d": {
                 icon: "🧬",
-                title: "การจัดกลุ่มพฤติกรรมลูกค้า (8D K-Means Clustering)",
-                content: `อัลกอริทึม Machine Learning แบบ Unsupervised ที่ใช้จัดกลุ่มพฤติกรรมลูกค้าเชิงลึก (Persona Profiling) โดยประมวลผลจากข้อมูล 8 มิติ ได้แก่:<br>
+                title: "การจัดกลุ่มลูกค้า (8D K-Means Clustering)",
+                content: `อัลกอริทึม Machine Learning แบบ Unsupervised ที่ใช้จัดกลุ่มลูกค้าเชิงลึก (Persona Profiling) โดยประมวลผลจากข้อมูล 8 มิติ ได้แก่:<br>
                 <ul class="list-disc list-inside mt-2 text-sm text-gray-700 space-y-1">
                     <li><b>Age (อายุ)</b> และ <b>Income (รายได้)</b></li>
                     <li><b>Net Worth (ความมั่งคั่ง)</b> และ <b>DTI (ภาระหนี้)</b></li>
@@ -10655,7 +10091,7 @@ window.checkLogin = function() {
             const loginTitle = document.querySelector('#loginScreen h2');
             const loginDesc = document.querySelector('#loginScreen p');
             if(loginTitle) loginTitle.innerText = "FA Security System";
-            if(loginDesc) loginDesc.innerHTML = "กรุณาใส่รหัส PIN เพื่อเข้าใช้งานระบบ<br><span class='text-xs text-blue-500'>(รหัสเริ่มต้น: 123456)</span>";
+            if(loginDesc) loginDesc.innerHTML = "กรุณาใส่รหัส PIN เพื่อเข้าใช้งานระบบ<br><span>";
 
         }, 400);
 
