@@ -1,5 +1,5 @@
 // =====================================================================
-// 📈 FA ULTIMATE PLANNER & DASHBOARD ENGINE (V7.2 - GitHub/iPad Hotfix)
+// 📈 FA ULTIMATE PLANNER & DASHBOARD ENGINE (V7.3 - Popup Blocker Bypass)
 // =====================================================================
 
 async function fetchAllCRMDataForDashboard() {
@@ -25,6 +25,22 @@ async function fetchAllCRMDataForDashboard() {
 }
 
 async function openExecutiveDashboard() {
+    // 🌟 1. [HOTFIX] เปิดหน้าต่างใหม่ทันทีที่กดปุ่ม (จองคิวเบราว์เซอร์ไม่ให้โดนบล็อก Pop-up)
+    let dashWin = window.open('', '_blank');
+    
+    // 🌟 ดักจับกรณีผู้ใช้ตั้งค่าปิดกั้น Pop-up ไว้แบบ 100%
+    if (!dashWin) {
+        alert("⚠️ เบราว์เซอร์ของคุณบล็อกการเปิดหน้าต่างใหม่ (Pop-up blocker)\nกรุณาอนุญาต (Allow Pop-ups) ให้เว็บไซต์นี้ก่อนครับ");
+        return;
+    }
+
+    // 🌟 เขียนหน้าต่างโหลดข้อมูลรอไว้ก่อน
+    dashWin.document.write(`
+        <div style="display:flex; justify-content:center; items-align:center; height:100vh; font-family:sans-serif; color:#475569;">
+            <h2 style="margin-top:20%;">⏳ กำลังประมวลผลข้อมูล Executive Dashboard...</h2>
+        </div>
+    `);
+
     try {
         const clients = await fetchAllCRMDataForDashboard();
         
@@ -59,11 +75,10 @@ async function openExecutiveDashboard() {
             }
         });
 
-        // 🌟 [HOTFIX] เปลี่ยนวิธีส่ง Data ข้ามหน้าจอเป็น localStorage 
+        // แพ็กข้อมูลฝากไว้ใน LocalStorage เพื่อความปลอดภัยตอนข้ามหน้าจอ (แก้บั๊ก Safari XSS)
         localStorage.setItem('FA_Temp_Dashboard_Data', JSON.stringify(crmStats));
-
-        // สร้าง URL แบบ Blob สำหรับหน้าต่างใหม่ (ลดปัญหา Safari บล็อก document.write)
-        let htmlContent = `
+        
+        let html = `
         <!DOCTYPE html>
         <html lang="th">
         <head>
@@ -83,12 +98,6 @@ async function openExecutiveDashboard() {
                 .task-cb { width: 1.25rem; height: 1.25rem; cursor: pointer; accent-color: #3b82f6; }
                 input[type="text"], input[type="number"], input[type="date"], select { background: #f8fafc; color: #1e293b; border: 1px solid #cbd5e1; padding: 6px 10px; border-radius: 6px; font-size: 12px; width: 100%; }
                 input:focus, select:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2); }
-                .dark-input { background: #1e293b !important; color: white !important; border-color: #334155 !important; }
-                @media print {
-                    .no-print { display: none !important; }
-                    body { background-color: white; padding: 0; }
-                    .shadow-xl, .shadow-sm { box-shadow: none !important; border: 1px solid #e2e8f0; }
-                }
             </style>
         </head>
         <body class="p-4 md:p-6 lg:p-8">
@@ -154,18 +163,34 @@ async function openExecutiveDashboard() {
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <div class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-indigo-100 flex flex-col overflow-hidden">
                         <div class="bg-indigo-50 border-b border-indigo-100 p-4 flex justify-between items-center no-print">
-                            <h2 class="font-bold text-indigo-900 flex items-center gap-2"><span>🗓️</span> Sale Builder (แผนรายสัปดาห์)</h2>
+                            <h2 class="font-bold text-indigo-900 flex items-center gap-2"><span>🗓️</span> Sale Builder (แผนและผลงานรายเดือน)</h2>
                             <div class="flex items-center gap-3 bg-white rounded-lg border border-indigo-200 px-2 py-1 shadow-sm">
                                 <button onclick="changeMonth(-1)" class="text-indigo-600 hover:bg-indigo-100 p-1 rounded font-bold">&lt;</button>
                                 <span id="ui_view_month" class="text-sm font-bold w-24 text-center text-indigo-900"></span>
                                 <button onclick="changeMonth(1)" class="text-indigo-600 hover:bg-indigo-100 p-1 rounded font-bold">&gt;</button>
                             </div>
                         </div>
+
+                        <div class="p-4 border-b border-slate-100 space-y-3 bg-white">
+                            <div>
+                                <div class="flex justify-between text-xs mb-1"><span class="text-slate-500 font-bold">เป้า FYP เดือนนี้: <span id="ui_m_tgt_fyp"></span></span> <span id="ui_m_act_fyp" class="font-bold text-emerald-600"></span></div>
+                                <div class="w-full bg-slate-100 rounded-full h-1.5"><div id="bar_m_fyp" class="bg-emerald-500 h-1.5 rounded-full transition-all"></div></div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-xs mb-1"><span class="text-slate-500 font-bold">เป้า FYC เดือนนี้: <span id="ui_m_tgt_fyc"></span></span> <span id="ui_m_act_fyc" class="font-bold text-blue-600"></span></div>
+                                <div class="w-full bg-slate-100 rounded-full h-1.5"><div id="bar_m_fyc" class="bg-blue-500 h-1.5 rounded-full transition-all"></div></div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-xs mb-1"><span class="text-slate-500 font-bold">เป้า Case เดือนนี้: <span id="ui_m_tgt_cases"></span></span> <span id="ui_m_act_cases" class="font-bold text-purple-600"></span></div>
+                                <div class="w-full bg-slate-100 rounded-full h-1.5"><div id="bar_m_cases" class="bg-purple-500 h-1.5 rounded-full transition-all"></div></div>
+                            </div>
+                        </div>
+
                         <div class="p-0 flex-grow overflow-x-auto">
                             <table class="w-full text-sm text-center">
-                                <thead class="bg-indigo-900 text-white text-xs">
+                                <thead class="bg-indigo-900 text-white text-xs whitespace-nowrap">
                                     <tr>
-                                        <th class="py-3 px-2 border-r border-indigo-700 w-20">สัปดาห์ที่</th>
+                                        <th class="py-3 px-2 border-r border-indigo-700 w-16">สัปดาห์</th>
                                         <th class="py-3 px-2 border-r border-indigo-700 bg-indigo-800">เป้า FYP</th>
                                         <th class="py-3 px-2 border-r border-indigo-700 text-emerald-300">ทำได้ FYP</th>
                                         <th class="py-3 px-2 border-r border-indigo-700 bg-indigo-800">เป้า FYC</th>
@@ -174,11 +199,10 @@ async function openExecutiveDashboard() {
                                         <th class="py-3 px-2 text-purple-300">ทำได้ Case</th>
                                     </tr>
                                 </thead>
-                                <tbody id="ui_weekly_table" class="divide-y divide-slate-100">
-                                    </tbody>
-                                <tfoot class="bg-slate-50 font-bold border-t-2 border-slate-200">
+                                <tbody id="ui_weekly_table" class="divide-y divide-slate-100"></tbody>
+                                <tfoot class="bg-slate-50 font-bold border-t-2 border-slate-200 text-xs">
                                     <tr>
-                                        <td class="py-3 px-2 border-r text-slate-700">รวมทั้งเดือน</td>
+                                        <td class="py-3 px-2 border-r text-slate-700">รวม</td>
                                         <td class="py-3 px-2 border-r text-slate-500" id="ui_m_t_fyp">0</td>
                                         <td class="py-3 px-2 border-r text-emerald-600" id="ui_m_a_fyp">0</td>
                                         <td class="py-3 px-2 border-r text-slate-500" id="ui_m_t_fyc">0</td>
@@ -193,16 +217,15 @@ async function openExecutiveDashboard() {
 
                     <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 flex flex-col">
                         <div class="bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl p-4 border border-amber-200 mb-6 relative">
-                            <p class="text-[10px] text-amber-600 font-bold uppercase mb-1">🔥 เป้าหมายปลุกพลังประจำวัน</p>
-                            <textarea id="ui_cta" class="w-full bg-transparent border-none text-slate-800 font-bold text-base focus:outline-none resize-none h-12 custom-scrollbar" placeholder="พิมพ์คติประจำใจที่นี่..."></textarea>
+                            <p class="text-[10px] text-amber-600 font-bold uppercase mb-1">🔥 เป้าหมายปลุกพลัง (Action Plan)</p>
+                            <textarea id="ui_cta" class="w-full bg-transparent border-none text-slate-800 font-bold text-sm focus:outline-none resize-none h-16 custom-scrollbar" placeholder="พิมพ์คติประจำใจ หรือเป้าหมายสัปดาห์นี้..."></textarea>
                         </div>
                         
                         <h3 class="font-bold text-sm text-slate-800 mb-3 flex justify-between items-center border-b pb-2">
                             <span>☑️ To-Do / Follow up</span>
                             <button onclick="addChecklist()" class="text-[10px] bg-slate-800 hover:bg-slate-700 text-white px-2 py-1 rounded no-print">+ เพิ่มงาน</button>
                         </h3>
-                        <div id="ui_checklists" class="space-y-2 overflow-y-auto max-h-[220px] custom-scrollbar pr-1 flex-grow">
-                            </div>
+                        <div id="ui_checklists" class="space-y-2 overflow-y-auto max-h-[300px] custom-scrollbar pr-1 flex-grow"></div>
                     </div>
                 </div>
 
@@ -280,18 +303,10 @@ async function openExecutiveDashboard() {
             </div>
 
             <script>
-                // 🌟 [HOTFIX] รับข้อมูลผ่าน localStorage เพื่อแก้บั๊ก iPad Safari XSS
                 const savedCrmData = localStorage.getItem('FA_Temp_Dashboard_Data');
                 let crmData = { personas: {}, productMix: {}, funnel: {} };
-                
-                try {
-                    if (savedCrmData) {
-                        crmData = JSON.parse(savedCrmData);
-                        localStorage.removeItem('FA_Temp_Dashboard_Data'); // ใช้เสร็จทำลายทิ้ง
-                    }
-                } catch (e) { console.error("Error parsing CRM Data:", e); }
+                try { if (savedCrmData) { crmData = JSON.parse(savedCrmData); localStorage.removeItem('FA_Temp_Dashboard_Data'); } } catch (e) { }
 
-                // อัปเดตตัวเลข Funnel
                 document.getElementById('crm_funnel_0').innerText = crmData.funnel['ผู้มุ่งหวัง'] || 0;
                 document.getElementById('crm_funnel_1').innerText = crmData.funnel['นำเสนอแผน'] || 0;
                 document.getElementById('crm_funnel_2').innerText = crmData.funnel['กำลังติดตาม'] || 0;
@@ -303,16 +318,14 @@ async function openExecutiveDashboard() {
                 const chartColors = ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#f43f5e', '#14b8a6', '#6366f1'];
                 const productColors = ['#10b981', '#3b82f6', '#f59e0b', '#8b5cf6', '#9ca3af'];
 
-                // --- 🌟 LOCAL STORAGE MANAGEMENT ---
                 const DB_KEY = 'FA_Ultimate_Planner_V5';
                 let plannerData = JSON.parse(localStorage.getItem(DB_KEY)) || {
                     targets: { fyp: 1000000, fyc: 300000, cases: 50, recruit: 5 },
-                    salesLedger: [], // {id, date, type, name, prod, sa, fyp, fyc, isNewCase}
+                    salesLedger: [], 
                     checklists: [ { id: Date.now(), text: "ตั้งเป้าหมายประจำปีให้เรียบร้อย", deadline: "2026-12-31", done: false } ],
                     cta: "ฉันคือนักขายระดับท็อป!"
                 };
 
-                // Helper: Upgrade old data format if needed
                 plannerData.salesLedger.forEach(s => { if(s.isNewCase === undefined) s.isNewCase = true; });
 
                 let viewDate = new Date();
@@ -338,7 +351,6 @@ async function openExecutiveDashboard() {
                     initUI();
                 };
 
-                // --- GLOBAL STATS CACHE สำหรับ PRINT ---
                 window.currentStats = {};
 
                 function initUI() {
@@ -359,40 +371,45 @@ async function openExecutiveDashboard() {
 
                         if (isThisYear) {
                             tFYP += s.fyp; tFYC += s.fyc;
-                            if (s.type === 'sale' && s.isNewCase !== false) tCases++;
+                            if (s.type === 'sale' && s.isNewCase !== false && s.isNewCase !== 'false') tCases++;
                             if (s.type === 'recruit') tRecruit++;
                         }
 
                         if (isThisMonth) {
                             mFYP += s.fyp; mFYC += s.fyc;
-                            if (s.type === 'sale' && s.isNewCase !== false) mCases++;
+                            if (s.type === 'sale' && s.isNewCase !== false && s.isNewCase !== 'false') mCases++;
 
                             let d = sd.getDate();
                             let wIdx = d <= 7 ? 0 : d <= 14 ? 1 : d <= 21 ? 2 : 3;
                             wData[wIdx].fyp += s.fyp;
                             wData[wIdx].fyc += s.fyc;
-                            if (s.type === 'sale' && s.isNewCase !== false) wData[wIdx].case += 1;
+                            if (s.type === 'sale' && s.isNewCase !== false && s.isNewCase !== 'false') wData[wIdx].case += 1;
                         }
                     });
 
-                    // Store global for Print
-                    window.currentStats = {
-                        year: vYear, monthStr: monthNames[vMonth],
-                        tFYP, tFYC, tCases, tRecruit, mFYP, mFYC, mCases
-                    };
+                    window.currentStats = { year: vYear, monthStr: monthNames[vMonth], tFYP, tFYC, tCases, tRecruit, mFYP, mFYC, mCases };
 
-                    // Update Year KPIs Progress Bars
                     updateKPI('fyp', tFYP, plannerData.targets.fyp);
                     updateKPI('fyc', tFYC, plannerData.targets.fyc);
                     updateKPI('cases', tCases, plannerData.targets.cases);
                     updateKPI('recruit', tRecruit, plannerData.targets.recruit);
 
-                    // Update Monthly Sale Builder
                     let tgtMFYP = plannerData.targets.fyp / 12;
                     let tgtMFYC = plannerData.targets.fyc / 12;
                     let tgtMCase = plannerData.targets.cases / 12;
                     
-                    // Update Weekly Table
+                    document.getElementById('ui_m_tgt_fyp').innerText = tgtMFYP.toLocaleString('th-TH',{maximumFractionDigits:0}) + ' ฿';
+                    document.getElementById('ui_m_act_fyp').innerText = mFYP.toLocaleString('th-TH') + ' ฿';
+                    document.getElementById('bar_m_fyp').style.width = Math.min((tgtMFYP>0 ? (mFYP/tgtMFYP)*100 : 0), 100) + '%';
+
+                    document.getElementById('ui_m_tgt_fyc').innerText = tgtMFYC.toLocaleString('th-TH',{maximumFractionDigits:0}) + ' ฿';
+                    document.getElementById('ui_m_act_fyc').innerText = mFYC.toLocaleString('th-TH') + ' ฿';
+                    document.getElementById('bar_m_fyc').style.width = Math.min((tgtMFYC>0 ? (mFYC/tgtMFYC)*100 : 0), 100) + '%';
+
+                    document.getElementById('ui_m_tgt_cases').innerText = tgtMCase.toFixed(1) + ' ราย';
+                    document.getElementById('ui_m_act_cases').innerText = mCases + ' ราย';
+                    document.getElementById('bar_m_cases').style.width = Math.min((tgtMCase>0 ? (mCases/tgtMCase)*100 : 0), 100) + '%';
+
                     let wHtml = '';
                     let tgtWFYP = tgtMFYP / 4;
                     let tgtWFYC = tgtMFYC / 4;
@@ -444,11 +461,8 @@ async function openExecutiveDashboard() {
                     }
                 };
 
-                document.getElementById('ui_cta').addEventListener('input', (e) => {
-                    plannerData.cta = e.target.value; saveData();
-                });
+                document.getElementById('ui_cta').addEventListener('input', (e) => { plannerData.cta = e.target.value; saveData(); });
 
-                // --- Sales Ledger System ---
                 window.addSaleRecord = function() {
                     let type = document.getElementById('s_type').value;
                     let date = document.getElementById('s_date').value;
@@ -479,13 +493,13 @@ async function openExecutiveDashboard() {
                     let sorted = [...plannerData.salesLedger].sort((a,b) => new Date(b.date) - new Date(a.date));
                     let tbody = document.getElementById('ui_sales_table');
                     if(sorted.length === 0) {
-                        tbody.innerHTML = '<tr><td colspan="8" class="px-4 py-6 text-center text-slate-400 text-xs">ยังไม่มีบันทึกผลงาน</td></tr>';
-                        return;
+                        tbody.innerHTML = '<tr><td colspan="8" class="px-4 py-6 text-center text-slate-400 text-xs">ยังไม่มีบันทึกผลงาน</td></tr>'; return;
                     }
                     tbody.innerHTML = sorted.map(s => {
                         let isSale = s.type === 'sale';
                         let typeBadge = isSale ? '<span class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded text-[10px] font-bold">Sale</span>' : '<span class="bg-amber-100 text-amber-700 px-2 py-0.5 rounded text-[10px] font-bold">Recruit</span>';
-                        let caseBadge = (!isSale || s.isNewCase === false) ? '<br><span class="text-[9px] text-slate-400">(Renewal/ไม่นับเคส)</span>' : '';
+                        let isNew = (s.isNewCase !== false && s.isNewCase !== 'false');
+                        let caseBadge = (!isSale || !isNew) ? '<br><span class="text-[9px] text-slate-400">(Renewal/ไม่นับเคส)</span>' : '';
                         
                         return \`
                             <tr class="hover:bg-slate-50 transition border-b border-slate-100">
@@ -504,13 +518,8 @@ async function openExecutiveDashboard() {
 
                 function renderChecklists() {
                     const c = document.getElementById('ui_checklists');
-                    if(plannerData.checklists.length === 0) {
-                        c.innerHTML = '<p class="text-xs text-slate-500 italic text-center mt-4">ยังไม่มีเป้าหมาย</p>'; return;
-                    }
-                    let sorted = [...plannerData.checklists].sort((a,b) => {
-                        if(a.done !== b.done) return a.done ? 1 : -1;
-                        return new Date(a.deadline) - new Date(b.deadline);
-                    });
+                    if(plannerData.checklists.length === 0) { c.innerHTML = '<p class="text-xs text-slate-500 italic text-center mt-4">ยังไม่มีเป้าหมาย</p>'; return; }
+                    let sorted = [...plannerData.checklists].sort((a,b) => { if(a.done !== b.done) return a.done ? 1 : -1; return new Date(a.deadline) - new Date(b.deadline); });
                     c.innerHTML = sorted.map(t => \`
                         <div class="p-2 border-b border-slate-100 flex justify-between items-center group">
                             <div class="flex items-center gap-2 overflow-hidden">
@@ -531,40 +540,31 @@ async function openExecutiveDashboard() {
                     plannerData.checklists.push({ id: Date.now().toString(), text: text, deadline: date, done: false });
                     saveData(); renderChecklists();
                 };
+                window.toggleCheck = function(id, isChecked) { let item = plannerData.checklists.find(x => x.id === id); if(item) { item.done = isChecked; saveData(); renderChecklists(); } };
+                window.deleteCheck = function(id) { if(confirm("ลบรายการนี้ใช่หรือไม่?")) { plannerData.checklists = plannerData.checklists.filter(x => x.id !== id); saveData(); renderChecklists(); } };
 
-                window.toggleCheck = function(id, isChecked) {
-                    let item = plannerData.checklists.find(x => x.id === id);
-                    if(item) { item.done = isChecked; saveData(); renderChecklists(); }
-                };
-
-                window.deleteCheck = function(id) {
-                    if(confirm("ลบรายการนี้ใช่หรือไม่?")) {
-                        plannerData.checklists = plannerData.checklists.filter(x => x.id !== id);
-                        saveData(); renderChecklists();
-                    }
-                };
-
-                // --- 🌟 FORMAL PRINT REPORT GENERATOR ---
+                // --- 🌟 FORMAL PRINT REPORT GENERATOR (A4 Landscape, Editable) ---
                 window.printFormalReport = function() {
                     let printWin = window.open('', '_blank');
-                    let ds = window.currentStats; // Data from current view year
+                    let ds = window.currentStats; 
                     let printDate = new Date().toLocaleDateString('th-TH', {year:'numeric', month:'long', day:'numeric'});
                     
                     let ledgerRows = plannerData.salesLedger.filter(s => new Date(s.date).getFullYear() === ds.year).sort((a,b) => new Date(a.date) - new Date(b.date));
                     let tableHtml = ledgerRows.map(s => {
-                        let typeStr = s.type === 'sale' ? (s.isNewCase !== false ? 'New Case' : 'Renewal') : 'Recruit';
+                        let isNew = (s.isNewCase !== false && s.isNewCase !== 'false');
+                        let typeStr = s.type === 'sale' ? (isNew ? 'New Case' : 'Renewal') : 'Recruit';
                         return \`<tr>
-                            <td style="padding:6px; border-bottom:1px solid #eee;">\${new Date(s.date).toLocaleDateString('th-TH',{day:'2-digit',month:'short'})}</td>
-                            <td style="padding:6px; border-bottom:1px solid #eee; font-weight:bold; color: #475569;">\${typeStr}</td>
-                            <td style="padding:6px; border-bottom:1px solid #eee; font-weight:bold;">\${s.name}</td>
-                            <td style="padding:6px; border-bottom:1px solid #eee;">\${s.prod || '-'}</td>
-                            <td style="padding:6px; border-bottom:1px solid #eee; text-align:right;">\${s.sa ? s.sa.toLocaleString('th-TH') : '-'}</td>
-                            <td style="padding:6px; border-bottom:1px solid #eee; text-align:right; font-weight:bold; color:#059669;">\${s.fyp.toLocaleString('th-TH')}</td>
-                            <td style="padding:6px; border-bottom:1px solid #eee; text-align:right; font-weight:bold; color:#2563eb;">\${s.fyc.toLocaleString('th-TH')}</td>
+                            <td style="padding:8px; border-bottom:1px solid #ddd; text-align:center;">\${new Date(s.date).toLocaleDateString('th-TH',{day:'2-digit',month:'short'})}</td>
+                            <td style="padding:8px; border-bottom:1px solid #ddd; text-align:center; font-weight:bold; color: #475569;">\${typeStr}</td>
+                            <td style="padding:8px; border-bottom:1px solid #ddd; font-weight:bold;">\${s.name}</td>
+                            <td style="padding:8px; border-bottom:1px solid #ddd;">\${s.prod || '-'}</td>
+                            <td style="padding:8px; border-bottom:1px solid #ddd; text-align:right;">\${s.sa ? s.sa.toLocaleString('th-TH') : '-'}</td>
+                            <td style="padding:8px; border-bottom:1px solid #ddd; text-align:right; font-weight:bold; color:#059669;">\${s.fyp.toLocaleString('th-TH')}</td>
+                            <td style="padding:8px; border-bottom:1px solid #ddd; text-align:right; font-weight:bold; color:#2563eb;">\${s.fyc.toLocaleString('th-TH')}</td>
                         </tr>\`;
                     }).join('');
 
-                    if(tableHtml === '') tableHtml = '<tr><td colspan="7" style="text-align:center; padding:15px; color:#999;">ยังไม่มีบันทึกผลงานในปีนี้</td></tr>';
+                    if(tableHtml === '') tableHtml = '<tr><td colspan="7" style="text-align:center; padding:20px; color:#999; font-style:italic;">ยังไม่มีบันทึกผลงานในปีนี้</td></tr>';
 
                     let html = \`
                     <!DOCTYPE html>
@@ -574,75 +574,95 @@ async function openExecutiveDashboard() {
                         <title>FA Business Report - \${ds.year}</title>
                         <style>
                             @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap');
-                            body { font-family: 'Sarabun', sans-serif; font-size: 14px; color: #333; padding: 20px; line-height: 1.5; }
-                            .no-print { display: block; }
-                            @media print {
-                                @page { size: A4 landscape; margin: 10mm; }
-                                .no-print { display: none !important; }
-                            }
-                            h1 { color: #1e3a8a; text-align: center; margin-bottom: 5px; font-size: 24px; }
-                            .subtitle { text-align: center; color: #666; margin-bottom: 20px; font-size: 12px; }
+                            body { font-family: 'Sarabun', sans-serif; font-size: 14px; color: #1e293b; padding: 20px; background: #f8fafc; }
+                            .page-container { background: white; padding: 30px 40px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border-radius: 8px; max-width: 1100px; margin: 0 auto; }
                             
-                            .action-bar { text-align: right; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #eee; }
-                            .btn { padding: 8px 16px; margin-left: 10px; border: none; border-radius: 4px; cursor: pointer; font-family: 'Sarabun', sans-serif; font-size: 14px; font-weight: bold; transition: background-color 0.2s; }
+                            .action-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid #e2e8f0; }
+                            .btn { padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; font-family: 'Sarabun', sans-serif; font-size: 14px; font-weight: bold; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px; }
                             .btn-back { background-color: #f1f5f9; color: #475569; }
                             .btn-back:hover { background-color: #e2e8f0; }
-                            .btn-print { background-color: #2563eb; color: white; }
+                            .btn-print { background-color: #2563eb; color: white; box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2); }
                             .btn-print:hover { background-color: #1d4ed8; }
 
-                            .box-container { display: flex; justify-content: space-between; gap: 15px; margin-bottom: 20px; }
-                            .kpi-box { flex: 1; border: 1px solid #ccc; border-radius: 8px; padding: 15px; text-align: center; background: #f9fafb; }
-                            .kpi-title { font-size: 12px; font-weight: bold; color: #666; }
-                            .kpi-actual { font-size: 20px; font-weight: bold; color: #059669; margin: 5px 0; }
-                            .kpi-target { font-size: 11px; color: #999; }
-                            h2 { font-size: 16px; color: #1e3a8a; border-bottom: 2px solid #1e3a8a; padding-bottom: 5px; margin-top: 20px; }
-                            table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 12px; }
-                            th { background-color: #f1f5f9; padding: 8px; text-align: left; border-bottom: 2px solid #ccc; color: #475569; }
-                            .cta-box { background: #fffbeb; border: 1px solid #fcd34d; padding: 10px; border-radius: 8px; text-align: center; font-weight: bold; color: #b45309; margin-top: 20px;}
+                            h1 { color: #0f172a; text-align: center; margin: 0 0 5px 0; font-size: 26px; text-transform: uppercase; letter-spacing: 1px; }
+                            .subtitle { text-align: center; color: #64748b; margin-bottom: 30px; font-size: 13px; }
+                            
+                            .box-container { display: flex; justify-content: space-between; gap: 20px; margin-bottom: 30px; }
+                            .kpi-box { flex: 1; border: 1px solid #e2e8f0; border-radius: 10px; padding: 15px 20px; text-align: center; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+                            .kpi-title { font-size: 12px; font-weight: bold; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px dashed #e2e8f0; padding-bottom: 5px; margin-bottom: 10px; }
+                            .kpi-actual { font-size: 24px; font-weight: bold; margin: 5px 0; }
+                            .kpi-target { font-size: 12px; color: #94a3b8; }
+                            
+                            h2 { font-size: 16px; color: #1e293b; border-bottom: 2px solid #cbd5e1; padding-bottom: 8px; margin-top: 10px; display: flex; justify-content: space-between; }
+                            
+                            table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 13px; }
+                            th { background-color: #f8fafc; padding: 10px 8px; text-align: left; border-bottom: 2px solid #cbd5e1; color: #334155; font-weight: bold; text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px; }
+                            
+                            .cta-box { background: #f0fdf4; border: 1px dashed #bbf7d0; padding: 15px; border-radius: 8px; text-align: center; font-weight: bold; color: #166534; margin-top: 30px; font-size: 16px; }
+                            
+                            @media print { 
+                                @page { size: A4 landscape; margin: 10mm; } 
+                                body { background: none; padding: 0; }
+                                .page-container { box-shadow: none; max-width: none; padding: 0; }
+                                .no-print { display: none !important; } 
+                                .kpi-box { background: #f8fafc !important; -webkit-print-color-adjust: exact; }
+                                th { background-color: #f1f5f9 !important; -webkit-print-color-adjust: exact; }
+                            }
                         </style>
                     </head>
                     <body>
-                        <div class="no-print action-bar">
-                            <button class="btn btn-back" onclick="window.close()">⬅️ ย้อนกลับ</button>
-                            <button class="btn btn-print" onclick="window.print()">🖨️ สั่งพิมพ์ (A4 แนวนอน)</button>
-                        </div>
+                        <div class="page-container">
+                            <div class="no-print action-bar">
+                                <div><button class="btn btn-back" onclick="window.close()">⬅️ กลับ</button></div>
+                                <div>
+                                    <span style="font-size:12px; color:#64748b; margin-right:10px;">* หากกดพิมพ์แล้วหน้ากระดาษเป็นแนวตั้ง ให้เปลี่ยน Layout เป็น Landscape ในหน้าต่างตั้งค่าพิมพ์</span>
+                                    <button class="btn btn-print" onclick="window.print()">🖨️ สั่งพิมพ์ (A4 แนวนอน)</button>
+                                </div>
+                            </div>
 
-                        <h1>FA Business Executive Report</h1>
-                        <div class="subtitle">รายงานสรุปผลการดำเนินงานประจำปี \${ds.year} | พิมพ์เมื่อ: \${printDate}</div>
-                        
-                        <div class="box-container">
-                            <div class="kpi-box">
-                                <div class="kpi-title">FYP (เบี้ยปีแรก)</div>
-                                <div class="kpi-actual">\${ds.tFYP.toLocaleString('th-TH')} ฿</div>
-                                <div class="kpi-target">เป้าหมาย: \${plannerData.targets.fyp.toLocaleString('th-TH')}</div>
+                            <h1>FA Business Executive Report</h1>
+                            <div class="subtitle">รายงานสรุปผลการดำเนินงานประจำปี \${ds.year} | พิมพ์เมื่อ: \${printDate}</div>
+                            
+                            <div class="box-container">
+                                <div class="kpi-box">
+                                    <div class="kpi-title">FYP (เบี้ยปีแรก)</div>
+                                    <div class="kpi-actual" style="color: #059669;">\${ds.tFYP.toLocaleString('th-TH')} ฿</div>
+                                    <div class="kpi-target">เป้าหมาย: \${plannerData.targets.fyp.toLocaleString('th-TH')}</div>
+                                </div>
+                                <div class="kpi-box">
+                                    <div class="kpi-title">FYC (คอมมิชชัน)</div>
+                                    <div class="kpi-actual" style="color: #2563eb;">\${ds.tFYC.toLocaleString('th-TH')} ฿</div>
+                                    <div class="kpi-target">เป้าหมาย: \${plannerData.targets.fyc.toLocaleString('th-TH')}</div>
+                                </div>
+                                <div class="kpi-box">
+                                    <div class="kpi-title">Total Cases</div>
+                                    <div class="kpi-actual" style="color: #9333ea;">\${ds.tCases} ราย</div>
+                                    <div class="kpi-target">เป้าหมาย: \${plannerData.targets.cases}</div>
+                                </div>
+                                <div class="kpi-box">
+                                    <div class="kpi-title">Recruits</div>
+                                    <div class="kpi-actual" style="color: #d97706;">\${ds.tRecruit} คน</div>
+                                    <div class="kpi-target">เป้าหมาย: \${plannerData.targets.recruit}</div>
+                                </div>
                             </div>
-                            <div class="kpi-box">
-                                <div class="kpi-title">FYC (คอมมิชชัน)</div>
-                                <div class="kpi-actual" style="color: #2563eb;">\${ds.tFYC.toLocaleString('th-TH')} ฿</div>
-                                <div class="kpi-target">เป้าหมาย: \${plannerData.targets.fyc.toLocaleString('th-TH')}</div>
-                            </div>
-                            <div class="kpi-box">
-                                <div class="kpi-title">Total Cases</div>
-                                <div class="kpi-actual" style="color: #9333ea;">\${ds.tCases} ราย</div>
-                                <div class="kpi-target">เป้าหมาย: \${plannerData.targets.cases}</div>
-                            </div>
-                            <div class="kpi-box">
-                                <div class="kpi-title">Recruits</div>
-                                <div class="kpi-actual" style="color: #d97706;">\${ds.tRecruit} คน</div>
-                                <div class="kpi-target">เป้าหมาย: \${plannerData.targets.recruit}</div>
-                            </div>
-                        </div>
 
-                        <h2>บันทึกผลงานการขาย (Sales Ledger - Year \${ds.year})</h2>
-                        <table>
-                            <thead><tr>
-                                <th>วันที่</th><th>ประเภท</th><th>ชื่อรายละเอียด</th><th>สินค้า</th><th style="text-align:right;">ทุนประกัน</th><th style="text-align:right;">FYP</th><th style="text-align:right;">FYC</th>
-                            </tr></thead>
-                            <tbody>\${tableHtml}</tbody>
-                        </table>
+                            <h2><span>📝 บันทึกผลงานการขาย (Sales Ledger)</span> <span style="font-size:12px; font-weight:normal; color:#64748b;">เฉพาะปี \${ds.year}</span></h2>
+                            <table>
+                                <thead><tr>
+                                    <th style="text-align:center; width:80px;">วันที่</th>
+                                    <th style="text-align:center; width:80px;">สถานะ</th>
+                                    <th>ชื่อลูกค้า / ทีมงาน</th>
+                                    <th>สินค้า / แผน</th>
+                                    <th style="text-align:right;">ทุนประกัน</th>
+                                    <th style="text-align:right;">FYP</th>
+                                    <th style="text-align:right;">FYC</th>
+                                </tr></thead>
+                                <tbody>\${tableHtml}</tbody>
+                            </table>
 
-                        <div class="cta-box">
-                            " \${plannerData.cta || 'ไม่มีคติประจำใจ'} "
+                            <div class="cta-box">
+                                " \${plannerData.cta || 'FA Professional Business Report'} "
+                            </div>
                         </div>
                     </body>
                     </html>
