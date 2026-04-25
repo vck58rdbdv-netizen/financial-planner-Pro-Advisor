@@ -1,5 +1,5 @@
 // =====================================================================
-// 📈 FA ULTIMATE PLANNER & DASHBOARD ENGINE (V7.1 - Report Print Update)
+// 📈 FA ULTIMATE PLANNER & DASHBOARD ENGINE (V7.2 - GitHub/iPad Hotfix)
 // =====================================================================
 
 async function fetchAllCRMDataForDashboard() {
@@ -59,10 +59,11 @@ async function openExecutiveDashboard() {
             }
         });
 
-        const dashboardDataJSON = JSON.stringify(crmStats);
-        let dashWin = window.open('', '_blank');
-        
-        let html = `
+        // 🌟 [HOTFIX] เปลี่ยนวิธีส่ง Data ข้ามหน้าจอเป็น localStorage 
+        localStorage.setItem('FA_Temp_Dashboard_Data', JSON.stringify(crmStats));
+
+        // สร้าง URL แบบ Blob สำหรับหน้าต่างใหม่ (ลดปัญหา Safari บล็อก document.write)
+        let htmlContent = `
         <!DOCTYPE html>
         <html lang="th">
         <head>
@@ -82,6 +83,12 @@ async function openExecutiveDashboard() {
                 .task-cb { width: 1.25rem; height: 1.25rem; cursor: pointer; accent-color: #3b82f6; }
                 input[type="text"], input[type="number"], input[type="date"], select { background: #f8fafc; color: #1e293b; border: 1px solid #cbd5e1; padding: 6px 10px; border-radius: 6px; font-size: 12px; width: 100%; }
                 input:focus, select:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2); }
+                .dark-input { background: #1e293b !important; color: white !important; border-color: #334155 !important; }
+                @media print {
+                    .no-print { display: none !important; }
+                    body { background-color: white; padding: 0; }
+                    .shadow-xl, .shadow-sm { box-shadow: none !important; border: 1px solid #e2e8f0; }
+                }
             </style>
         </head>
         <body class="p-4 md:p-6 lg:p-8">
@@ -94,7 +101,7 @@ async function openExecutiveDashboard() {
                         </h1>
                         <p class="text-slate-500 mt-1 text-sm font-medium">จัดการเป้าหมาย Sale Builder และวิเคราะห์พอร์ตโฟลิโอ</p>
                     </div>
-                    <div class="flex flex-wrap gap-2">
+                    <div class="flex flex-wrap gap-2 no-print">
                         <button onclick="importBackup()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 px-3 py-1.5 rounded font-bold text-xs transition">📥 นำเข้า JSON</button>
                         <button onclick="exportBackup()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 px-3 py-1.5 rounded font-bold text-xs transition">📤 ส่งออกสำรองข้อมูล</button>
                         <button onclick="printFormalReport()" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded font-bold text-xs transition shadow-sm">🖨️ พิมพ์รายงานผลงาน</button>
@@ -111,7 +118,7 @@ async function openExecutiveDashboard() {
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10">
                         <div class="bg-slate-800/80 p-4 rounded-xl border border-slate-600 relative">
-                            <button onclick="editTarget('fyp')" class="absolute top-3 right-3 text-[10px] bg-slate-700 hover:bg-slate-600 px-2 py-1 rounded">ตั้งเป้า</button>
+                            <button onclick="editTarget('fyp')" class="absolute top-3 right-3 text-[10px] bg-slate-700 hover:bg-slate-600 px-2 py-1 rounded no-print">ตั้งเป้า</button>
                             <p class="text-xs text-slate-400 font-bold uppercase mb-1">FYP (เบี้ยปีแรก)</p>
                             <p class="text-2xl font-black text-emerald-400" id="ui_act_fyp">0</p>
                             <div class="w-full bg-slate-900 rounded-full h-2 mt-3 mb-1"><div id="bar_fyp" class="bg-emerald-500 h-full rounded-full transition-all" style="width: 0%"></div></div>
@@ -119,7 +126,7 @@ async function openExecutiveDashboard() {
                         </div>
 
                         <div class="bg-slate-800/80 p-4 rounded-xl border border-slate-600 relative">
-                            <button onclick="editTarget('fyc')" class="absolute top-3 right-3 text-[10px] bg-slate-700 hover:bg-slate-600 px-2 py-1 rounded">ตั้งเป้า</button>
+                            <button onclick="editTarget('fyc')" class="absolute top-3 right-3 text-[10px] bg-slate-700 hover:bg-slate-600 px-2 py-1 rounded no-print">ตั้งเป้า</button>
                             <p class="text-xs text-slate-400 font-bold uppercase mb-1">FYC (คอมมิชชัน)</p>
                             <p class="text-2xl font-black text-blue-400" id="ui_act_fyc">0</p>
                             <div class="w-full bg-slate-900 rounded-full h-2 mt-3 mb-1"><div id="bar_fyc" class="bg-blue-500 h-full rounded-full transition-all" style="width: 0%"></div></div>
@@ -127,7 +134,7 @@ async function openExecutiveDashboard() {
                         </div>
 
                         <div class="bg-slate-800/80 p-4 rounded-xl border border-slate-600 relative">
-                            <button onclick="editTarget('cases')" class="absolute top-3 right-3 text-[10px] bg-slate-700 hover:bg-slate-600 px-2 py-1 rounded">ตั้งเป้า</button>
+                            <button onclick="editTarget('cases')" class="absolute top-3 right-3 text-[10px] bg-slate-700 hover:bg-slate-600 px-2 py-1 rounded no-print">ตั้งเป้า</button>
                             <p class="text-xs text-slate-400 font-bold uppercase mb-1">Total Cases (ราย)</p>
                             <p class="text-2xl font-black text-purple-400" id="ui_act_cases">0</p>
                             <div class="w-full bg-slate-900 rounded-full h-2 mt-3 mb-1"><div id="bar_cases" class="bg-purple-500 h-full rounded-full transition-all" style="width: 0%"></div></div>
@@ -135,7 +142,7 @@ async function openExecutiveDashboard() {
                         </div>
 
                         <div class="bg-slate-800/80 p-4 rounded-xl border border-slate-600 relative">
-                            <button onclick="editTarget('recruit')" class="absolute top-3 right-3 text-[10px] bg-slate-700 hover:bg-slate-600 px-2 py-1 rounded">ตั้งเป้า</button>
+                            <button onclick="editTarget('recruit')" class="absolute top-3 right-3 text-[10px] bg-slate-700 hover:bg-slate-600 px-2 py-1 rounded no-print">ตั้งเป้า</button>
                             <p class="text-xs text-slate-400 font-bold uppercase mb-1">Recruits (ทีมงาน)</p>
                             <p class="text-2xl font-black text-amber-400" id="ui_act_recruit">0</p>
                             <div class="w-full bg-slate-900 rounded-full h-2 mt-3 mb-1"><div id="bar_recruit" class="bg-amber-500 h-full rounded-full transition-all" style="width: 0%"></div></div>
@@ -146,35 +153,19 @@ async function openExecutiveDashboard() {
 
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <div class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-indigo-100 flex flex-col overflow-hidden">
-                        <div class="bg-indigo-50 border-b border-indigo-100 p-4 flex justify-between items-center">
-                            <h2 class="font-bold text-indigo-900 flex items-center gap-2"><span>🗓️</span> Sale Builder (แผนและผลงานรายเดือน)</h2>
+                        <div class="bg-indigo-50 border-b border-indigo-100 p-4 flex justify-between items-center no-print">
+                            <h2 class="font-bold text-indigo-900 flex items-center gap-2"><span>🗓️</span> Sale Builder (แผนรายสัปดาห์)</h2>
                             <div class="flex items-center gap-3 bg-white rounded-lg border border-indigo-200 px-2 py-1 shadow-sm">
                                 <button onclick="changeMonth(-1)" class="text-indigo-600 hover:bg-indigo-100 p-1 rounded font-bold">&lt;</button>
                                 <span id="ui_view_month" class="text-sm font-bold w-24 text-center text-indigo-900"></span>
                                 <button onclick="changeMonth(1)" class="text-indigo-600 hover:bg-indigo-100 p-1 rounded font-bold">&gt;</button>
                             </div>
                         </div>
-
-                        <div class="p-4 border-b border-slate-100 space-y-3 bg-white">
-                            <div>
-                                <div class="flex justify-between text-xs mb-1"><span class="text-slate-500 font-bold">เป้า FYP เดือนนี้: <span id="ui_m_tgt_fyp"></span></span> <span id="ui_m_act_fyp" class="font-bold text-emerald-600"></span></div>
-                                <div class="w-full bg-slate-100 rounded-full h-1.5"><div id="bar_m_fyp" class="bg-emerald-500 h-1.5 rounded-full transition-all"></div></div>
-                            </div>
-                            <div>
-                                <div class="flex justify-between text-xs mb-1"><span class="text-slate-500 font-bold">เป้า FYC เดือนนี้: <span id="ui_m_tgt_fyc"></span></span> <span id="ui_m_act_fyc" class="font-bold text-blue-600"></span></div>
-                                <div class="w-full bg-slate-100 rounded-full h-1.5"><div id="bar_m_fyc" class="bg-blue-500 h-1.5 rounded-full transition-all"></div></div>
-                            </div>
-                            <div>
-                                <div class="flex justify-between text-xs mb-1"><span class="text-slate-500 font-bold">เป้า Case เดือนนี้: <span id="ui_m_tgt_cases"></span></span> <span id="ui_m_act_cases" class="font-bold text-purple-600"></span></div>
-                                <div class="w-full bg-slate-100 rounded-full h-1.5"><div id="bar_m_cases" class="bg-purple-500 h-1.5 rounded-full transition-all"></div></div>
-                            </div>
-                        </div>
-
                         <div class="p-0 flex-grow overflow-x-auto">
                             <table class="w-full text-sm text-center">
-                                <thead class="bg-indigo-900 text-white text-xs whitespace-nowrap">
+                                <thead class="bg-indigo-900 text-white text-xs">
                                     <tr>
-                                        <th class="py-3 px-2 border-r border-indigo-700 w-16">สัปดาห์</th>
+                                        <th class="py-3 px-2 border-r border-indigo-700 w-20">สัปดาห์ที่</th>
                                         <th class="py-3 px-2 border-r border-indigo-700 bg-indigo-800">เป้า FYP</th>
                                         <th class="py-3 px-2 border-r border-indigo-700 text-emerald-300">ทำได้ FYP</th>
                                         <th class="py-3 px-2 border-r border-indigo-700 bg-indigo-800">เป้า FYC</th>
@@ -183,10 +174,11 @@ async function openExecutiveDashboard() {
                                         <th class="py-3 px-2 text-purple-300">ทำได้ Case</th>
                                     </tr>
                                 </thead>
-                                <tbody id="ui_weekly_table" class="divide-y divide-slate-100"></tbody>
-                                <tfoot class="bg-slate-50 font-bold border-t-2 border-slate-200 text-xs">
+                                <tbody id="ui_weekly_table" class="divide-y divide-slate-100">
+                                    </tbody>
+                                <tfoot class="bg-slate-50 font-bold border-t-2 border-slate-200">
                                     <tr>
-                                        <td class="py-3 px-2 border-r text-slate-700">รวม</td>
+                                        <td class="py-3 px-2 border-r text-slate-700">รวมทั้งเดือน</td>
                                         <td class="py-3 px-2 border-r text-slate-500" id="ui_m_t_fyp">0</td>
                                         <td class="py-3 px-2 border-r text-emerald-600" id="ui_m_a_fyp">0</td>
                                         <td class="py-3 px-2 border-r text-slate-500" id="ui_m_t_fyc">0</td>
@@ -201,15 +193,16 @@ async function openExecutiveDashboard() {
 
                     <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 flex flex-col">
                         <div class="bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl p-4 border border-amber-200 mb-6 relative">
-                            <p class="text-[10px] text-amber-600 font-bold uppercase mb-1">🔥 เป้าหมายปลุกพลัง (Action Plan)</p>
-                            <textarea id="ui_cta" class="w-full bg-transparent border-none text-slate-800 font-bold text-sm focus:outline-none resize-none h-16 custom-scrollbar" placeholder="พิมพ์คติประจำใจ หรือเป้าหมายสัปดาห์นี้..."></textarea>
+                            <p class="text-[10px] text-amber-600 font-bold uppercase mb-1">🔥 เป้าหมายปลุกพลังประจำวัน</p>
+                            <textarea id="ui_cta" class="w-full bg-transparent border-none text-slate-800 font-bold text-base focus:outline-none resize-none h-12 custom-scrollbar" placeholder="พิมพ์คติประจำใจที่นี่..."></textarea>
                         </div>
                         
                         <h3 class="font-bold text-sm text-slate-800 mb-3 flex justify-between items-center border-b pb-2">
                             <span>☑️ To-Do / Follow up</span>
-                            <button onclick="addChecklist()" class="text-[10px] bg-slate-800 hover:bg-slate-700 text-white px-2 py-1 rounded">+ เพิ่มงาน</button>
+                            <button onclick="addChecklist()" class="text-[10px] bg-slate-800 hover:bg-slate-700 text-white px-2 py-1 rounded no-print">+ เพิ่มงาน</button>
                         </h3>
-                        <div id="ui_checklists" class="space-y-2 overflow-y-auto max-h-[300px] custom-scrollbar pr-1 flex-grow"></div>
+                        <div id="ui_checklists" class="space-y-2 overflow-y-auto max-h-[220px] custom-scrollbar pr-1 flex-grow">
+                            </div>
                     </div>
                 </div>
 
@@ -218,17 +211,17 @@ async function openExecutiveDashboard() {
                         <span>📝</span> SALES LEDGER: สมุดบันทึกผลงานจริง
                     </h2>
                     
-                    <div class="bg-slate-50 rounded-xl p-4 border border-slate-200 mb-4 flex flex-wrap gap-3 items-end">
-                        <div class="w-24"><label class="text-[10px] font-bold text-slate-600 mb-1 block">ประเภท</label>
+                    <div class="bg-slate-50 rounded-xl p-4 border border-slate-200 mb-4 flex flex-wrap gap-3 items-end no-print">
+                        <div class="w-28"><label class="text-[10px] font-bold text-slate-600 mb-1 block">ประเภท</label>
                             <select id="s_type" onchange="toggleFormType()">
-                                <option value="sale">Sale</option>
-                                <option value="recruit">Recruit</option>
+                                <option value="sale">ส่วนตัว (Sale)</option>
+                                <option value="recruit">ทีมงาน (Recruit)</option>
                             </select>
                         </div>
-                        <div class="w-28"><label class="text-[10px] font-bold text-slate-600 mb-1 block">วันที่</label><input type="date" id="s_date"></div>
+                        <div class="w-32"><label class="text-[10px] font-bold text-slate-600 mb-1 block">วันที่</label><input type="date" id="s_date"></div>
                         <div class="flex-1 min-w-[120px]"><label class="text-[10px] font-bold text-slate-600 mb-1 block">ชื่อลูกค้า/ทีมงาน</label><input type="text" id="s_name" placeholder="ชื่อ-สกุล"></div>
                         
-                        <div class="w-24 s-sale-only"><label class="text-[10px] font-bold text-slate-600 mb-1 block">นับ Case?</label>
+                        <div class="w-28 s-sale-only"><label class="text-[10px] font-bold text-slate-600 mb-1 block">นับ Case?</label>
                             <select id="s_is_new_case">
                                 <option value="true">New (นับ)</option>
                                 <option value="false">Renewal (ไม่นับ)</option>
@@ -249,7 +242,7 @@ async function openExecutiveDashboard() {
                                     <th class="px-4 py-3">วันที่</th><th class="px-4 py-3 text-center">ประเภท</th><th class="px-4 py-3">ชื่อรายละเอียด</th>
                                     <th class="px-4 py-3">สินค้า</th><th class="px-4 py-3 text-right">ทุนประกัน</th>
                                     <th class="px-4 py-3 text-right text-emerald-600">FYP</th><th class="px-4 py-3 text-right text-blue-600">FYC</th>
-                                    <th class="px-4 py-3 text-center">จัดการ</th>
+                                    <th class="px-4 py-3 text-center no-print">จัดการ</th>
                                 </tr>
                             </thead>
                             <tbody id="ui_sales_table" class="divide-y divide-slate-100"></tbody>
@@ -257,19 +250,19 @@ async function openExecutiveDashboard() {
                     </div>
                 </div>
 
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 break-inside-avoid">
                     <h2 class="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2 border-b border-slate-200 pb-2">
                         <span>🗂️</span> CRM OVERVIEW: ภาพรวมฐานข้อมูลลูกค้าทั้งหมด
                     </h2>
 
                     <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3 mb-6">
-                        <div class="bg-slate-50 p-3 rounded-lg border border-slate-200 text-center"><p class="text-[10px] font-bold text-slate-500 mb-1">ผู้มุ่งหวัง</p><p class="text-xl font-black text-slate-700">${crmStats.funnel['ผู้มุ่งหวัง']}</p></div>
-                        <div class="bg-blue-50 p-3 rounded-lg border border-blue-100 text-center"><p class="text-[10px] font-bold text-blue-500 mb-1">นำเสนอแผน</p><p class="text-xl font-black text-blue-700">${crmStats.funnel['นำเสนอแผน']}</p></div>
-                        <div class="bg-purple-50 p-3 rounded-lg border border-purple-100 text-center"><p class="text-[10px] font-bold text-purple-500 mb-1">กำลังติดตาม</p><p class="text-xl font-black text-purple-700">${crmStats.funnel['กำลังติดตาม']}</p></div>
-                        <div class="bg-yellow-50 p-3 rounded-lg border border-yellow-100 text-center"><p class="text-[10px] font-bold text-yellow-600 mb-1">รอดำเนินการ</p><p class="text-xl font-black text-yellow-700">${crmStats.funnel['รอดำเนินการ']}</p></div>
-                        <div class="bg-emerald-50 p-3 rounded-lg border border-emerald-200 text-center shadow-sm"><p class="text-[10px] font-bold text-emerald-600 mb-1">ปิดการขาย</p><p class="text-xl font-black text-emerald-700">${crmStats.funnel['ปิดการขาย']}</p></div>
-                        <div class="bg-teal-50 p-3 rounded-lg border border-teal-100 text-center"><p class="text-[10px] font-bold text-teal-600 mb-1">บริการหลังขาย</p><p class="text-xl font-black text-teal-700">${crmStats.funnel['เข้าเยี่ยมหลังการขาย']}</p></div>
-                        <div class="bg-red-50 p-3 rounded-lg border border-red-100 text-center"><p class="text-[10px] font-bold text-red-500 mb-1">ปฏิเสธ</p><p class="text-xl font-black text-red-700">${crmStats.funnel['ปฏิเสธ']}</p></div>
+                        <div class="bg-slate-50 p-3 rounded-lg border border-slate-200 text-center"><p class="text-[10px] font-bold text-slate-500 mb-1">ผู้มุ่งหวัง</p><p class="text-xl font-black text-slate-700"><span id="crm_funnel_0"></span></p></div>
+                        <div class="bg-blue-50 p-3 rounded-lg border border-blue-100 text-center"><p class="text-[10px] font-bold text-blue-500 mb-1">นำเสนอแผน</p><p class="text-xl font-black text-blue-700"><span id="crm_funnel_1"></span></p></div>
+                        <div class="bg-purple-50 p-3 rounded-lg border border-purple-100 text-center"><p class="text-[10px] font-bold text-purple-500 mb-1">กำลังติดตาม</p><p class="text-xl font-black text-purple-700"><span id="crm_funnel_2"></span></p></div>
+                        <div class="bg-yellow-50 p-3 rounded-lg border border-yellow-100 text-center"><p class="text-[10px] font-bold text-yellow-600 mb-1">รอดำเนินการ</p><p class="text-xl font-black text-yellow-700"><span id="crm_funnel_3"></span></p></div>
+                        <div class="bg-emerald-50 p-3 rounded-lg border border-emerald-200 text-center shadow-sm"><p class="text-[10px] font-bold text-emerald-600 mb-1">ปิดการขาย</p><p class="text-xl font-black text-emerald-700"><span id="crm_funnel_4"></span></p></div>
+                        <div class="bg-teal-50 p-3 rounded-lg border border-teal-100 text-center"><p class="text-[10px] font-bold text-teal-600 mb-1">บริการหลังขาย</p><p class="text-xl font-black text-teal-700"><span id="crm_funnel_5"></span></p></div>
+                        <div class="bg-red-50 p-3 rounded-lg border border-red-100 text-center"><p class="text-[10px] font-bold text-red-500 mb-1">ปฏิเสธ</p><p class="text-xl font-black text-red-700"><span id="crm_funnel_6"></span></p></div>
                     </div>
 
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -287,7 +280,26 @@ async function openExecutiveDashboard() {
             </div>
 
             <script>
-                const crmData = ${dashboardDataJSON};
+                // 🌟 [HOTFIX] รับข้อมูลผ่าน localStorage เพื่อแก้บั๊ก iPad Safari XSS
+                const savedCrmData = localStorage.getItem('FA_Temp_Dashboard_Data');
+                let crmData = { personas: {}, productMix: {}, funnel: {} };
+                
+                try {
+                    if (savedCrmData) {
+                        crmData = JSON.parse(savedCrmData);
+                        localStorage.removeItem('FA_Temp_Dashboard_Data'); // ใช้เสร็จทำลายทิ้ง
+                    }
+                } catch (e) { console.error("Error parsing CRM Data:", e); }
+
+                // อัปเดตตัวเลข Funnel
+                document.getElementById('crm_funnel_0').innerText = crmData.funnel['ผู้มุ่งหวัง'] || 0;
+                document.getElementById('crm_funnel_1').innerText = crmData.funnel['นำเสนอแผน'] || 0;
+                document.getElementById('crm_funnel_2').innerText = crmData.funnel['กำลังติดตาม'] || 0;
+                document.getElementById('crm_funnel_3').innerText = crmData.funnel['รอดำเนินการ'] || 0;
+                document.getElementById('crm_funnel_4').innerText = crmData.funnel['ปิดการขาย'] || 0;
+                document.getElementById('crm_funnel_5').innerText = crmData.funnel['เข้าเยี่ยมหลังการขาย'] || 0;
+                document.getElementById('crm_funnel_6').innerText = crmData.funnel['ปฏิเสธ'] || 0;
+
                 const chartColors = ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#f43f5e', '#14b8a6', '#6366f1'];
                 const productColors = ['#10b981', '#3b82f6', '#f59e0b', '#8b5cf6', '#9ca3af'];
 
@@ -300,6 +312,7 @@ async function openExecutiveDashboard() {
                     cta: "ฉันคือนักขายระดับท็อป!"
                 };
 
+                // Helper: Upgrade old data format if needed
                 plannerData.salesLedger.forEach(s => { if(s.isNewCase === undefined) s.isNewCase = true; });
 
                 let viewDate = new Date();
@@ -325,6 +338,7 @@ async function openExecutiveDashboard() {
                     initUI();
                 };
 
+                // --- GLOBAL STATS CACHE สำหรับ PRINT ---
                 window.currentStats = {};
 
                 function initUI() {
@@ -361,9 +375,13 @@ async function openExecutiveDashboard() {
                         }
                     });
 
-                    window.currentStats = { year: vYear, monthStr: monthNames[vMonth], tFYP, tFYC, tCases, tRecruit, mFYP, mFYC, mCases };
+                    // Store global for Print
+                    window.currentStats = {
+                        year: vYear, monthStr: monthNames[vMonth],
+                        tFYP, tFYC, tCases, tRecruit, mFYP, mFYC, mCases
+                    };
 
-                    // Update Year KPIs
+                    // Update Year KPIs Progress Bars
                     updateKPI('fyp', tFYP, plannerData.targets.fyp);
                     updateKPI('fyc', tFYC, plannerData.targets.fyc);
                     updateKPI('cases', tCases, plannerData.targets.cases);
@@ -374,18 +392,6 @@ async function openExecutiveDashboard() {
                     let tgtMFYC = plannerData.targets.fyc / 12;
                     let tgtMCase = plannerData.targets.cases / 12;
                     
-                    document.getElementById('ui_m_tgt_fyp').innerText = tgtMFYP.toLocaleString('th-TH',{maximumFractionDigits:0}) + ' ฿';
-                    document.getElementById('ui_m_act_fyp').innerText = mFYP.toLocaleString('th-TH') + ' ฿';
-                    document.getElementById('bar_m_fyp').style.width = Math.min((tgtMFYP>0 ? (mFYP/tgtMFYP)*100 : 0), 100) + '%';
-
-                    document.getElementById('ui_m_tgt_fyc').innerText = tgtMFYC.toLocaleString('th-TH',{maximumFractionDigits:0}) + ' ฿';
-                    document.getElementById('ui_m_act_fyc').innerText = mFYC.toLocaleString('th-TH') + ' ฿';
-                    document.getElementById('bar_m_fyc').style.width = Math.min((tgtMFYC>0 ? (mFYC/tgtMFYC)*100 : 0), 100) + '%';
-
-                    document.getElementById('ui_m_tgt_cases').innerText = tgtMCase.toFixed(1) + ' ราย';
-                    document.getElementById('ui_m_act_cases').innerText = mCases + ' ราย';
-                    document.getElementById('bar_m_cases').style.width = Math.min((tgtMCase>0 ? (mCases/tgtMCase)*100 : 0), 100) + '%';
-
                     // Update Weekly Table
                     let wHtml = '';
                     let tgtWFYP = tgtMFYP / 4;
@@ -490,7 +496,7 @@ async function openExecutiveDashboard() {
                                 <td class="px-4 py-2 text-right text-slate-600">\${s.sa ? s.sa.toLocaleString('th-TH') : '-'}</td>
                                 <td class="px-4 py-2 text-right font-bold text-emerald-600">\${s.fyp.toLocaleString('th-TH')}</td>
                                 <td class="px-4 py-2 text-right font-bold text-blue-600">\${s.fyc.toLocaleString('th-TH')}</td>
-                                <td class="px-4 py-2 text-center"><button onclick="deleteSaleRecord('\${s.id}')" class="text-red-400 hover:text-red-600 text-xs bg-red-50 hover:bg-red-100 px-2 py-1 rounded">ลบ</button></td>
+                                <td class="px-4 py-2 text-center no-print"><button onclick="deleteSaleRecord('\${s.id}')" class="text-red-400 hover:text-red-600 text-xs bg-red-50 hover:bg-red-100 px-2 py-1 rounded">ลบ</button></td>
                             </tr>
                         \`;
                     }).join('');
@@ -508,13 +514,13 @@ async function openExecutiveDashboard() {
                     c.innerHTML = sorted.map(t => \`
                         <div class="p-2 border-b border-slate-100 flex justify-between items-center group">
                             <div class="flex items-center gap-2 overflow-hidden">
-                                <input type="checkbox" id="chk_\${t.id}" class="task-cb rounded border-slate-300 flex-shrink-0" \${t.done ? 'checked' : ''} onchange="toggleCheck('\${t.id}', this.checked)">
+                                <input type="checkbox" id="chk_\${t.id}" class="task-cb rounded border-slate-300 flex-shrink-0 no-print" \${t.done ? 'checked' : ''} onchange="toggleCheck('\${t.id}', this.checked)">
                                 <div class="truncate">
                                     <label for="chk_\${t.id}" class="text-sm cursor-pointer select-none \${t.done ? 'text-slate-400 line-through' : 'text-slate-700 font-medium'}">\${t.text}</label>
                                     <p class="text-[9px] \${t.done ? 'text-slate-400' : 'text-red-500'}">⏳ \${t.deadline || 'ไม่ระบุ'}</p>
                                 </div>
                             </div>
-                            <button onclick="deleteCheck('\${t.id}')" class="text-[10px] text-red-400 opacity-0 group-hover:opacity-100 transition px-2">ลบ</button>
+                            <button onclick="deleteCheck('\${t.id}')" class="text-[10px] text-red-400 opacity-0 group-hover:opacity-100 transition px-2 no-print">ลบ</button>
                         </div>
                     \`).join('');
                 }
@@ -549,15 +555,16 @@ async function openExecutiveDashboard() {
                         let typeStr = s.type === 'sale' ? (s.isNewCase !== false ? 'New Case' : 'Renewal') : 'Recruit';
                         return \`<tr>
                             <td style="padding:6px; border-bottom:1px solid #eee;">\${new Date(s.date).toLocaleDateString('th-TH',{day:'2-digit',month:'short'})}</td>
-                            <td style="padding:6px; border-bottom:1px solid #eee;">\${typeStr}</td>
-                            <td style="padding:6px; border-bottom:1px solid #eee;">\${s.name}</td>
+                            <td style="padding:6px; border-bottom:1px solid #eee; font-weight:bold; color: #475569;">\${typeStr}</td>
+                            <td style="padding:6px; border-bottom:1px solid #eee; font-weight:bold;">\${s.name}</td>
                             <td style="padding:6px; border-bottom:1px solid #eee;">\${s.prod || '-'}</td>
-                            <td style="padding:6px; border-bottom:1px solid #eee; text-align:right;">\${s.fyp.toLocaleString('th-TH')}</td>
-                            <td style="padding:6px; border-bottom:1px solid #eee; text-align:right;">\${s.fyc.toLocaleString('th-TH')}</td>
+                            <td style="padding:6px; border-bottom:1px solid #eee; text-align:right;">\${s.sa ? s.sa.toLocaleString('th-TH') : '-'}</td>
+                            <td style="padding:6px; border-bottom:1px solid #eee; text-align:right; font-weight:bold; color:#059669;">\${s.fyp.toLocaleString('th-TH')}</td>
+                            <td style="padding:6px; border-bottom:1px solid #eee; text-align:right; font-weight:bold; color:#2563eb;">\${s.fyc.toLocaleString('th-TH')}</td>
                         </tr>\`;
                     }).join('');
 
-                    if(tableHtml === '') tableHtml = '<tr><td colspan="6" style="text-align:center; padding:15px; color:#999;">ยังไม่มีบันทึกผลงานในปีนี้</td></tr>';
+                    if(tableHtml === '') tableHtml = '<tr><td colspan="7" style="text-align:center; padding:15px; color:#999;">ยังไม่มีบันทึกผลงานในปีนี้</td></tr>';
 
                     let html = \`
                     <!DOCTYPE html>
@@ -577,9 +584,11 @@ async function openExecutiveDashboard() {
                             .subtitle { text-align: center; color: #666; margin-bottom: 20px; font-size: 12px; }
                             
                             .action-bar { text-align: right; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #eee; }
-                            .btn { padding: 8px 16px; margin-left: 10px; border: none; border-radius: 4px; cursor: pointer; font-family: 'Sarabun', sans-serif; font-size: 14px; font-weight: bold; }
+                            .btn { padding: 8px 16px; margin-left: 10px; border: none; border-radius: 4px; cursor: pointer; font-family: 'Sarabun', sans-serif; font-size: 14px; font-weight: bold; transition: background-color 0.2s; }
                             .btn-back { background-color: #f1f5f9; color: #475569; }
+                            .btn-back:hover { background-color: #e2e8f0; }
                             .btn-print { background-color: #2563eb; color: white; }
+                            .btn-print:hover { background-color: #1d4ed8; }
 
                             .box-container { display: flex; justify-content: space-between; gap: 15px; margin-bottom: 20px; }
                             .kpi-box { flex: 1; border: 1px solid #ccc; border-radius: 8px; padding: 15px; text-align: center; background: #f9fafb; }
@@ -588,7 +597,7 @@ async function openExecutiveDashboard() {
                             .kpi-target { font-size: 11px; color: #999; }
                             h2 { font-size: 16px; color: #1e3a8a; border-bottom: 2px solid #1e3a8a; padding-bottom: 5px; margin-top: 20px; }
                             table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 12px; }
-                            th { background-color: #f1f5f9; padding: 8px; text-align: left; border-bottom: 2px solid #ccc; }
+                            th { background-color: #f1f5f9; padding: 8px; text-align: left; border-bottom: 2px solid #ccc; color: #475569; }
                             .cta-box { background: #fffbeb; border: 1px solid #fcd34d; padding: 10px; border-radius: 8px; text-align: center; font-weight: bold; color: #b45309; margin-top: 20px;}
                         </style>
                     </head>
@@ -609,24 +618,26 @@ async function openExecutiveDashboard() {
                             </div>
                             <div class="kpi-box">
                                 <div class="kpi-title">FYC (คอมมิชชัน)</div>
-                                <div class="kpi-actual">\${ds.tFYC.toLocaleString('th-TH')} ฿</div>
+                                <div class="kpi-actual" style="color: #2563eb;">\${ds.tFYC.toLocaleString('th-TH')} ฿</div>
                                 <div class="kpi-target">เป้าหมาย: \${plannerData.targets.fyc.toLocaleString('th-TH')}</div>
                             </div>
                             <div class="kpi-box">
                                 <div class="kpi-title">Total Cases</div>
-                                <div class="kpi-actual">\${ds.tCases} ราย</div>
+                                <div class="kpi-actual" style="color: #9333ea;">\${ds.tCases} ราย</div>
                                 <div class="kpi-target">เป้าหมาย: \${plannerData.targets.cases}</div>
                             </div>
                             <div class="kpi-box">
                                 <div class="kpi-title">Recruits</div>
-                                <div class="kpi-actual">\${ds.tRecruit} คน</div>
+                                <div class="kpi-actual" style="color: #d97706;">\${ds.tRecruit} คน</div>
                                 <div class="kpi-target">เป้าหมาย: \${plannerData.targets.recruit}</div>
                             </div>
                         </div>
 
                         <h2>บันทึกผลงานการขาย (Sales Ledger - Year \${ds.year})</h2>
                         <table>
-                            <thead><tr><th>วันที่</th><th>ประเภท</th><th>ชื่อรายละเอียด</th><th>สินค้า</th><th style="text-align:right;">FYP</th><th style="text-align:right;">FYC</th></tr></thead>
+                            <thead><tr>
+                                <th>วันที่</th><th>ประเภท</th><th>ชื่อรายละเอียด</th><th>สินค้า</th><th style="text-align:right;">ทุนประกัน</th><th style="text-align:right;">FYP</th><th style="text-align:right;">FYC</th>
+                            </tr></thead>
                             <tbody>\${tableHtml}</tbody>
                         </table>
 
