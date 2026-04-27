@@ -1649,3 +1649,18 @@ window.openCRMDashboard = function() {
 
     setTimeout(() => refreshCRMTable(), 500); 
 };
+// ==========================================
+// 🖨️ ฟังก์ชันบันทึกข้อมูลและสั่งพิมพ์ (Global Scope สำหรับหน้า index.html)
+// ==========================================
+window.saveAndPrintReport = function() {
+    // 1. สั่งบันทึกข้อมูลลง CRM แบบเงียบๆ (isSilent = true) 
+    if (typeof saveCurrentToCRM === 'function') {
+        // ใช้ .catch เพื่อป้องกัน Error ในกรณีที่ผู้ใช้ยังไม่ได้ Login CRM ก็ให้ข้ามไปพิมพ์ได้เลย
+        saveCurrentToCRM(true).catch(err => console.log("ข้ามการบันทึก CRM:", err)); 
+    }
+    
+    // 2. หน่วงเวลา 0.3 วินาที เพื่อให้เบราว์เซอร์จัดหน้าเว็บและเซฟให้เสร็จก่อน แล้วค่อยเด้งหน้าต่าง Print
+    setTimeout(() => { 
+        window.print(); 
+    }, 300);
+};
