@@ -682,53 +682,195 @@
 </div>
 
 <div id="manualModal" class="hidden fixed inset-0 bg-gray-900/80 backdrop-blur-sm z-[10000] flex items-center justify-center transition-opacity duration-300 p-4">
-    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl transform transition-all flex flex-col max-h-[90vh] animate-fade-in border-t-4 border-emerald-500 overflow-hidden">
-        <div class="bg-gray-50 border-b px-6 py-4 flex justify-between items-center flex-shrink-0">
-            <h2 class="text-2xl font-bold text-gray-800 flex items-center gap-2">📖 แนะนำระบบ (Financial Planner Pro Advisor)</h2>
-            <button onclick="closeManualModal()" class="text-gray-400 hover:text-red-500 transition text-3xl leading-none font-bold">&times;</button>
+    <div class="bg-gray-50 rounded-2xl shadow-2xl w-full max-w-5xl transform transition-all flex flex-col max-h-[95vh] animate-fade-in border-t-8 border-emerald-600 overflow-hidden">
+        
+        <div class="bg-white border-b border-gray-200 px-6 py-5 flex justify-between items-center flex-shrink-0 shadow-sm z-10">
+            <div>
+                <h2 class="text-2xl font-bold text-gray-800 flex items-center gap-2">📖 คู่มือและสถาปัตยกรรมระบบแบบเจาะลึก</h2>
+                <p class="text-xs text-gray-500 mt-1">Financial Planner Pro Advisor - Comprehensive User Guide & Architecture</p>
+            </div>
+            <button onclick="closeManualModal()" class="text-gray-400 hover:text-red-500 hover:bg-red-50 w-10 h-10 rounded-full flex items-center justify-center transition text-3xl leading-none font-bold">&times;</button>
         </div>
-        <div class="p-6 overflow-y-auto custom-scrollbar flex-1 bg-white space-y-6 text-sm text-gray-700">
-            <div class="text-center mb-6 border-b pb-4">
-                <p class="text-gray-500 text-sm mt-2 leading-relaxed">
-                    Financial Planner Pro Advisor คือเครื่องมือวิเคราะห์วางแผนการเงินอัจฉริยะขั้นสูง ที่ขับเคลื่อนด้วยสถาปัตยกรรม <b>Privacy-First</b> ผสานการทำงานของ <b>Machine Learning</b> และ <b>Stochastic Modeling</b>
-                </p>
-            </div>
+
+        <div class="p-0 overflow-y-auto custom-scrollbar flex-1 bg-gray-50">
             
-            <section class="bg-blue-50 p-5 rounded-xl border border-blue-100 transition hover:shadow-md">
-                <h3 class="text-lg font-bold text-blue-800 mb-3 flex items-center"><span class="mr-2 text-xl">🛡️</span> 1. สถาปัตยกรรมความปลอดภัย (Security & Privacy)</h3>
-                <ul class="list-disc list-inside space-y-2">
-                    <li><b>100% Offline Local Processing:</b> การประมวลผลและการรัน AI ทั้งหมดเกิดขึ้นบนอุปกรณ์ของท่าน ปราศจากการส่งข้อมูลไปยังเซิร์ฟเวอร์ภายนอก</li>
-                    <li><b>Auto-Recovery System:</b> มีระบบบันทึกข้อมูลฉุกเฉิน ช่วยให้สามารถดึงข้อมูลที่พิมพ์ค้างไว้กลับมาได้ทันที</li>
-                </ul>
+            <section class="bg-white p-8 border-b border-gray-200">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center text-2xl shadow-sm">🎯</div>
+                    <h3 class="text-2xl font-bold text-emerald-900">ส่วนที่ 1: บทนำและวิสัยทัศน์ (Vision & Introduction)</h3>
+                </div>
+                <div class="text-sm text-gray-700 leading-relaxed space-y-4 pl-15">
+                    <p class="text-lg font-semibold text-gray-800">"ยกระดับการวางแผนการเงิน จากกระดาษคำนวณ สู่ห้องทดลองชีวิตเสมือนจริง"</p>
+                    <p><b>Financial Planner Pro Advisor</b> ถูกออกแบบมาเพื่อลบข้อจำกัดของการวางแผนการเงินแบบดั้งเดิม (Deterministic Approach) ที่มักทึกทักเอาว่า <i>"ผลตอบแทนจะโต 5% เท่ากันทุกปี"</i> หรือ <i>"ลูกค้าจะออมเงินได้เป๊ะๆ ทุกเดือน"</i> ซึ่งในโลกความเป็นจริงนั้นเต็มไปด้วยความผันผวน (Volatility) และอคติทางอารมณ์ (Behavioral Bias)</p>
+                    <p>ระบบนี้จึงทำงานเสมือน <b>Hybrid Co-Advisor</b> ที่ผสานมาตรฐานวิชาชีพ <b>CFP (Certified Financial Planner)</b> เข้ากับ <b>Data Science</b> ขั้นสูง ภายใต้สถาปัตยกรรม <b class="text-emerald-700">Privacy-First (100% Local Execution)</b> ที่ทุกการคำนวณเกิดขึ้นบนเครื่องของคุณเองโดยปราศจากการส่งต่อข้อมูลส่วนตัวขึ้นสู่เซิร์ฟเวอร์คลาวด์</p>
+                </div>
             </section>
 
-            <section class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm hover-scale transition">
-                <h3 class="text-lg font-bold text-gray-800 mb-3 flex items-center"><span class="mr-2 text-xl">🧠</span> 2. ระบบสมองกลวิเคราะห์พฤติกรรม (Hybrid Co-Advisor)</h3>
-                <ul class="list-disc list-inside space-y-2 ml-2">
-                    <li><b>Deep Neural Network (Doctor AI):</b> โมเดลประสาทเทียมเพื่อประเมินความแข็งแกร่งทางการเงิน พร้อมแสดง Success Leap Analysis</li>
-                    <li><b>9D K-Means Clustering & Decision Tree:</b> วิเคราะห์ข้อมูล 9 มิติ เพื่อแบ่ง Persona ลูกค้าเป็นกลุ่มเฉพาะ</li>
-                </ul>
+            <section class="p-8 border-b border-gray-200 bg-slate-50">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-2xl shadow-sm">🧠</div>
+                    <h3 class="text-2xl font-bold text-blue-900">ส่วนที่ 2: สถาปัตยกรรมสมองกล (AI Pipeline Architecture)</h3>
+                </div>
+                <p class="text-sm text-gray-600 mb-6">เมื่อคุณกดปุ่ม <b>"ประมวลผล"</b> ระบบจะวิ่งผ่านกระบวนการ 5 ขั้นตอน (5-Stage Engine) ภายในเวลาไม่กี่วินาที ดังนี้:</p>
+                
+                <div class="space-y-5">
+                    <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex flex-col md:flex-row gap-5 hover-scale transition">
+                        <div class="w-14 h-14 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center font-black text-xl flex-shrink-0 border-2 border-indigo-100">1</div>
+                        <div>
+                            <h4 class="font-bold text-gray-800 text-base mb-2">Diagnostic Engine (การวินิจฉัยสุขภาพการเงิน)</h4>
+                            <p class="text-xs text-gray-600 leading-relaxed mb-2">สกัดข้อมูลดิบ (งบดุลและกระแสเงินสด) มาคำนวณเป็นอัตราส่วนทางการเงินสากล เช่น Survival Ratio, Liquidity Ratio, DTI และ Savings Ratio</p>
+                            <div class="bg-gray-50 p-2 rounded text-[11px] text-gray-500 border border-gray-100">
+                                <b>Output:</b> ประเมิน <span class="text-indigo-600 font-bold">Financial Health Score</span> เต็ม 100 คะแนน เพื่อวิเคราะห์ความเสี่ยงล้มละลาย (Risk of Ruin) ขั้นพื้นฐาน
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex flex-col md:flex-row gap-5 hover-scale transition">
+                        <div class="w-14 h-14 bg-purple-50 text-purple-600 rounded-full flex items-center justify-center font-black text-xl flex-shrink-0 border-2 border-purple-100">2</div>
+                        <div>
+                            <h4 class="font-bold text-gray-800 text-base mb-2">Behavioral K-Means Clustering (AI จัดกลุ่มพฤติกรรม)</h4>
+                            <p class="text-xs text-gray-600 leading-relaxed mb-2">ป้อนข้อมูลเข้าสู่โมเดล Machine Learning (8D K-Means) วิเคราะห์พฤติกรรม 8 แกน (อายุ, รายได้, ความมั่งคั่ง, ภาระหนี้, ความเสี่ยง, ความสม่ำเสมอ, วินัย, ภาระอุปการะ) เพื่อหา Persona ที่ซ่อนอยู่</p>
+                            <div class="bg-gray-50 p-2 rounded text-[11px] text-gray-500 border border-gray-100">
+                                <b>Output:</b> ระบบจะจัดลูกค้าเข้าสู่กลุ่มเฉพาะ (เช่น UHNW, Cash Hoarder, Overleveraged) และปรับโครงสร้าง "สามเหลี่ยมการเงิน" ให้ดิ้นได้ตามความเสี่ยงนั้นๆ
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex flex-col md:flex-row gap-5 hover-scale transition">
+                        <div class="w-14 h-14 bg-orange-50 text-orange-600 rounded-full flex items-center justify-center font-black text-xl flex-shrink-0 border-2 border-orange-100">3</div>
+                        <div>
+                            <h4 class="font-bold text-gray-800 text-base mb-2">Optimization & DP Knapsack (อัลกอริทึมจัดสรรและแก้ปัญหา)</h4>
+                            <p class="text-xs text-gray-600 leading-relaxed mb-2">AI จะคำนวณงบประมาณส่วนเกินที่แท้จริง (Elastic Budget) และใช้คณิตศาสตร์ <b class="text-orange-600">Dynamic Programming</b> เลือกแบบประกัน "Base + Rider" ที่ให้ความคุ้มครองสูงสุดโดยไม่เกินงบ (Knapsack Problem) พร้อมคำนวณการโยกเงินเพื่อ <b class="text-blue-600">Tax Alpha</b> (ลดหย่อนภาษี) และ <b class="text-red-600">Debt Snowball</b> (ปลดหนี้)</p>
+                            <div class="bg-gray-50 p-2 rounded text-[11px] text-gray-500 border border-gray-100">
+                                <b>Output:</b> จัดตะกร้าสินค้า (Product Assembly) ออกมาเป็น 3 ทางเลือก พร้อมแผนกระแสเงินสด Benchmark ใหม่
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex flex-col md:flex-row gap-5 hover-scale transition">
+                        <div class="w-14 h-14 bg-red-50 text-red-600 rounded-full flex items-center justify-center font-black text-xl flex-shrink-0 border-2 border-red-100">4</div>
+                        <div>
+                            <h4 class="font-bold text-gray-800 text-base mb-2">Stochastic Simulation (แบบจำลอง Monte Carlo & Stress Test)</h4>
+                            <p class="text-xs text-gray-600 leading-relaxed mb-2">ระบบจะรันโลกคู่ขนาน 2,000 รอบ สุ่มสภาวะตลาด (กระทิง/หมี) ผสานทฤษฎี <b class="text-red-600">Merton's Jump Diffusion</b> จำลองวิกฤตเศรษฐกิจเฉียบพลัน และควบคุมการถอนเงินหลังเกษียณด้วย <b class="text-emerald-600">Guyton-Klinger Rules</b> ป้องกันพอร์ตแตก</p>
+                            <div class="bg-gray-50 p-2 rounded text-[11px] text-gray-500 border border-gray-100">
+                                <b>Output:</b> โอกาสความสำเร็จ (Probability of Success) พร้อมช่วงความเชื่อมั่น 95% และกราฟจำลองการลงทุน 5 ปีล่วงหน้า (CVaR)
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex flex-col md:flex-row gap-5 hover-scale transition">
+                        <div class="w-14 h-14 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center font-black text-xl flex-shrink-0 border-2 border-emerald-100">5</div>
+                        <div>
+                            <h4 class="font-bold text-gray-800 text-base mb-2">Natural Language Generation (NLG Storytelling)</h4>
+                            <p class="text-xs text-gray-600 leading-relaxed mb-2">แปลผลลัพธ์ทางคณิตศาสตร์ทั้งหมด ออกมาเป็นภาษาที่มนุษย์เข้าใจได้ โดยใช้หลักจิตวิทยา DISC ปรับโทนข้อความให้เข้ากับความกลัวและความคาดหวังของลูกค้า</p>
+                            <div class="bg-gray-50 p-2 rounded text-[11px] text-gray-500 border border-gray-100">
+                                <b>Output:</b> บทวิเคราะห์ข้อความบนหน้ารายงาน (Executive Summary) ที่พร้อมสำหรับนำไปใช้นำเสนอลูกค้า
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </section>
 
-            <section class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm hover-scale transition">
-                <h3 class="text-lg font-bold text-gray-800 mb-3 flex items-center"><span class="mr-2 text-xl">🔮</span> 3. แบบจำลองพยากรณ์การเงินสมจริง (Stochastic Modeling)</h3>
-                <ul class="list-disc list-inside space-y-2">
-                    <li><b>2,000 Scenarios Monte Carlo:</b> รันการจำลอง 2,000 รอบในพื้นหลัง วิเคราะห์ Expected Shortfall (CVaR 95%)</li>
-                    <li><b>Interactive What-If:</b> ลองปรับแถบเลื่อนอายุเกษียณ อัตราการออม ระบบจะ Re-calculate โอกาสสำเร็จแบบ Real-time</li>
-                </ul>
-            </section>
+            <section class="p-8 bg-white pb-12">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-12 h-12 bg-orange-100 text-orange-600 rounded-xl flex items-center justify-center text-2xl shadow-sm">💻</div>
+                    <h3 class="text-2xl font-bold text-orange-900">ส่วนที่ 3: วิธีใช้งานระดับมืออาชีพ (User Manual)</h3>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    
+                    <div class="border border-gray-200 rounded-xl overflow-hidden shadow-sm hover-scale transition">
+                        <div class="bg-gray-100 p-3 border-b border-gray-200 font-bold text-gray-800 flex items-center gap-2">
+                            <span class="bg-gray-800 text-white w-6 h-6 rounded flex items-center justify-center text-xs">1</span> 
+                            การตั้งค่าระบบ (System Configuration)
+                        </div>
+                        <div class="p-4 text-xs text-gray-700 space-y-3">
+                            <p>ก่อนใช้งานครั้งแรก ควรตั้งค่าโปรไฟล์ผู้จัดทำและตัวแปรทางเศรษฐศาสตร์เพื่อความแม่นยำสูงสุด</p>
+                            <ul class="list-disc list-inside space-y-1.5 ml-1">
+                                <li>คลิก <b>"⚙️ ตั้งค่าระบบ"</b> ที่แถบเมนูด้านบน</li>
+                                <li>ใส่ PIN <code class="bg-gray-200 px-1 py-0.5 rounded text-red-600 font-mono">123456</code> (เปลี่ยนได้ภายหลัง)</li>
+                                <li>แท็บ <b>[ตั้งค่าข้อมูลผู้จัดทำ]</b>: ใส่ชื่อและใบอนุญาต เพื่อโชว์บนหน้าปก PDF</li>
+                                <li>แท็บ <b>[จัดการข้อมูล]</b>: โหลดไฟล์ JSON เพื่ออัปเดต <i>ฐานภาษีปีล่าสุด</i> หรือกู้คืนข้อมูล (Auto-Recovery) กรณีเน็ตหลุด</li>
+                            </ul>
+                            <div class="bg-orange-50 p-2 rounded border border-orange-100 text-orange-800 mt-2">
+                                <b>💡 Pro Tip:</b> ใช้เมนูจัดการคลังแบบประกัน (Library) เพื่อบันทึกชื่อแบบประกันหรือกองทุนที่คุณใช้บ่อยๆ เข้าสู่ระบบ Dropdown อัตโนมัติ
+                            </div>
+                        </div>
+                    </div>
 
-            <section class="bg-red-50 p-5 rounded-xl border border-red-100 hover-scale transition">
-                <h3 class="text-lg font-bold text-red-800 mb-3 flex items-center"><span class="mr-2 text-xl">🎯</span> 4. ระบบจัดพอร์ตและแนะนำผลิตภัณฑ์</h3>
-                <ul class="list-disc list-inside space-y-2 text-red-900">
-                    <li><b>AIA Product Matching:</b> จัดกระเป๋าจับคู่ผลิตภัณฑ์ AIA อัตโนมัติภายใต้ข้อจำกัดด้านงบประมาณที่คำนวณแล้ว</li>
-                    <li><b>Dynamic Financial Pyramid:</b> วิเคราะห์โครงสร้างความมั่งคั่ง 4 ระดับ พร้อมแจ้งเตือนโอกาสพังทลาย</li>
-                </ul>
-            </section>
+                    <div class="border border-gray-200 rounded-xl overflow-hidden shadow-sm hover-scale transition">
+                        <div class="bg-gray-100 p-3 border-b border-gray-200 font-bold text-gray-800 flex items-center gap-2">
+                            <span class="bg-gray-800 text-white w-6 h-6 rounded flex items-center justify-center text-xs">2</span> 
+                            การนำเข้าข้อมูล (Data Intake)
+                        </div>
+                        <div class="p-4 text-xs text-gray-700 space-y-3">
+                            <p>กรอกข้อมูลลูกค้าลงในฟอร์ม โดยระบบออกแบบมาให้กรอกง่ายที่สุดผ่าน Dropdown อัจฉริยะ</p>
+                            <ul class="list-disc list-inside space-y-1.5 ml-1">
+                                <li><b>ส่วนที่ 1 & 1.2:</b> ข้อมูลทั่วไปและแบบทดสอบพฤติกรรม (สำคัญมากต่อการจัดกลุ่ม AI)</li>
+                                <li><b>ส่วนที่ 2:</b> งบดุลและกระแสเงินสด (ใส่เป็นตัวเลขรายเดือน)</li>
+                                <li><b>ส่วนที่ 3:</b> เป้าหมาย, กรมธรรม์เดิม และการลงทุนปัจจุบัน <i>(ระบบจะดึงเบี้ยประกันไปหักลบในรายจ่ายให้อัตโนมัติ)</i></li>
+                            </ul>
+                            <div class="bg-blue-50 p-2 rounded border border-blue-100 text-blue-800 mt-2">
+                                <b>💡 Pro Tip:</b> เพื่อฝึกฝนการใช้งาน ลองกดปุ่ม <b>"🎲 สร้างกรณีศึกษา"</b> ระบบจะสุ่มโปรไฟล์ลูกค้า (เช่น หมอ, แม่ค้า, DINKs) ขึ้นมาให้วิเคราะห์ได้ทันที
+                            </div>
+                        </div>
+                    </div>
 
-            <div class="mt-6 p-4 bg-gray-100 rounded-lg border border-gray-200 text-xs text-gray-500 leading-relaxed text-center shadow-inner">
-                <b>หมายเหตุ:</b> *เครื่องมือนี้ออกแบบมาเพื่อจำลองและประเมินทิศทางแบบวิชาการเท่านั้น
-            </div>
+                    <div class="border border-gray-200 rounded-xl overflow-hidden shadow-sm hover-scale transition">
+                        <div class="bg-gray-100 p-3 border-b border-gray-200 font-bold text-gray-800 flex items-center gap-2">
+                            <span class="bg-gray-800 text-white w-6 h-6 rounded flex items-center justify-center text-xs">3</span> 
+                            การประมวลผล (Processing & Engine)
+                        </div>
+                        <div class="p-4 text-xs text-gray-700 space-y-3">
+                            <p>เมื่อกรอกครบ ให้กดปุ่ม <b>"⚙️ ประมวลผล"</b> สีแดงด้านล่างสุด</p>
+                            <ul class="list-disc list-inside space-y-1.5 ml-1">
+                                <li>ระบบจะแสดงหน้าต่าง Overlay โหลด <b>Machine Learning</b> ใช้เวลา 2-5 วินาที</li>
+                                <li>หน้าจอจะสลับเข้าสู่โหมดรายงาน (Report View) อัตโนมัติ</li>
+                                <li>คุณจะเห็นแผง Dashboard สรุปอาการ, กราฟความมั่งคั่ง, สามเหลี่ยมการเงินที่ขยับได้ตามความเสี่ยงจริง, แผนภาษี, และพอร์ตทางเลือก 3 รูปแบบ</li>
+                            </ul>
+                            <div class="bg-indigo-50 p-2 rounded border border-indigo-100 text-indigo-800 mt-2">
+                                <b>💡 Pro Tip:</b> อ่าน <b>"บทสรุปจากผู้จัดทำ (Executive Summary)"</b> ที่หน้าแรกของรายงาน ซึ่ง AI สังเคราะห์ภาษามาให้แล้ว สามารถใช้อ่านนำเสนอลูกค้าได้เลย
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border border-gray-200 rounded-xl overflow-hidden shadow-sm hover-scale transition">
+                        <div class="bg-gray-100 p-3 border-b border-gray-200 font-bold text-gray-800 flex items-center gap-2">
+                            <span class="bg-gray-800 text-white w-6 h-6 rounded flex items-center justify-center text-xs">4</span> 
+                            การวิเคราะห์สด (Interactive What-If)
+                        </div>
+                        <div class="p-4 text-xs text-gray-700 space-y-3">
+                            <p>ในหัวข้อที่ 7 (แบบจำลองเกษียณ) จะมี <b>ห้องทดลองทางเลือก (Playground)</b> ให้ลูกค้าเล่น</p>
+                            <ul class="list-disc list-inside space-y-1.5 ml-1">
+                                <li>คุณสามารถเลื่อน <b>แถบสไลเดอร์</b> ปรับ อายุเกษียณ, เงินออมต่อเดือน, หรือผลตอบแทนคาดหวัง ได้สดๆ</li>
+                                <li>เส้นกราฟสีม่วง (พอร์ตจัดเอง) จะขยับตามทันที</li>
+                                <li>เมื่อปล่อยเมาส์ ระบบจะแอบรัน Monte Carlo ใหม่อีก 2,000 รอบในพื้นหลัง และอัปเดต <b>% โอกาสสำเร็จ</b> ใหม่ให้ภายใน 1 วินาที</li>
+                            </ul>
+                            <div class="bg-green-50 p-2 rounded border border-green-100 text-green-800 mt-2">
+                                <b>💡 Pro Tip:</b> ใช้ฟีเจอร์นี้ทำ <i>Trade-off</i> กับลูกค้า เช่น "ถ้าพี่ไม่อยากเพิ่มเงินออม งั้นพี่โอเคไหมถ้าต้องเลื่อนเกษียณไปอีก 3 ปี? ลองเลื่อนดูครับ"
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="mt-6 border border-gray-800 bg-gray-900 rounded-xl p-5 flex flex-col md:flex-row items-center justify-between shadow-xl">
+                    <div class="text-white">
+                        <h4 class="font-bold mb-2 flex items-center gap-2"><span class="bg-white text-gray-900 w-6 h-6 rounded flex items-center justify-center text-xs">5</span> การจัดเก็บและส่งมอบ (Archive & Delivery)</h4>
+                        <ul class="list-disc list-inside text-xs text-gray-300 space-y-1.5 ml-1">
+                            <li>กดปุ่ม <b>"💾 บันทึก"</b> เพื่อเซฟข้อมูลทั้งหมดเป็นไฟล์ <code class="text-emerald-400">.json</code> เก็บไว้ในเครื่องคุณ (ปลอดภัย 100%) วันหลังสามารถกด "📂 โหลด" ไฟล์เดิมมาแก้ไขต่อได้</li>
+                            <li>กดปุ่ม <b>"🖨️ พิมพ์ / PDF"</b> ระบบจะแปลงหน้าเว็บนี้ ตัดปุ่มและเมนูที่ไม่จำเป็นออก จัดหน้ากระดาษ A4 เติมหน้าปกที่มีชื่อคุณ และแทรกลายน้ำให้อัตโนมัติ พร้อมส่งเป็นเล่มรายงานให้ลูกค้าทันที</li>
+                        </ul>
+                    </div>
+                    <div class="text-6xl opacity-80 mt-4 md:mt-0 pl-6 border-l border-gray-700 hidden md:block">📄</div>
+                </div>
+
+                <div class="mt-8 p-4 bg-gray-100 rounded-lg border border-gray-200 text-xs text-gray-500 leading-relaxed text-center shadow-inner">
+                    <b>หมายเหตุ:</b> *เครื่องมือนี้ออกแบบมาเพื่อจำลองและประเมินทิศทางแบบวิชาการเท่านั้น
+                </div>
+
+            </section>
+            
         </div>
     </div>
 </div>
@@ -741,14 +883,20 @@
         <span id="welcomeMsg" class="font-medium hidden md:inline text-cyan-300"></span>
     </div>
     <div class="flex items-center gap-2 md:gap-4">
-    <span id="creator_header" class="text-gray-300 text-xs hidden md:inline border-r border-gray-600 pr-4"></span>
-    <button onclick="openManualOnly()" class="text-emerald-400 hover:text-white hover:bg-emerald-600 border border-emerald-500 font-bold px-3 py-1.5 rounded transition-colors text-xs flex items-center gap-1">
-        📖 แนะนำระบบ
-    </button>
-    <button onclick="requireAuthForSettings()" class="text-blue-400 hover:text-white hover:bg-blue-600 border border-blue-500 font-bold px-3 py-1.5 rounded transition-colors text-xs flex items-center gap-1">
-    ⚙️ ตั้งค่าระบบ
-    </button>
-</div>
+        <span id="creator_header" class="text-gray-300 text-xs hidden md:inline border-r border-gray-600 pr-4"></span>
+        
+        <button onclick="openManualOnly()" class="text-emerald-400 hover:text-white hover:bg-emerald-600 border border-emerald-500 font-bold px-3 py-1.5 rounded transition-colors text-xs flex items-center gap-1">
+            📖 แนะนำระบบ
+        </button>
+
+        <button onclick="openCalculatorModal()" class="text-purple-400 hover:text-white hover:bg-purple-600 border border-purple-500 font-bold px-3 py-1.5 rounded transition-colors text-xs flex items-center gap-1">
+            🧮 เครื่องคิดเลขการเงิน
+        </button>
+
+        <button onclick="requireAuthForSettings()" class="text-blue-400 hover:text-white hover:bg-blue-600 border border-blue-500 font-bold px-3 py-1.5 rounded transition-colors text-xs flex items-center gap-1">
+            ⚙️ ตั้งค่าระบบ
+        </button>
+    </div>
 </div>
 
 <div class="print-only print-watermark-global">CONFIDENTIAL</div>
@@ -774,6 +922,7 @@
             <button onclick="toggleMode('edit')" id="btnEdit" class="hidden bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded shadow transition">✏️ แก้ไข</button>
             <button onclick="processReportInit()" id="btnProcess" class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded shadow-lg font-bold transition transform hover:scale-105 animate-pulse-soft">⚙️ ประมวลผล</button>
             <button onclick="saveAndPrintReport()" id="btnPrint" class="hidden bg-gray-800 hover:bg-black text-white px-4 py-2 rounded shadow transition">🖨️ พิมพ์ / PDF</button>
+            <button onclick="PortfolioSimulator.open()" id="btnPortfolioSim" class="hidden bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded shadow-lg font-bold transition transform hover:scale-105">📈 วิเคราะห์พอร์ตเชิงลึก</button>
         </div>
     </div>
 
@@ -1646,6 +1795,7 @@
         
         <div class="mt-8 mb-8 flex justify-center gap-4 no-print print:hidden">
             <button onclick="toggleMode('edit')" class="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-3 rounded-lg shadow-lg font-bold transition transform hover:scale-105 text-lg">✏️ กลับไปแก้ไขข้อมูล</button>
+            <button onclick="PortfolioSimulator.open()" id="btnPortfolioSimBottom" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg shadow-lg font-bold transition transform hover:scale-105 text-lg flex items-center gap-2"><span>📈</span> วิเคราะห์พอร์ตเชิงลึก</button>
             <button onclick="saveAndPrintReport()" class="bg-gray-800 hover:bg-black text-white px-6 py-3 rounded-lg shadow-lg font-bold transition transform hover:scale-105 flex items-center gap-2 text-lg">🖨️ พิมพ์ / PDF</button>
         </div>
 
@@ -1718,13 +1868,291 @@
                     </tr>
                 </thead>
                 <tbody id="vn_manager_table_body" class="divide-y divide-gray-200 bg-white">
-                    </tbody>
+                </tbody>
             </table>
         </div>
     </div>
 </div>
 
-<button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" id="scrollTopBtn" class="fixed bottom-6 right-6 bg-red-600 hover:bg-red-700 text-white p-3 rounded-full shadow-lg z-50 transition-opacity duration-300 opacity-0 pointer-events-none no-print group" title="เลื่อนขึ้นบนสุด">
+<div id="calculatorModal" class="hidden fixed inset-0 bg-gray-900/90 backdrop-blur-sm z-[10000] flex items-center justify-center transition-opacity duration-300 p-4">
+    <div class="bg-gray-50 rounded-2xl shadow-2xl w-full max-w-5xl transform transition-all flex flex-col max-h-[95vh] animate-fade-in border-t-8 border-purple-600 overflow-hidden">
+        
+        <div class="bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center flex-shrink-0 shadow-sm z-10">
+            <div>
+                <h2 class="text-2xl font-bold text-purple-900 flex items-center gap-2"><span class="text-3xl">⚡</span> Pro Financial Calculator</h2>
+                <p class="text-xs text-gray-500 mt-1">เครื่องมือคำนวณ TVM, IRR, CAGR และแบบจำลองเป้าหมายการเงินระดับสูง</p>
+            </div>
+            <button onclick="closeCalculatorModal()" class="text-gray-400 hover:text-red-500 hover:bg-red-50 w-10 h-10 rounded-full flex items-center justify-center transition text-3xl leading-none font-bold">&times;</button>
+        </div>
+
+        <div class="flex border-b border-gray-200 bg-white overflow-x-auto custom-scrollbar flex-nowrap shadow-sm z-10">
+            <button onclick="window.switchSandboxTab('tab_retire')" id="btn_sb_retire" class="min-w-max flex-1 py-3 px-4 text-sm font-bold text-indigo-700 border-b-2 border-indigo-600 bg-indigo-50/50 focus:outline-none transition-colors">🏖️ จำลองเป้าหมายเกษียณ</button>
+            <button onclick="window.switchSandboxTab('tab_cagr')" id="btn_sb_cagr" class="min-w-max flex-1 py-3 px-4 text-sm font-bold text-gray-500 border-b-2 border-transparent hover:text-indigo-600 hover:bg-gray-50 focus:outline-none transition-colors">📊 ผลตอบแทนลงทุน (CAGR)</button>
+            <button onclick="window.switchSandboxTab('tab_irr')" id="btn_sb_irr" class="min-w-max flex-1 py-3 px-4 text-sm font-bold text-gray-500 border-b-2 border-transparent hover:text-indigo-600 hover:bg-gray-50 focus:outline-none transition-colors">📈 ผลตอบแทนประกัน (IRR)</button>
+            <button onclick="window.switchSandboxTab('tab_tvm')" id="btn_sb_tvm" class="min-w-max flex-1 py-3 px-4 text-sm font-bold text-gray-500 border-b-2 border-transparent hover:text-indigo-600 hover:bg-gray-50 focus:outline-none transition-colors">🎯 คำนวณอเนกประสงค์ (TVM)</button>
+        </div>
+
+        <div class="p-0 overflow-y-auto custom-scrollbar flex-1 bg-gray-50">
+            
+            <div id="tab_retire" class="flex flex-col lg:flex-row w-full animate-fade-in">
+                <div class="w-full lg:w-2/5 bg-gray-50 p-6 border-r border-gray-200">
+                    <h5 class="font-bold text-indigo-900 mb-5 border-b border-indigo-100 pb-2">🎛️ ตัวแปรเป้าหมายเกษียณ</h5>
+                    <div class="space-y-4 text-sm">
+                        <div class="grid grid-cols-3 gap-3">
+                            <div><label class="block font-bold text-gray-700 mb-1 text-[10px] uppercase">อายุปัจจุบัน</label><input type="number" id="sb_age" value="35" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none text-center font-semibold" oninput="window.calcRetirement()"></div>
+                            <div><label class="block font-bold text-gray-700 mb-1 text-[10px] uppercase">อายุเกษียณ</label><input type="number" id="sb_ret" value="60" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none text-center font-semibold" oninput="window.calcRetirement()"></div>
+                            <div><label class="block font-bold text-gray-700 mb-1 text-[10px] uppercase">อายุขัย</label><input type="number" id="sb_life" value="85" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none text-center font-semibold" oninput="window.calcRetirement()"></div>
+                        </div>
+                        <hr class="border-gray-200 my-2">
+                        <div>
+                            <label class="block font-bold text-gray-700 mb-1 text-[11px] uppercase">ค่าใช้จ่ายเป้าหมาย (มูลค่าวันนี้ / เดือน)</label>
+                            <div class="relative">
+                                <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 font-bold">฿</span>
+                                <input type="text" id="sb_exp" value="30,000" class="w-full pl-8 p-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none text-orange-600 font-bold" onblur="window.formatInput(this); window.calcRetirement();" onfocus="window.unformatInput(this)" oninput="window.calcRetirement()">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block font-bold text-gray-700 mb-1 text-[11px] uppercase">พอร์ตลงทุนตั้งต้น (ปัจจุบัน)</label>
+                            <div class="relative">
+                                <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 font-bold">฿</span>
+                                <input type="text" id="sb_wealth" value="500,000" class="w-full pl-8 p-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none text-green-600 font-bold" onblur="window.formatInput(this); window.calcRetirement();" onfocus="window.unformatInput(this)" oninput="window.calcRetirement()">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block font-bold text-gray-700 mb-1 text-[10px] uppercase">ผลตอบแทน (%)</label>
+                                <div class="relative">
+                                    <input type="number" id="sb_roi" step="0.1" value="5.0" class="w-full p-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-blue-600 font-bold text-center" oninput="window.calcRetirement()">
+                                    <span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-blue-400 font-bold">%</span>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block font-bold text-gray-700 mb-1 text-[10px] uppercase">เงินเฟ้อ (%)</label>
+                                <div class="relative">
+                                    <input type="number" id="sb_inf" step="0.1" value="3.0" class="w-full p-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 outline-none text-red-600 font-bold text-center" oninput="window.calcRetirement()">
+                                    <span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-red-400 font-bold">%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-full lg:w-3/5 p-6 bg-white relative">
+                    <h5 class="font-bold text-gray-800 mb-4 border-b pb-2">📝 บทวิเคราะห์เป้าหมายเกษียณ</h5>
+                    <div class="space-y-3 text-sm">
+                        <div class="bg-gray-50 p-3 rounded-lg border hover:shadow-md transition">
+                            <p class="text-[11px] text-gray-500 font-bold uppercase tracking-wider mb-1">1. อำนาจเงินแท้จริง (Real Return)</p>
+                            <p class="text-gray-700">ผลตอบแทน <b id="out_roi" class="text-blue-600">5.0%</b> หักลบเงินเฟ้อ <b id="out_inf" class="text-red-600">3.0%</b> เหลือผลตอบแทนแท้จริง <b id="out_real_return" class="text-purple-700">1.94%</b> ต่อปี</p>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="bg-gray-50 p-3 rounded-lg border hover:shadow-md transition">
+                                <p class="text-[11px] text-gray-500 font-bold uppercase tracking-wider mb-1">2. ค่าครองชีพอนาคต</p>
+                                <p class="text-gray-700">ในอีก <b id="out_years_accum">25</b> ปี ค่าใช้จ่ายจะเฟ้อเป็น <b id="out_exp_future" class="text-orange-600 text-lg block mt-1">62,813 ฿/ด.</b></p>
+                            </div>
+                            <div class="bg-gray-50 p-3 rounded-lg border hover:shadow-md transition">
+                                <p class="text-[11px] text-gray-500 font-bold uppercase tracking-wider mb-1">3. พอร์ตเดิมเติบโต (FV)</p>
+                                <p class="text-gray-700">พอร์ตปัจจุบันจะทบต้นกลายเป็น <b id="out_fv_wealth" class="text-green-600 text-lg block mt-1">1,693,177 ฿</b></p>
+                            </div>
+                        </div>
+                        <div class="bg-indigo-50 p-4 rounded-lg border border-indigo-200 shadow-inner flex justify-between items-center">
+                            <div>
+                                <p class="text-[11px] text-indigo-500 font-bold uppercase tracking-wider">4. เงินก้อนที่ต้องมี ณ วันเกษียณ</p>
+                                <p class="text-xs text-gray-500 mt-0.5">PV of Annuity Due</p>
+                            </div>
+                            <p id="out_corpus" class="text-2xl font-black text-indigo-700">14,650,250 ฿</p>
+                        </div>
+                        <div class="bg-red-50 p-4 rounded-lg border border-red-200 shadow-md">
+                            <div class="flex justify-between items-center mb-2">
+                                <p class="text-[11px] text-red-500 font-bold uppercase tracking-wider">5. สรุปเงินออมที่ต้องเตรียม (PMT)</p>
+                                <p class="text-xs text-gray-600">ส่วนขาด <b id="out_shortfall" class="text-red-700">12,957,073 ฿</b></p>
+                            </div>
+                            <div class="bg-white p-3 rounded-lg border border-red-100 flex justify-between items-center">
+                                <p class="text-sm text-gray-700 font-bold">ต้องออมเพิ่ม (DCA) เดือนละ:</p>
+                                <p id="out_pmt" class="text-2xl font-black text-red-600">21,735 ฿</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab_cagr" class="hidden flex-col lg:flex-row w-full animate-fade-in">
+                <div class="w-full lg:w-2/5 bg-gray-50 p-6 border-r border-gray-200">
+                    <h5 class="font-bold text-sky-900 mb-4 border-b border-sky-100 pb-2">🎛️ ตัวแปรหาอัตราผลตอบแทน</h5>
+                    <div class="space-y-4 text-sm">
+                        <div class="bg-white p-3 rounded-lg border shadow-sm">
+                            <label class="block font-bold text-gray-700 mb-1 text-[11px] uppercase">เงินลงทุนเริ่มต้น (PV)</label>
+                            <div class="relative">
+                                <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 font-bold">฿</span>
+                                <input type="text" id="cagr_pv" value="100,000" class="w-full pl-8 p-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 outline-none money-input text-sky-700 font-bold text-lg" onblur="window.formatInput(this); window.calcCAGR();" onfocus="window.unformatInput(this)" oninput="window.calcCAGR()">
+                            </div>
+                        </div>
+                        <div class="bg-white p-3 rounded-lg border shadow-sm">
+                            <label class="block font-bold text-gray-700 mb-1 text-[11px] uppercase">มูลค่าปัจจุบัน / สิ้นสุด (FV)</label>
+                            <div class="relative">
+                                <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 font-bold">฿</span>
+                                <input type="text" id="cagr_fv" value="150,000" class="w-full pl-8 p-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 outline-none money-input text-green-600 font-bold text-lg" onblur="window.formatInput(this); window.calcCAGR();" onfocus="window.unformatInput(this)" oninput="window.calcCAGR()">
+                            </div>
+                        </div>
+                        <div class="bg-white p-3 rounded-lg border shadow-sm">
+                            <label class="block font-bold text-gray-700 mb-1 text-[11px] uppercase">ระยะเวลาถือครอง (ปี)</label>
+                            <input type="number" id="cagr_n" value="5" class="w-full p-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 outline-none text-center font-bold" oninput="window.calcCAGR()">
+                        </div>
+                    </div>
+                </div>
+                <div class="w-full lg:w-3/5 p-6 bg-white flex flex-col justify-center">
+                    <div id="cagr_result_card" class="bg-sky-50 p-6 rounded-2xl border-2 border-sky-200 shadow-lg text-center transform transition-transform">
+                        <p class="text-sm text-sky-800 font-bold uppercase tracking-widest mb-2">อัตราผลตอบแทนทบต้นต่อปี (CAGR)</p>
+                        <p id="out_cagr_val" class="text-6xl font-black text-sky-600 py-3">8.45%</p>
+                        <div class="grid grid-cols-2 gap-4 mt-4 pt-4 border-t border-sky-200 text-sm">
+                            <div><span class="text-gray-500 block text-xs mb-1">ผลตอบแทนรวม (Total ROI)</span><b id="out_cagr_roi" class="text-blue-700 text-lg">50.00%</b></div>
+                            <div><span class="text-gray-500 block text-xs mb-1 font-bold">กำไรสุทธิ</span><b id="out_cagr_profit" class="text-green-600 text-lg">50,000 ฿</b></div>
+                        </div>
+                    </div>
+                    <div class="mt-6 bg-gray-800 text-white p-4 rounded-lg text-xs shadow-inner">
+                        <p class="font-bold text-sky-300 mb-1">💡 AI Financial Insight:</p>
+                        <p id="out_cagr_insight" class="text-gray-300 leading-relaxed">ผลตอบแทนอยู่ในระดับ 'กองทุนตราสารทุน (หุ้น)' เหมาะสำหรับเงินเย็นระยะยาวที่สามารถรับความผันผวนระหว่างทางได้เพื่อสร้างความมั่งคั่งก้าวกระโดด</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab_irr" class="hidden flex-col lg:flex-row w-full animate-fade-in">
+                <div class="w-full lg:w-2/5 bg-gray-50 p-6 border-r border-gray-200">
+                    <h5 class="font-bold text-teal-900 mb-4 border-b border-teal-100 pb-2">🎛️ ตัวแปรคำนวณ IRR</h5>
+                    <div class="space-y-4 text-sm">
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block font-bold text-gray-700 mb-1 text-[10px] uppercase">เบี้ยที่จ่าย/ปี (PMT)</label>
+                                <div class="relative">
+                                    <input type="text" id="irr_pmt" value="100,000" class="w-full pl-6 p-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 outline-none money-input text-red-600 font-bold" onblur="window.formatInput(this); window.calcIRR();" onfocus="window.unformatInput(this)" oninput="window.calcIRR()">
+                                    <span class="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400 font-bold">฿</span>
+                                </div>
+                            </div>
+                            <div><label class="block font-bold text-gray-700 mb-1 text-[10px] uppercase">ชำระกี่ปี (N)</label><input type="number" id="irr_n_pay" value="10" class="w-full p-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 outline-none text-center font-bold" oninput="window.calcIRR()"></div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block font-bold text-gray-700 mb-1 text-[10px] uppercase">เงินคืน/ปี (CB)</label>
+                                <div class="relative">
+                                    <input type="text" id="irr_cb" value="10,000" class="w-full pl-6 p-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 outline-none money-input text-green-600 font-bold" onblur="window.formatInput(this); window.calcIRR();" onfocus="window.unformatInput(this)" oninput="window.calcIRR()">
+                                    <span class="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400 font-bold">฿</span>
+                                </div>
+                            </div>
+                            <div><label class="block font-bold text-gray-700 mb-1 text-[10px] uppercase">รับคืนปีที่ - ถึงปีที่</label>
+                                <div class="flex gap-1 items-center">
+                                    <input type="number" id="irr_cb_start" value="1" class="w-full p-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 outline-none text-center" oninput="window.calcIRR()">
+                                    <span class="text-gray-400 font-bold">-</span>
+                                    <input type="number" id="irr_cb_end" value="19" class="w-full p-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 outline-none text-center" oninput="window.calcIRR()">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3 pt-2 border-t border-gray-200">
+                            <div>
+                                <label class="block font-bold text-gray-700 mb-1 text-[10px] uppercase">เงินก้อนครบกำหนด</label>
+                                <div class="relative">
+                                    <input type="text" id="irr_mat" value="1,500,000" class="w-full pl-6 p-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 outline-none money-input text-indigo-600 font-bold" onblur="window.formatInput(this); window.calcIRR();" onfocus="window.unformatInput(this)" oninput="window.calcIRR()">
+                                    <span class="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400 font-bold">฿</span>
+                                </div>
+                            </div>
+                            <div><label class="block font-bold text-gray-700 mb-1 text-[10px] uppercase">รับปีที่ (N)</label><input type="number" id="irr_n_mat" value="20" class="w-full p-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 outline-none text-center font-bold" oninput="window.calcIRR()"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-full lg:w-3/5 p-6 bg-white relative">
+                    <h5 class="font-bold text-gray-800 mb-4 border-b pb-2">📊 วิเคราะห์อัตราผลตอบแทนภายใน (IRR)</h5>
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div class="bg-red-50 p-4 rounded-xl border border-red-100">
+                            <p class="text-xs text-red-500 font-bold uppercase mb-1">เงินลงทุนรวม (Total Cost)</p>
+                            <p id="out_irr_cost" class="text-2xl font-bold text-red-700">1,000,000 ฿</p>
+                        </div>
+                        <div class="bg-green-50 p-4 rounded-xl border border-green-100">
+                            <p class="text-xs text-green-600 font-bold uppercase mb-1">ผลประโยชน์รวม (Total Return)</p>
+                            <p id="out_irr_return" class="text-2xl font-bold text-green-700">1,690,000 ฿</p>
+                        </div>
+                    </div>
+                    <div class="bg-teal-50 p-5 rounded-xl border border-teal-200 shadow-md text-center mb-4">
+                        <p class="text-sm text-teal-800 font-bold uppercase tracking-widest mb-1">อัตราผลตอบแทนภายใน (IRR)</p>
+                        <p id="out_irr_rate" class="text-5xl font-black text-teal-600 py-2">3.25%</p>
+                        <p id="out_irr_profit" class="text-sm text-teal-700 font-medium bg-teal-100/50 inline-block px-3 py-1 rounded-full mt-2">กำไรสุทธิ: 690,000 บาท</p>
+                    </div>
+                    <div class="bg-gray-800 text-white p-3 rounded-lg text-xs shadow-inner">
+                        <p class="font-bold text-teal-300 mb-1">💡 AI Financial Insight:</p>
+                        <p id="out_irr_insight" class="text-gray-300 leading-relaxed">ผลตอบแทนระดับนี้ชนะเงินฝากประจำและมีความปลอดภัยสูงมาก เหมาะสำหรับการใช้เป็นเครื่องมือรักษามูลค่าเงินต้น (Capital Preservation) และลดหย่อนภาษี</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab_tvm" class="hidden flex-col lg:flex-row w-full animate-fade-in">
+                <div class="w-full lg:w-2/5 bg-gray-50 p-5 border-r border-gray-200">
+                    <div class="flex justify-between items-end mb-4 border-b border-purple-200 pb-3">
+                        <div>
+                            <h5 class="font-bold text-purple-900 mb-1">🎛️ ตัวแปร TVM อเนกประสงค์</h5>
+                            <p class="text-[11px] text-gray-500">เลือกค่าที่ต้องการคำนวณ (Solve for X)</p>
+                        </div>
+                        <button onclick="window.clearTVM()" class="text-[11px] bg-red-50 text-red-600 hover:bg-red-100 px-3 py-1.5 rounded border border-red-200 transition font-bold shadow-sm">ล้างค่า (Clear)</button>
+                    </div>
+                    
+                    <div class="flex gap-1 mb-4 bg-gray-200 p-1 rounded-lg">
+                        <button id="btn_tvm_fv" onclick="window.setTVMTarget('fv')" class="flex-1 py-1.5 text-[10px] font-bold rounded text-gray-600 hover:bg-white/50 transition">หา FV</button>
+                        <button id="btn_tvm_pv" onclick="window.setTVMTarget('pv')" class="flex-1 py-1.5 text-[10px] font-bold rounded text-gray-600 hover:bg-white/50 transition">หา PV</button>
+                        <button id="btn_tvm_pmt" onclick="window.setTVMTarget('pmt')" class="flex-1 py-1.5 text-[10px] font-bold rounded shadow-sm bg-white text-purple-700 transition">หา PMT</button>
+                        <button id="btn_tvm_n" onclick="window.setTVMTarget('n')" class="flex-1 py-1.5 text-[10px] font-bold rounded text-gray-600 hover:bg-white/50 transition">หา งวด (N)</button>
+                        <button id="btn_tvm_r" onclick="window.setTVMTarget('r')" class="flex-1 py-1.5 text-[10px] font-bold rounded text-gray-600 hover:bg-white/50 transition">หา % (I)</button>
+                    </div>
+
+                    <div class="space-y-3 text-sm">
+                        <div class="bg-white p-3 rounded-lg border shadow-sm">
+                            <label class="block font-bold text-gray-700 mb-1 text-[11px] uppercase">🎯 เป้าหมายเงินก้อน (FV)</label>
+                            <div class="relative">
+                                <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 font-bold">฿</span>
+                                <input type="text" id="tvm_fv" value="5,000,000" class="w-full pl-8 p-2 border border-gray-300 rounded focus:ring-2 focus:ring-purple-500 outline-none money-input text-gray-800 font-bold transition-colors disabled:bg-purple-100 disabled:text-purple-800 disabled:border-purple-300" onblur="window.formatInput(this); window.calcTVM();" onfocus="window.unformatInput(this)" oninput="window.calcTVM()">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="bg-white p-3 rounded-lg border shadow-sm">
+                                <label class="block font-bold text-gray-700 mb-1 text-[11px] uppercase">💰 เงินก้อนเริ่มต้น (PV)</label>
+                                <div class="relative">
+                                    <span class="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400 font-bold text-xs">฿</span>
+                                    <input type="text" id="tvm_pv" value="0" class="w-full pl-5 p-2 border border-gray-300 rounded focus:ring-2 focus:ring-purple-500 outline-none money-input text-gray-800 font-bold text-sm transition-colors disabled:bg-purple-100 disabled:text-purple-800 disabled:border-purple-300" onblur="window.formatInput(this); window.calcTVM();" onfocus="window.unformatInput(this)" oninput="window.calcTVM()">
+                                </div>
+                            </div>
+                            <div class="bg-white p-3 rounded-lg border shadow-sm">
+                                <label class="block font-bold text-gray-700 mb-1 text-[11px] uppercase">💸 เงินออมต่องวด (PMT)</label>
+                                <div class="relative">
+                                    <span class="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400 font-bold text-xs">฿</span>
+                                    <input type="text" id="tvm_pmt" value="คำนวณอัตโนมัติ" disabled class="w-full pl-5 p-2 rounded outline-none money-input font-bold text-sm transition-colors bg-purple-100 text-purple-800 border border-purple-300" onblur="window.formatInput(this); window.calcTVM();" onfocus="window.unformatInput(this)" oninput="window.calcTVM()">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="bg-white p-3 rounded-lg border shadow-sm">
+                                <label class="block font-bold text-gray-700 mb-1 text-[11px] uppercase">⏳ จำนวนงวด (N)</label>
+                                <input type="text" id="tvm_n" value="120" class="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-purple-500 outline-none text-center font-bold text-gray-800 text-sm transition-colors disabled:bg-purple-100 disabled:text-purple-800 disabled:border-purple-300" onblur="window.formatInput(this); window.calcTVM();" onfocus="window.unformatInput(this)" oninput="window.calcTVM()">
+                            </div>
+                            <div class="bg-white p-3 rounded-lg border shadow-sm">
+                                <label class="block font-bold text-gray-700 mb-1 text-[11px] uppercase">📈 ผลตอบแทน (% ต่องวด)</label>
+                                <input type="text" id="tvm_r" value="0.67" class="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-purple-500 outline-none text-center font-bold text-gray-800 text-sm transition-colors disabled:bg-purple-100 disabled:text-purple-800 disabled:border-purple-300" onblur="window.formatInput(this); window.calcTVM();" onfocus="window.unformatInput(this)" oninput="window.calcTVM()">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-full lg:w-3/5 p-6 bg-white flex flex-col justify-center">
+                    <div id="tvm_result_card" class="bg-purple-50 p-6 rounded-2xl border-2 border-purple-200 shadow-lg text-center transform transition-transform">
+                        <p id="out_tvm_title" class="text-sm text-purple-800 font-bold uppercase tracking-widest mb-2">เงินออมที่ต้องเก็บต่องวด (PMT)</p>
+                        <p id="out_tvm_val" class="text-5xl font-black text-purple-700 py-3">27,248.00 ฿</p>
+                        <div class="grid grid-cols-2 gap-4 mt-4 pt-4 border-t border-purple-200 text-sm">
+                            <div><span class="text-gray-500 block text-xs mb-1">รวมเงินต้นที่ใช้ไป</span><b id="out_tvm_cost" class="text-gray-800">3,269,760.00 ฿</b></div>
+                            <div><span class="text-green-600 block text-xs mb-1 font-bold">ดอกเบี้ยที่ได้รับ (กำไร)</span><b id="out_tvm_profit" class="text-green-700">1,730,240.00 ฿</b></div>
+                        </div>
+                    </div>
+                    <div class="mt-6 bg-gray-800 text-white p-3 rounded-lg text-xs shadow-inner">
+                        <p class="font-bold text-purple-300 mb-1">💡 TVM Math Engine:</p>
+                        <p class="text-gray-300 leading-relaxed">ระบบคำนวณจากสมการ <span class="font-mono text-[10px] bg-gray-700 px-1 rounded">FV = PV(1+i)ⁿ + PMT[((1+i)ⁿ-1)/i]</span> <b>หมายเหตุ:</b> หากส่งเบี้ยรายเดือน ให้ปรับ N เป็นจำนวนเดือน และหารผลตอบแทน i ด้วย 12 ก่อนเสมอ</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div> <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" id="scrollTopBtn" class="fixed bottom-6 right-6 bg-red-600 hover:bg-red-700 text-white p-3 rounded-full shadow-lg z-50 transition-opacity duration-300 opacity-0 pointer-events-none no-print group" title="เลื่อนขึ้นบนสุด">
     <svg class="w-6 h-6 transform group-hover:-translate-y-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>
 </button>
 
@@ -4109,6 +4537,7 @@ function runMonteCarloWorker(data, onProgress = null) {
         const btnSave = document.getElementById('btnSave');
         const btnLoad = document.getElementById('btnLoad');
         const btnRandom = document.getElementById('btnRandom');
+        const btnPortfolioSim = document.getElementById('btnPortfolioSim');
 
         if(mode === 'edit') {
             inputSec.style.display = 'block';
@@ -4123,6 +4552,7 @@ function runMonteCarloWorker(data, onProgress = null) {
             btnLoad.classList.remove('hidden');
             if(btnRandom) btnRandom.classList.remove('hidden');
             window.scrollTo({top: 0, behavior: 'smooth'});
+            if(btnPortfolioSim) btnPortfolioSim.classList.add('hidden');
         } else if (mode === 'report') {
             inputSec.style.display = 'none';
             reportSec.style.display = 'block';
@@ -4136,6 +4566,7 @@ function runMonteCarloWorker(data, onProgress = null) {
             btnLoad.classList.add('hidden');
             if(btnRandom) btnRandom.classList.add('hidden');
             window.scrollTo({top: 0, behavior: 'smooth'});
+            if(btnPortfolioSim) btnPortfolioSim.classList.remove('hidden');
         }
     }
 
@@ -8499,127 +8930,6 @@ function toggleAdvancedEcon() {
             }
         }
 
-        // ==========================================
-        // 🟢🟢🟢 เริ่ม: ศูนย์รวมพจนานุกรมคำอธิบายระบบ 🟢🟢🟢
-        // ==========================================
-        const systemDictionary = {
-            // --- ข้อมูลเดิมของคุณ ---
-            "health-score": {
-                icon: "📊",
-                title: "ดัชนีสุขภาพทางการเงิน (Financial Health)",
-                content: `ระบบประเมินอิงตามหลักวิชาการของ <b>คณะกรรมการวิชาชีพนักวางแผนการเงิน (CFP)</b> โดยแบ่งการให้คะแนนเป็น 5 มิติ ได้แก่:<br>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3">
-                    <div class="bg-white p-3 rounded border shadow-sm"><b class="text-blue-700">1. อัตราความอยู่รอด</b><br>รายได้ต้องมากกว่ารายจ่ายเสมอ (> 1 เท่า)</div>
-                    <div class="bg-white p-3 rounded border shadow-sm"><b class="text-blue-700">2. สภาพคล่อง</b><br>ต้องมีเงินสดสำรองฉุกเฉินอย่างน้อย 3-6 เดือน</div>
-                    <div class="bg-white p-3 rounded border shadow-sm"><b class="text-red-700">3. ภาระหนี้สิน (DTI)</b><br>ภาระผ่อนหนี้รวม ไม่ควรเกิน 36-40% ของรายได้</div>
-                    <div class="bg-white p-3 rounded border shadow-sm"><b class="text-green-700">4. อัตราการออม</b><br>ควรหักออมก่อนใช้อย่างน้อย 10-20%</div>
-                </div>
-                <div class="bg-white p-3 rounded border shadow-sm mt-3"><b class="text-purple-700">5. อัตราการลงทุน</b><br>ประเมินสัดส่วนการนำเงินไปลงทุนเพื่อให้ความมั่งคั่งชนะอัตราเงินเฟ้อ (เป้าหมาย 50% ของความมั่งคั่งสุทธิ)</div>`
-            },
-            "ai-monte-carlo": {
-                icon: "🧠",
-                title: "AI Probability vs Monte Carlo",
-                content: `ทำไมบางครั้งตัวเลข 2 จุดนี้ถึงไม่เท่ากัน?<br><br>
-                <b>1. โอกาสความสำเร็จรวม (AI Success Probability):</b> ประเมินจาก <b>"พฤติกรรมทางการเงิน"</b> (เช่น ไม่มีหนี้บริโภค, มีสวัสดิการสุขภาพ) หากสูง แปลว่าชีวิตยืดหยุ่น ปลอดภัย ล้มยาก<br><br>
-                <b>2. บททดสอบแผนเกษียณ (Monte Carlo):</b> ประเมินจาก <b>"คณิตศาสตร์การลงทุน"</b> ล้วนๆ หากคุณรับความเสี่ยงได้ต่ำ แต่ตั้งเป้าเกษียณไว้สูงเกินไป ตัวเลขส่วนนี้จะแจ้งเตือนให้คุณเพิ่มเงินออม หรือปรับเป้าหมายลงให้สมจริง`
-            },
-            "academic_refs": {
-                icon: "📚",
-                title: "รากฐานวิชาการและทฤษฎีอ้างอิง (Academic & Behavioral References)",
-                content: `
-                    <div class="space-y-4 text-sm text-gray-700 leading-relaxed">
-                        <p class="font-semibold text-blue-900 bg-blue-50 p-3 rounded-lg border border-blue-100">
-                            💡 ระบบ AI Financial Architect นี้ ขับเคลื่อนด้วยโมเดล 8D K-Means Profiling ผสานความจริงเชิงตัวเลข (Numerical Reality) โดยมีรากฐานคำถามประเมิน 10 ข้อที่สกัดจากงานวิจัยระดับโลก ดังนี้:
-                        </p>
-                        
-                        <div class="bg-white p-4 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition">
-                            <h5 class="font-bold text-gray-900 mb-2 flex items-center gap-2">
-                                <span class="text-blue-600">1.</span> พฤติกรรมการออมและการควบคุมอารมณ์ (ข้อ 1-2)
-                            </h5>
-                            <p class="mb-2">อ้างอิงทฤษฎี <b>Mental Accounting</b> (บัญชีในใจ) และ <b>Delay Discounting</b> (การอดเปรี้ยวไว้กินหวาน) ของ <span class="text-blue-700 font-semibold">Prof. Richard Thaler (Nobel Laureate สาขาเศรษฐศาสตร์ ปี 2017)</span></p>
-                            <p class="text-xs text-gray-500 bg-gray-50 p-2 rounded">📌 ใช้วัดวินัยการเงินและการทนต่อสิ่งเร้า ซึ่งเป็นตัวแปรสำคัญที่สุดในการชี้วัดความสำเร็จของการวางแผนเกษียณและกระแสเงินสด</p>
-                        </div>
-
-                        <div class="bg-white p-4 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition">
-                            <h5 class="font-bold text-gray-900 mb-2 flex items-center gap-2">
-                                <span class="text-green-600">2.</span> ความแข็งแกร่งทางการเงินและภาระหนี้สิน (ข้อ 3-5)
-                            </h5>
-                            <p class="mb-2">ดัดแปลงจากแบบประเมิน <b>Financial Capability Questionnaire</b> ของ <span class="text-blue-700 font-semibold">OECD/INFE</span> (องค์การเพื่อความร่วมมือทางเศรษฐกิจและการพัฒนา) และทฤษฎี <b>Hierarchy of Financial Needs</b></p>
-                            <p class="text-xs text-gray-500 bg-gray-50 p-2 rounded">📌 ใช้ประเมินความเสี่ยงต่อภาวะล้มละลาย (Risk of Ruin) และจัดกลุ่มความกังวลของช่วงวัย (เช่น กลุ่มเดอะแบก หรือ Sandwich Generation)</p>
-                        </div>
-
-                        <div class="bg-white p-4 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition">
-                            <h5 class="font-bold text-gray-900 mb-2 flex items-center gap-2">
-                                <span class="text-orange-600">3.</span> จิตวิทยาความทนทานต่อความเสี่ยง (ข้อ 6-8)
-                            </h5>
-                            <p class="mb-2">อ้างอิงทฤษฎี <b>Prospect Theory (Loss Aversion)</b> ของ <span class="text-blue-700 font-semibold">Prof. Daniel Kahneman (Nobel Laureate สาขาเศรษฐศาสตร์ ปี 2002)</span> และแบบประเมิน <b>Financial Risk Tolerance</b> ของ <span class="text-blue-700 font-semibold">Grable & Lytton (1999)</span></p>
-                            <p class="text-xs text-gray-500 bg-gray-50 p-2 rounded">📌 ซึ่งเป็นมาตรฐานที่ CFP ทั่วโลกใช้ เพื่อให้เข้าใจความรู้สึก "เกลียดกลัวการขาดทุน" ที่แท้จริง มากกว่าแค่การสอบถามเป้าหมายผลตอบแทน</p>
-                        </div>
-
-                        <div class="bg-white p-4 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition">
-                            <h5 class="font-bold text-gray-900 mb-2 flex items-center gap-2">
-                                <span class="text-purple-600">4.</span> สไตล์การตัดสินใจลงทุนและระดับความรู้ (ข้อ 9-10)
-                            </h5>
-                            <p class="mb-2">อ้างอิงทฤษฎี <b>Behavioral Investor Types (BITs)</b> ของ <span class="text-blue-700 font-semibold">Michael M. Pompian</span> (ผู้เชี่ยวชาญด้าน Behavioral Finance)</p>
-                            <p class="text-xs text-gray-500 bg-gray-50 p-2 rounded">📌 เพื่อประเมินระดับความรู้เชิงประจักษ์ และหารูปแบบการให้บริการ (Advisory Fit) ว่าควรเป็นแบบทำด้วยตนเอง (DIY) หรือให้ผู้เชี่ยวชาญดูแลระบบให้ทั้งหมด (Delegator)</p>
-                        </div>
-                    </div>
-                `
-            },
-
-            // --- 🌟 ข้อมูลที่เพิ่มใหม่ให้สอดคล้องกับระบบเชิงลึก (Hyper-Realistic) 🌟 ---
-            
-            "k-means-8d": {
-                icon: "🧬",
-                title: "การจัดกลุ่มลูกค้า (8D K-Means Clustering)",
-                content: `อัลกอริทึม Machine Learning แบบ Unsupervised ที่ใช้จัดกลุ่มลูกค้าเชิงลึก (Persona Profiling) โดยประมวลผลจากข้อมูล 8 มิติ ได้แก่:<br>
-                <ul class="list-disc list-inside mt-2 text-sm text-gray-700 space-y-1">
-                    <li><b>Age (อายุ)</b> และ <b>Income (รายได้)</b></li>
-                    <li><b>Net Worth (ความมั่งคั่ง)</b> และ <b>DTI (ภาระหนี้)</b></li>
-                    <li><b>Risk Tolerance (ความเสี่ยงที่รับได้)</b></li>
-                    <li><b>Recency & Frequency (ความสม่ำเสมอในการออม)</b></li>
-                    <li><b>Discipline (วินัยทางการเงิน)</b></li>
-                </ul>
-                <div class="bg-indigo-50 p-2 rounded mt-3 text-sm text-indigo-800 border border-indigo-100">
-                    💡 <b>Centroid Smoothing:</b> ระบบสามารถให้ FA (ที่ปรึกษาการเงิน) "สอน" (Human-in-the-loop) เพื่อปรับจุดศูนย์กลางของโมเดลให้แม่นยำขึ้นเมื่อเจอเคสที่ซับซ้อน เช่น กลุ่ม UHNW หรือ Sandwich Generation
-                </div>`
-            },
-            "merton-jump": {
-                icon: "📉",
-                title: "การจำลองวิกฤตเศรษฐกิจ (Merton's Jump Diffusion & CVaR)",
-                content: `ระบบไม่เพียงแค่รัน <b>Monte Carlo Simulation 2,000 รูปแบบ</b> แบบปกติ แต่ได้ฝังสมการ <b>Merton's Jump Diffusion</b> เพื่อจำลองสถานการณ์ "วิกฤตเศรษฐกิจเฉียบพลัน" (Market Shock / Black Swan)<br><br>
-                ระบบจะคำนวณ <b>Expected Shortfall (CVaR 95%)</b> เพื่อวิเคราะห์ว่า หากเกิดวิกฤตในระดับเลวร้ายที่สุด 5% (Worst-case) พอร์ตของคุณจะเสียหายสูงสุดกี่เปอร์เซ็นต์ เพื่อเตรียมแผนรับมือ (Stress Test) อย่างสมจริง`
-            },
-            "knn-matching": {
-                icon: "🎯",
-                title: "ระบบจับคู่ผลิตภัณฑ์อัจฉริยะ (AI KNN Matching Engine)",
-                content: `อัลกอริทึมหาระยะห่างความใกล้เคียง (K-Nearest Neighbors) ระหว่าง <b>"ข้อจำกัดด้านงบประมาณ/ปัญหากระแสเงินสด"</b> ของลูกค้า กับ <b>"ฟีเจอร์ของแบบประกัน"</b><br><br>
-                ระบบจะคัดกรองแบบประกันที่เหมาะสมที่สุด และสร้าง 3 ทางเลือกให้โดยอัตโนมัติ:
-                <ol class="list-decimal list-inside mt-2 space-y-1 text-sm bg-gray-50 p-3 rounded border">
-                    <li><b class="text-blue-700">The Ultimate Shield:</b> อุดรอยรั่ว 100% ครบถ้วน</li>
-                    <li><b class="text-green-700">The Smart Core:</b> สมดุลระหว่างงบประมาณและความคุ้มครองหลัก</li>
-                    <li><b class="text-orange-700">The Tactical Essential:</b> แผนประคองชีพ เน้นเบี้ยต่ำคุ้มครองสูงเมื่อกระแสเงินสดตึงตัว</li>
-                </ol>`
-            },
-            "goal-earmarking": {
-                icon: "🔐",
-                title: "การระบุวัตถุประสงค์กองเงิน (Goal-Based Earmarking)",
-                content: `ฟีเจอร์ <b>Smart Portfolio Analysis</b> ที่จะทำการ "หักลบ" สวัสดิการปัจจุบัน และสินทรัพย์ที่เตรียมไว้เฉพาะเจาะจง (Earmark) ออกจากภาระความเสี่ยงทั้งหมด<br><br>
-                <div class="text-sm text-gray-700"><b>ผลลัพธ์:</b> ป้องกันปัญหา AI จัดผลิตภัณฑ์เกินความจำเป็น (Over-insured) ระบบจะนำเสนอเฉพาะส่วนที่ขาดจริงๆ (Net Gap) ทำให้ประหยัดเบี้ยประกันและเพิ่มประสิทธิภาพพอร์ตโฟลิโอได้สูงสุด</div>`
-            },
-            "tax-alpha": {
-                icon: "⚖️",
-                title: "การวางแผนภาษีเชิงรุก (Tax Alpha)",
-                content: `กลยุทธ์การสร้างผลตอบแทนส่วนเพิ่มจากการบริหารภาษีอย่างมีประสิทธิภาพ (Tax Optimization) ระบบจะประเมินรอยรั่วทางภาษี และแนะนำให้นำเงินที่ได้คืนจากการลดหย่อน (Tax Refund) กลับเข้าไปลงทุนทบต้น (Re-invest) หรือใช้สร้างเกราะคุ้มครองความเสี่ยง (Tax Shield) เพิ่มเติม โดยไม่กระทบกระแสเงินสดเดิม`
-            },
-            "nlg-nlu": {
-                icon: "🗣️",
-                title: "การสังเคราะห์ภาษาและจิตวิทยา (NLG & DISC)",
-                content: `<b>Natural Language Generation (NLG)</b>: เทคโนโลยีแปลงข้อมูลตัวเลขและกราฟที่ซับซ้อน ให้ออกมาเป็นบทความหรือคำอธิบายที่อ่านเข้าใจง่าย<br><br>
-                ระบบจะปรับสไตล์การใช้ภาษา (Tone & Manner) ให้เข้ากับจริตบุคลิกภาพของลูกค้าตามหลัก <b>DISC Profiling</b> (เช่น เน้นผลลัพธ์ฉับไวสำหรับคนกลุ่ม D หรือ เน้นความปลอดภัยและมีเหตุผลสำหรับคนกลุ่ม C) เพื่อเพิ่มการมีส่วนร่วมและโอกาสในการลงมือทำตามแผน`
-            }
-        };
-
         window.openContextHelp = function(key) {
             const data = systemDictionary[key];
             if (!data) return;
@@ -9252,5 +9562,8 @@ if ('serviceWorker' in navigator) {
         <script src="crm-system.js"></script>
         <script src="analytics-dashboard.js"></script>
         <script src="case-study-generator.js"></script>
+        <script src="knowledge-base.js"></script>
+        <script src="calculator-module.js"></script>
+        <script src="portfolio-simulator.js"></script>
     </body>
     </html>

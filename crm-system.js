@@ -1664,3 +1664,84 @@ window.saveAndPrintReport = function() {
         window.print(); 
     }, 300);
 };
+// =====================================================================
+// ☢️ FACTORY RESET & SYSTEM ADMIN TOOLS
+// =====================================================================
+
+window.factoryReset = function(type) {
+    if (type === 'password') {
+        if(confirm("⚠️ ยืนยันการรีเซ็ตรหัสผ่าน?\n\nรหัสผ่านจะถูกตั้งค่ากลับเป็น '123456' และกุญแจเข้ารหัสเดิมจะถูกล้าง คุณจะต้องล็อกอินใหม่ด้วย 123456 เพื่อเข้าใช้งานระบบ")) {
+            // ล้าง Hash เก่าและตั้งเป็น 123456 ใหม่
+            localStorage.removeItem('FA_System_PIN');
+            localStorage.setItem('FA_System_PIN_HASH', CryptoJS.SHA256('123456').toString());
+            
+            alert("✅ รีเซ็ตรหัสผ่านเป็น 123456 สำเร็จแล้ว! ระบบจะรีเฟรชหน้าจอ");
+            location.reload(); // บังคับรีโหลดเพื่อเตะออกจากระบบให้ล็อกอินใหม่
+        }
+    } 
+    else if (type === 'database') {
+        let code = prompt("⚠️ อันตราย: ข้อมูลลูกค้าและการเข้าพบทั้งหมดในฐานข้อมูล (CRM) จะถูกลบทิ้งอย่างถาวร!\n\nหากต้องการดำเนินการต่อ กรุณาพิมพ์คำว่า 'ยืนยัน' ในช่องด้านล่าง:");
+        
+        if (code === "ยืนยัน") {
+            let transaction = crmDB.transaction(["clients", "counters"], "readwrite");
+            
+            // ล้างตารางฐานข้อมูลลูกค้า และ ตัวนับ Running Number
+            transaction.objectStore("clients").clear();
+            transaction.objectStore("counters").clear();
+            
+            transaction.oncomplete = function() {
+                // ล้างหน่วยความจำใน RAM
+                crmClientsList = [];
+                window.currentFilteredClients = [];
+                
+                // สั่งรีเฟรชตารางให้ว่างเปล่า
+                if(typeof renderCRMTable === 'function') renderCRMTable([]);
+                
+                // สั่งรีเฟรช Dashboard ให้เป็น 0 (ถ้ามี)
+                if(typeof clearDashboardUI === 'function') clearDashboardUI();
+                
+                alert("🗑️ ล้างฐานข้อมูล CRM สำเร็จแล้ว! ฐานข้อมูลว่างเปล่าพร้อมใช้งาน");
+            };
+            transaction.onerror = function() {
+                alert("❌ เกิดข้อผิดพลาดในการล้างฐานข้อมูล");
+            };
+        } else if (code !== null) {
+            alert("❌ พิมพ์คำยืนยันไม่ถูกต้อง ยกเลิกการลบข้อมูล");
+        }
+    } 
+    else if (type === 'all') {
+        let code = prompt("☢️ NUCLEAR RESET: ล้างข้อมูลทุกอย่างกลับไปเป็นค่าเริ่มต้นจากโรงงาน!\n\n(รหัสผ่าน, ฐานข้อมูล, กฎ AI, ข้อมูลแบบประกันที่เพิ่มเอง และการตั้งค่าต่างๆ จะถูกลบทิ้งทั้งหมด)\n\nหากคุณแน่ใจ 100% กรุณาพิมพ์คำว่า 'RESET' (ตัวพิมพ์ใหญ่) ในช่องด้านล่าง:");
+        
+        if (code === "RESET") {
+            // 1. ล้าง Database (IndexedDB)
+            let transaction = crmDB.transaction(["clients", "counters"], "readwrite");
+            transaction.objectStore("clients").clear();
+            transaction.objectStore("counters").clear();
+            
+            transaction.oncomplete = function() {
+                // 2. ล้าง Local Storage แบบเจาะจงเฉพาะของระบบ FA (ไม่กวนข้อมูลเว็บอื่นๆ)
+                const keysToRemove = [
+                    'FA_System_PIN',
+                    'FA_System_Config',
+                    'fa_macro_config',
+                    'fa_settings_v2',
+                    'fa_product_library_v2',
+                    'FA_System_Draft_Secure',
+                    'update_doc_weights',
+                    'update_doc_scaler',
+                    'FA_Temp_Dashboard_Data'
+                ];
+                
+                keysToRemove.forEach(key => localStorage.removeItem(key));
+                
+                // รีเซ็ตรหัสกลับเป็น 123456 เผื่อไว้
+                localStorage.setItem('FA_System_PIN_HASH', CryptoJS.SHA256('123456').toString());
+                
+                alert("🔄 รีเซ็ตระบบกลับเป็นค่าเริ่มต้นจากโรงงาน (Factory Reset) สำเร็จ!\nระบบจะเริ่มทำงานใหม่ทั้งหมด");
+                location.reload();
+            };
+        } else if (code !== null) {
+            alert("❌ พิมพ์รหัสยืนยันไม่ถูกต้อง ยกเลิกการรีเซ็ตระบบ");
+        }
+    }
+};
