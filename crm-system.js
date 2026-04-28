@@ -792,13 +792,18 @@ function exportCRMToExcel() {
 
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
+    
+    // 🛠️ แก้ไข: อ้างอิง document ของหน้าต่าง CRM เพื่อให้ iPad ยอมให้ดาวน์โหลด
+    let doc = getCRMDoc();
+    const link = doc.createElement("a");
     link.setAttribute("href", url);
     let dateStamp = new Date().toISOString().slice(0,10).replace(/-/g, "");
     link.setAttribute("download", `FA_Pipeline_Report_${dateStamp}.csv`);
-    document.body.appendChild(link);
+    
+    doc.body.appendChild(link);
     link.click();
-    document.body.removeChild(link);
+    doc.body.removeChild(link);
+    URL.revokeObjectURL(url); // คืน Memory
 }
 
 function exportCRMData() {
@@ -809,12 +814,21 @@ function exportCRMData() {
     req.onsuccess = function(e) {
         let dbClients = e.target.result;
         if (dbClients.length === 0) return crmAlert("ไม่มีข้อมูลลูกค้าให้สำรองครับ");
-        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dbClients, null, 2));
-        const dlAnchorElem = document.createElement('a');
-        dlAnchorElem.setAttribute("href", dataStr);
+        
+        // 🛠️ แก้ไข: ใช้ Blob แบบเดียวกับ Excel แทน Data URI
+        const blob = new Blob([JSON.stringify(dbClients, null, 2)], { type: 'application/json;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        
+        let doc = getCRMDoc();
+        const link = doc.createElement('a');
+        link.setAttribute("href", url);
         let dateStr = new Date().toISOString().slice(0,10).replace(/-/g, "");
-        dlAnchorElem.setAttribute("download", `FA_CRM_Backup_${dateStr}.json`);
-        dlAnchorElem.click();
+        link.setAttribute("download", `FA_CRM_Backup_${dateStr}.json`);
+        
+        doc.body.appendChild(link);
+        link.click();
+        doc.body.removeChild(link);
+        URL.revokeObjectURL(url);
     };
 }
 
@@ -984,7 +998,15 @@ function printCRMReport(clientsToPrint = null, isSelectedMode = false) {
             </tr>`;
     }).join('');
 
-    let printWindow = window.open('', '_blank');
+    // 🛠️ แก้ไข: ใช้ defaultView ของ CRM Window เพื่อป้องกัน iPad บล็อกการเปิดแท็บใหม่ข้ามหน้าต่าง
+    let crmWin = getCRMDoc().defaultView;
+    let printWindow = crmWin.open('', '_blank');
+    
+    // ดักจับกรณีผู้ใช้เปิดตั้งค่า Block Pop-ups ใน Safari เอาไว้
+    if (!printWindow) {
+        return crmAlert("⚠️ Safari บล็อกการเปิดหน้าต่างพิมพ์รายงาน!\nกรุณาไปที่ การตั้งค่า iPad > Safari > ปิดการใช้งาน 'ปิดกั้นหน้าต่างที่ผุดขึ้น' (Block Pop-ups)");
+    }
+
     let html = `
     <!DOCTYPE html>
     <html lang="th">
@@ -1051,7 +1073,10 @@ function printCRMReport(clientsToPrint = null, isSelectedMode = false) {
         </div>
     </body>
     </html>`;
-    printWindow.document.open(); printWindow.document.write(html); printWindow.document.close();
+
+    printWindow.document.open(); 
+    printWindow.document.write(html); 
+    printWindow.document.close();
 }
 
 function openClientReviewModal(id) {
