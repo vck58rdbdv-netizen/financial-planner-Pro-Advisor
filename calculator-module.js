@@ -19,9 +19,9 @@ window.closeCalculatorModal = function() {
     if(modal) modal.classList.add('hidden');
 };
 
-// ฟังก์ชันสลับ Tab ภายในเครื่องคิดเลข
+// ฟังก์ชันสลับ Tab ภายในเครื่องคิดเลข (อัปเดตเพิ่ม tab_debt)
 window.switchSandboxTab = function(tabId) {
-    ['tab_retire', 'tab_cagr', 'tab_irr', 'tab_tvm'].forEach(id => {
+    ['tab_retire', 'tab_cagr', 'tab_irr', 'tab_tvm', 'tab_debt'].forEach(id => {
         let el = document.getElementById(id);
         if(el) {
             el.classList.add('hidden');
@@ -44,6 +44,11 @@ window.switchSandboxTab = function(tabId) {
     if(activeBtn) {
         activeBtn.classList.add('text-indigo-700', 'border-indigo-600', 'bg-indigo-50/50');
         activeBtn.classList.remove('text-gray-500', 'border-transparent');
+    }
+
+    // ถ้ากดเข้ามาที่แท็บหนี้สิน ให้รันคำนวณทันที
+    if (tabId === 'tab_debt' && typeof window.calcDebt === 'function') {
+        window.calcDebt();
     }
 };
 
@@ -102,7 +107,11 @@ window.clearTVM = function() {
 };
 
 // ฟังก์ชัน Utility ดึงตัวเลขเพื่อรองรับช่องที่มี 2 ทศนิยม
-const getNumSafe = (id) => parseFloat(document.getElementById(id).value.replace(/,/g, '')) || 0;
+const getNumSafe = (id) => {
+    let el = document.getElementById(id);
+    if (!el) return 0;
+    return parseFloat(el.value.replace(/,/g, '')) || 0;
+};
 
 // 1. จำลองเกษียณ
 window.calcRetirement = function() {
@@ -363,9 +372,247 @@ window.calcTVM = function() {
     setTimeout(() => { card.classList.remove('scale-105', 'border-purple-400'); }, 150);
 };
 
+// ==========================================
+// 🧮 Debt Calculator Module (คำนวณหนี้สิน + ตารางผ่อน)
+// ==========================================
+
+// ฟังก์ชันสลับโชว์/ซ่อนฟอร์มตามประเภทหนี้
+window.toggleDebtForm = function() {
+    let type = document.getElementById('debt_type').value;
+    
+    let formHome = document.getElementById('form_debt_home');
+    let formAuto = document.getElementById('form_debt_auto');
+    let formCredit = document.getElementById('form_debt_credit');
+
+    if(formHome) formHome.classList.add('hidden');
+    if(formAuto) formAuto.classList.add('hidden');
+    if(formCredit) formCredit.classList.add('hidden');
+
+    if (type === 'home' && formHome) formHome.classList.remove('hidden');
+    if (type === 'auto' && formAuto) formAuto.classList.remove('hidden');
+    if (type === 'credit' && formCredit) formCredit.classList.remove('hidden');
+};
+
+// ฟังก์ชันหลักสำหรับคำนวณหนี้ตามประเภท
+window.calcDebt = function() {
+    let typeEl = document.getElementById('debt_type');
+    if (!typeEl) return;
+    
+    let type = typeEl.value; // 'home', 'auto', 'credit'
+    
+    // เคลียร์ตารางและผลลัพธ์เก่าก่อน
+    let container = document.getElementById('debt_schedule_container');
+    if(container) container.innerHTML = '';
+    
+    if (type === 'home') {
+        calculateHomeLoan();
+    } else if (type === 'auto') {
+        calculateAutoLoan();
+    } else if (type === 'credit') {
+        calculateCreditCard();
+    }
+};
+
+// 1. คำนวณสินเชื่อบ้าน (ลดต้นลดดอก)
+function calculateHomeLoan() {
+    let principal = getNumSafe('debt_home_principal');
+    let annualRate = parseFloat(document.getElementById('debt_home_rate').value) || 0;
+    let years = parseInt(document.getElementById('debt_home_years').value) || 0;
+
+    let monthlyRate = (annualRate / 100) / 12;
+    let totalMonths = years * 12;
+    let pmt = 0;
+
+    if (monthlyRate > 0 && totalMonths > 0) {
+        pmt = principal * (monthlyRate * Math.pow(1 + monthlyRate, totalMonths)) / (Math.pow(1 + monthlyRate, totalMonths) - 1);
+    } else if (totalMonths > 0) {
+        pmt = principal / totalMonths; 
+    }
+
+    let schedule = [];
+    let balance = principal;
+    let totalInterest = 0;
+
+    for (let i = 1; i <= totalMonths; i++) {
+        let interestForMonth = balance * monthlyRate;
+        let principalForMonth = pmt - interestForMonth;
+        
+        balance -= principalForMonth;
+        if (balance < 0) balance = 0; // ป้องกันตัวเลขติดลบเศษทศนิยม
+        
+        totalInterest += interestForMonth;
+
+        schedule.push({
+            month: i,
+            pmt: pmt,
+            principalPaid: principalForMonth,
+            interestPaid: interestForMonth,
+            remainingBalance: balance
+        });
+    }
+
+    updateDebtSummary(pmt, totalInterest, principal + totalInterest, `${totalMonths} เดือน (${years} ปี)`);
+    renderAmortizationTable(schedule, 'home');
+}
+
+// 2. คำนวณสินเชื่อรถยนต์ (Flat Rate + VAT)
+function calculateAutoLoan() {
+    let carPrice = getNumSafe('debt_auto_price');
+    let downPayment = getNumSafe('debt_auto_down');
+    let flatRate = parseFloat(document.getElementById('debt_auto_rate').value) || 0;
+    let years = parseInt(document.getElementById('debt_auto_years').value) || 0;
+
+    let principal = carPrice - downPayment; 
+    let totalInterest = principal * (flatRate / 100) * years; 
+    let totalPaid = principal + totalInterest; 
+    let totalMonths = years * 12;
+    
+    let pmtBeforeVat = totalMonths > 0 ? (totalPaid / totalMonths) : 0;
+    let vatPerMonth = pmtBeforeVat * 0.07;
+    let pmtWithVat = pmtBeforeVat + vatPerMonth; 
+
+    let schedule = [];
+    let balance = principal;
+    let principalPerMonth = principal / totalMonths;
+    let interestPerMonth = totalInterest / totalMonths;
+
+    for (let i = 1; i <= totalMonths; i++) {
+        balance -= principalPerMonth;
+        if (balance < 0) balance = 0;
+
+        schedule.push({
+            month: i,
+            pmt: pmtWithVat, // รวม VAT แล้ว
+            principalPaid: principalPerMonth,
+            interestPaid: interestPerMonth, // ไม่รวม VAT เพื่อให้เห็นดอกเบี้ยเพียวๆ
+            remainingBalance: balance
+        });
+    }
+
+    updateDebtSummary(pmtWithVat, totalInterest, totalPaid + (vatPerMonth * totalMonths), `${totalMonths} เดือน (${years} ปี)`);
+    renderAmortizationTable(schedule, 'auto');
+}
+
+// 3. คำนวณบัตรเครดิต (ลดต้นลดดอก แบบกำหนดค่างวดเอง)
+function calculateCreditCard() {
+    let balance = getNumSafe('debt_cc_balance');
+    let annualRate = parseFloat(document.getElementById('debt_cc_rate').value) || 16;
+    let monthlyPay = getNumSafe('debt_cc_pay');
+
+    let monthlyRate = (annualRate / 100) / 12;
+    let schedule = [];
+    let totalInterest = 0;
+    let months = 0;
+    let currentBalance = balance;
+
+    // เช็คกรณีจ่ายน้อยกว่าดอกเบี้ย (หนี้ไม่มีวันหมด)
+    let firstMonthInterest = currentBalance * monthlyRate;
+    if (monthlyPay <= firstMonthInterest && balance > 0) {
+        document.getElementById('out_debt_summary').innerHTML = `
+            <div class="p-4 bg-red-100 text-red-700 rounded-lg border border-red-300 font-bold text-center">
+                ⚠️ อันตราย! ค่างวดของคุณ (${monthlyPay.toLocaleString()} ฿) น้อยกว่าดอกเบี้ยต่อเดือน (${firstMonthInterest.toLocaleString(undefined,{maximumFractionDigits:2})} ฿) <br> หนี้ก้อนนี้จะไม่มีวันผ่อนหมด กรุณาเพิ่มค่างวดครับ
+            </div>`;
+        return;
+    }
+
+    while (currentBalance > 0 && months < 600) { // Limit 50 ปี (600 เดือน)
+        months++;
+        let interestForMonth = currentBalance * monthlyRate;
+        let principalForMonth = monthlyPay - interestForMonth;
+
+        if (currentBalance + interestForMonth <= monthlyPay) {
+            // เดือนสุดท้าย จ่ายแค่ที่เหลือ
+            monthlyPay = currentBalance + interestForMonth;
+            principalForMonth = currentBalance;
+            currentBalance = 0;
+        } else {
+            currentBalance -= principalForMonth;
+        }
+
+        totalInterest += interestForMonth;
+
+        schedule.push({
+            month: months,
+            pmt: monthlyPay,
+            principalPaid: principalForMonth,
+            interestPaid: interestForMonth,
+            remainingBalance: currentBalance
+        });
+    }
+
+    updateDebtSummary(schedule[0]?.pmt || 0, totalInterest, balance + totalInterest, `${months} เดือน (${(months/12).toFixed(1)} ปี)`);
+    renderAmortizationTable(schedule, 'credit');
+}
+
+// อัปเดต UI สรุปผล
+function updateDebtSummary(pmt, totalInterest, totalPaid, timeStr) {
+    const fmt2 = (num) => Number(num).toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    
+    document.getElementById('out_debt_summary').innerHTML = `
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+            <div class="bg-indigo-50 p-3 rounded shadow-sm text-center">
+                <p class="text-xs text-gray-500">ค่างวดต่อเดือน</p>
+                <p class="text-lg font-bold text-indigo-700">${fmt2(pmt)} ฿</p>
+            </div>
+            <div class="bg-red-50 p-3 rounded shadow-sm text-center">
+                <p class="text-xs text-gray-500">ดอกเบี้ยรวม</p>
+                <p class="text-lg font-bold text-red-600">${fmt2(totalInterest)} ฿</p>
+            </div>
+            <div class="bg-green-50 p-3 rounded shadow-sm text-center">
+                <p class="text-xs text-gray-500">ยอดรวมทั้งสิ้น</p>
+                <p class="text-lg font-bold text-green-700">${fmt2(totalPaid)} ฿</p>
+            </div>
+            <div class="bg-blue-50 p-3 rounded shadow-sm text-center">
+                <p class="text-xs text-gray-500">ระยะเวลาผ่อน</p>
+                <p class="text-lg font-bold text-blue-700">${timeStr}</p>
+            </div>
+        </div>
+    `;
+}
+
+// สร้างตาราง HTML (Amortization Table) พร้อมใช้ Tailwind
+function renderAmortizationTable(schedule, type) {
+    const fmt2 = (num) => Number(num).toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    let container = document.getElementById('debt_schedule_container');
+    
+    let tableHTML = `
+        <div class="overflow-x-auto max-h-96 border rounded-lg shadow-inner">
+            <table class="min-w-full text-sm text-right text-gray-600">
+                <thead class="bg-gray-100 sticky top-0 shadow-sm">
+                    <tr>
+                        <th class="py-2 px-3 text-center text-gray-700 font-semibold border-b">งวดที่</th>
+                        <th class="py-2 px-3 text-gray-700 font-semibold border-b">ค่างวด ${type === 'auto' ? '(รวม VAT)' : ''}</th>
+                        <th class="py-2 px-3 text-gray-700 font-semibold border-b">ตัดเงินต้น</th>
+                        <th class="py-2 px-3 text-gray-700 font-semibold border-b">ตัดดอกเบี้ย</th>
+                        <th class="py-2 px-3 text-gray-700 font-semibold border-b">เงินต้นคงเหลือ</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200 bg-white">
+    `;
+
+    schedule.forEach(row => {
+        // ไฮไลท์ปีใหม่ (ทุกๆ งวดที่ 12) เพื่อให้อ่านง่าย
+        let rowClass = row.month % 12 === 0 ? "bg-indigo-50/30" : "hover:bg-gray-50";
+        tableHTML += `
+            <tr class="${rowClass}">
+                <td class="py-2 px-3 text-center border-r">${row.month}</td>
+                <td class="py-2 px-3 font-medium text-gray-800">${fmt2(row.pmt)}</td>
+                <td class="py-2 px-3 text-green-600">${fmt2(row.principalPaid)}</td>
+                <td class="py-2 px-3 text-red-500">${fmt2(row.interestPaid)}</td>
+                <td class="py-2 px-3 font-semibold text-gray-700">${fmt2(row.remainingBalance)}</td>
+            </tr>
+        `;
+    });
+
+    tableHTML += `</tbody></table></div>`;
+    container.innerHTML = tableHTML;
+}
+
+// 📌 ฟังก์ชันเริ่มการทำงานทั้งหมด (อัปเดตใหม่)
 window.initCalculators = function() {
-    window.calcRetirement();
-    window.calcCAGR();
-    window.calcIRR();
-    window.calcTVM();
+    if(typeof window.calcRetirement === 'function') window.calcRetirement();
+    if(typeof window.calcCAGR === 'function') window.calcCAGR();
+    if(typeof window.calcIRR === 'function') window.calcIRR();
+    if(typeof window.calcTVM === 'function') window.calcTVM();
+    if(typeof window.calcDebt === 'function') window.calcDebt(); // เรียกใช้คำนวณหนี้เมื่อโหลด
 };
