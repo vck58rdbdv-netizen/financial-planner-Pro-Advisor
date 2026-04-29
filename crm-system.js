@@ -590,13 +590,21 @@ function renderVNActivities() {
         return;
     }
 
-    let activitiesHtml = tempNotesHistory.map((act, aIdx) => `
+    // 🛠️ FIX: นำข้อมูลมา Sort ตาม Timestamp จากมากไปน้อย (ใหม่สุดอยู่บน) ก่อนแสดงผล
+    let sortedActivities = [...tempNotesHistory].sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+
+    let activitiesHtml = sortedActivities.map((act) => {
+        // หาค่า Index ออริจินัล เพื่อให้ปุ่ม "ลบ" ดึงตัวเลขไปลบได้ถูกต้อง
+        let aIdx = tempNotesHistory.indexOf(act);
+        
+        return `
         <div class="bg-white p-3 rounded-lg border border-gray-200 shadow-sm relative mb-2 group/act">
             <div class="text-[10px] text-gray-500 font-bold mb-1">${act.date.replace(/\s\d{2}:\d{2}.*/, '')}</div>
             <div class="text-sm text-gray-700 whitespace-pre-wrap pl-2 border-l-2 border-indigo-300">${SecurityCore.escapeHTML(act.text)}</div>
             <button type="button" onclick="deleteActivity(${aIdx})" class="absolute right-2 top-2 text-[10px] bg-red-50 text-red-500 px-2 py-1 rounded opacity-0 group-hover/act:opacity-100 transition-opacity border border-red-100 hover:bg-red-100">ลบ</button>
         </div>
-    `).join('');
+        `;
+    }).join('');
 
     container.innerHTML = activitiesHtml;
 }
@@ -609,6 +617,12 @@ window.addNoteToModalHistory = function() {
     if (!text) return;
 
     let dateObj = dateInput ? new Date(dateInput) : new Date();
+    
+    // 🛠️ FIX: เติมเวลาปัจจุบัน (ชั่วโมง/นาที/วินาที) เข้าไปเสมอ 
+    // ป้องกันไม่ให้ Date Picker ตั้งค่าเวลาเป็น 00:00:00 แล้วโดนดันไปอยู่ล่างสุด
+    let now = new Date();
+    dateObj.setHours(now.getHours(), now.getMinutes(), now.getSeconds(), now.getMilliseconds());
+
     let displayDate = dateObj.toLocaleDateString('th-TH', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
     let timestampToSave = dateObj.getTime();
 
@@ -1090,7 +1104,6 @@ function openClientReviewModal(id) {
 
     let latestVisit = client.fullData.visits[0];
     let doc = getCRMDoc();
-    
     doc.getElementById('review_client_name').innerText = `คุณ ${client.name} | รหัส: ${client.id} | (อัปเดตล่าสุด: ${latestVisit.VN})`;
     
     let p = latestVisit.dataSnapshot.profile || {};
@@ -1117,13 +1130,9 @@ function openClientReviewModal(id) {
             <div class="flex justify-between items-center py-2 border-b border-gray-100 last:border-0 pl-2">
                 <div>
                     <span class="text-[10px] ${isBase ? 'bg-purple-100 text-purple-700' : 'bg-orange-100 text-orange-700'} px-1.5 py-0.5 rounded mr-1">${isBase ? 'หลัก' : 'เพิ่มเติม'}</span>
-                    <span class="text-sm font-medium text-gray-800">${name || 'ไม่ระบุ'}</span>
-                    <p class="text-[10px] text-gray-500 mt-0.5">${type || '-'}</p>
+                    <span class="text-sm font-medium text-gray-800">${name || 'ไม่ระบุ'}</span><p class="text-[10px] text-gray-500 mt-0.5">${type || '-'}</p>
                 </div>
-                <div class="text-right">
-                    <p class="text-xs text-gray-800 font-bold">ทุน: ${fmtRev(val)}</p>
-                    <p class="text-[10px] text-gray-500">เบี้ย: ${fmtRev(prem)}/ปี</p>
-                </div>
+                <div class="text-right"><p class="text-xs text-gray-800 font-bold">ทุน: ${fmtRev(val)}</p><p class="text-[10px] text-gray-500">เบี้ย: ${fmtRev(prem)}/ปี</p></div>
             </div>`;
         }).join('');
     } else { insHtml = '<p class="text-center text-sm text-gray-400 py-4">ไม่มีข้อมูลกรมธรรม์</p>'; }
@@ -1132,97 +1141,72 @@ function openClientReviewModal(id) {
     if (d.c_invest_current && d.c_invest_current.length > 0) {
         invHtml = d.c_invest_current.map(inv => `
             <div class="flex justify-between items-center py-2 border-b border-gray-100 last:border-0 pl-2">
-                <div>
-                    <p class="text-sm font-medium text-gray-800">${inv[0] || 'ไม่ระบุ'}</p>
-                    <p class="text-[10px] text-gray-500 mt-0.5">เป้าหมาย: ${inv[3] || '-'}</p>
-                </div>
-                <div class="text-right">
-                    <p class="text-sm text-blue-700 font-bold">${fmtRev(inv[1])}</p>
-                    <p class="text-[10px] text-green-600 font-semibold">คาดหวัง ${inv[2] || 0}%</p>
-                </div>
+                <div><p class="text-sm font-medium text-gray-800">${inv[0] || 'ไม่ระบุ'}</p><p class="text-[10px] text-gray-500 mt-0.5">เป้าหมาย: ${inv[3] || '-'}</p></div>
+                <div class="text-right"><p class="text-sm text-blue-700 font-bold">${fmtRev(inv[1])}</p><p class="text-[10px] text-green-600 font-semibold">คาดหวัง ${inv[2] || 0}%</p></div>
             </div>`).join('');
     } else { invHtml = '<p class="text-center text-sm text-gray-400 py-4">ไม่มีข้อมูลการลงทุน</p>'; }
 
-    let goalsHtml = '';
-    if (d.c_goals && d.c_goals.length > 0) {
-        goalsHtml = d.c_goals.map(g => `
-            <div class="bg-white p-3 rounded-lg border border-gray-200 shadow-sm">
-                <div class="flex justify-between items-center mb-1">
-                    <span class="font-bold text-sm text-gray-800 truncate pr-2">🎯 ${g[0] || 'ไม่ระบุ'}</span>
-                    <span class="text-[10px] bg-red-100 text-red-700 px-2 py-0.5 rounded-full font-bold whitespace-nowrap">ความสำคัญ: ${g[3] || 1}</span>
-                </div>
-                <div class="flex justify-between text-xs mt-2 text-gray-600">
-                    <span>ยอดที่ต้องการ: <b class="text-gray-800">${fmtRev(g[1])} ฿</b></span>
-                    <span>ระยะเวลา: <b class="text-gray-800">${g[2] || 0} ปี</b></span>
-                </div>
-            </div>`).join('');
-    } else { goalsHtml = '<p class="text-center text-sm text-gray-400 py-4 col-span-full border border-dashed rounded-lg bg-gray-50/50">ไม่มีข้อมูลเป้าหมายเฉพาะเจาะจง</p>'; }
-
+    // 🚀 ลบ Checkbox ออก แสดงแค่หัวข้อ
     let progressHtml = `
-        <div class="bg-white p-4 md:p-5 rounded-xl border border-gray-200 shadow-sm col-span-1 md:col-span-2 mt-4 flex flex-col h-full">
-            <h4 class="font-bold text-indigo-800 mb-3 flex items-center gap-2 border-b border-indigo-100 pb-2"><span class="text-xl">📈</span> พัฒนาการทางการเงิน (Financial Evolution)</h4>
+        <div class="bg-white p-4 md:p-5 rounded-xl border border-gray-200 shadow-sm w-full flex flex-col">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-3 border-b border-indigo-100 pb-2 gap-2">
+                <div>
+                    <h4 class="font-bold text-indigo-800 flex items-center gap-2"><span class="text-xl">📈</span> พัฒนาการทางการเงิน (Trend Evolution)</h4>
+                    <p class="text-[10px] text-gray-500 mt-1">แสดงแนวโน้มเปรียบเทียบการเติบโต (จุดเริ่มต้น = 0)</p>
+                </div>
+            </div>
             ${(!client.fullData.visits || client.fullData.visits.length < 2) 
-                ? `<div class="bg-gray-50 text-gray-500 text-sm text-center py-8 rounded-lg border border-dashed flex-grow flex items-center justify-center">มีประวัติการเข้าพบเพียง 1 ครั้ง ระบบจะเริ่มแสดงกราฟเมื่อมีการอัปเดตข้อมูล (VN ถัดไป)</div>`
-                : `<div class="relative w-full flex-grow min-h-[250px] md:min-h-[300px]"><canvas id="clientProgressChart"></canvas></div><p class="text-[10px] text-gray-400 mt-2 text-center">* เปรียบเทียบข้อมูลจากการเข้าพบ (VN) ทั้งหมด เพื่อแสดงแนวโน้มการลดหนี้และเพิ่มความมั่งคั่ง</p>`}
+                ? `<div class="bg-gray-50 text-gray-500 text-sm text-center py-8 rounded-lg border border-dashed flex-grow flex items-center justify-center">มีประวัติเพียง 1 ครั้ง จะเริ่มแสดงกราฟเทรนด์เมื่อมีการอัปเดต (VN ถัดไป)</div>`
+                : `<div class="relative w-full flex-grow min-h-[250px] md:min-h-[300px]"><canvas id="clientProgressChart"></canvas></div>
+                   <div id="chartDataTableContainer" class="mt-4 overflow-x-auto custom-scrollbar"></div>`}
         </div>`;
 
     let modalContent = `
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex flex-col justify-center">
+        <div class="flex flex-col md:flex-row gap-4 w-full mb-6">
+            <div class="flex-1 bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex flex-col justify-center">
                 <p class="text-xs text-gray-500 font-bold uppercase tracking-wider mb-2">👤 ข้อมูลพื้นฐาน</p>
                 <p class="text-sm text-gray-800"><b>อายุ:</b> ${p.p_age || '-'} ปี</p>
                 <p class="text-sm text-gray-800 mt-1"><b>อาชีพ:</b> ${p.p_occ || '-'}</p>
-                <p class="text-sm text-gray-800 mt-1"><b>สวัสดิการ:</b> <span class="truncate block">${p.p_welfare || '-'}</span></p>
-                <p class="text-sm text-gray-800 mt-1"><b>ภาระอุปการะ:</b> ${p.p_dep || '0'} คน</p>
             </div>
-            <div class="bg-gradient-to-br from-indigo-50 to-blue-50 p-4 rounded-xl border border-indigo-100 shadow-sm flex flex-col justify-center items-center text-center">
-                <p class="text-xs text-indigo-500 font-bold uppercase tracking-wider mb-2">🧠 AI Score (คะแนนความสำเร็จ)</p>
+            <div class="flex-1 bg-gradient-to-br from-indigo-50 to-blue-50 p-4 rounded-xl border border-indigo-100 shadow-sm flex flex-col justify-center items-center text-center">
+                <p class="text-xs text-indigo-500 font-bold uppercase tracking-wider mb-2">🧠 AI Score (ความสำเร็จ)</p>
                 <h4 class="text-3xl font-black text-indigo-700">${latestVisit.aiScore || '-'}</h4>
             </div>
-            <div class="bg-gradient-to-br from-teal-50 to-green-50 p-4 rounded-xl border border-teal-100 shadow-sm flex flex-col justify-center items-center text-center">
+            <div class="flex-1 bg-gradient-to-br from-teal-50 to-green-50 p-4 rounded-xl border border-teal-100 shadow-sm flex flex-col justify-center items-center text-center">
                 <p class="text-xs text-teal-600 font-bold uppercase tracking-wider mb-2">📊 AI Cluster (กลุ่มพฤติกรรม)</p>
                 <h4 class="text-sm font-bold text-teal-800 leading-tight">${latestVisit.aiCluster || '-'}</h4>
             </div>
         </div>
-        <div>
+
+        <div class="mb-6">
             <h4 class="font-bold text-gray-800 mb-3 flex items-center gap-2"><span class="text-lg">💰</span> สรุปสถานะการเงิน ณ ${latestVisit.dateString}</h4>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-                <div class="bg-white p-3 rounded-lg border border-gray-200 shadow-sm text-center"><p class="text-[10px] text-gray-500 mb-1">สินทรัพย์รวม</p><p class="text-sm md:text-base font-bold text-green-600">${fmtRev(totalAst)}</p></div>
-                <div class="bg-white p-3 rounded-lg border border-gray-200 shadow-sm text-center"><p class="text-[10px] text-gray-500 mb-1">หนี้สินรวม</p><p class="text-sm md:text-base font-bold text-red-500">${fmtRev(totalLiab)}</p></div>
-                <div class="bg-white p-3 rounded-lg border border-blue-200 shadow-sm text-center bg-blue-50/30"><p class="text-[10px] text-blue-600 mb-1 font-bold">ความมั่งคั่งสุทธิ</p><p class="text-base md:text-lg font-black text-blue-700">${fmtRev(netWorth)}</p></div>
-                <div class="bg-white p-3 rounded-lg border border-gray-200 shadow-sm text-center"><p class="text-[10px] text-gray-500 mb-1">กระแสเงินสดคงเหลือ/เดือน</p><p class="text-sm md:text-base font-bold ${netCashflow >= 0 ? 'text-green-600' : 'text-red-500'}">${fmtRev(netCashflow)}</p></div>
+            <div class="flex flex-col md:flex-row gap-3 w-full">
+                <div class="flex-1 bg-white p-3 rounded-lg border border-gray-200 shadow-sm text-center"><p class="text-[10px] text-gray-500 mb-1">สินทรัพย์รวม</p><p class="text-sm md:text-base font-bold text-green-600">${fmtRev(totalAst)}</p></div>
+                <div class="flex-1 bg-white p-3 rounded-lg border border-gray-200 shadow-sm text-center"><p class="text-[10px] text-gray-500 mb-1">หนี้สินรวม</p><p class="text-sm md:text-base font-bold text-red-500">${fmtRev(totalLiab)}</p></div>
+                <div class="flex-1 bg-white p-3 rounded-lg border border-blue-200 shadow-sm text-center bg-blue-50/30"><p class="text-[10px] text-blue-600 mb-1 font-bold">ความมั่งคั่งสุทธิ</p><p class="text-base md:text-lg font-black text-blue-700">${fmtRev(netWorth)}</p></div>
+                <div class="flex-1 bg-white p-3 rounded-lg border border-gray-200 shadow-sm text-center"><p class="text-[10px] text-gray-500 mb-1">กระแสเงินสดคงเหลือ/เดือน</p><p class="text-sm md:text-base font-bold ${netCashflow >= 0 ? 'text-green-600' : 'text-red-500'}">${fmtRev(netCashflow)}</p></div>
             </div>
         </div>
-        <div>
-            <h4 class="font-bold text-gray-800 mb-3 flex items-center gap-2"><span class="text-lg">🎯</span> เป้าหมายทางการเงิน (SMART Goals)</h4>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                <div class="bg-gradient-to-r from-purple-50 to-pink-50 p-3 rounded-lg border border-purple-200 shadow-sm">
-                    <div class="flex justify-between items-center mb-1">
-                        <span class="font-bold text-sm text-purple-900 truncate pr-2">🏆 ทุนเกษียณอายุ</span><span class="text-[10px] bg-purple-200 text-purple-800 px-2 py-0.5 rounded-full font-bold">เป้าหมายหลัก</span>
-                    </div>
-                    <div class="flex justify-between text-xs mt-2 text-gray-600">
-                        <span>ใช้จ่าย: <b class="text-gray-800">${fmtRev(r.r_reqInc)} ฿/ด.</b></span><span>เกษียณอายุ: <b class="text-gray-800">${r.r_retAge || 60} ปี</b></span>
-                    </div>
-                </div>
-                ${goalsHtml}
-            </div>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="bg-white rounded-xl border border-gray-200 shadow-sm flex flex-col h-full">
+
+        <div class="flex flex-col md:flex-row gap-4 w-full mb-6">
+            <div class="flex-1 bg-white rounded-xl border border-gray-200 shadow-sm flex flex-col h-64">
                 <div class="bg-purple-50 p-3 border-b border-purple-100 rounded-t-xl"><h4 class="font-bold text-purple-800 flex items-center gap-2 text-sm">🛡️ พอร์ตกรมธรรม์ประกันชีวิต</h4></div>
-                <div class="p-3 overflow-y-auto max-h-[250px] custom-scrollbar flex-grow bg-white rounded-b-xl">${insHtml}</div>
+                <div class="p-3 overflow-y-auto custom-scrollbar flex-grow bg-white rounded-b-xl">${insHtml}</div>
             </div>
-            <div class="bg-white rounded-xl border border-gray-200 shadow-sm flex flex-col h-full">
+            <div class="flex-1 bg-white rounded-xl border border-gray-200 shadow-sm flex flex-col h-64">
                 <div class="bg-blue-50 p-3 border-b border-blue-100 rounded-t-xl"><h4 class="font-bold text-blue-800 flex items-center gap-2 text-sm">📈 พอร์ตการลงทุนปัจจุบัน</h4></div>
-                <div class="p-3 overflow-y-auto max-h-[250px] custom-scrollbar flex-grow bg-white rounded-b-xl">${invHtml}</div>
+                <div class="p-3 overflow-y-auto custom-scrollbar flex-grow bg-white rounded-b-xl">${invHtml}</div>
             </div>
+        </div>
+        
+        <div class="w-full">
             ${progressHtml}
         </div>`;
 
     doc.getElementById('review_content_body').innerHTML = modalContent;
     
     if (client.fullData.visits && client.fullData.visits.length >= 2) {
-        setTimeout(() => { renderClientProgressChart(client.fullData); }, 50);
+        setTimeout(() => { updateClientChart(client.id); }, 50);
     }
 
     const modal = doc.getElementById('clientReviewModal');
@@ -1239,10 +1223,186 @@ function closeClientReviewModal() {
     setTimeout(() => modal.classList.add('hidden'), 300);
 }
 
+window.updateClientChart = function(xn_id) {
+    let client = crmClientsList.find(c => c.id === xn_id);
+    if (!client || !client.fullData) return;
+    renderClientProgressChart(client.fullData);
+};
+
+// ==========================================
+// 📈 ระบบวาดกราฟ (สไตล์ Stock Trend & ซ่อนตัวเลขบนเส้น)
+// ==========================================
+
+if (typeof window.crmChartInstance === 'undefined') {
+    window.crmChartInstance = null;
+}
+
+function renderClientProgressChart(fullData) {
+    try {
+        let doc = getCRMDoc();
+        let ctx = doc.getElementById('clientProgressChart');
+        let tableContainer = doc.getElementById('chartDataTableContainer');
+        if (!ctx) return;
+
+        let ChartConstructor = typeof Chart !== 'undefined' ? Chart : (window.crmWindow ? window.crmWindow.Chart : null);
+        if (!ChartConstructor) {
+            console.warn("⚠️ Chart.js is not loaded yet.");
+            return;
+        }
+
+        // เรียงข้อมูลจาก อดีต -> ปัจจุบัน เพื่อคำนวณกราฟเส้น
+        let visits = [...fullData.visits].reverse();
+        let labels = visits.map(v => v.VN);
+        
+        let rawData = { nw: [], ast: [], liab: [], cf: [], score: [] };
+
+        // 1. ดึงข้อมูลดิบ
+        visits.forEach(v => {
+            let dyn = (v.dataSnapshot && v.dataSnapshot.dynamic) ? v.dataSnapshot.dynamic : {};
+            let c_assets = Array.isArray(dyn.c_assets) ? dyn.c_assets : [];
+            let c_liab = Array.isArray(dyn.c_liab) ? dyn.c_liab : [];
+            let c_inc = Array.isArray(dyn.c_inc) ? dyn.c_inc : [];
+            let c_exp = Array.isArray(dyn.c_exp) ? dyn.c_exp : [];
+
+            let tAst = c_assets.reduce((sum, item) => sum + (Number(item.val || item[1]) || 0), 0);
+            let tLiab = c_liab.reduce((sum, item) => sum + (Number(item.val || item[1]) || 0), 0);
+            let tInc = c_inc.reduce((sum, item) => sum + (Number(item.val || item[1]) || 0), 0);
+            let tExp = c_exp.reduce((sum, item) => sum + (Number(item.val || item[1]) || 0), 0);
+            
+            rawData.ast.push(tAst);
+            rawData.liab.push(tLiab);
+            rawData.nw.push(v.netWorth || (tAst - tLiab));
+            rawData.cf.push(tInc - tExp);
+            rawData.score.push(parseInt(v.aiScore) || 0);
+        });
+
+        // 2. ฟังก์ชันแปลงข้อมูลเป็น "เปอร์เซ็นต์การเติบโต" เพื่อให้ทุกเส้นเริ่มที่ 0% เท่ากัน
+        const calculateTrend = (dataArray) => {
+            if (dataArray.length === 0) return [];
+            let baseValue = dataArray[0] === 0 ? 1 : Math.abs(dataArray[0]);
+            return dataArray.map(val => ((val - dataArray[0]) / baseValue) * 100);
+        };
+
+        let trendData = {
+            nw: calculateTrend(rawData.nw),
+            ast: calculateTrend(rawData.ast),
+            liab: calculateTrend(rawData.liab),
+            cf: calculateTrend(rawData.cf),
+            score: calculateTrend(rawData.score)
+        };
+
+        if (window.crmChartInstance && window.crmChartInstance.canvas !== ctx) {
+            window.crmChartInstance.destroy();
+            window.crmChartInstance = null;
+        }
+
+        // กำหนดให้ทุกตัวเป็น Line Chart เพื่อดูเฉพาะเทรนด์
+        let datasets = [
+            { label: 'ความมั่งคั่งสุทธิ', data: trendData.nw, borderColor: '#4338ca', backgroundColor: 'transparent', borderWidth: 3, tension: 0.4 },
+            { label: 'สินทรัพย์รวม', data: trendData.ast, borderColor: '#10b981', backgroundColor: 'transparent', borderWidth: 2, borderDash: [5, 5], tension: 0.4 },
+            { label: 'หนี้สินรวม', data: trendData.liab, borderColor: '#ef4444', backgroundColor: 'transparent', borderWidth: 2, borderDash: [5, 5], tension: 0.4 },
+            { label: 'กระแสเงินสด', data: trendData.cf, borderColor: '#f59e0b', backgroundColor: 'transparent', borderWidth: 2, borderDash: [5, 5], tension: 0.4 },
+            { label: 'AI Score', data: trendData.score, borderColor: '#8b5cf6', backgroundColor: 'transparent', borderWidth: 3, tension: 0.4 }
+        ];
+
+        if (window.crmChartInstance) {
+            window.crmChartInstance.data.labels = labels;
+            window.crmChartInstance.data.datasets = datasets;
+            window.crmChartInstance.update();
+        } else {
+            window.crmChartInstance = new ChartConstructor(ctx, {
+                type: 'line',
+                data: { labels: labels, datasets: datasets },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    interaction: { mode: 'index', intersect: false },
+                    plugins: { 
+                        legend: { position: 'top', labels: { font: { family: 'Prompt', size: 10 }, usePointStyle: true } },
+                        tooltip: { enabled: false }, // ปิด Tooltip เวลากดที่กราฟ
+                        datalabels: { display: false } // 🚀 สั่งปิดตัวเลขที่โชว์บนเส้นกราฟทั้งหมด
+                    },
+                    elements: { point: { radius: 0, hoverRadius: 0 } }, // ซ่อนจุดไข่ปลาบนเส้นกราฟให้ดูสมูท
+                    scales: {
+                        x: { grid: { display: false }, ticks: { font: { family: 'Prompt', size: 9 } } },
+                        y: { display: false } // ซ่อนแกน Y ไม่ต้องสนใจสเกลตัวเลข
+                    }
+                }
+            });
+        }
+
+        // 3. 📝 สร้างตารางข้อมูลแบบหุ้น (Stock Ticker)
+        if (tableContainer) {
+            let tableHtml = `<table class="w-full text-[10px] md:text-xs text-right border-collapse mt-2">`;
+            
+            // หัวตาราง
+            tableHtml += `<thead class="bg-indigo-50/50 text-indigo-800 font-bold border-y border-indigo-100"><tr>`;
+            tableHtml += `<th class="p-2.5 text-center whitespace-nowrap w-24">รหัสแผน (VN)</th>`;
+            
+            let displayLabels = ['ความมั่งคั่งสุทธิ', 'สินทรัพย์รวม', 'หนี้สินรวม', 'กระแสเงินสด', 'AI Score'];
+            displayLabels.forEach(lbl => {
+                tableHtml += `<th class="p-2.5 whitespace-nowrap">${lbl}</th>`;
+            });
+            tableHtml += `</tr></thead><tbody class="bg-white">`;
+
+            const fmtTableNum = (num) => Number(num || 0).toLocaleString('th-TH', {minimumFractionDigits: 0, maximumFractionDigits: 0});
+
+            // 🔄 วนลูปถอยหลัง! ให้แผนล่าสุด (VN ใหม่สุด) อยู่บรรทัดบนสุด
+            for (let i = labels.length - 1; i >= 0; i--) {
+                let isLatest = (i === labels.length - 1);
+                
+                tableHtml += `<tr class="hover:bg-gray-50 border-b border-gray-100 last:border-0 transition-colors">`;
+                tableHtml += `<td class="p-2.5 text-center font-bold ${isLatest ? 'text-indigo-600 bg-indigo-50/20' : 'text-gray-600'} whitespace-nowrap">
+                                ${labels[i]} ${isLatest ? '<br><span class="text-[8px] bg-indigo-100 text-indigo-600 px-1.5 py-0.5 rounded-full inline-block mt-0.5">ล่าสุด</span>' : ''}
+                              </td>`;
+                
+                let keys = ['nw', 'ast', 'liab', 'cf', 'score'];
+                keys.forEach((k, idx) => {
+                    let currVal = rawData[k][i];
+                    let displayVal = idx === 4 ? currVal + '%' : fmtTableNum(currVal);
+                    let textClass = (currVal < 0 && idx !== 4) ? 'text-red-500 font-bold' : 'text-gray-800 font-bold';
+                    
+                    let changeHtml = '';
+                    if (i > 0) { // ถ้ามีข้อมูลก่อนหน้า (อดีต) ให้คำนวณ % การเปลี่ยนแปลง
+                        let prevVal = rawData[k][i-1];
+                        let pct = 0;
+                        let diff = currVal - prevVal;
+                        
+                        if (prevVal === 0) {
+                            pct = currVal > 0 ? 100 : (currVal < 0 ? -100 : 0);
+                        } else {
+                            pct = (diff / Math.abs(prevVal)) * 100;
+                        }
+
+                        // แสดงป้ายกำกับ % เหมือนราคาหุ้น
+                        if (pct > 0) {
+                            changeHtml = `<br><span class="text-green-600 text-[9px] font-bold bg-green-50 px-1.5 py-0.5 rounded-full inline-flex items-center mt-1 border border-green-100">▲ +${pct.toFixed(1)}%</span>`;
+                        } else if (pct < 0) {
+                            changeHtml = `<br><span class="text-red-500 text-[9px] font-bold bg-red-50 px-1.5 py-0.5 rounded-full inline-flex items-center mt-1 border border-red-100">▼ ${pct.toFixed(1)}%</span>`;
+                        } else {
+                            changeHtml = `<br><span class="text-gray-400 text-[9px] inline-flex items-center mt-1">- 0.0%</span>`;
+                        }
+                    } else {
+                        changeHtml = `<br><span class="text-gray-300 text-[9px] inline-flex items-center mt-1">ฐาน (Base)</span>`;
+                    }
+
+                    tableHtml += `<td class="p-2.5 align-middle leading-tight"><span class="${textClass}">${displayVal}</span>${changeHtml}</td>`;
+                });
+                tableHtml += `</tr>`;
+            }
+
+            tableHtml += `</tbody></table>`;
+            tableContainer.innerHTML = tableHtml;
+        }
+
+    } catch (err) {
+        console.error("เกิดข้อผิดพลาดในการวาดกราฟ:", err);
+    }
+}
+
 function openVNManagerModal(xn_id) {
     if (!crmDB || !window.SESSION_KEY) return;
     let client = crmClientsList.find(c => c.id === xn_id);
-    if (!client || !client.fullData || !client.fullData.visits) return crmAlert("ไม่พบข้อมูลประวัติครับ");
+    if (!client || !client.fullData || !client.fullData.visits) return;
 
     let doc = getCRMDoc();
     doc.getElementById('vn_manager_client_name').innerText = `ลูกค้า: ${client.name} (รหัส: ${client.id})`;
@@ -1250,13 +1410,15 @@ function openVNManagerModal(xn_id) {
     let tbody = doc.getElementById('vn_manager_table_body');
     let html = '';
 
-    client.fullData.visits.forEach((v, index) => {
+    client.fullData.visits.forEach((v) => {
         let isClosed = v.status === 'Closed';
         let systemBadge = isClosed ? '<span class="text-[9px] bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded ml-2 border border-gray-200">🔒 ปิดแล้ว</span>' : '<span class="text-[9px] bg-green-100 text-green-700 px-1.5 py-0.5 rounded ml-2 border border-green-300 font-bold animate-pulse">🟢 Active</span>';
         let clientStatus = v.clientStatus || client.status || "ผู้มุ่งหวัง";
         let statusBadge = getStatusBadge(clientStatus); 
         let nwText = v.netWorth >= 1000000 ? (v.netWorth / 1000000).toFixed(2) + ' M' : (v.netWorth / 10000).toFixed(1) + ' หมื่น';
         
+        let closeVNBtn = !isClosed ? `<button onclick="manuallyCloseVN('${xn_id}', '${v.VN}')" class="bg-gray-200 text-gray-700 hover:bg-gray-600 hover:text-white px-2 py-1 rounded text-xs font-bold transition shadow-sm" title="ปิดแผนนี้เพื่อเริ่มแผนใหม่">🔒 ปิด VN</button>` : '';
+
         html += `
         <tr class="hover:bg-teal-50 transition border-b border-gray-100">
             <td class="p-3 font-bold text-teal-800 flex items-center">${v.VN} ${systemBadge}</td>
@@ -1266,9 +1428,10 @@ function openVNManagerModal(xn_id) {
             <td class="p-3 text-center">${statusBadge}</td>
             <td class="p-3 text-center">
                 <div class="flex justify-center gap-1">
-                    <button onclick="openCRMClientModal('${xn_id}', '${v.VN}')" class="bg-yellow-100 text-yellow-700 hover:bg-yellow-500 hover:text-white px-2 py-1 rounded text-xs font-bold transition shadow-sm">📝 จัดการ & โน้ต</button>
+                    <button onclick="openCRMClientModal('${xn_id}', '${v.VN}')" class="bg-yellow-100 text-yellow-700 hover:bg-yellow-500 hover:text-white px-2 py-1 rounded text-xs font-bold transition shadow-sm">📝 โน้ต</button>
                     <button onclick="loadSpecificVN('${xn_id}', '${v.VN}')" class="bg-indigo-100 text-indigo-700 hover:bg-indigo-600 hover:text-white px-2 py-1 rounded text-xs font-bold transition shadow-sm">⬇️ โหลด</button>
-                    ${client.fullData.visits.length > 1 ? `<button onclick="deleteSpecificVN('${xn_id}', '${v.VN}')" class="bg-red-100 text-red-700 hover:bg-red-600 hover:text-white px-2 py-1 rounded text-xs font-bold transition shadow-sm">🗑️ ลบ</button>` : `<span class="text-[10px] text-gray-400 italic">ลบไม่ได้</span>`}
+                    ${closeVNBtn}
+                    ${client.fullData.visits.length > 1 ? `<button onclick="deleteSpecificVN('${xn_id}', '${v.VN}')" class="bg-red-100 text-red-700 hover:bg-red-600 hover:text-white px-2 py-1 rounded text-xs font-bold transition shadow-sm">🗑️ ลบ</button>` : ``}
                 </div>
             </td>
         </tr>`;
@@ -1279,6 +1442,43 @@ function openVNManagerModal(xn_id) {
     const box = doc.getElementById('vn_modal_box');
     modal.classList.remove('hidden');
     setTimeout(() => { modal.classList.remove('opacity-0'); box.classList.remove('scale-95'); box.classList.add('scale-100'); }, 10);
+}
+
+function manuallyCloseVN(xn_id, vn_id) {
+    if(!crmConfirm(`⚠️ ยืนยันการปิดแผน ${vn_id} ด้วยตัวเองใช่หรือไม่?\n(หากคุณดึงข้อมูลนี้มาแก้บนหน้าจอหลัก แล้วกดบันทึกอีกครั้ง ระบบจะสร้างแผน VN ใหม่ให้ทันที)`)) return;
+
+    let transaction = crmDB.transaction(["clients"], "readwrite");
+    let store = transaction.objectStore("clients");
+    
+    store.get(xn_id).onsuccess = function(e) {
+        let rawClient = e.target.result;
+        if (rawClient) {
+            let clientData = rawClient.securePayload ? SecurityCore.decrypt(rawClient.securePayload) : rawClient;
+            let targetVisit = clientData.visits.find(v => v.VN === vn_id);
+            if (targetVisit) {
+                targetVisit.status = 'Closed'; 
+                if (!targetVisit.activities) targetVisit.activities = [];
+                targetVisit.activities.push({
+                    date: new Date().toLocaleDateString('th-TH', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }),
+                    text: `🔒 ผู้ใช้งาน (FA) สั่งปิด ${vn_id} ด้วยตนเอง`,
+                    timestamp: new Date().getTime(),
+                    isSystemLog: true
+                });
+            }
+            if (rawClient.securePayload) rawClient.securePayload = SecurityCore.encrypt(clientData);
+            else rawClient = clientData;
+            
+            store.put(rawClient).onsuccess = function() {
+                // 🚀 อัปเดตข้อมูลบน RAM ทันที เพื่อให้ UI เปลี่ยนป้าย Active -> ปิดแล้ว ทันที
+                let memClient = crmClientsList.find(c => c.id === xn_id);
+                if(memClient && memClient.fullData) {
+                    let memVisit = memClient.fullData.visits.find(v => v.VN === vn_id);
+                    if(memVisit) memVisit.status = 'Closed';
+                }
+                openVNManagerModal(xn_id); // รีเฟรชตารางให้ป้ายเปลี่ยน
+            };
+        }
+    };
 }
 
 function closeVNManagerModal() {
@@ -1296,7 +1496,7 @@ function loadSpecificVN(xn_id, vn_id) {
     let targetVisit = client.fullData.visits.find(v => v.VN === vn_id);
     if (!targetVisit) return crmAlert("ไม่พบข้อมูล VN นี้ครับ");
 
-    if(crmConfirm(`ยืนยันการโหลดข้อมูลเวอร์ชัน ${vn_id} ลงหน้าจอหลักใช่หรือไม่?\n(ข้อมูลบนจอหลักจะถูกทับทั้งหมด)`)) {
+    if(crmConfirm(`ยืนยันการโหลดข้อมูลแผน ${vn_id} ลงหน้าจอหลักใช่หรือไม่?\n(ข้อมูลบนหน้าจอขณะนี้จะถูกล้างทับ)`)) {
         let data = targetVisit.dataSnapshot;
         closeVNManagerModal();
         
@@ -1345,13 +1545,15 @@ function loadSpecificVN(xn_id, vn_id) {
             }
         }
         if(typeof syncAgeToRisk === 'function') syncAgeToRisk();
-        setTimeout(() => {
-            if(confirm(`✅ โหลดข้อมูลของคุณ "${SecurityCore.escapeHTML(client.name)}" ลงหน้าจอสำเร็จ!\n\nต้องการให้ AI ประมวลผลและสร้างรายงาน (Report) ใหม่ทันทีหรือไม่?`)) {
-                if (typeof processReportInit === 'function') processReportInit(); 
-            } else {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-        }, 500); 
+        
+        // 🚀 ฟังก์ชันปิด CRM อัตโนมัติที่ถูกต้อง
+        if (window.crmWindow && !window.crmWindow.closed) {
+            window.crmWindow.close(); // สั่งปิดหน้าต่าง Popup ของ CRM
+        }
+        
+        // โฟกัสกลับมาหน้าจอหลัก และสั่งรันประมวลผล AI ทันที
+        window.focus();
+        if (typeof processReportInit === 'function') processReportInit(); 
     }
 }
 
@@ -1654,7 +1856,7 @@ window.openCRMDashboard = function() {
                 'saveCRMClientModal', 'toggleSelectAllCRM', 'printSelectedCRM', 'deleteSelectedCRM', 
                 'bulkUpdateStatus', 'exportCRMToExcel', 'exportCRMData', 'loadSpecificVN', 
                 'deleteSpecificVN', 'closeClientReviewModal', 'closeVNManagerModal',
-                'saveCurrentToCRM', 'printCRMReport', 'toggleBulkAction', 'openCRMClientModal'
+                'saveCurrentToCRM', 'printCRMReport', 'toggleBulkAction', 'openCRMClientModal', 'manuallyCloseVN', 'updateClientChart'
             ];
             methods.forEach(m => {
                 window[m] = function(...args) {
