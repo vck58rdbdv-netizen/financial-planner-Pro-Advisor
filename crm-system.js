@@ -833,6 +833,7 @@ function exportCRMData() {
 }
 
 // เปลี่ยนมารับเป็น jsonString แทนการรับออบเจ็กต์ File โดยตรง
+// เปลี่ยนมารับเป็น jsonString แทนการรับออบเจ็กต์ File โดยตรง
 window.processImportCRMData = function(jsonString) {
     if(!crmConfirm("⚠️ นำเข้าข้อมูลจะเขียนทับฐานข้อมูล (หากชื่อซ้ำจะอัปเดตข้อมูล) ดำเนินการต่อหรือไม่?")) return;
 
@@ -845,8 +846,16 @@ window.processImportCRMData = function(jsonString) {
         let importCount = 0;
 
         importedData.forEach(client => {
-            if (client.id && (client.dataPayload || client.securePayload)) {
+            // 🛠️ แก้ไข: เปลี่ยนมาเช็ค client.XN (ซึ่งเป็น Key หลักของ IndexedDB คุณ) แทน client.id
+            let primaryKey = client.XN || client.id;
+            let payload = client.securePayload || client.dataPayload;
+
+            if (primaryKey && payload) {
                 if(!client.status && !client.securePayload) client.status = "ผู้มุ่งหวัง";
+                
+                // ตรวจสอบความสมบูรณ์ของ KeyPath (เพื่อป้องกัน Error ลงฐานข้อมูลไม่ได้)
+                if (!client.XN && client.id) client.XN = client.id;
+
                 store.put(client); 
                 importCount++;
             }
