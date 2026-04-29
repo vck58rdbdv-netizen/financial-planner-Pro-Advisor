@@ -28,6 +28,11 @@ let currentCRMView = 'table';
 let currentSort = { col: 'timestamp', dir: 'desc' }; 
 let tempNotesHistory = []; 
 
+// 🚀 ตัวแปรควบคุมระบบ Pagination
+let currentPage = 1;
+const ITEMS_PER_PAGE = 25; 
+let totalPages = 1;
+
 const pad4 = (num) => String(num).padStart(4, '0');
 const pad2 = (num) => String(num).padStart(2, '0');
 
@@ -46,13 +51,17 @@ function getThaiYYMMDD() {
     return `${yy}${mm}${dd}`;
 }
 
+// ==========================================
+// 🔑 ระบบ Generate ID แบบ Distributed (ป้องกัน ID ชนกัน 100%)
+// ==========================================
 async function generateNextXN() {
     return new Promise((resolve) => {
         let transaction = crmDB.transaction(["counters"], "readwrite");
         let store = transaction.objectStore("counters");
-        let prefix = getThaiYYMM();
+        let prefix = getThaiYYMM(); 
         let counterId = `XN_${prefix}`;
         let request = store.get(counterId);
+        
         request.onsuccess = function(e) {
             let record = e.target.result;
             let nextNum = 1;
@@ -63,7 +72,9 @@ async function generateNextXN() {
             } else {
                 store.put({ id: counterId, seq: 1 });
             }
-            resolve(`${prefix}${pad4(nextNum)}`);
+            
+            let randomSuffix = Math.random().toString(36).substring(2, 5).toUpperCase();
+            resolve(`${prefix}${pad4(nextNum)}-${randomSuffix}`); 
         };
     });
 }
@@ -72,9 +83,10 @@ async function generateNextVN() {
     return new Promise((resolve) => {
         let transaction = crmDB.transaction(["counters"], "readwrite");
         let store = transaction.objectStore("counters");
-        let prefix = getThaiYYMMDD();
+        let prefix = getThaiYYMMDD(); 
         let counterId = `VN_${prefix}`;
         let request = store.get(counterId);
+        
         request.onsuccess = function(e) {
             let record = e.target.result;
             let nextNum = 1;
@@ -85,7 +97,9 @@ async function generateNextVN() {
             } else {
                 store.put({ id: counterId, seq: 1 });
             }
-            resolve(`${prefix}-${pad2(nextNum)}`);
+            
+            let vSuffix = Math.random().toString(36).substring(2, 4).toUpperCase();
+            resolve(`${prefix}-${pad2(nextNum)}-${vSuffix}`);
         };
     });
 }
@@ -106,6 +120,7 @@ function initCRMDatabase() {
     request.onsuccess = function(event) {
         crmDB = event.target.result;
         refreshCRMTable(); 
+        checkAutoBackup(); // 🛡️ ระบบ Auto Backup
     };
     request.onerror = function(event) { console.error("IndexedDB Error:", event.target.error); };
 }
@@ -113,6 +128,21 @@ function initCRMDatabase() {
 window.addEventListener('DOMContentLoaded', function() {
     if (typeof initCRMDatabase === 'function') initCRMDatabase();
 });
+
+// ==========================================
+// 🛡️ ระบบ Auto Backup ข้อมูล
+// ==========================================
+function checkAutoBackup() {
+    let lastBackup = localStorage.getItem('fa_last_auto_backup');
+    let now = new Date().getTime();
+    let sevenDays = 7 * 24 * 60 * 60 * 1000; 
+
+    if (!lastBackup || (now - parseInt(lastBackup)) > sevenDays) {
+        console.log("⏳ เริ่มทำการสำรองข้อมูลอัตโนมัติ (Auto Backup)...");
+        exportCRMData("auto"); 
+        localStorage.setItem('fa_last_auto_backup', now.toString());
+    }
+}
 
 function autoCloseStaleVNs() {
     if (!crmDB || !window.SESSION_KEY) return;
@@ -163,7 +193,6 @@ async function saveCurrentToCRM(isSilent = false) {
     if (!crmDB) return (!isSilent && alert("❌ เชื่อมต่อฐานข้อมูลไม่สำเร็จ"));
     if (!window.SESSION_KEY) return (!isSilent && alert("🔒 เซสชันหมดอายุ กรุณารีเฟรชเพื่อเข้าสู่ระบบใหม่"));
 
-    // โฟกัส: ดึงข้อมูลจากหน้าต่างแม่ (หน้าหลัก) เสมอ
     let clientName = document.getElementById('p_name') ? document.getElementById('p_name').value.trim() : "";
     if (!clientName) return (!isSilent && crmAlert("⚠️ กรุณาระบุ 'ชื่อ-สกุล' ของลูกค้าก่อนบันทึกครับ"));
 
@@ -286,7 +315,7 @@ function refreshCRMTable() {
         });
 
         applySorting();
-        filterCRMTable(); 
+        filterCRMTable(true); // รีเซ็ตหน้ากลับไปที่ 1 เสมอเมื่อโหลดข้อมูลใหม่
         updateCRMStats(crmClientsList);
     };
 }
@@ -317,9 +346,18 @@ function getStatusBadge(status) {
     return `<span class="text-[10px] ${color} px-2 py-0.5 rounded-full border font-bold shadow-sm whitespace-nowrap">${status}</span>`;
 }
 
-function filterCRMTable() {
+window.changePage = function(page) {
+    if (page < 1 || page > totalPages) return;
+    currentPage = page;
+    filterCRMTable(false);
+};
+
+// 🔍 [NEW] อัปเกรดระบบค้นหา (Deep Search ใน Notes History)
+function filterCRMTable(resetPage = false) {
+    if (resetPage) currentPage = 1;
+
     let doc = getCRMDoc();
-    let keyword = doc.getElementById('crm_search_input') ? doc.getElementById('crm_search_input').value.toLowerCase() : '';
+    let keyword = doc.getElementById('crm_search_input') ? doc.getElementById('crm_search_input').value.toLowerCase().trim() : '';
     let statusFilter = doc.getElementById('crm_filter_status') ? doc.getElementById('crm_filter_status').value : 'all';
     let startDate = doc.getElementById('crm_filter_start')?.value;
     let endDate = doc.getElementById('crm_filter_end')?.value;
@@ -327,8 +365,25 @@ function filterCRMTable() {
     window.currentFilteredClients = crmClientsList.filter(c => {
         let tagString = (c.tags || []).join(' ').toLowerCase();
         let matchKeyword = c.name.toLowerCase().includes(keyword) || c.id.toLowerCase().includes(keyword) || tagString.includes(keyword);
-        let matchStatus = (statusFilter === 'all') || ((c.status || 'ผู้มุ่งหวัง') === statusFilter);
         
+        // 🚀 Deep Search: ถ้าหาชื่อ/แท็กไม่เจอ ให้ดำดิ่งไปหาในประวัติการทำงาน (Activities)
+        if (!matchKeyword && keyword !== '') {
+            if (c.fullData && c.fullData.visits) {
+                for (let v of c.fullData.visits) {
+                    if (v.activities) {
+                        for (let act of v.activities) {
+                            if (act.text && act.text.toLowerCase().includes(keyword)) {
+                                matchKeyword = true;
+                                break; 
+                            }
+                        }
+                    }
+                    if (matchKeyword) break;
+                }
+            }
+        }
+
+        let matchStatus = (statusFilter === 'all') || ((c.status || 'ผู้มุ่งหวัง') === statusFilter);
         let matchDate = true;
         if (startDate || endDate) {
             let cDate = new Date(c.timestamp); cDate.setHours(0,0,0,0);
@@ -338,14 +393,58 @@ function filterCRMTable() {
         return matchKeyword && matchStatus && matchDate;
     });
 
-    if (currentCRMView === 'table') renderCRMTable(window.currentFilteredClients);
-    else renderKanbanBoard(window.currentFilteredClients);
+    if (currentCRMView === 'table') {
+        let totalItems = window.currentFilteredClients.length;
+        totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE) || 1;
+        if (currentPage > totalPages) currentPage = totalPages;
+
+        let startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+        let endIndex = startIndex + ITEMS_PER_PAGE;
+        let paginatedClients = window.currentFilteredClients.slice(startIndex, endIndex);
+
+        renderCRMTable(paginatedClients);
+        renderPaginationControls(totalItems);
+    } else {
+        renderKanbanBoard(window.currentFilteredClients);
+        let paginationContainer = getCRMDoc().getElementById('crm_pagination_container');
+        if (paginationContainer) paginationContainer.innerHTML = ''; 
+    }
+}
+
+function renderPaginationControls(totalItems) {
+    let doc = getCRMDoc();
+    let container = doc.getElementById('crm_pagination_container');
+    if (!container) return;
+
+    if (totalItems <= ITEMS_PER_PAGE) {
+        container.innerHTML = `<div class="flex items-center justify-between w-full p-3 bg-gray-50 border-t border-gray-200">
+            <div class="text-xs text-gray-500">แสดงทั้งหมด ${totalItems} รายการ</div>
+        </div>`;
+        return;
+    }
+
+    let startCount = ((currentPage - 1) * ITEMS_PER_PAGE) + 1;
+    let endCount = Math.min(currentPage * ITEMS_PER_PAGE, totalItems);
+
+    let html = `<div class="flex items-center justify-between w-full p-3 bg-gray-50 border-t border-gray-200">
+        <div class="text-xs text-gray-500 font-medium">
+            แสดง <span class="font-bold text-gray-700">${startCount}</span> ถึง <span class="font-bold text-gray-700">${endCount}</span> จากทั้งหมด <span class="font-bold text-indigo-600">${totalItems}</span> รายการ
+        </div>
+        <div class="flex gap-1 shadow-sm">
+            <button onclick="changePage(1)" ${currentPage === 1 ? 'disabled class="px-2.5 py-1 bg-gray-100 text-gray-400 rounded-l text-xs border border-gray-200 cursor-not-allowed"' : 'class="px-2.5 py-1 bg-white border border-gray-300 hover:bg-gray-100 text-gray-700 rounded-l text-xs font-bold transition"'}>&laquo;</button>
+            <button onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? 'disabled class="px-3 py-1 bg-gray-100 text-gray-400 text-xs border-y border-gray-200 cursor-not-allowed"' : 'class="px-3 py-1 bg-white border-y border-gray-300 hover:bg-gray-100 text-gray-700 text-xs font-bold transition"'}>ก่อนหน้า</button>
+            <span class="px-4 py-1 bg-indigo-50 text-indigo-700 font-bold text-xs border border-indigo-200 flex items-center">หน้า ${currentPage} / ${totalPages}</span>
+            <button onclick="changePage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled class="px-3 py-1 bg-gray-100 text-gray-400 text-xs border-y border-gray-200 cursor-not-allowed"' : 'class="px-3 py-1 bg-white border-y border-gray-300 hover:bg-gray-100 text-gray-700 text-xs font-bold transition"'}>ถัดไป</button>
+            <button onclick="changePage(${totalPages})" ${currentPage === totalPages ? 'disabled class="px-2.5 py-1 bg-gray-100 text-gray-400 rounded-r text-xs border border-gray-200 cursor-not-allowed"' : 'class="px-2.5 py-1 bg-white border border-gray-300 hover:bg-gray-100 text-gray-700 rounded-r text-xs font-bold transition"' }>&raquo;</button>
+        </div>
+    </div>`;
+    container.innerHTML = html;
 }
 
 function sortCRMTable(col) {
     if (currentSort.col === col) currentSort.dir = currentSort.dir === 'asc' ? 'desc' : 'asc';
     else { currentSort.col = col; currentSort.dir = 'desc'; }
-    applySorting(); filterCRMTable();
+    applySorting(); filterCRMTable(true); 
 }
 
 function applySorting() {
@@ -432,17 +531,17 @@ function toggleCRMView(viewType) {
     const btnKanban = doc.getElementById('btn_view_kanban');
 
     if (viewType === 'table') {
-        tableDiv.classList.replace('hidden', 'block');
+        tableDiv.classList.replace('hidden', 'flex'); 
         kanbanDiv.classList.replace('block', 'hidden');
         btnTable.className = "px-2 py-1 rounded bg-white shadow-sm text-blue-600 text-xs font-bold";
         btnKanban.className = "px-2 py-1 rounded text-gray-500 hover:bg-gray-200 text-xs font-medium";
     } else {
-        tableDiv.classList.replace('block', 'hidden');
+        tableDiv.classList.replace('flex', 'hidden');
         kanbanDiv.classList.replace('hidden', 'block');
         btnKanban.className = "px-2 py-1 rounded bg-white shadow-sm text-blue-600 text-xs font-bold";
         btnTable.className = "px-2 py-1 rounded text-gray-500 hover:bg-gray-200 text-xs font-medium";
     }
-    filterCRMTable(); 
+    filterCRMTable(false); 
 }
 
 function renderKanbanBoard(clients) {
@@ -590,11 +689,9 @@ function renderVNActivities() {
         return;
     }
 
-    // 🛠️ FIX: นำข้อมูลมา Sort ตาม Timestamp จากมากไปน้อย (ใหม่สุดอยู่บน) ก่อนแสดงผล
     let sortedActivities = [...tempNotesHistory].sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
 
     let activitiesHtml = sortedActivities.map((act) => {
-        // หาค่า Index ออริจินัล เพื่อให้ปุ่ม "ลบ" ดึงตัวเลขไปลบได้ถูกต้อง
         let aIdx = tempNotesHistory.indexOf(act);
         
         return `
@@ -618,8 +715,6 @@ window.addNoteToModalHistory = function() {
 
     let dateObj = dateInput ? new Date(dateInput) : new Date();
     
-    // 🛠️ FIX: เติมเวลาปัจจุบัน (ชั่วโมง/นาที/วินาที) เข้าไปเสมอ 
-    // ป้องกันไม่ให้ Date Picker ตั้งค่าเวลาเป็น 00:00:00 แล้วโดนดันไปอยู่ล่างสุด
     let now = new Date();
     dateObj.setHours(now.getHours(), now.getMinutes(), now.getSeconds(), now.getMilliseconds());
 
@@ -683,7 +778,6 @@ function saveCRMClientModal() {
 
 function closeCRMClientModal() { getCRMDoc().getElementById('crmClientModal').classList.add('hidden'); }
 
-// วนลูป checkbox ใช้ในหน้าต่างลูก
 window.toggleBulkAction = function() { updateBulkActionBar(); }
 
 function toggleSelectAllCRM(source) {
@@ -774,9 +868,6 @@ function bulkUpdateStatus(selectEl) {
     }
 }
 
-// ==========================================
-// 📊 10. ระบบ Export / Import (JSON & CSV)
-// ==========================================
 function exportCRMToExcel() {
     let listToExport = window.currentFilteredClients || crmClientsList;
     if (listToExport.length === 0) return crmAlert("⚠️ ไม่มีข้อมูลให้ส่งออกครับ");
@@ -807,7 +898,6 @@ function exportCRMToExcel() {
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     
-    // 🛠️ แก้ไข: อ้างอิง document ของหน้าต่าง CRM เพื่อให้ iPad ยอมให้ดาวน์โหลด
     let doc = getCRMDoc();
     const link = doc.createElement("a");
     link.setAttribute("href", url);
@@ -817,19 +907,21 @@ function exportCRMToExcel() {
     doc.body.appendChild(link);
     link.click();
     doc.body.removeChild(link);
-    URL.revokeObjectURL(url); // คืน Memory
+    URL.revokeObjectURL(url); 
 }
 
-function exportCRMData() {
+function exportCRMData(mode = "manual") {
     if (!crmDB) return;
     let transaction = crmDB.transaction(["clients"], "readonly");
     let store = transaction.objectStore("clients");
     let req = store.getAll();
     req.onsuccess = function(e) {
         let dbClients = e.target.result;
-        if (dbClients.length === 0) return crmAlert("ไม่มีข้อมูลลูกค้าให้สำรองครับ");
+        if (dbClients.length === 0) {
+            if (mode === "manual") crmAlert("ไม่มีข้อมูลลูกค้าให้สำรองครับ");
+            return;
+        }
         
-        // 🛠️ แก้ไข: ใช้ Blob แบบเดียวกับ Excel แทน Data URI
         const blob = new Blob([JSON.stringify(dbClients, null, 2)], { type: 'application/json;charset=utf-8;' });
         const url = URL.createObjectURL(blob);
         
@@ -837,7 +929,9 @@ function exportCRMData() {
         const link = doc.createElement('a');
         link.setAttribute("href", url);
         let dateStr = new Date().toISOString().slice(0,10).replace(/-/g, "");
-        link.setAttribute("download", `FA_CRM_Backup_${dateStr}.json`);
+        
+        let fileName = mode === "auto" ? `FA_CRM_AutoBackup_${dateStr}.json` : `FA_CRM_Backup_${dateStr}.json`;
+        link.setAttribute("download", fileName);
         
         doc.body.appendChild(link);
         link.click();
@@ -846,8 +940,6 @@ function exportCRMData() {
     };
 }
 
-// เปลี่ยนมารับเป็น jsonString แทนการรับออบเจ็กต์ File โดยตรง
-// เปลี่ยนมารับเป็น jsonString แทนการรับออบเจ็กต์ File โดยตรง
 window.processImportCRMData = function(jsonString) {
     if(!crmConfirm("⚠️ นำเข้าข้อมูลจะเขียนทับฐานข้อมูล (หากชื่อซ้ำจะอัปเดตข้อมูล) ดำเนินการต่อหรือไม่?")) return;
 
@@ -860,16 +952,12 @@ window.processImportCRMData = function(jsonString) {
         let importCount = 0;
 
         importedData.forEach(client => {
-            // 🛠️ แก้ไข: เปลี่ยนมาเช็ค client.XN (ซึ่งเป็น Key หลักของ IndexedDB คุณ) แทน client.id
             let primaryKey = client.XN || client.id;
             let payload = client.securePayload || client.dataPayload;
 
             if (primaryKey && payload) {
                 if(!client.status && !client.securePayload) client.status = "ผู้มุ่งหวัง";
-                
-                // ตรวจสอบความสมบูรณ์ของ KeyPath (เพื่อป้องกัน Error ลงฐานข้อมูลไม่ได้)
                 if (!client.XN && client.id) client.XN = client.id;
-
                 store.put(client); 
                 importCount++;
             }
@@ -885,7 +973,6 @@ window.processImportCRMData = function(jsonString) {
     }
 }
 
-// ⬇️ 11. โหลดข้อมูลรายบุคคล & ลบรายบุคคล
 function loadClientFromCRM(id) {
     if (!crmDB || !window.SESSION_KEY) return;
     let clientToLoad = crmClientsList.find(c => c.id === id); 
@@ -894,12 +981,10 @@ function loadClientFromCRM(id) {
         let latestVisit = clientToLoad.fullData.visits[0];
 
         if(crmConfirm(`คุณต้องการโหลดข้อมูลของ "${SecurityCore.escapeHTML(clientToLoad.name)}" ใช่หรือไม่?\n(ข้อมูลบนหน้าจอปัจจุบันจะถูกล้างและเขียนทับใหม่)`)) {
-            // ควบคุมหน้าหลัก!
             if (typeof closeSettings === 'function') closeSettings();
             if (typeof toggleMode === 'function') toggleMode('edit');
             if (typeof clearDataForLoad === 'function') clearDataForLoad();
             
-            // ต้องใช้ document ของหน้าต่างหลัก
             if(document.getElementById('mainForm')) document.getElementById('mainForm').reset();
             
             let data = latestVisit.dataSnapshot; 
@@ -963,7 +1048,6 @@ function deleteClientFromCRM(id, name) {
     }
 }
 
-// 🖨️ พิมพ์รายงาน CRM 
 function printCRMReport(clientsToPrint = null, isSelectedMode = false) {
     let listToPrint = clientsToPrint || window.currentFilteredClients || crmClientsList;
     if (!listToPrint || listToPrint.length === 0) {
@@ -1016,11 +1100,9 @@ function printCRMReport(clientsToPrint = null, isSelectedMode = false) {
             </tr>`;
     }).join('');
 
-    // 🛠️ แก้ไข: ใช้ defaultView ของ CRM Window เพื่อป้องกัน iPad บล็อกการเปิดแท็บใหม่ข้ามหน้าต่าง
     let crmWin = getCRMDoc().defaultView;
     let printWindow = crmWin.open('', '_blank');
     
-    // ดักจับกรณีผู้ใช้เปิดตั้งค่า Block Pop-ups ใน Safari เอาไว้
     if (!printWindow) {
         return crmAlert("⚠️ Safari บล็อกการเปิดหน้าต่างพิมพ์รายงาน!\nกรุณาไปที่ การตั้งค่า iPad > Safari > ปิดการใช้งาน 'ปิดกั้นหน้าต่างที่ผุดขึ้น' (Block Pop-ups)");
     }
@@ -1146,7 +1228,6 @@ function openClientReviewModal(id) {
             </div>`).join('');
     } else { invHtml = '<p class="text-center text-sm text-gray-400 py-4">ไม่มีข้อมูลการลงทุน</p>'; }
 
-    // 🚀 ลบ Checkbox ออก แสดงแค่หัวข้อ
     let progressHtml = `
         <div class="bg-white p-4 md:p-5 rounded-xl border border-gray-200 shadow-sm w-full flex flex-col">
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-3 border-b border-indigo-100 pb-2 gap-2">
@@ -1229,10 +1310,6 @@ window.updateClientChart = function(xn_id) {
     renderClientProgressChart(client.fullData);
 };
 
-// ==========================================
-// 📈 ระบบวาดกราฟ (สไตล์ Stock Trend & ซ่อนตัวเลขบนเส้น)
-// ==========================================
-
 if (typeof window.crmChartInstance === 'undefined') {
     window.crmChartInstance = null;
 }
@@ -1250,13 +1327,11 @@ function renderClientProgressChart(fullData) {
             return;
         }
 
-        // เรียงข้อมูลจาก อดีต -> ปัจจุบัน เพื่อคำนวณกราฟเส้น
         let visits = [...fullData.visits].reverse();
         let labels = visits.map(v => v.VN);
         
         let rawData = { nw: [], ast: [], liab: [], cf: [], score: [] };
 
-        // 1. ดึงข้อมูลดิบ
         visits.forEach(v => {
             let dyn = (v.dataSnapshot && v.dataSnapshot.dynamic) ? v.dataSnapshot.dynamic : {};
             let c_assets = Array.isArray(dyn.c_assets) ? dyn.c_assets : [];
@@ -1276,7 +1351,6 @@ function renderClientProgressChart(fullData) {
             rawData.score.push(parseInt(v.aiScore) || 0);
         });
 
-        // 2. ฟังก์ชันแปลงข้อมูลเป็น "เปอร์เซ็นต์การเติบโต" เพื่อให้ทุกเส้นเริ่มที่ 0% เท่ากัน
         const calculateTrend = (dataArray) => {
             if (dataArray.length === 0) return [];
             let baseValue = dataArray[0] === 0 ? 1 : Math.abs(dataArray[0]);
@@ -1296,7 +1370,6 @@ function renderClientProgressChart(fullData) {
             window.crmChartInstance = null;
         }
 
-        // กำหนดให้ทุกตัวเป็น Line Chart เพื่อดูเฉพาะเทรนด์
         let datasets = [
             { label: 'ความมั่งคั่งสุทธิ', data: trendData.nw, borderColor: '#4338ca', backgroundColor: 'transparent', borderWidth: 3, tension: 0.4 },
             { label: 'สินทรัพย์รวม', data: trendData.ast, borderColor: '#10b981', backgroundColor: 'transparent', borderWidth: 2, borderDash: [5, 5], tension: 0.4 },
@@ -1318,23 +1391,21 @@ function renderClientProgressChart(fullData) {
                     interaction: { mode: 'index', intersect: false },
                     plugins: { 
                         legend: { position: 'top', labels: { font: { family: 'Prompt', size: 10 }, usePointStyle: true } },
-                        tooltip: { enabled: false }, // ปิด Tooltip เวลากดที่กราฟ
-                        datalabels: { display: false } // 🚀 สั่งปิดตัวเลขที่โชว์บนเส้นกราฟทั้งหมด
+                        tooltip: { enabled: false }, 
+                        datalabels: { display: false } 
                     },
-                    elements: { point: { radius: 0, hoverRadius: 0 } }, // ซ่อนจุดไข่ปลาบนเส้นกราฟให้ดูสมูท
+                    elements: { point: { radius: 0, hoverRadius: 0 } }, 
                     scales: {
                         x: { grid: { display: false }, ticks: { font: { family: 'Prompt', size: 9 } } },
-                        y: { display: false } // ซ่อนแกน Y ไม่ต้องสนใจสเกลตัวเลข
+                        y: { display: false } 
                     }
                 }
             });
         }
 
-        // 3. 📝 สร้างตารางข้อมูลแบบหุ้น (Stock Ticker)
         if (tableContainer) {
             let tableHtml = `<table class="w-full text-[10px] md:text-xs text-right border-collapse mt-2">`;
             
-            // หัวตาราง
             tableHtml += `<thead class="bg-indigo-50/50 text-indigo-800 font-bold border-y border-indigo-100"><tr>`;
             tableHtml += `<th class="p-2.5 text-center whitespace-nowrap w-24">รหัสแผน (VN)</th>`;
             
@@ -1346,7 +1417,6 @@ function renderClientProgressChart(fullData) {
 
             const fmtTableNum = (num) => Number(num || 0).toLocaleString('th-TH', {minimumFractionDigits: 0, maximumFractionDigits: 0});
 
-            // 🔄 วนลูปถอยหลัง! ให้แผนล่าสุด (VN ใหม่สุด) อยู่บรรทัดบนสุด
             for (let i = labels.length - 1; i >= 0; i--) {
                 let isLatest = (i === labels.length - 1);
                 
@@ -1362,7 +1432,7 @@ function renderClientProgressChart(fullData) {
                     let textClass = (currVal < 0 && idx !== 4) ? 'text-red-500 font-bold' : 'text-gray-800 font-bold';
                     
                     let changeHtml = '';
-                    if (i > 0) { // ถ้ามีข้อมูลก่อนหน้า (อดีต) ให้คำนวณ % การเปลี่ยนแปลง
+                    if (i > 0) { 
                         let prevVal = rawData[k][i-1];
                         let pct = 0;
                         let diff = currVal - prevVal;
@@ -1373,7 +1443,6 @@ function renderClientProgressChart(fullData) {
                             pct = (diff / Math.abs(prevVal)) * 100;
                         }
 
-                        // แสดงป้ายกำกับ % เหมือนราคาหุ้น
                         if (pct > 0) {
                             changeHtml = `<br><span class="text-green-600 text-[9px] font-bold bg-green-50 px-1.5 py-0.5 rounded-full inline-flex items-center mt-1 border border-green-100">▲ +${pct.toFixed(1)}%</span>`;
                         } else if (pct < 0) {
@@ -1469,13 +1538,12 @@ function manuallyCloseVN(xn_id, vn_id) {
             else rawClient = clientData;
             
             store.put(rawClient).onsuccess = function() {
-                // 🚀 อัปเดตข้อมูลบน RAM ทันที เพื่อให้ UI เปลี่ยนป้าย Active -> ปิดแล้ว ทันที
                 let memClient = crmClientsList.find(c => c.id === xn_id);
                 if(memClient && memClient.fullData) {
                     let memVisit = memClient.fullData.visits.find(v => v.VN === vn_id);
                     if(memVisit) memVisit.status = 'Closed';
                 }
-                openVNManagerModal(xn_id); // รีเฟรชตารางให้ป้ายเปลี่ยน
+                openVNManagerModal(xn_id);
             };
         }
     };
@@ -1487,96 +1555,6 @@ function closeVNManagerModal() {
     const box = doc.getElementById('vn_modal_box');
     modal.classList.add('opacity-0'); box.classList.remove('scale-100'); box.classList.add('scale-95');
     setTimeout(() => modal.classList.add('hidden'), 300);
-}
-
-function loadSpecificVN(xn_id, vn_id) {
-    let client = crmClientsList.find(c => c.id === xn_id);
-    if (!client) return;
-
-    let targetVisit = client.fullData.visits.find(v => v.VN === vn_id);
-    if (!targetVisit) return crmAlert("ไม่พบข้อมูล VN นี้ครับ");
-
-    if(crmConfirm(`ยืนยันการโหลดข้อมูลแผน ${vn_id} ลงหน้าจอหลักใช่หรือไม่?\n(ข้อมูลบนหน้าจอขณะนี้จะถูกล้างทับ)`)) {
-        let data = targetVisit.dataSnapshot;
-        closeVNManagerModal();
-        
-        // เข้าถึงหน้าจอหลัก (Main Window)
-        if (typeof closeSettings === 'function') closeSettings();
-        if (typeof toggleMode === 'function') toggleMode('edit');
-        if (typeof clearDataForLoad === 'function') clearDataForLoad();
-        
-        if(document.getElementById('mainForm')) document.getElementById('mainForm').reset();
-        
-        if(data.profile) { for (let key in data.profile) { if(document.getElementById(key)) document.getElementById(key).value = data.profile[key]; } }
-        if(data.retirement) {
-            for (let key in data.retirement) {
-                let el = document.getElementById(key);
-                if(el) {
-                    if (key === 'r_reqInc' && typeof parseNum === 'function') el.value = parseNum(data.retirement[key]).toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2});
-                    else el.value = data.retirement[key];
-                }
-            }
-        }
-        if(data.dynamic) {
-            if(typeof loadStandardRows === 'function') {
-                loadStandardRows('c_assets', data.dynamic.c_assets, ['ชื่อรายการ', 'มูลค่า (บาท)'], 'ast_list');
-                loadStandardRows('c_liab', data.dynamic.c_liab, ['ชื่อรายการ', 'ยอดคงเหลือ (บาท)'], 'liab_list');
-                loadStandardRows('c_inc', data.dynamic.c_inc, ['ชื่อรายการ', 'จำนวน (บาท/เดือน)'], 'inc_list');
-                loadStandardRows('c_exp', data.dynamic.c_exp, ['ชื่อรายการ', 'จำนวน (บาท/เดือน)'], 'exp_list');
-            }
-            if(data.dynamic.c_ins && typeof addInsRow === 'function') {
-                data.dynamic.c_ins.forEach(vals => {
-                    if (vals[0] === 'สัญญาหลัก') addInsRow(vals[1], vals[2], vals[3], vals[7], vals[0], vals[5], vals[6], vals[4]);
-                    else if (vals[0] === 'สัญญาเพิ่มเติม') addInsRow(vals[2], vals[3], vals[4], vals[5], vals[0]);
-                    else {
-                        if(vals.length >= 8) addInsRow(vals[0], vals[2], vals[3], vals[7], vals[1], vals[4], vals[5], vals[6]);
-                        else addInsRow(vals[0], vals[1], vals[2], vals[3]);
-                    }
-                });
-            }
-            if(data.dynamic.c_goals && typeof addCustomRow === 'function') {
-                data.dynamic.c_goals.forEach(vals => addCustomRow('c_goals', ['ชื่อเป้าหมาย (Specific)', 'จำนวนเงินที่ต้องการ (Measurable)', 'ระยะเวลา/ปี (Time-bound)', 'ระดับความสำคัญ (1=สูงสุด)'], vals, ['goal_list', '', '', '']));
-            }
-            if(data.dynamic.c_invest_current && typeof addInvestRow === 'function') {
-                data.dynamic.c_invest_current.forEach(vals => addInvestRow(vals[0], vals[1], vals[2], vals[3]));
-            }
-            if(data.dynamic.c_tax_current && typeof addCustomRow === 'function') {
-                data.dynamic.c_tax_current.forEach(vals => addCustomRow('c_tax_current', ['รายการลดหย่อน (อ้างอิง ภ.ง.ด.90/91)', 'จำนวนเงิน (บาท)'], vals, ['tax_list', '']));
-            }
-        }
-        if(typeof syncAgeToRisk === 'function') syncAgeToRisk();
-        
-        // 🚀 ฟังก์ชันปิด CRM อัตโนมัติที่ถูกต้อง
-        if (window.crmWindow && !window.crmWindow.closed) {
-            window.crmWindow.close(); // สั่งปิดหน้าต่าง Popup ของ CRM
-        }
-        
-        // โฟกัสกลับมาหน้าจอหลัก และสั่งรันประมวลผล AI ทันที
-        window.focus();
-        if (typeof processReportInit === 'function') processReportInit(); 
-    }
-}
-
-function deleteSpecificVN(xn_id, vn_id) {
-    if(!crmConfirm(`⚠️ คำเตือน: ต้องการลบประวัติเวอร์ชัน ${vn_id} อย่างถาวรใช่หรือไม่?`)) return;
-
-    let transaction = crmDB.transaction(["clients"], "readwrite");
-    let store = transaction.objectStore("clients");
-    
-    store.get(xn_id).onsuccess = function(e) {
-        let rawClient = e.target.result;
-        if (rawClient) {
-            let clientData = rawClient.securePayload ? SecurityCore.decrypt(rawClient.securePayload) : rawClient;
-            clientData.visits = clientData.visits.filter(v => v.VN !== vn_id);
-            if (rawClient.securePayload) rawClient.securePayload = SecurityCore.encrypt(clientData);
-            else rawClient = clientData;
-            
-            store.put(rawClient).onsuccess = function() {
-                refreshCRMTable();
-                openVNManagerModal(xn_id); 
-            };
-        }
-    };
 }
 
 // =====================================================================
@@ -1670,8 +1648,8 @@ window.openCRMDashboard = function() {
             <div class="bg-white p-3 rounded-xl border border-gray-200 shadow-sm flex flex-wrap justify-between items-center gap-3">
                 <div class="flex items-center gap-2 w-full xl:w-auto flex-wrap">
                     <span class="text-gray-500 text-sm font-bold ml-2">🔍</span>
-                    <input type="text" id="crm_search_input" oninput="filterCRMTable()" placeholder="ค้นหาชื่อ, แฮชแท็ก (#VIP)..." class="p-2 border border-gray-200 rounded-lg text-sm w-full md:w-48 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-blue-200 outline-none">
-                    <select id="crm_filter_status" onchange="filterCRMTable()" class="p-2 border border-gray-200 rounded-lg text-sm w-full md:w-36 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-blue-200 outline-none">
+                    <input type="text" id="crm_search_input" oninput="filterCRMTable(true)" placeholder="ค้นหาชื่อ, แฮชแท็ก, หรือประวัติการทำงาน..." class="p-2 border border-gray-200 rounded-lg text-sm w-full md:w-64 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-blue-200 outline-none transition-all">
+                    <select id="crm_filter_status" onchange="filterCRMTable(true)" class="p-2 border border-gray-200 rounded-lg text-sm w-full md:w-36 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-blue-200 outline-none">
                         <option value="all">ทุกสถานะ</option>
                         <option value="ผู้มุ่งหวัง">🎯 ผู้มุ่งหวัง</option>
                         <option value="กำลังติดตาม">⏳ กำลังติดตาม</option>
@@ -1683,9 +1661,9 @@ window.openCRMDashboard = function() {
                     </select>
                     <div class="flex items-center gap-1 bg-gray-50 border border-gray-200 rounded-lg px-2 py-1">
                         <span class="text-xs text-gray-500">ตั้งแต่</span>
-                        <input type="date" id="crm_filter_start" onchange="filterCRMTable()" class="bg-transparent border-none text-xs p-1 outline-none text-gray-600">
+                        <input type="date" id="crm_filter_start" onchange="filterCRMTable(true)" class="bg-transparent border-none text-xs p-1 outline-none text-gray-600">
                         <span class="text-xs text-gray-500">-</span>
-                        <input type="date" id="crm_filter_end" onchange="filterCRMTable()" class="bg-transparent border-none text-xs p-1 outline-none text-gray-600">
+                        <input type="date" id="crm_filter_end" onchange="filterCRMTable(true)" class="bg-transparent border-none text-xs p-1 outline-none text-gray-600">
                     </div>
                     <div class="border-l border-gray-200 pl-2 flex gap-1 bg-gray-100 p-1 rounded-lg">
                         <button onclick="toggleCRMView('table')" id="btn_view_table" class="px-2 py-1 rounded bg-white shadow-sm text-blue-600 text-xs font-bold" title="มุมมองตาราง">📋</button>
@@ -1696,7 +1674,7 @@ window.openCRMDashboard = function() {
                     <button onclick="saveCurrentToCRM()" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-3 py-2 rounded-lg shadow-sm transition flex items-center gap-1 justify-center"><span>💾</span> ดึงข้อมูลหน้าจอหลักบันทึกลง DB</button>
                     <button onclick="exportCRMToExcel()" class="bg-green-50 hover:bg-green-100 text-green-700 text-xs font-bold px-3 py-2 rounded-lg transition shadow-sm border border-green-200">📊 Excel</button>
                     <button onclick="printCRMReport()" class="bg-gray-100 hover:bg-blue-50 text-blue-700 text-xs font-bold px-3 py-2 rounded-lg transition shadow-sm border border-gray-200">📋 Report</button>
-                    <button onclick="exportCRMData()" class="bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-bold px-3 py-2 rounded-lg transition shadow-sm border border-gray-200">📥 Export DB</button>
+                    <button onclick="exportCRMData('manual')" class="bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-bold px-3 py-2 rounded-lg transition shadow-sm border border-gray-200">📥 Export DB</button>
                     <label class="bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-bold px-3 py-2 rounded-lg transition shadow-sm border border-gray-200 cursor-pointer inline-flex items-center gap-1">📤 Import DB
                     <input type="file" id="crm_import_file" class="sr-only" accept=".json" onchange="handleFileSelect(event)"></label>
                 </div>
@@ -1722,20 +1700,23 @@ window.openCRMDashboard = function() {
                     </div>
                 </div>
 
-                <div id="crm_view_table" class="overflow-y-auto flex-grow relative custom-scrollbar block h-full">
-                    <table class="w-full text-sm text-left">
-                        <thead class="bg-gray-100 text-gray-600 sticky top-0 z-10 shadow-sm">
-                            <tr>
-                                <th class="p-3 w-10 text-center"><input type="checkbox" id="crm_select_all" onchange="toggleSelectAllCRM(this)" class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500 cursor-pointer"></th>
-                                <th class="p-3 font-semibold cursor-pointer hover:text-blue-600 hover:bg-gray-200" onclick="sortCRMTable('name')">ชื่อลูกค้า ↕️</th>
-                                <th class="p-3 font-semibold text-center cursor-pointer hover:text-blue-600 hover:bg-gray-200" onclick="sortCRMTable('status')">สถานะ ↕️</th>
-                                <th class="p-3 font-semibold cursor-pointer hover:text-blue-600 hover:bg-gray-200" onclick="sortCRMTable('aum')">ความมั่งคั่งสุทธิ ↕️</th>
-                                <th class="p-3 font-semibold text-center cursor-pointer hover:text-blue-600 hover:bg-gray-200" onclick="sortCRMTable('appt')">นัดหมายถัดไป ↕️</th>
-                                <th class="p-3 font-semibold text-center">จัดการ</th>
-                            </tr>
-                        </thead>
-                        <tbody id="crm_table_body" class="divide-y divide-gray-100"></tbody>
-                    </table>
+                <div id="crm_view_table" class="overflow-y-auto flex-grow relative custom-scrollbar flex flex-col h-full">
+                    <div class="flex-grow overflow-y-auto">
+                        <table class="w-full text-sm text-left">
+                            <thead class="bg-gray-100 text-gray-600 sticky top-0 z-10 shadow-sm">
+                                <tr>
+                                    <th class="p-3 w-10 text-center"><input type="checkbox" id="crm_select_all" onchange="toggleSelectAllCRM(this)" class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500 cursor-pointer"></th>
+                                    <th class="p-3 font-semibold cursor-pointer hover:text-blue-600 hover:bg-gray-200" onclick="sortCRMTable('name')">ชื่อลูกค้า ↕️</th>
+                                    <th class="p-3 font-semibold text-center cursor-pointer hover:text-blue-600 hover:bg-gray-200" onclick="sortCRMTable('status')">สถานะ ↕️</th>
+                                    <th class="p-3 font-semibold cursor-pointer hover:text-blue-600 hover:bg-gray-200" onclick="sortCRMTable('aum')">ความมั่งคั่งสุทธิ ↕️</th>
+                                    <th class="p-3 font-semibold text-center cursor-pointer hover:text-blue-600 hover:bg-gray-200" onclick="sortCRMTable('appt')">นัดหมายถัดไป ↕️</th>
+                                    <th class="p-3 font-semibold text-center">จัดการ</th>
+                                </tr>
+                            </thead>
+                            <tbody id="crm_table_body" class="divide-y divide-gray-100"></tbody>
+                        </table>
+                    </div>
+                    <div id="crm_pagination_container" class="mt-auto flex-shrink-0"></div>
                 </div>
 
                 <div id="crm_view_kanban" class="overflow-x-auto overflow-y-hidden flex-grow relative custom-scrollbar hidden bg-gray-50/50 p-4 h-full">
@@ -1848,7 +1829,6 @@ window.openCRMDashboard = function() {
         </div>
 
         <script>
-            // Proxy Script: สั่งให้ทุกปุ่มที่กดบนหน้าลูก วิ่งกลับไปทำงานด้วยฟังก์ชันที่อยู่บนหน้าแม่
             const methods = [
                 'filterCRMTable', 'toggleCRMView', 'sortCRMTable', 'openClientReviewModal', 
                 'openVNManagerModal', 'deleteClientFromCRM', 'dragKanbanCard', 'allowDropKanban', 
@@ -1856,7 +1836,8 @@ window.openCRMDashboard = function() {
                 'saveCRMClientModal', 'toggleSelectAllCRM', 'printSelectedCRM', 'deleteSelectedCRM', 
                 'bulkUpdateStatus', 'exportCRMToExcel', 'exportCRMData', 'loadSpecificVN', 
                 'deleteSpecificVN', 'closeClientReviewModal', 'closeVNManagerModal',
-                'saveCurrentToCRM', 'printCRMReport', 'toggleBulkAction', 'openCRMClientModal', 'manuallyCloseVN', 'updateClientChart'
+                'saveCurrentToCRM', 'printCRMReport', 'toggleBulkAction', 'openCRMClientModal', 
+                'manuallyCloseVN', 'updateClientChart', 'changePage'
             ];
             methods.forEach(m => {
                 window[m] = function(...args) {
@@ -1866,7 +1847,6 @@ window.openCRMDashboard = function() {
                 };
             });
             
-            // 🛠️ แก้ไขสำหรับ iPad: อ่านไฟล์แบบ String จากหน้าต่างลูก แล้วค่อยส่งข้ามไปให้หน้าต่างแม่
             window.handleFileSelect = function(event) {
                 const file = event.target.files[0];
                 if (!file) return;
@@ -1881,7 +1861,7 @@ window.openCRMDashboard = function() {
                     }
                 };
                 reader.readAsText(file);
-                event.target.value = ''; // เคลียร์ค่าให้อัปโหลดไฟล์เดิมได้อีกครั้ง
+                event.target.value = ''; 
             };
         <\/script>
     </body>
@@ -1893,92 +1873,64 @@ window.openCRMDashboard = function() {
 
     setTimeout(() => refreshCRMTable(), 500); 
 };
+
 // ==========================================
-// 🖨️ ฟังก์ชันบันทึกข้อมูลและสั่งพิมพ์ (Global Scope สำหรับหน้า index.html)
+// 🖨️ ฟังก์ชันบันทึกข้อมูลและสั่งพิมพ์
 // ==========================================
 window.saveAndPrintReport = function() {
-    // 1. สั่งบันทึกข้อมูลลง CRM แบบเงียบๆ (isSilent = true) 
     if (typeof saveCurrentToCRM === 'function') {
-        // ใช้ .catch เพื่อป้องกัน Error ในกรณีที่ผู้ใช้ยังไม่ได้ Login CRM ก็ให้ข้ามไปพิมพ์ได้เลย
         saveCurrentToCRM(true).catch(err => console.log("ข้ามการบันทึก CRM:", err)); 
     }
-    
-    // 2. หน่วงเวลา 0.3 วินาที เพื่อให้เบราว์เซอร์จัดหน้าเว็บและเซฟให้เสร็จก่อน แล้วค่อยเด้งหน้าต่าง Print
     setTimeout(() => { 
         window.print(); 
     }, 300);
 };
+
 // =====================================================================
 // ☢️ FACTORY RESET & SYSTEM ADMIN TOOLS
 // =====================================================================
-
 window.factoryReset = function(type) {
     if (type === 'password') {
         if(confirm("⚠️ ยืนยันการรีเซ็ตรหัสผ่าน?\n\nรหัสผ่านจะถูกตั้งค่ากลับเป็น '123456' และกุญแจเข้ารหัสเดิมจะถูกล้าง คุณจะต้องล็อกอินใหม่ด้วย 123456 เพื่อเข้าใช้งานระบบ")) {
-            // ล้าง Hash เก่าและตั้งเป็น 123456 ใหม่
             localStorage.removeItem('FA_System_PIN');
             localStorage.setItem('FA_System_PIN_HASH', CryptoJS.SHA256('123456').toString());
-            
             alert("✅ รีเซ็ตรหัสผ่านเป็น 123456 สำเร็จแล้ว! ระบบจะรีเฟรชหน้าจอ");
-            location.reload(); // บังคับรีโหลดเพื่อเตะออกจากระบบให้ล็อกอินใหม่
+            location.reload(); 
         }
     } 
     else if (type === 'database') {
         let code = prompt("⚠️ อันตราย: ข้อมูลลูกค้าและการเข้าพบทั้งหมดในฐานข้อมูล (CRM) จะถูกลบทิ้งอย่างถาวร!\n\nหากต้องการดำเนินการต่อ กรุณาพิมพ์คำว่า 'ยืนยัน' ในช่องด้านล่าง:");
-        
         if (code === "ยืนยัน") {
             let transaction = crmDB.transaction(["clients", "counters"], "readwrite");
-            
-            // ล้างตารางฐานข้อมูลลูกค้า และ ตัวนับ Running Number
             transaction.objectStore("clients").clear();
             transaction.objectStore("counters").clear();
             
             transaction.oncomplete = function() {
-                // ล้างหน่วยความจำใน RAM
                 crmClientsList = [];
                 window.currentFilteredClients = [];
-                
-                // สั่งรีเฟรชตารางให้ว่างเปล่า
                 if(typeof renderCRMTable === 'function') renderCRMTable([]);
-                
-                // สั่งรีเฟรช Dashboard ให้เป็น 0 (ถ้ามี)
                 if(typeof clearDashboardUI === 'function') clearDashboardUI();
-                
                 alert("🗑️ ล้างฐานข้อมูล CRM สำเร็จแล้ว! ฐานข้อมูลว่างเปล่าพร้อมใช้งาน");
             };
-            transaction.onerror = function() {
-                alert("❌ เกิดข้อผิดพลาดในการล้างฐานข้อมูล");
-            };
+            transaction.onerror = function() { alert("❌ เกิดข้อผิดพลาดในการล้างฐานข้อมูล"); };
         } else if (code !== null) {
             alert("❌ พิมพ์คำยืนยันไม่ถูกต้อง ยกเลิกการลบข้อมูล");
         }
     } 
     else if (type === 'all') {
         let code = prompt("☢️ NUCLEAR RESET: ล้างข้อมูลทุกอย่างกลับไปเป็นค่าเริ่มต้นจากโรงงาน!\n\n(รหัสผ่าน, ฐานข้อมูล, กฎ AI, ข้อมูลแบบประกันที่เพิ่มเอง และการตั้งค่าต่างๆ จะถูกลบทิ้งทั้งหมด)\n\nหากคุณแน่ใจ 100% กรุณาพิมพ์คำว่า 'RESET' (ตัวพิมพ์ใหญ่) ในช่องด้านล่าง:");
-        
         if (code === "RESET") {
-            // 1. ล้าง Database (IndexedDB)
             let transaction = crmDB.transaction(["clients", "counters"], "readwrite");
             transaction.objectStore("clients").clear();
             transaction.objectStore("counters").clear();
             
             transaction.oncomplete = function() {
-                // 2. ล้าง Local Storage แบบเจาะจงเฉพาะของระบบ FA (ไม่กวนข้อมูลเว็บอื่นๆ)
                 const keysToRemove = [
-                    'FA_System_PIN',
-                    'FA_System_Config',
-                    'fa_macro_config',
-                    'fa_settings_v2',
-                    'fa_product_library_v2',
-                    'FA_System_Draft_Secure',
-                    'update_doc_weights',
-                    'update_doc_scaler',
-                    'FA_Temp_Dashboard_Data'
+                    'FA_System_PIN', 'FA_System_Config', 'fa_macro_config', 'fa_settings_v2',
+                    'fa_product_library_v2', 'FA_System_Draft_Secure', 'update_doc_weights',
+                    'update_doc_scaler', 'FA_Temp_Dashboard_Data', 'fa_last_auto_backup'
                 ];
-                
                 keysToRemove.forEach(key => localStorage.removeItem(key));
-                
-                // รีเซ็ตรหัสกลับเป็น 123456 เผื่อไว้
                 localStorage.setItem('FA_System_PIN_HASH', CryptoJS.SHA256('123456').toString());
                 
                 alert("🔄 รีเซ็ตระบบกลับเป็นค่าเริ่มต้นจากโรงงาน (Factory Reset) สำเร็จ!\nระบบจะเริ่มทำงานใหม่ทั้งหมด");
