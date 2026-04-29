@@ -832,39 +832,34 @@ function exportCRMData() {
     };
 }
 
-// สร้าง Proxy Function ให้หน้าจอ HTML เรียกใช้ File 
-window.importCRMDataProxy = function(file) {
-    if (!file) return;
+// เปลี่ยนมารับเป็น jsonString แทนการรับออบเจ็กต์ File โดยตรง
+window.processImportCRMData = function(jsonString) {
     if(!crmConfirm("⚠️ นำเข้าข้อมูลจะเขียนทับฐานข้อมูล (หากชื่อซ้ำจะอัปเดตข้อมูล) ดำเนินการต่อหรือไม่?")) return;
 
-    const reader = new FileReader();
-    reader.onload = function(e) {
-        try {
-            const importedData = JSON.parse(e.target.result);
-            if (!Array.isArray(importedData)) throw new Error("รูปแบบไฟล์ Backup ไม่ถูกต้อง (ต้องเป็น Array)");
-            
-            let transaction = crmDB.transaction(["clients"], "readwrite");
-            let store = transaction.objectStore("clients");
-            let importCount = 0;
+    try {
+        const importedData = JSON.parse(jsonString);
+        if (!Array.isArray(importedData)) throw new Error("รูปแบบไฟล์ Backup ไม่ถูกต้อง (ต้องเป็น Array)");
+        
+        let transaction = crmDB.transaction(["clients"], "readwrite");
+        let store = transaction.objectStore("clients");
+        let importCount = 0;
 
-            importedData.forEach(client => {
-                if (client.id && (client.dataPayload || client.securePayload)) {
-                    if(!client.status && !client.securePayload) client.status = "ผู้มุ่งหวัง";
-                    store.put(client); 
-                    importCount++;
-                }
-            });
+        importedData.forEach(client => {
+            if (client.id && (client.dataPayload || client.securePayload)) {
+                if(!client.status && !client.securePayload) client.status = "ผู้มุ่งหวัง";
+                store.put(client); 
+                importCount++;
+            }
+        });
 
-            transaction.oncomplete = function() {
-                crmAlert(`✅ นำเข้าข้อมูลสำเร็จ ${importCount} รายการ!`);
-                refreshCRMTable(); 
-            };
-        } catch (err) {
-            console.error(err);
-            crmAlert('❌ เกิดข้อผิดพลาด: ไฟล์ Backup ไม่ถูกต้องหรือไม่สามารถอ่านข้อมูลได้');
-        }
-    };
-    reader.readAsText(file);
+        transaction.oncomplete = function() {
+            crmAlert(`✅ นำเข้าข้อมูลสำเร็จ ${importCount} รายการ!`);
+            refreshCRMTable(); 
+        };
+    } catch (err) {
+        console.error(err);
+        crmAlert('❌ เกิดข้อผิดพลาด: ไฟล์ Backup ไม่ถูกต้อง หรือข้อมูลเสียหาย');
+    }
 }
 
 // ⬇️ 11. โหลดข้อมูลรายบุคคล & ลบรายบุคคล
@@ -1491,8 +1486,8 @@ window.openCRMDashboard = function() {
                     <button onclick="exportCRMToExcel()" class="bg-green-50 hover:bg-green-100 text-green-700 text-xs font-bold px-3 py-2 rounded-lg transition shadow-sm border border-green-200">📊 Excel</button>
                     <button onclick="printCRMReport()" class="bg-gray-100 hover:bg-blue-50 text-blue-700 text-xs font-bold px-3 py-2 rounded-lg transition shadow-sm border border-gray-200">📋 Report</button>
                     <button onclick="exportCRMData()" class="bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-bold px-3 py-2 rounded-lg transition shadow-sm border border-gray-200">📥 Export DB</button>
-                    <button onclick="document.getElementById('crm_import_file').click()" class="bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-bold px-3 py-2 rounded-lg transition shadow-sm border border-gray-200">📤 Import DB</button>
-                    <input type="file" id="crm_import_file" class="hidden" accept=".json" onchange="window.importCRMDataProxy(this.files[0]); this.value='';">
+                    <label class="bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-bold px-3 py-2 rounded-lg transition shadow-sm border border-gray-200 cursor-pointer inline-flex items-center gap-1">📤 Import DB
+                    <input type="file" id="crm_import_file" class="sr-only" accept=".json" onchange="handleFileSelect(event)"></label>
                 </div>
             </div>
 
@@ -1659,10 +1654,23 @@ window.openCRMDashboard = function() {
                     }
                 };
             });
-            window.importCRMDataProxy = function(file) {
-                if (window.opener && window.opener.importCRMDataProxy) {
-                    window.opener.importCRMDataProxy(file);
-                }
+            
+            // 🛠️ แก้ไขสำหรับ iPad: อ่านไฟล์แบบ String จากหน้าต่างลูก แล้วค่อยส่งข้ามไปให้หน้าต่างแม่
+            window.handleFileSelect = function(event) {
+                const file = event.target.files[0];
+                if (!file) return;
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const jsonText = e.target.result;
+                    if (window.opener && window.opener.processImportCRMData) {
+                        window.opener.processImportCRMData(jsonText);
+                    } else {
+                        alert("❌ ไม่สามารถเชื่อมต่อกับหน้าต่างหลักได้");
+                    }
+                };
+                reader.readAsText(file);
+                event.target.value = ''; // เคลียร์ค่าให้อัปโหลดไฟล์เดิมได้อีกครั้ง
             };
         <\/script>
     </body>
