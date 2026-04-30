@@ -973,31 +973,43 @@ window.processImportCRMData = function(jsonString) {
     }
 }
 
-function loadClientFromCRM(id) {
+window.loadSpecificVN = function(xn_id, vn_id) {
+    loadClientFromCRM(xn_id, vn_id);
+};
+
+function loadClientFromCRM(id, vn_id = null) {
     if (!crmDB || !window.SESSION_KEY) return;
     let clientToLoad = crmClientsList.find(c => c.id === id); 
 
     if (clientToLoad && clientToLoad.fullData && clientToLoad.fullData.visits && clientToLoad.fullData.visits.length > 0) {
-        let latestVisit = clientToLoad.fullData.visits[0];
+        
+        let targetVisit = vn_id 
+            ? clientToLoad.fullData.visits.find(v => v.VN === vn_id) 
+            : clientToLoad.fullData.visits[0];
 
-        if(crmConfirm(`คุณต้องการโหลดข้อมูลของ "${SecurityCore.escapeHTML(clientToLoad.name)}" ใช่หรือไม่?\n(ข้อมูลบนหน้าจอปัจจุบันจะถูกล้างและเขียนทับใหม่)`)) {
+        if (!targetVisit) {
+            return crmAlert("⚠️ ไม่พบข้อมูลประวัติการเข้าพบ (VN) นี้ครับ");
+        }
+
+        let planName = vn_id ? `แผน ${vn_id}` : `ข้อมูลล่าสุด`;
+
+        // 🟢 ขั้นตอนที่ 1: ขึ้น popup action เพื่อให้เลือกรายการ ยืนยัน / ยกเลิก
+        if(crmConfirm(`คุณต้องการโหลดข้อมูล${planName} ของ "${SecurityCore.escapeHTML(clientToLoad.name)}" ลงหน้าจอหลักใช่หรือไม่?\n(ข้อมูลบนหน้าจอปัจจุบันจะถูกล้างและเขียนทับใหม่)`)) {
+            
+            // 🟢 ขั้นตอนที่ 2 (ส่วนที่ 1): ยืนยัน --- ดึงข้อมูลมาใส่ในหน้าจอหลัก (หน้าฟอร์ม) 
             if (typeof closeSettings === 'function') closeSettings();
             if (typeof toggleMode === 'function') toggleMode('edit');
             if (typeof clearDataForLoad === 'function') clearDataForLoad();
             
             if(document.getElementById('mainForm')) document.getElementById('mainForm').reset();
             
-            let data = latestVisit.dataSnapshot; 
-            if(data.profile) { for (let key in data.profile) { if(document.getElementById(key)) document.getElementById(key).value = data.profile[key]; } }
-            if(data.retirement) {
-                for (let key in data.retirement) {
-                    let el = document.getElementById(key);
-                    if(el) {
-                        if (key === 'r_reqInc' && typeof parseNum === 'function') el.value = parseNum(data.retirement[key]).toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2});
-                        else el.value = data.retirement[key];
-                    }
-                }
+            let data = targetVisit.dataSnapshot; 
+            if(data.profile) { 
+                for (let key in data.profile) { 
+                    if(document.getElementById(key)) document.getElementById(key).value = data.profile[key]; 
+                } 
             }
+            
             if(data.dynamic) {
                 if(typeof loadStandardRows === 'function') {
                     loadStandardRows('c_assets', data.dynamic.c_assets, ['ชื่อรายการ', 'มูลค่า (บาท)'], 'ast_list');
@@ -1015,9 +1027,7 @@ function loadClientFromCRM(id) {
                         }
                     });
                 }
-                if(data.dynamic.c_goals && typeof addCustomRow === 'function') {
-                    data.dynamic.c_goals.forEach(vals => addCustomRow('c_goals', ['ชื่อเป้าหมาย (Specific)', 'จำนวนเงินที่ต้องการ (Measurable)', 'ระยะเวลา/ปี (Time-bound)', 'ระดับความสำคัญ (1=สูงสุด)'], vals, ['goal_list', '', '', '']));
-                }
+                
                 if(data.dynamic.c_invest_current && typeof addInvestRow === 'function') {
                     data.dynamic.c_invest_current.forEach(vals => addInvestRow(vals[0], vals[1], vals[2], vals[3]));
                 }
@@ -1026,13 +1036,25 @@ function loadClientFromCRM(id) {
                 }
             }
             if(typeof syncAgeToRisk === 'function') syncAgeToRisk();
+
+            // 🟢 ขั้นตอนที่ 2 (ส่วนที่ 2): โหลดข้อมูลเสร็จ -> ปิดหน้าแท็บ CRM ทั้งหมดทิ้งทันที
+            if (window.crmWindow && !window.crmWindow.closed) {
+                window.crmWindow.close();
+            }
+
+            // 🟢 ขั้นตอนที่ 2 (ส่วนที่ 3): แล้วเด้งโฟกัสกลับมาที่หน้าจอหลัก
+            window.focus();
+
+            // ดีเลย์ 0.3 วินาที รอให้ Browser สลับแท็บกลับมาหน้าหลักให้เสร็จก่อน แล้วค่อยแจ้งเตือน
             setTimeout(() => {
-                if(crmConfirm(`✅ โหลดข้อมูลของคุณ "${SecurityCore.escapeHTML(clientToLoad.name)}" ลงหน้าจอหลักสำเร็จ!\n\nต้องการให้ AI ประมวลผลและสร้างรายงาน (Report) ใหม่ทันทีหรือไม่?`)) {
+                // เปลี่ยนมาใช้ confirm() ของหน้าจอหลักแทน crmConfirm() เพราะหน้าต่าง CRM ถูกปิดไปแล้ว
+                if(confirm(`✅ โหลดข้อมูลลงหน้าจอหลักสำเร็จ!\n\nต้องการให้ AI ประมวลผลและสร้างรายงาน (Report) ใหม่ทันทีหรือไม่?`)) {
                     if (typeof processReportInit === 'function') processReportInit(); 
                 } else {
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 }
-            }, 500); 
+            }, 300); 
+
         }
     } else {
         crmAlert("⚠️ ไม่พบประวัติการเข้าพบ (VN) ของลูกค้ารายนี้ หรือข้อมูลอยู่ในรูปแบบเก่าที่ไม่รองรับครับ");
@@ -1682,7 +1704,7 @@ window.openCRMDashboard = function() {
 
             <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden flex flex-col h-[600px] relative">
                 
-                <div id="crm_bulk_action_bar" class="hidden absolute top-0 left-0 right-0 bg-indigo-50 border-b border-indigo-100 p-3 flex justify-between items-center px-4 shadow-sm z-20">
+                <div id="crm_bulk_action_bar" class="hidden shrink-0 w-full bg-indigo-50 border-b border-indigo-100 p-3 flex justify-between items-center px-4 shadow-sm z-20 relative">
                     <span class="text-sm font-bold text-indigo-800" id="crm_selected_count">เลือก 0 รายการ</span>
                     <div class="flex gap-2">
                         <button onclick="printSelectedCRM()" class="bg-blue-500 hover:bg-blue-600 text-white text-xs font-bold px-3 py-1.5 rounded shadow-sm transition flex items-center gap-1">🖨️ พิมพ์</button>
