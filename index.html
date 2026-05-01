@@ -8,10 +8,10 @@
     <meta name="format-detection" content="telephone=no">
     <link rel="manifest" href="manifest.json">
     <title id="head_title">Personal Financial Report</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <script src="tailwind.js"></script>
+    <script src="chart.min.js"></script>
+    <script src="crypto-js.min.js"></script>
+    <script src="chartjs-plugin-datalabels.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap');
         body { font-family: 'Prompt', sans-serif; background-color: #f3f4f6; color: #1f2937; }
@@ -9612,6 +9612,34 @@ window.requireAuthForSettings = function() {
     document.getElementById('loginPin').focus();
 };
 
+// ==========================================
+// 🤖 ปลุกน้อง AI อัตโนมัติ (ดักจับทั้งตอนเข้าเว็บ และตอนกด Login)
+// ==========================================
+
+// 1. กรณีที่ 1: ตรวจสอบตอนเปิดเว็บมาใหม่ๆ 
+// ถ้าระบบตรวจพบว่ามี กุญแจเซสชัน (SESSION_KEY) หรือรหัสถูกจำไว้แล้ว ให้ปลุกน้อง AI ทันที
+window.addEventListener('DOMContentLoaded', function() {
+    // ปรับเงื่อนไขนี้ตามตัวแปรเช็กล็อกอินของคุณ (เช่น window.SESSION_KEY หรือ localStorage)
+    let isAlreadyLoggedIn = window.SESSION_KEY || localStorage.getItem('FA_System_PIN_HASH');
+    
+    if (isAlreadyLoggedIn) {
+        setTimeout(() => {
+            if (typeof window.AiAssistant !== 'undefined') {
+                window.AiAssistant.speakSequence();
+            }
+        }, 1500); // หน่วงเวลา 1.5 วิ ให้ UI หลักโหลดให้เสร็จก่อน
+    }
+});
+
+// 2. กรณีที่ 2: เอาไว้ผูกกับปุ่ม "ตกลง" หรือ "Login" ในหน้าจอใส่รหัส PIN
+window.triggerAIAfterLogin = function() {
+    setTimeout(() => {
+        if (typeof window.AiAssistant !== 'undefined') {
+            window.AiAssistant.speakSequence();
+        }
+    }, 1000);
+};
+
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js')
@@ -9628,6 +9656,5 @@ if ('serviceWorker' in navigator) {
         <script src="knowledge-base.js"></script>
         <script src="calculator-module.js"></script>
         <script src="portfolio-simulator.js"></script>
-        
     </body>
     </html>

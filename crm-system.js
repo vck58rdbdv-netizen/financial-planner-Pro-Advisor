@@ -283,14 +283,56 @@ async function saveCurrentToCRM(isSilent = false) {
 
         let putTransaction = crmDB.transaction(["clients"], "readwrite");
         let putStore = putTransaction.objectStore("clients");
-        putStore.put(finalRecord).onsuccess = function() {
+        
+        // --- [แก้ไข/เพิ่มใหม่] แยก Request ออกมาเพื่อจัดการ Error กรณี Storage เต็ม ---
+        let putRequest = putStore.put(finalRecord);
+        
+        putRequest.onsuccess = function() {
             let msg = isNewClient ? `✅ บันทึกข้อมูลลูกค้ารายใหม่ (รหัส ${finalRecord.XN}) สำเร็จ!` : `✅ อัปเดตข้อมูลของ ${clientName} สำเร็จ!`;
             if (!isSilent) crmAlert(msg);
             refreshCRMTable(); 
             if(typeof renderAnalyticsDashboard === 'function') renderAnalyticsDashboard();
+            if(typeof checkStorageQuota === 'function') checkStorageQuota(); // อัปเดต UI พื่นที่หลังบันทึก
         };
+
+        putRequest.onerror = function(e) {
+            if (e.target.error.name === 'QuotaExceededError') {
+                crmAlert("🚨 พื้นที่จัดเก็บข้อมูลของ Browser ใกล้เต็ม!\n\nระบบไม่สามารถบันทึกข้อมูลได้ กรุณาทำการ 'Export DB' เพื่อสำรองข้อมูล และลบลูกค้ารายเก่าออกครับ");
+            } else {
+                crmAlert("❌ เกิดข้อผิดพลาดในการบันทึก: " + e.target.error.message);
+            }
+        };
+        // -------------------------------------------------------------------
     };
 }
+
+// --- [เพิ่มใหม่] ฟังก์ชันตรวจสอบและแสดงผลพื้นที่จัดเก็บแบบ Real-time ---
+window.checkStorageQuota = async function() {
+    if (navigator.storage && navigator.storage.estimate) {
+        try {
+            let estimate = await navigator.storage.estimate();
+            let usageMB = (estimate.usage / (1024 * 1024)).toFixed(2);
+            let quotaMB = (estimate.quota / (1024 * 1024)).toFixed(2);
+            let percent = ((estimate.usage / estimate.quota) * 100).toFixed(1);
+            
+            let doc = getCRMDoc();
+            let indicator = doc.getElementById('crm_storage_indicator');
+            if (indicator) {
+                let colorClass = percent > 80 ? 'text-red-700 bg-red-100 border-red-300' : 
+                                 (percent > 50 ? 'text-orange-700 bg-orange-100 border-orange-300' : 'text-slate-600 bg-slate-100 border-slate-200');
+                
+                indicator.className = `text-[10px] px-2 py-1 rounded border shadow-sm flex items-center gap-1 font-bold ${colorClass}`;
+                indicator.innerHTML = `💾 Storage: ${usageMB} MB (${percent}%)`;
+                
+                if (percent > 90) {
+                    indicator.innerHTML += ` <span class="animate-pulse ml-1">⚠️ ใกล้เต็ม! ให้รีบ Backup</span>`;
+                }
+            }
+        } catch (e) {
+            console.log("Storage estimation not supported.");
+        }
+    }
+};
 
 function refreshCRMTable() {
     if (!crmDB || !window.SESSION_KEY) return;
@@ -641,7 +683,12 @@ function openCRMClientModal(xn_id, vn_id) {
     doc.getElementById('crm_modal_id').value = client.id;
     window.currentEditingVN = vn_id; 
 
-    doc.getElementById('crm_modal_name').innerHTML = `${client.name} <br><span class="text-sm font-normal text-indigo-600">(รหัสลูกค้า: ${client.id} | แผน: ${vn_id})</span>`;
+    // ดึงชื่อมาใส่ใน Input และเก็บค่าเดิมไว้เทียบตอนบันทึก
+    doc.getElementById('crm_modal_edit_name').value = client.name;
+    doc.getElementById('crm_modal_old_name').value = client.name; 
+    let displayEl = doc.getElementById('crm_modal_id_display');
+    if(displayEl) displayEl.innerHTML = `(รหัสลูกค้า: ${client.id} | แผน: ${vn_id})`;
+
     doc.getElementById('crm_modal_date').value = client.nextAppointment || "";
     doc.getElementById('crm_modal_tags').value = (client.tags || []).join(', ');
     
@@ -742,6 +789,30 @@ function saveCRMClientModal() {
     let newDate = doc.getElementById('crm_modal_date').value;
     let newTags = doc.getElementById('crm_modal_tags').value.split(',').map(t => t.trim().replace(/^#/, '')).filter(t => t !== "");
 
+    // --- [เพิ่มใหม่] ดึงค่าชื่อใหม่และชื่อเดิมเพื่อตรวจสอบ ---
+    let newNameEl = doc.getElementById('crm_modal_edit_name');
+    let oldNameEl = doc.getElementById('crm_modal_old_name');
+    
+    let newName = newNameEl ? newNameEl.value.trim() : "";
+    let oldName = oldNameEl ? oldNameEl.value : "";
+
+    // ป้องกันการบันทึกถ้าลบชื่อจนว่างเปล่า
+    if (newNameEl && !newName) {
+        return crmAlert("⚠️ กรุณาระบุชื่อ-สกุล ของลูกค้าครับ (ไม่สามารถเว้นว่างได้)");
+    }
+
+    // ตรวจสอบว่ามีการเปลี่ยนชื่อหรือไม่ ถ้าเปลี่ยนให้แทรก Log ประวัติการทำงานอัตโนมัติ
+    let nameChanged = (newNameEl && newName !== oldName);
+    if (nameChanged) {
+        let nowMs = new Date().getTime();
+        let displayDate = new Date().toLocaleDateString('th-TH', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+        let logText = `🔄 อัปเดตข้อมูล: เปลี่ยน ชื่อ-สกุล (เดิม) "${oldName}" ----> (ใหม่) "${newName}"`;
+        
+        // Push เข้าไปใน tempNotesHistory ก่อนที่จะเซฟลง targetVisit.activities
+        tempNotesHistory.push({ date: displayDate, text: logText, timestamp: nowMs });
+    }
+    // ------------------------------------------------
+
     let transaction = crmDB.transaction(["clients"], "readwrite");
     let store = transaction.objectStore("clients");
     
@@ -755,6 +826,12 @@ function saveCRMClientModal() {
                 clientData.nextAppointment = newDate;
                 clientData.tags = newTags;
                 
+                // --- [เพิ่มใหม่] อัปเดตชื่อใน clientData ---
+                if (nameChanged) {
+                    clientData.name = newName;
+                }
+                // ---------------------------------------
+
                 let targetVisit = clientData.visits.find(v => v.VN === vn_id);
                 if (targetVisit) {
                     targetVisit.clientStatus = newStatus; 
@@ -763,13 +840,24 @@ function saveCRMClientModal() {
                 
                 rawClient.timestamp = new Date().getTime(); 
                 
-                if (rawClient.securePayload) rawClient.securePayload = SecurityCore.encrypt(clientData);
-                else rawClient = clientData; 
+                // --- [เพิ่มใหม่] อัปเดตชื่อที่ rawClient (root level) สำหรับตารางค้นหา ---
+                if (rawClient.securePayload) {
+                    rawClient.securePayload = SecurityCore.encrypt(clientData);
+                    if (nameChanged) rawClient.name = newName; 
+                } else {
+                    rawClient = clientData; 
+                }
+                // -----------------------------------------------------------
 
                 store.put(rawClient).onsuccess = function() {
                     closeCRMClientModal(); 
                     refreshCRMTable();     
                     openVNManagerModal(id); 
+                    
+                    // --- [เพิ่มใหม่] แจ้งเตือนเมื่อเปลี่ยนชื่อสำเร็จ ---
+                    if (nameChanged) {
+                        crmAlert(`✅ อัปเดตชื่อและบันทึกประวัติลง VN สำเร็จ!`);
+                    }
                 };
             }
         }
@@ -1323,9 +1411,20 @@ function closeClientReviewModal() {
     const modal = doc.getElementById('clientReviewModal');
     const box = doc.getElementById('review_modal_box');
     modal.classList.add('opacity-0'); box.classList.remove('scale-100'); box.classList.add('scale-95');
-    setTimeout(() => modal.classList.add('hidden'), 300);
+    
+    // --- [เพิ่มใหม่] ทำลายกราฟและคืนหน่วยความจำทันทีที่ปิด ---
+    if (window.crmChartInstance) {
+        window.crmChartInstance.destroy();
+        window.crmChartInstance = null;
+    }
+    
+    setTimeout(() => { 
+        modal.classList.add('hidden');
+        // เคลียร์เนื้อหาภายในเพื่อป้องกัน DOM Memory Leak
+        let contentBody = doc.getElementById('review_content_body');
+        if (contentBody) contentBody.innerHTML = '';
+    }, 300);
 }
-
 window.updateClientChart = function(xn_id) {
     let client = crmClientsList.find(c => c.id === xn_id);
     if (!client || !client.fullData) return;
@@ -1595,14 +1694,28 @@ window.openCRMDashboard = function() {
         return;
     }
 
+    // --- [เพิ่มใหม่] คำนวณหาที่อยู่ของโฟลเดอร์ปัจจุบันแบบอัตโนมัติ ---
+    let basePath = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
+
     let html = `<!DOCTYPE html>
     <html lang="th">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>FA Business CRM</title>
-        <script src="https://cdn.tailwindcss.com"></script>
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        
+        <!-- ฝังเข็มทิศให้หน้าต่าง Pop-up รู้จักโฟลเดอร์ที่เก็บไฟล์ -->
+        <base href="${basePath}">
+        
+        <script src="tailwind.js"></script>
+        <script src="chart.min.js"></script>
+        <script src="chartjs-plugin-datalabels.min.js"></script>
+        
+        <!-- [เพิ่มใหม่] ไฟล์สำหรับลากวางบน iPad -->
+        <link rel="stylesheet" href="mobile-drag-drop.css">
+        <script src="mobile-drag-drop.min.js"></script>
+        <script src="scroll-behaviour.min.js"></script>
+        
         <style>
             @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap');
             body { font-family: 'Prompt', sans-serif; background-color: #f8fafc; color: #1e293b; }
@@ -1626,6 +1739,7 @@ window.openCRMDashboard = function() {
                     <p class="text-slate-500 mt-1 text-sm font-medium">จัดการสถานะและวิเคราะห์พอร์ตโฟลิโอลูกค้า</p>
                 </div>
                 <div class="flex flex-wrap gap-2 no-print">
+                    <span id="crm_storage_indicator" class="text-[10px] text-slate-500 bg-slate-100 px-2 py-1 rounded border border-slate-200">💾 Storage: Checking...</span>
                     <button onclick="window.close()" class="bg-white border border-slate-300 text-slate-700 hover:bg-red-50 hover:text-red-600 px-4 py-2 rounded-lg font-bold text-sm transition shadow-sm">❌ ปิดหน้าต่าง</button>
                 </div>
             </div>
@@ -1757,9 +1871,11 @@ window.openCRMDashboard = function() {
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-5 border-b border-gray-100 pb-5">
                         <div>
                             <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">ชื่อลูกค้า</label>
-                            <p class="text-xl font-bold text-gray-800" id="crm_modal_name">-</p>
-                            <input type="hidden" id="crm_modal_id">
-                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mt-3 mb-1">ป้ายกำกับ (Tags)</label>
+                                <input type="text" id="crm_modal_edit_name" class="w-full text-xl font-bold text-gray-800 border-b-2 border-dashed border-gray-300 focus:border-indigo-500 outline-none pb-1 bg-transparent transition-colors" placeholder="ระบุชื่อ-สกุลลูกค้า">
+                                <p class="text-sm font-normal text-indigo-600 mb-3 mt-1" id="crm_modal_id_display">-</p>
+                                <input type="hidden" id="crm_modal_id">
+                                <input type="hidden" id="crm_modal_old_name">
+                                <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">ป้ายกำกับ (Tags)</label>
                             <input type="text" id="crm_modal_tags" class="w-full border border-gray-300 rounded p-2 text-sm focus:ring-2 focus:ring-indigo-500 bg-white" placeholder="เช่น #VIP, #รอเงินออก">
                         </div>
                         <div class="space-y-3">
@@ -1851,6 +1967,12 @@ window.openCRMDashboard = function() {
         </div>
 
         <script>
+            MobileDragDrop.polyfill({
+                holdToDrag: 100,
+                dragImageTranslateOverride: MobileDragDrop.scrollBehaviourDragImageTranslateOverride
+            });
+            window.addEventListener('touchmove', function() {}, {passive: false});
+            
             const methods = [
                 'filterCRMTable', 'toggleCRMView', 'sortCRMTable', 'openClientReviewModal', 
                 'openVNManagerModal', 'deleteClientFromCRM', 'dragKanbanCard', 'allowDropKanban', 
@@ -1893,7 +2015,10 @@ window.openCRMDashboard = function() {
     window.crmWindow.document.write(html);
     window.crmWindow.document.close();
 
-    setTimeout(() => refreshCRMTable(), 500); 
+    setTimeout(() => {
+        refreshCRMTable();
+        if(typeof checkStorageQuota === 'function') checkStorageQuota(); // [เพิ่มใหม่] สั่งเช็ค Storage ทันทีที่เปิด
+    }, 500);
 };
 
 // ==========================================
