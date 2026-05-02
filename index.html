@@ -375,7 +375,6 @@
             <div class="flex gap-4 border-b border-gray-200 overflow-x-auto custom-scrollbar">
                 <button onclick="switchTab('tab_creator')" id="btn_tab_creator" class="pb-2 px-2 text-gray-500 hover:text-blue-500 border-b-2 border-transparent font-medium text-sm transition whitespace-nowrap">👤 ตั้งค่าข้อมูลผู้จัดทำ</button>
                 <button onclick="switchTab('tab_library')" id="btn_tab_library" class="pb-2 px-2 text-gray-500 hover:text-blue-500 border-b-2 border-transparent font-medium text-sm transition whitespace-nowrap">📦 จัดการข้อมูล</button>
-                <button onclick="switchTab('tab_dict')" id="btn_tab_dict" class="pb-2 px-2 text-gray-500 hover:text-blue-500 border-b-2 border-transparent font-medium text-sm transition whitespace-nowrap">📚 พจนานุกรมคำอธิบาย</button>
                 <button onclick="openCRMDashboard()" id="btn_tab_crm" class="pb-2 px-2 text-gray-500 hover:text-indigo-500 border-b-2 border-transparent font-medium text-sm transition whitespace-nowrap">🗂️ ฐานข้อมูลลูกค้า (CRM)</button>
                 <button onclick="openExecutiveDashboard()" class="pb-2 px-2 text-emerald-600 hover:text-emerald-700 border-b-2 border-transparent font-black text-sm transition whitespace-nowrap flex items-center gap-1">
                     <span class="text-lg">📊</span> FA Business Planner
@@ -481,13 +480,6 @@
                         </button>
                     </div>
                     <div id="configStatus" class="mt-3 text-sm font-medium"></div>
-                </div>
-                </div> <div id="tab_dict" class="hidden space-y-4 animate-fade-in">
-                <div class="bg-gray-50 p-5 rounded-xl border border-gray-200">
-                    <h2 class="text-xl font-bold text-blue-900 mb-2 flex items-center gap-2">📚 พจนานุกรมและเกณฑ์มาตรฐานระบบ</h2>
-                    <p class="text-sm text-gray-600 mb-5 border-b border-gray-300 pb-4">รวมคำอธิบายหลักการทำงานและเกณฑ์มาตรฐานสากลทั้งหมดที่มีในระบบ</p>
-                    
-                    <div id="dict_all_content" class="space-y-4"></div>
                 </div>
             </div>
             <div id="tab_crm" class="hidden space-y-6 animate-fade-in relative">
@@ -686,191 +678,15 @@
         
         <div class="bg-white border-b border-gray-200 px-6 py-5 flex justify-between items-center flex-shrink-0 shadow-sm z-10">
             <div>
-                <h2 class="text-2xl font-bold text-gray-800 flex items-center gap-2">📖 คู่มือและสถาปัตยกรรมระบบแบบเจาะลึก</h2>
+                <h2 class="text-2xl font-bold text-gray-800 flex items-center gap-2">📖 คู่มือและสถาปัตยกรรมระบบแบบเจาะลึก (Knowledge Base)</h2>
                 <p class="text-xs text-gray-500 mt-1">Financial Planner Pro Advisor - Comprehensive User Guide & Architecture</p>
             </div>
             <button onclick="closeManualModal()" class="text-gray-400 hover:text-red-500 hover:bg-red-50 w-10 h-10 rounded-full flex items-center justify-center transition text-3xl leading-none font-bold">&times;</button>
         </div>
 
         <div class="p-0 overflow-y-auto custom-scrollbar flex-1 bg-gray-50">
-            
-            <section class="bg-white p-8 border-b border-gray-200">
-                <div class="flex items-center gap-3 mb-4">
-                    <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center text-2xl shadow-sm">🎯</div>
-                    <h3 class="text-2xl font-bold text-emerald-900">ส่วนที่ 1: บทนำและวิสัยทัศน์ (Vision & Introduction)</h3>
-                </div>
-                <div class="text-sm text-gray-700 leading-relaxed space-y-4 pl-15">
-                    <p class="text-lg font-semibold text-gray-800">"ยกระดับการวางแผนการเงิน จากกระดาษคำนวณ สู่ห้องทดลองชีวิตเสมือนจริง"</p>
-                    <p><b>Financial Planner Pro Advisor</b> ถูกออกแบบมาเพื่อลบข้อจำกัดของการวางแผนการเงินแบบดั้งเดิม (Deterministic Approach) ที่มักทึกทักเอาว่า <i>"ผลตอบแทนจะโต 5% เท่ากันทุกปี"</i> หรือ <i>"ลูกค้าจะออมเงินได้เป๊ะๆ ทุกเดือน"</i> ซึ่งในโลกความเป็นจริงนั้นเต็มไปด้วยความผันผวน (Volatility) และอคติทางอารมณ์ (Behavioral Bias)</p>
-                    <p>ระบบนี้จึงทำงานเสมือน <b>Hybrid Co-Advisor</b> ที่ผสานมาตรฐานวิชาชีพ <b>CFP (Certified Financial Planner)</b> เข้ากับ <b>Data Science</b> ขั้นสูง ภายใต้สถาปัตยกรรม <b class="text-emerald-700">Privacy-First (100% Local Execution)</b> ที่ทุกการคำนวณเกิดขึ้นบนเครื่องของคุณเองโดยปราศจากการส่งต่อข้อมูลส่วนตัวขึ้นสู่เซิร์ฟเวอร์คลาวด์</p>
-                </div>
-            </section>
-
-            <section class="p-8 border-b border-gray-200 bg-slate-50">
-                <div class="flex items-center gap-3 mb-6">
-                    <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-2xl shadow-sm">🧠</div>
-                    <h3 class="text-2xl font-bold text-blue-900">ส่วนที่ 2: สถาปัตยกรรมสมองกล (AI Pipeline Architecture)</h3>
-                </div>
-                <p class="text-sm text-gray-600 mb-6">เมื่อคุณกดปุ่ม <b>"ประมวลผล"</b> ระบบจะวิ่งผ่านกระบวนการ 5 ขั้นตอน (5-Stage Engine) ภายในเวลาไม่กี่วินาที ดังนี้:</p>
-                
-                <div class="space-y-5">
-                    <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex flex-col md:flex-row gap-5 hover-scale transition">
-                        <div class="w-14 h-14 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center font-black text-xl flex-shrink-0 border-2 border-indigo-100">1</div>
-                        <div>
-                            <h4 class="font-bold text-gray-800 text-base mb-2">Diagnostic Engine (การวินิจฉัยสุขภาพการเงิน)</h4>
-                            <p class="text-xs text-gray-600 leading-relaxed mb-2">สกัดข้อมูลดิบ (งบดุลและกระแสเงินสด) มาคำนวณเป็นอัตราส่วนทางการเงินสากล เช่น Survival Ratio, Liquidity Ratio, DTI และ Savings Ratio</p>
-                            <div class="bg-gray-50 p-2 rounded text-[11px] text-gray-500 border border-gray-100">
-                                <b>Output:</b> ประเมิน <span class="text-indigo-600 font-bold">Financial Health Score</span> เต็ม 100 คะแนน เพื่อวิเคราะห์ความเสี่ยงล้มละลาย (Risk of Ruin) ขั้นพื้นฐาน
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex flex-col md:flex-row gap-5 hover-scale transition">
-                        <div class="w-14 h-14 bg-purple-50 text-purple-600 rounded-full flex items-center justify-center font-black text-xl flex-shrink-0 border-2 border-purple-100">2</div>
-                        <div>
-                            <h4 class="font-bold text-gray-800 text-base mb-2">Behavioral K-Means Clustering (AI จัดกลุ่มพฤติกรรม)</h4>
-                            <p class="text-xs text-gray-600 leading-relaxed mb-2">ป้อนข้อมูลเข้าสู่โมเดล Machine Learning (8D K-Means) วิเคราะห์พฤติกรรม 8 แกน (อายุ, รายได้, ความมั่งคั่ง, ภาระหนี้, ความเสี่ยง, ความสม่ำเสมอ, วินัย, ภาระอุปการะ) เพื่อหา Persona ที่ซ่อนอยู่</p>
-                            <div class="bg-gray-50 p-2 rounded text-[11px] text-gray-500 border border-gray-100">
-                                <b>Output:</b> ระบบจะจัดลูกค้าเข้าสู่กลุ่มเฉพาะ (เช่น UHNW, Cash Hoarder, Overleveraged) และปรับโครงสร้าง "สามเหลี่ยมการเงิน" ให้ดิ้นได้ตามความเสี่ยงนั้นๆ
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex flex-col md:flex-row gap-5 hover-scale transition">
-                        <div class="w-14 h-14 bg-orange-50 text-orange-600 rounded-full flex items-center justify-center font-black text-xl flex-shrink-0 border-2 border-orange-100">3</div>
-                        <div>
-                            <h4 class="font-bold text-gray-800 text-base mb-2">Optimization & DP Knapsack (อัลกอริทึมจัดสรรและแก้ปัญหา)</h4>
-                            <p class="text-xs text-gray-600 leading-relaxed mb-2">AI จะคำนวณงบประมาณส่วนเกินที่แท้จริง (Elastic Budget) และใช้คณิตศาสตร์ <b class="text-orange-600">Dynamic Programming</b> เลือกแบบประกัน "Base + Rider" ที่ให้ความคุ้มครองสูงสุดโดยไม่เกินงบ (Knapsack Problem) พร้อมคำนวณการโยกเงินเพื่อ <b class="text-blue-600">Tax Alpha</b> (ลดหย่อนภาษี) และ <b class="text-red-600">Debt Snowball</b> (ปลดหนี้)</p>
-                            <div class="bg-gray-50 p-2 rounded text-[11px] text-gray-500 border border-gray-100">
-                                <b>Output:</b> จัดตะกร้าสินค้า (Product Assembly) ออกมาเป็น 3 ทางเลือก พร้อมแผนกระแสเงินสด Benchmark ใหม่
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex flex-col md:flex-row gap-5 hover-scale transition">
-                        <div class="w-14 h-14 bg-red-50 text-red-600 rounded-full flex items-center justify-center font-black text-xl flex-shrink-0 border-2 border-red-100">4</div>
-                        <div>
-                            <h4 class="font-bold text-gray-800 text-base mb-2">Stochastic Simulation (แบบจำลอง Monte Carlo & Stress Test)</h4>
-                            <p class="text-xs text-gray-600 leading-relaxed mb-2">ระบบจะรันโลกคู่ขนาน 2,000 รอบ สุ่มสภาวะตลาด (กระทิง/หมี) ผสานทฤษฎี <b class="text-red-600">Merton's Jump Diffusion</b> จำลองวิกฤตเศรษฐกิจเฉียบพลัน และควบคุมการถอนเงินหลังเกษียณด้วย <b class="text-emerald-600">Guyton-Klinger Rules</b> ป้องกันพอร์ตแตก</p>
-                            <div class="bg-gray-50 p-2 rounded text-[11px] text-gray-500 border border-gray-100">
-                                <b>Output:</b> โอกาสความสำเร็จ (Probability of Success) พร้อมช่วงความเชื่อมั่น 95% และกราฟจำลองการลงทุน 5 ปีล่วงหน้า (CVaR)
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex flex-col md:flex-row gap-5 hover-scale transition">
-                        <div class="w-14 h-14 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center font-black text-xl flex-shrink-0 border-2 border-emerald-100">5</div>
-                        <div>
-                            <h4 class="font-bold text-gray-800 text-base mb-2">Natural Language Generation (NLG Storytelling)</h4>
-                            <p class="text-xs text-gray-600 leading-relaxed mb-2">แปลผลลัพธ์ทางคณิตศาสตร์ทั้งหมด ออกมาเป็นภาษาที่มนุษย์เข้าใจได้ โดยใช้หลักจิตวิทยา DISC ปรับโทนข้อความให้เข้ากับความกลัวและความคาดหวังของลูกค้า</p>
-                            <div class="bg-gray-50 p-2 rounded text-[11px] text-gray-500 border border-gray-100">
-                                <b>Output:</b> บทวิเคราะห์ข้อความบนหน้ารายงาน (Executive Summary) ที่พร้อมสำหรับนำไปใช้นำเสนอลูกค้า
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="p-8 bg-white pb-12">
-                <div class="flex items-center gap-3 mb-6">
-                    <div class="w-12 h-12 bg-orange-100 text-orange-600 rounded-xl flex items-center justify-center text-2xl shadow-sm">💻</div>
-                    <h3 class="text-2xl font-bold text-orange-900">ส่วนที่ 3: วิธีใช้งานระดับมืออาชีพ (User Manual)</h3>
-                </div>
-                
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    
-                    <div class="border border-gray-200 rounded-xl overflow-hidden shadow-sm hover-scale transition">
-                        <div class="bg-gray-100 p-3 border-b border-gray-200 font-bold text-gray-800 flex items-center gap-2">
-                            <span class="bg-gray-800 text-white w-6 h-6 rounded flex items-center justify-center text-xs">1</span> 
-                            การตั้งค่าระบบ (System Configuration)
-                        </div>
-                        <div class="p-4 text-xs text-gray-700 space-y-3">
-                            <p>ก่อนใช้งานครั้งแรก ควรตั้งค่าโปรไฟล์ผู้จัดทำและตัวแปรทางเศรษฐศาสตร์เพื่อความแม่นยำสูงสุด</p>
-                            <ul class="list-disc list-inside space-y-1.5 ml-1">
-                                <li>คลิก <b>"⚙️ ตั้งค่าระบบ"</b> ที่แถบเมนูด้านบน</li>
-                                <li>ใส่ PIN <code class="bg-gray-200 px-1 py-0.5 rounded text-red-600 font-mono">123456</code> (เปลี่ยนได้ภายหลัง)</li>
-                                <li>แท็บ <b>[ตั้งค่าข้อมูลผู้จัดทำ]</b>: ใส่ชื่อและใบอนุญาต เพื่อโชว์บนหน้าปก PDF</li>
-                                <li>แท็บ <b>[จัดการข้อมูล]</b>: โหลดไฟล์ JSON เพื่ออัปเดต <i>ฐานภาษีปีล่าสุด</i> หรือกู้คืนข้อมูล (Auto-Recovery) กรณีเน็ตหลุด</li>
-                            </ul>
-                            <div class="bg-orange-50 p-2 rounded border border-orange-100 text-orange-800 mt-2">
-                                <b>💡 Pro Tip:</b> ใช้เมนูจัดการคลังแบบประกัน (Library) เพื่อบันทึกชื่อแบบประกันหรือกองทุนที่คุณใช้บ่อยๆ เข้าสู่ระบบ Dropdown อัตโนมัติ
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="border border-gray-200 rounded-xl overflow-hidden shadow-sm hover-scale transition">
-                        <div class="bg-gray-100 p-3 border-b border-gray-200 font-bold text-gray-800 flex items-center gap-2">
-                            <span class="bg-gray-800 text-white w-6 h-6 rounded flex items-center justify-center text-xs">2</span> 
-                            การนำเข้าข้อมูล (Data Intake)
-                        </div>
-                        <div class="p-4 text-xs text-gray-700 space-y-3">
-                            <p>กรอกข้อมูลลูกค้าลงในฟอร์ม โดยระบบออกแบบมาให้กรอกง่ายที่สุดผ่าน Dropdown อัจฉริยะ</p>
-                            <ul class="list-disc list-inside space-y-1.5 ml-1">
-                                <li><b>ส่วนที่ 1 & 1.2:</b> ข้อมูลทั่วไปและแบบทดสอบพฤติกรรม (สำคัญมากต่อการจัดกลุ่ม AI)</li>
-                                <li><b>ส่วนที่ 2:</b> งบดุลและกระแสเงินสด (ใส่เป็นตัวเลขรายเดือน)</li>
-                                <li><b>ส่วนที่ 3:</b> เป้าหมาย, กรมธรรม์เดิม และการลงทุนปัจจุบัน <i>(ระบบจะดึงเบี้ยประกันไปหักลบในรายจ่ายให้อัตโนมัติ)</i></li>
-                            </ul>
-                            <div class="bg-blue-50 p-2 rounded border border-blue-100 text-blue-800 mt-2">
-                                <b>💡 Pro Tip:</b> เพื่อฝึกฝนการใช้งาน ลองกดปุ่ม <b>"🎲 สร้างกรณีศึกษา"</b> ระบบจะสุ่มโปรไฟล์ลูกค้า (เช่น หมอ, แม่ค้า, DINKs) ขึ้นมาให้วิเคราะห์ได้ทันที
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="border border-gray-200 rounded-xl overflow-hidden shadow-sm hover-scale transition">
-                        <div class="bg-gray-100 p-3 border-b border-gray-200 font-bold text-gray-800 flex items-center gap-2">
-                            <span class="bg-gray-800 text-white w-6 h-6 rounded flex items-center justify-center text-xs">3</span> 
-                            การประมวลผล (Processing & Engine)
-                        </div>
-                        <div class="p-4 text-xs text-gray-700 space-y-3">
-                            <p>เมื่อกรอกครบ ให้กดปุ่ม <b>"⚙️ ประมวลผล"</b> สีแดงด้านล่างสุด</p>
-                            <ul class="list-disc list-inside space-y-1.5 ml-1">
-                                <li>ระบบจะแสดงหน้าต่าง Overlay โหลด <b>Machine Learning</b> ใช้เวลา 2-5 วินาที</li>
-                                <li>หน้าจอจะสลับเข้าสู่โหมดรายงาน (Report View) อัตโนมัติ</li>
-                                <li>คุณจะเห็นแผง Dashboard สรุปอาการ, กราฟความมั่งคั่ง, สามเหลี่ยมการเงินที่ขยับได้ตามความเสี่ยงจริง, แผนภาษี, และพอร์ตทางเลือก 3 รูปแบบ</li>
-                            </ul>
-                            <div class="bg-indigo-50 p-2 rounded border border-indigo-100 text-indigo-800 mt-2">
-                                <b>💡 Pro Tip:</b> อ่าน <b>"บทสรุปจากผู้จัดทำ (Executive Summary)"</b> ที่หน้าแรกของรายงาน ซึ่ง AI สังเคราะห์ภาษามาให้แล้ว สามารถใช้อ่านนำเสนอลูกค้าได้เลย
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="border border-gray-200 rounded-xl overflow-hidden shadow-sm hover-scale transition">
-                        <div class="bg-gray-100 p-3 border-b border-gray-200 font-bold text-gray-800 flex items-center gap-2">
-                            <span class="bg-gray-800 text-white w-6 h-6 rounded flex items-center justify-center text-xs">4</span> 
-                            การวิเคราะห์สด (Interactive What-If)
-                        </div>
-                        <div class="p-4 text-xs text-gray-700 space-y-3">
-                            <p>ในหัวข้อที่ 7 (แบบจำลองเกษียณ) จะมี <b>ห้องทดลองทางเลือก (Playground)</b> ให้ลูกค้าเล่น</p>
-                            <ul class="list-disc list-inside space-y-1.5 ml-1">
-                                <li>คุณสามารถเลื่อน <b>แถบสไลเดอร์</b> ปรับ อายุเกษียณ, เงินออมต่อเดือน, หรือผลตอบแทนคาดหวัง ได้สดๆ</li>
-                                <li>เส้นกราฟสีม่วง (พอร์ตจัดเอง) จะขยับตามทันที</li>
-                                <li>เมื่อปล่อยเมาส์ ระบบจะแอบรัน Monte Carlo ใหม่อีก 2,000 รอบในพื้นหลัง และอัปเดต <b>% โอกาสสำเร็จ</b> ใหม่ให้ภายใน 1 วินาที</li>
-                            </ul>
-                            <div class="bg-green-50 p-2 rounded border border-green-100 text-green-800 mt-2">
-                                <b>💡 Pro Tip:</b> ใช้ฟีเจอร์นี้ทำ <i>Trade-off</i> กับลูกค้า เช่น "ถ้าพี่ไม่อยากเพิ่มเงินออม งั้นพี่โอเคไหมถ้าต้องเลื่อนเกษียณไปอีก 3 ปี? ลองเลื่อนดูครับ"
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="mt-6 border border-gray-800 bg-gray-900 rounded-xl p-5 flex flex-col md:flex-row items-center justify-between shadow-xl">
-                    <div class="text-white">
-                        <h4 class="font-bold mb-2 flex items-center gap-2"><span class="bg-white text-gray-900 w-6 h-6 rounded flex items-center justify-center text-xs">5</span> การจัดเก็บและส่งมอบ (Archive & Delivery)</h4>
-                        <ul class="list-disc list-inside text-xs text-gray-300 space-y-1.5 ml-1">
-                            <li>กดปุ่ม <b>"💾 บันทึก"</b> เพื่อเซฟข้อมูลทั้งหมดเป็นไฟล์ <code class="text-emerald-400">.json</code> เก็บไว้ในเครื่องคุณ (ปลอดภัย 100%) วันหลังสามารถกด "📂 โหลด" ไฟล์เดิมมาแก้ไขต่อได้</li>
-                            <li>กดปุ่ม <b>"🖨️ พิมพ์ / PDF"</b> ระบบจะแปลงหน้าเว็บนี้ ตัดปุ่มและเมนูที่ไม่จำเป็นออก จัดหน้ากระดาษ A4 เติมหน้าปกที่มีชื่อคุณ และแทรกลายน้ำให้อัตโนมัติ พร้อมส่งเป็นเล่มรายงานให้ลูกค้าทันที</li>
-                        </ul>
-                    </div>
-                    <div class="text-6xl opacity-80 mt-4 md:mt-0 pl-6 border-l border-gray-700 hidden md:block">📄</div>
-                </div>
-
-                <div class="mt-8 p-4 bg-gray-100 rounded-lg border border-gray-200 text-xs text-gray-500 leading-relaxed text-center shadow-inner">
-                    <b>หมายเหตุ:</b> *เครื่องมือนี้ออกแบบมาเพื่อจำลองและประเมินทิศทางแบบวิชาการเท่านั้น
-                </div>
-
-            </section>
-            
+            <!-- กล่องนี้จะถูกเติมด้วย JavaScript อัตโนมัติจาก systemDictionary 100% -->
+            <div id="manual_knowledge_base" class="space-y-0"></div>
         </div>
     </div>
 </div>
@@ -9028,26 +8844,93 @@ function toggleAdvancedEcon() {
             if (e.target === this) closeContextHelp();
         });
 
-        function renderDictionaryTab() {
-            const container = document.getElementById('dict_all_content');
-            if (!container) return;
-            
-            let html = '';
-            for (const [key, data] of Object.entries(systemDictionary)) {
-                html += `
-                    <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition">
-                        <h4 class="font-bold text-blue-800 text-base mb-2 flex items-center gap-2 border-b border-blue-50 pb-2">
-                            <span class="text-xl">${data.icon}</span> ${data.title}
-                        </h4>
-                        <div class="text-sm text-gray-700 leading-relaxed">${data.content}</div>
-                    </div>
-                `;
-            }
-            container.innerHTML = html;
-        }
+        // ==========================================
+// 📚 ฟังก์ชัน Render คู่มือและพจนานุกรมรวมกัน (Knowledge Base) แบบ Bulletproof
+// ==========================================
+window.renderManualKnowledgeBase = function() {
+    const container = document.getElementById('manual_knowledge_base');
+    if (!container) return;
+    
+    // 1. ดึงข้อมูลจาก window เพื่อความชัวร์ 100%
+    const dictData = window.systemDictionary || (typeof systemDictionary !== 'undefined' ? systemDictionary : null);
 
-        window.addEventListener('DOMContentLoaded', renderDictionaryTab);
-        // 🟢🟢🟢 จบ: โค้ดพจนานุกรมคำอธิบายระบบ 🟢🟢🟢
+    // 2. ถ้าหาข้อมูลไม่เจอ ให้แสดงข้อความแจ้งเตือน (ป้องกันกล่องว่างเปล่า)
+    if (!dictData) {
+        container.innerHTML = `
+            <div class="p-10 text-center flex flex-col items-center justify-center">
+                <span class="text-5xl mb-4">⚠️</span>
+                <h3 class="text-xl font-bold text-red-600 mb-2">ไม่สามารถดึงข้อมูลคู่มือได้</h3>
+                <p class="text-gray-600 text-sm leading-relaxed">
+                    ระบบไม่พบตัวแปร <b>systemDictionary</b><br>
+                    โปรดตรวจสอบว่าบันทึกไฟล์ <code>knowledge-base.js</code> แล้ว<br>
+                    และลองกด <b>Ctrl + F5</b> (ล้างแคช) เพื่อดึงไฟล์เวอร์ชันล่าสุดครับ
+                </p>
+            </div>`;
+        return;
+    }
+
+    // 3. ป้องกันการ Render ซ้ำซ้อนถ้ามีเนื้อหาอยู่แล้ว
+    if (container.innerHTML.trim() !== '' && !container.innerHTML.includes('ไม่สามารถดึงข้อมูล')) return;
+
+    // 4. วนลูปสร้าง HTML
+    let html = '';
+    for (const [key, data] of Object.entries(dictData)) {
+        let bgSection = key.startsWith('manual') ? 'bg-white' : 'bg-slate-50';
+        let iconTheme = data.iconClass || 'bg-indigo-100 text-indigo-600';
+        
+        html += `
+        <section class="p-8 border-b border-gray-200 ${bgSection}">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-12 h-12 ${iconTheme} rounded-xl flex items-center justify-center text-2xl shadow-sm">${data.icon}</div>
+                <h3 class="text-2xl font-bold text-gray-800">${data.title}</h3>
+            </div>
+            <div class="text-sm text-gray-700 leading-relaxed custom-manual-styling">
+                ${data.content}
+            </div>
+        </section>
+        `;
+    }
+    container.innerHTML = html;
+};
+
+// ฟังก์ชันเปิดดูคู่มือ (แยกเป็น Modal ใหม่ ไม่ต้องใส่รหัส)
+window.openManualModal = function() {
+    const modal = document.getElementById('manualModal');
+    if (modal) modal.classList.remove('hidden');
+};
+
+window.closeManualModal = function() {
+    const modal = document.getElementById('manualModal');
+    if (modal) modal.classList.add('hidden');
+};
+
+// เปลี่ยนให้ปุ่ม "แนะนำระบบ" เรียก Modal ใหม่แทน
+window.openManualOnly = function() {
+    openManualModal();
+};
+
+// 🚨 ให้ค้นหาฟังก์ชัน switchTab และแก้ไข array 'tabs' ให้ลบ 'tab_dict' ออก
+window.switchTab = function(tabId) {
+    // นำ tab_dict ออกจาก Array ควบคุมแท็บ
+    const tabs = ['tab_manual', 'tab_macro', 'tab_creator', 'tab_library', 'tab_crm', 'tab_dashboard'];
+    
+    tabs.forEach(id => {
+        const el = document.getElementById(id);
+        const btn = document.getElementById('btn_' + id);
+        if (el) { el.classList.add('hidden'); el.classList.remove('block'); }
+        if (btn) { btn.classList.remove('text-blue-600', 'border-blue-600', 'font-bold'); btn.classList.add('text-gray-500', 'border-transparent'); }
+    });
+
+    const activeTab = document.getElementById(tabId);
+    const activeBtn = document.getElementById('btn_' + tabId);
+    
+    if (activeTab) { activeTab.classList.remove('hidden'); activeTab.classList.add('block'); }
+    if (activeBtn) { activeBtn.classList.add('text-blue-600', 'border-blue-600', 'font-bold'); activeBtn.classList.remove('text-gray-500', 'border-transparent'); }
+
+    if (tabId === 'tab_crm' && typeof refreshCRMTable === 'function') {
+        refreshCRMTable();
+    }
+};
 
 // ==========================================
 // ⚙️ ส่วนที่ 2: JavaScript ควบคุมระบบตั้งค่า (Settings Controller)
@@ -9541,10 +9424,64 @@ function applySystemConfig() {
         }
     }
 }
-// ฟังก์ชันเปิดดูคู่มือ (แยกเป็น Modal ใหม่ ไม่ต้องใส่รหัส)
+// ==========================================
+// 📚 ฟังก์ชัน Render คู่มือและพจนานุกรมรวมกัน (Knowledge Base) แบบ Bulletproof
+// ==========================================
+window.renderManualKnowledgeBase = function() {
+    const container = document.getElementById('manual_knowledge_base');
+    if (!container) {
+        console.error("หา ID: manual_knowledge_base ไม่เจอใน HTML");
+        return;
+    }
+    
+    // ดึงข้อมูลจากไฟล์ knowledge-base.js
+    const dictData = window.systemDictionary || (typeof systemDictionary !== 'undefined' ? systemDictionary : null);
+
+    // ถ้าหาข้อมูลไม่เจอ ให้โชว์ Error กลางจอแทนกล่องเปล่า
+    if (!dictData) {
+        container.innerHTML = `
+            <div class="p-10 text-center flex flex-col items-center justify-center mt-10">
+                <span class="text-6xl mb-4">⚠️</span>
+                <h3 class="text-2xl font-bold text-red-600 mb-2">ไม่สามารถดึงข้อมูลคู่มือได้</h3>
+                <p class="text-gray-600 text-sm leading-relaxed">
+                    ระบบไม่พบตัวแปร <b>systemDictionary</b> ในไฟล์ <code>knowledge-base.js</code><br>
+                    โปรดตรวจสอบว่าได้เปลี่ยนคำว่า <code>const systemDictionary = {</code> <br>
+                    เป็น <code>window.systemDictionary = {</code> ในไฟล์นั้นแล้วหรือยัง
+                </p>
+            </div>`;
+        return;
+    }
+
+    // ถ้าเคย Render แล้ว ไม่ต้องทำซ้ำ
+    if (container.innerHTML.trim() !== '' && !container.innerHTML.includes('ไม่สามารถดึงข้อมูล')) return;
+
+    let html = '';
+    for (const [key, data] of Object.entries(dictData)) {
+        let bgSection = key.startsWith('manual') ? 'bg-white' : 'bg-slate-50';
+        let iconTheme = data.iconClass || 'bg-indigo-100 text-indigo-600';
+        
+        html += `
+        <section class="p-6 md:p-8 border-b border-gray-200 ${bgSection}">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-12 h-12 ${iconTheme} rounded-xl flex items-center justify-center text-2xl shadow-sm">${data.icon}</div>
+                <h3 class="text-xl md:text-2xl font-bold text-gray-800">${data.title}</h3>
+            </div>
+            <div class="text-sm text-gray-700 leading-relaxed custom-manual-styling">
+                ${data.content}
+            </div>
+        </section>
+        `;
+    }
+    container.innerHTML = html;
+};
+
+// สั่งเปิด Modal พร้อมกับยัดข้อมูลใส่ทันที
 window.openManualModal = function() {
     const modal = document.getElementById('manualModal');
-    if (modal) modal.classList.remove('hidden');
+    if (modal) {
+        modal.classList.remove('hidden');
+        window.renderManualKnowledgeBase(); 
+    }
 };
 
 window.closeManualModal = function() {
@@ -9552,9 +9489,8 @@ window.closeManualModal = function() {
     if (modal) modal.classList.add('hidden');
 };
 
-// เปลี่ยนให้ปุ่ม "แนะนำระบบ" เรียก Modal ใหม่แทน
 window.openManualOnly = function() {
-    openManualModal();
+    window.openManualModal();
 };
 
 // ฟังก์ชันสำหรับปิดหน้าต่าง Login ด้วยปุ่ม X
@@ -9653,7 +9589,7 @@ if ('serviceWorker' in navigator) {
         <script src="crm-system.js"></script>
         <script src="analytics-dashboard.js"></script>
         <script src="case-study-generator.js"></script>
-        <script src="knowledge-base.js"></script>
+        <script src="knowledge-base.js?v=2"></script>
         <script src="calculator-module.js"></script>
         <script src="portfolio-simulator.js"></script>
     </body>

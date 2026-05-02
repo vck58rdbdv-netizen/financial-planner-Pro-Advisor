@@ -1,5 +1,5 @@
 // =====================================================================
-// 📈 FA ULTIMATE PLANNER & DASHBOARD ENGINE (V7.3 - Popup Blocker Bypass)
+// 📈 FA ULTIMATE PLANNER & DASHBOARD ENGINE (V8.3 - Full Edition + CRM Quick View)
 // =====================================================================
 
 async function fetchAllCRMDataForDashboard() {
@@ -36,7 +36,7 @@ async function openExecutiveDashboard() {
 
     // 🌟 เขียนหน้าต่างโหลดข้อมูลรอไว้ก่อน
     dashWin.document.write(`
-        <div style="display:flex; justify-content:center; items-align:center; height:100vh; font-family:sans-serif; color:#475569;">
+        <div style="display:flex; justify-content:center; align-items:center; height:100vh; font-family:sans-serif; color:#475569;">
             <h2 style="margin-top:20%;">⏳ กำลังประมวลผลข้อมูล Executive Dashboard...</h2>
         </div>
     `);
@@ -75,8 +75,10 @@ async function openExecutiveDashboard() {
             }
         });
 
-        // แพ็กข้อมูลฝากไว้ใน LocalStorage เพื่อความปลอดภัยตอนข้ามหน้าจอ (แก้บั๊ก Safari XSS)
         localStorage.setItem('FA_Temp_Dashboard_Data', JSON.stringify(crmStats));
+        
+        // 🌟 V8.3 ส่งข้อมูลลูกค้าทั้งหมดไปยังหน้าต่างใหม่ เพื่อทำ CRM Quick View อย่างปลอดภัย
+        const safeClientData = JSON.stringify(clients).replace(/<\/script>/g, '<\\/script>');
         
         let html = `
         <!DOCTYPE html>
@@ -100,9 +102,9 @@ async function openExecutiveDashboard() {
                 input:focus, select:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2); }
             </style>
         </head>
-        <body class="p-4 md:p-6 lg:p-8">
+        <body class="p-4 md:p-6 lg:p-8 relative">
             <div class="max-w-7xl mx-auto space-y-6">
-                
+                <!-- ================== ส่วน Header ================== -->
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b-2 border-slate-300 pb-4 gap-4">
                     <div>
                         <h1 class="text-2xl md:text-3xl font-black text-slate-800 flex items-center gap-3">
@@ -119,6 +121,7 @@ async function openExecutiveDashboard() {
                     </div>
                 </div>
 
+                <!-- ================== ส่วน KPI กล่องสรุปผล ================== -->
                 <div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-6 shadow-xl text-white relative overflow-hidden">
                     <div class="absolute top-0 right-0 p-4 opacity-10 text-6xl">📅</div>
                     <h2 class="text-xl font-bold mb-4 flex items-center gap-2 border-b border-slate-700 pb-2 relative z-10">
@@ -160,6 +163,7 @@ async function openExecutiveDashboard() {
                     </div>
                 </div>
 
+                <!-- ================== ส่วนอื่นๆ ของ Planner (คงเดิม) ================== -->
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <div class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-indigo-100 flex flex-col overflow-hidden">
                         <div class="bg-indigo-50 border-b border-indigo-100 p-4 flex justify-between items-center no-print">
@@ -171,18 +175,31 @@ async function openExecutiveDashboard() {
                             </div>
                         </div>
 
+                        <div class="bg-white px-4 pt-4">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="bg-emerald-50 rounded-lg p-3 border border-emerald-100 text-center">
+                                    <p class="text-[10px] font-bold text-emerald-600 uppercase">Avg. Case Size (เบี้ยเฉลี่ย)</p>
+                                    <p class="text-lg font-black text-emerald-700" id="ui_stat_case_size">0 ฿</p>
+                                </div>
+                                <div class="bg-blue-50 rounded-lg p-3 border border-blue-100 text-center">
+                                    <p class="text-[10px] font-bold text-blue-600 uppercase">%FYC Average (คอมมิชชันเฉลี่ย)</p>
+                                    <p class="text-lg font-black text-blue-700" id="ui_stat_fyc_pct">0%</p>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="p-4 border-b border-slate-100 space-y-3 bg-white">
                             <div>
                                 <div class="flex justify-between text-xs mb-1"><span class="text-slate-500 font-bold">เป้า FYP เดือนนี้: <span id="ui_m_tgt_fyp"></span></span> <span id="ui_m_act_fyp" class="font-bold text-emerald-600"></span></div>
-                                <div class="w-full bg-slate-100 rounded-full h-1.5"><div id="bar_m_fyp" class="bg-emerald-500 h-1.5 rounded-full transition-all"></div></div>
+                                <div class="w-full bg-slate-100 rounded-full h-1.5"><div id="bar_m_fyp" class="bg-emerald-500 h-full rounded-full transition-all"></div></div>
                             </div>
                             <div>
                                 <div class="flex justify-between text-xs mb-1"><span class="text-slate-500 font-bold">เป้า FYC เดือนนี้: <span id="ui_m_tgt_fyc"></span></span> <span id="ui_m_act_fyc" class="font-bold text-blue-600"></span></div>
-                                <div class="w-full bg-slate-100 rounded-full h-1.5"><div id="bar_m_fyc" class="bg-blue-500 h-1.5 rounded-full transition-all"></div></div>
+                                <div class="w-full bg-slate-100 rounded-full h-1.5"><div id="bar_m_fyc" class="bg-blue-500 h-full rounded-full transition-all"></div></div>
                             </div>
                             <div>
                                 <div class="flex justify-between text-xs mb-1"><span class="text-slate-500 font-bold">เป้า Case เดือนนี้: <span id="ui_m_tgt_cases"></span></span> <span id="ui_m_act_cases" class="font-bold text-purple-600"></span></div>
-                                <div class="w-full bg-slate-100 rounded-full h-1.5"><div id="bar_m_cases" class="bg-purple-500 h-1.5 rounded-full transition-all"></div></div>
+                                <div class="w-full bg-slate-100 rounded-full h-1.5"><div id="bar_m_cases" class="bg-purple-500 h-full rounded-full transition-all"></div></div>
                             </div>
                         </div>
 
@@ -234,28 +251,56 @@ async function openExecutiveDashboard() {
                         <span>📝</span> SALES LEDGER: สมุดบันทึกผลงานจริง
                     </h2>
                     
-                    <div class="bg-slate-50 rounded-xl p-4 border border-slate-200 mb-4 flex flex-wrap gap-3 items-end no-print">
-                        <div class="w-28"><label class="text-[10px] font-bold text-slate-600 mb-1 block">ประเภท</label>
-                            <select id="s_type" onchange="toggleFormType()">
-                                <option value="sale">ส่วนตัว (Sale)</option>
-                                <option value="recruit">ทีมงาน (Recruit)</option>
-                            </select>
-                        </div>
-                        <div class="w-32"><label class="text-[10px] font-bold text-slate-600 mb-1 block">วันที่</label><input type="date" id="s_date"></div>
-                        <div class="flex-1 min-w-[120px]"><label class="text-[10px] font-bold text-slate-600 mb-1 block">ชื่อลูกค้า/ทีมงาน</label><input type="text" id="s_name" placeholder="ชื่อ-สกุล"></div>
-                        
-                        <div class="w-28 s-sale-only"><label class="text-[10px] font-bold text-slate-600 mb-1 block">นับ Case?</label>
-                            <select id="s_is_new_case">
-                                <option value="true">New (นับ)</option>
-                                <option value="false">Renewal (ไม่นับ)</option>
-                            </select>
+                    <div class="bg-slate-50 rounded-xl p-4 border border-slate-200 mb-4 flex flex-col gap-3 no-print">
+                        <div class="flex flex-wrap gap-3 items-end">
+                            <div class="w-28"><label class="text-[10px] font-bold text-slate-600 mb-1 block">ประเภท</label>
+                                <select id="s_type" onchange="toggleFormType()">
+                                    <option value="sale">ส่วนตัว (Sale)</option>
+                                    <option value="recruit">ทีมงาน (Recruit)</option>
+                                </select>
+                            </div>
+                            <div class="w-32"><label class="text-[10px] font-bold text-slate-600 mb-1 block">วันที่</label><input type="date" id="s_date"></div>
+                            <div class="w-40"><label class="text-[10px] font-bold text-slate-600 mb-1 block">ชื่อลูกค้า/ทีมงาน</label><input type="text" id="s_name" placeholder="ชื่อ-สกุล"></div>
+                            
+                            <div class="w-28 s-sale-only"><label class="text-[10px] font-bold text-slate-600 mb-1 block">นับ Case?</label>
+                                <select id="s_is_new_case">
+                                    <option value="true">New (นับ)</option>
+                                    <option value="false">Renewal (ไม่นับ)</option>
+                                </select>
+                            </div>
+
+                            <div class="w-32 s-sale-only">
+                                <label class="text-[10px] font-bold text-slate-600 mb-1 block">หมวดหมู่สัญญาหลัก</label>
+                                <input type="text" id="s_prod" list="product-list" placeholder="เลือก/พิมพ์">
+                                <datalist id="product-list">
+                                    <option value="สัญญาหลัก-ตลอดชีพ">
+                                    <option value="สัญญาหลัก-สะสมทรัพย์">
+                                    <option value="สัญญาหลัก-บำนาญ">
+                                    <option value="สัญญาหลัก-Unit Linked">
+                                    <option value="สัญญาเพิ่มเติม-สุขภาพ">
+                                    <option value="สัญญาเพิ่มเติม-โรคร้ายแรง">
+                                    <option value="สัญญาเพิ่มเติม-ชดเชยรายวัน">
+                                    <option value="สัญญาเพิ่มเติม-อุบัติเหตุ">
+                                </datalist>
+                            </div>
+                            <div class="flex-1 min-w-[120px] s-sale-only">
+                                <label class="text-[10px] font-bold text-slate-600 mb-1 block">ชื่อแผนสัญญาหลัก</label>
+                                <input type="text" id="s_plan_name" placeholder="เช่น 99/20, Wealthy Link">
+                            </div>
+
+                            <div class="w-24 s-sale-only"><label class="text-[10px] font-bold text-slate-600 mb-1 block">ทุนประกัน</label><input type="number" id="s_sa" placeholder="0"></div>
+                            <div class="w-24"><label class="text-[10px] font-bold text-emerald-600 mb-1 block">FYP</label><input type="number" id="s_fyp" placeholder="0" class="border-emerald-300"></div>
+                            <div class="w-24"><label class="text-[10px] font-bold text-blue-600 mb-1 block">FYC</label><input type="number" id="s_fyc" placeholder="0" class="border-blue-300"></div>
+                            <div><button id="btn_save_sale" onclick="addSaleRecord()" class="bg-slate-800 hover:bg-slate-900 text-white font-bold py-1.5 px-4 rounded-lg text-sm transition h-[32px]">บันทึก</button></div>
                         </div>
 
-                        <div class="flex-1 min-w-[100px] s-sale-only"><label class="text-[10px] font-bold text-slate-600 mb-1 block">สินค้า/แผน</label><input type="text" id="s_prod" placeholder="-"></div>
-                        <div class="w-24 s-sale-only"><label class="text-[10px] font-bold text-slate-600 mb-1 block">ทุนประกัน</label><input type="number" id="s_sa" placeholder="0"></div>
-                        <div class="w-24"><label class="text-[10px] font-bold text-emerald-600 mb-1 block">FYP</label><input type="number" id="s_fyp" placeholder="0" class="border-emerald-300"></div>
-                        <div class="w-24"><label class="text-[10px] font-bold text-blue-600 mb-1 block">FYC</label><input type="number" id="s_fyc" placeholder="0" class="border-blue-300"></div>
-                        <div><button onclick="addSaleRecord()" class="bg-slate-800 hover:bg-slate-900 text-white font-bold py-1.5 px-4 rounded-lg text-sm transition h-[32px]">บันทึก</button></div>
+                        <div class="w-full pt-3 border-t border-slate-200 s-sale-only">
+                            <div class="flex justify-between items-center mb-1">
+                                <label class="text-[10px] font-bold text-indigo-700 block">➕ สัญญาเพิ่มเติม (Riders)</label>
+                                <button type="button" onclick="addRiderInput()" class="text-[9px] bg-indigo-100 hover:bg-indigo-200 text-indigo-700 px-2 py-1 rounded font-bold transition no-print">+ เพิ่ม Rider</button>
+                            </div>
+                            <div id="riders_list" class="w-full flex flex-col gap-2"></div>
+                        </div>
                     </div>
 
                     <div class="overflow-x-auto border rounded-lg">
@@ -263,7 +308,7 @@ async function openExecutiveDashboard() {
                             <thead class="text-xs text-slate-500 bg-slate-100 uppercase border-b">
                                 <tr>
                                     <th class="px-4 py-3">วันที่</th><th class="px-4 py-3 text-center">ประเภท</th><th class="px-4 py-3">ชื่อรายละเอียด</th>
-                                    <th class="px-4 py-3">สินค้า</th><th class="px-4 py-3 text-right">ทุนประกัน</th>
+                                    <th class="px-4 py-3">สินค้า / แผน</th><th class="px-4 py-3 text-right">ทุนประกัน</th>
                                     <th class="px-4 py-3 text-right text-emerald-600">FYP</th><th class="px-4 py-3 text-right text-blue-600">FYC</th>
                                     <th class="px-4 py-3 text-center no-print">จัดการ</th>
                                 </tr>
@@ -275,17 +320,17 @@ async function openExecutiveDashboard() {
 
                 <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 break-inside-avoid">
                     <h2 class="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2 border-b border-slate-200 pb-2">
-                        <span>🗂️</span> CRM OVERVIEW: ภาพรวมฐานข้อมูลลูกค้าทั้งหมด
+                        <span>🗂️</span> CRM OVERVIEW: ภาพรวมฐานข้อมูลลูกค้าทั้งหมด <span class="text-xs text-slate-400 font-normal ml-2 no-print">(คลิกที่กล่องเพื่อดูรายชื่อ)</span>
                     </h2>
 
                     <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3 mb-6">
-                        <div class="bg-slate-50 p-3 rounded-lg border border-slate-200 text-center"><p class="text-[10px] font-bold text-slate-500 mb-1">ผู้มุ่งหวัง</p><p class="text-xl font-black text-slate-700"><span id="crm_funnel_0"></span></p></div>
-                        <div class="bg-blue-50 p-3 rounded-lg border border-blue-100 text-center"><p class="text-[10px] font-bold text-blue-500 mb-1">นำเสนอแผน</p><p class="text-xl font-black text-blue-700"><span id="crm_funnel_1"></span></p></div>
-                        <div class="bg-purple-50 p-3 rounded-lg border border-purple-100 text-center"><p class="text-[10px] font-bold text-purple-500 mb-1">กำลังติดตาม</p><p class="text-xl font-black text-purple-700"><span id="crm_funnel_2"></span></p></div>
-                        <div class="bg-yellow-50 p-3 rounded-lg border border-yellow-100 text-center"><p class="text-[10px] font-bold text-yellow-600 mb-1">รอดำเนินการ</p><p class="text-xl font-black text-yellow-700"><span id="crm_funnel_3"></span></p></div>
-                        <div class="bg-emerald-50 p-3 rounded-lg border border-emerald-200 text-center shadow-sm"><p class="text-[10px] font-bold text-emerald-600 mb-1">ปิดการขาย</p><p class="text-xl font-black text-emerald-700"><span id="crm_funnel_4"></span></p></div>
-                        <div class="bg-teal-50 p-3 rounded-lg border border-teal-100 text-center"><p class="text-[10px] font-bold text-teal-600 mb-1">บริการหลังขาย</p><p class="text-xl font-black text-teal-700"><span id="crm_funnel_5"></span></p></div>
-                        <div class="bg-red-50 p-3 rounded-lg border border-red-100 text-center"><p class="text-[10px] font-bold text-red-500 mb-1">ปฏิเสธ</p><p class="text-xl font-black text-red-700"><span id="crm_funnel_6"></span></p></div>
+                        <div onclick="openDrillModal('ผู้มุ่งหวัง')" class="cursor-pointer hover:shadow-md hover:-translate-y-1 transition transform bg-slate-50 p-3 rounded-lg border border-slate-200 text-center"><p class="text-[10px] font-bold text-slate-500 mb-1">ผู้มุ่งหวัง</p><p class="text-xl font-black text-slate-700"><span id="crm_funnel_0"></span></p></div>
+                        <div onclick="openDrillModal('นำเสนอแผน')" class="cursor-pointer hover:shadow-md hover:-translate-y-1 transition transform bg-blue-50 p-3 rounded-lg border border-blue-100 text-center"><p class="text-[10px] font-bold text-blue-500 mb-1">นำเสนอแผน</p><p class="text-xl font-black text-blue-700"><span id="crm_funnel_1"></span></p></div>
+                        <div onclick="openDrillModal('กำลังติดตาม')" class="cursor-pointer hover:shadow-md hover:-translate-y-1 transition transform bg-purple-50 p-3 rounded-lg border border-purple-100 text-center"><p class="text-[10px] font-bold text-purple-500 mb-1">กำลังติดตาม</p><p class="text-xl font-black text-purple-700"><span id="crm_funnel_2"></span></p></div>
+                        <div onclick="openDrillModal('รอดำเนินการ')" class="cursor-pointer hover:shadow-md hover:-translate-y-1 transition transform bg-yellow-50 p-3 rounded-lg border border-yellow-100 text-center"><p class="text-[10px] font-bold text-yellow-600 mb-1">รอดำเนินการ</p><p class="text-xl font-black text-yellow-700"><span id="crm_funnel_3"></span></p></div>
+                        <div onclick="openDrillModal('ปิดการขาย')" class="cursor-pointer hover:shadow-md hover:-translate-y-1 transition transform bg-emerald-50 p-3 rounded-lg border border-emerald-200 text-center shadow-sm"><p class="text-[10px] font-bold text-emerald-600 mb-1">ปิดการขาย</p><p class="text-xl font-black text-emerald-700"><span id="crm_funnel_4"></span></p></div>
+                        <div onclick="openDrillModal('เข้าเยี่ยมหลังการขาย')" class="cursor-pointer hover:shadow-md hover:-translate-y-1 transition transform bg-teal-50 p-3 rounded-lg border border-teal-100 text-center"><p class="text-[10px] font-bold text-teal-600 mb-1">บริการหลังขาย</p><p class="text-xl font-black text-teal-700"><span id="crm_funnel_5"></span></p></div>
+                        <div onclick="openDrillModal('ปฏิเสธ')" class="cursor-pointer hover:shadow-md hover:-translate-y-1 transition transform bg-red-50 p-3 rounded-lg border border-red-100 text-center"><p class="text-[10px] font-bold text-red-500 mb-1">ปฏิเสธ</p><p class="text-xl font-black text-red-700"><span id="crm_funnel_6"></span></p></div>
                     </div>
 
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -294,7 +339,7 @@ async function openExecutiveDashboard() {
                             <div class="relative flex-grow"><canvas id="chartPersona"></canvas></div>
                         </div>
                         <div class="bg-white p-5 rounded-xl border border-slate-200 flex flex-col h-[250px]">
-                            <h3 class="font-bold text-slate-800 text-sm mb-4 border-b pb-2">🥧 สัดส่วนสินค้าพอร์ตลูกค้า (Product Mix)</h3>
+                            <h3 class="font-bold text-slate-800 text-sm mb-4 border-b pb-2">🥧 สัดส่วนสินค้าพอร์ตลูกค้า (Internal Product Mix)</h3>
                             <div class="relative flex-grow"><canvas id="chartProductMix"></canvas></div>
                         </div>
                     </div>
@@ -302,7 +347,62 @@ async function openExecutiveDashboard() {
 
             </div>
 
+            <!-- 🌟 MODAL: Data Drill-down & CRM Quick View 🌟 -->
+            <div id="drillModal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex justify-center items-center p-4 transition-opacity">
+                <div class="bg-white rounded-2xl shadow-2xl w-full max-w-5xl max-h-[90vh] flex flex-col overflow-hidden transform transition-transform scale-100">
+                    <div class="px-6 py-4 border-b border-slate-200 flex justify-between items-center bg-slate-50 shrink-0">
+                        <h3 id="modalTitle" class="font-bold text-slate-800 text-lg flex items-center gap-2"></h3>
+                        <button onclick="closeModal()" class="text-slate-400 hover:text-red-500 font-bold text-2xl leading-none">&times;</button>
+                    </div>
+                    <div id="modalBody" class="p-0 overflow-y-auto flex-grow custom-scrollbar bg-slate-50 relative"></div>
+                </div>
+            </div>
+
             <script>
+                const DB_KEY = 'FA_Ultimate_Planner_V8_Secured';
+                
+                // 🌟 รับข้อมูลมาจาก Node พ่อ
+                window.FA_CLIENTS = ${safeClientData}; 
+
+                let plannerData = { targets: { fyp: 1000000, fyc: 300000, cases: 50, recruit: 5 }, salesLedger: [], checklists: [], cta: "ฉันคือนักขายระดับท็อป!" };
+                window.currentRiders = []; 
+                window.crmChartInstance = null; // ตัวแปรสำหรับเก็บ Chart อัปเดตแนวโน้มทางการเงิน
+
+                function loadPlannerData() {
+                    let saved = localStorage.getItem(DB_KEY);
+                    if (saved) {
+                        try {
+                            if (window.opener && window.opener.SecurityCore) {
+                                let dec = window.opener.SecurityCore.decrypt(saved);
+                                plannerData = JSON.parse(dec || saved);
+                            } else {
+                                plannerData = JSON.parse(saved);
+                            }
+                        } catch(e) {
+                            console.warn("Load data fallback to default", e);
+                        }
+                    }
+                    plannerData.salesLedger.forEach(s => { 
+                        if(s.isNewCase === undefined) s.isNewCase = true; 
+                        if(!s.riders) s.riders = [];
+                    });
+                }
+
+                function saveData() {
+                    let str = JSON.stringify(plannerData);
+                    try {
+                        if (window.opener && window.opener.SecurityCore) {
+                            localStorage.setItem(DB_KEY, window.opener.SecurityCore.encrypt(str));
+                        } else {
+                            localStorage.setItem(DB_KEY, str);
+                        }
+                    } catch(e) {
+                        localStorage.setItem(DB_KEY, str);
+                    }
+                }
+
+                loadPlannerData();
+
                 const savedCrmData = localStorage.getItem('FA_Temp_Dashboard_Data');
                 let crmData = { personas: {}, productMix: {}, funnel: {} };
                 try { if (savedCrmData) { crmData = JSON.parse(savedCrmData); localStorage.removeItem('FA_Temp_Dashboard_Data'); } } catch (e) { }
@@ -318,22 +418,295 @@ async function openExecutiveDashboard() {
                 const chartColors = ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#f43f5e', '#14b8a6', '#6366f1'];
                 const productColors = ['#10b981', '#3b82f6', '#f59e0b', '#8b5cf6', '#9ca3af'];
 
-                const DB_KEY = 'FA_Ultimate_Planner_V5';
-                let plannerData = JSON.parse(localStorage.getItem(DB_KEY)) || {
-                    targets: { fyp: 1000000, fyc: 300000, cases: 50, recruit: 5 },
-                    salesLedger: [], 
-                    checklists: [ { id: Date.now(), text: "ตั้งเป้าหมายประจำปีให้เรียบร้อย", deadline: "2026-12-31", done: false } ],
-                    cta: "ฉันคือนักขายระดับท็อป!"
-                };
-
-                plannerData.salesLedger.forEach(s => { if(s.isNewCase === undefined) s.isNewCase = true; });
-
                 let viewDate = new Date();
                 const monthNames = ["มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"];
 
                 document.getElementById('s_date').value = viewDate.toISOString().slice(0, 10);
 
-                function saveData() { localStorage.setItem(DB_KEY, JSON.stringify(plannerData)); }
+                // ==========================================
+                // 🌟 V8.3: Data Drill-down & CRM Quick View (อัปเกรด 100% CRM Review)
+                // ==========================================
+                window.openDrillModal = function(status) {
+                    let list = window.FA_CLIENTS.filter(c => (c.status || "ผู้มุ่งหวัง") === status);
+                    document.getElementById('modalTitle').innerHTML = '📋 รายชื่อลูกค้ากลุ่ม: <span class="text-indigo-600 font-black">' + status + '</span> (' + list.length + ' ราย)';
+                    
+                    let h = '';
+                    if(list.length === 0) {
+                        h = '<p class="text-center text-slate-400 py-10 italic">ไม่มีรายชื่อลูกค้าในสถานะนี้</p>';
+                    } else {
+                        h = '<div class="space-y-3 p-6">';
+                        list.forEach((c) => {
+                            let name = c.name || 'ไม่ระบุชื่อ';
+                            let cid = c.id || Math.random().toString();
+                            c._tempId = cid; // ฝัง id ชั่วคราวกรณีไม่มี
+                            let persona = (c.visits && c.visits.length > 0) ? (c.visits[0].aiCluster || '').split('[')[0] : '-';
+                            h += \`
+                            <div class="bg-white p-4 border border-slate-200 rounded-xl flex justify-between items-center hover:border-indigo-300 transition shadow-sm group">
+                                <div>
+                                    <div class="font-bold text-slate-800 text-base">\${name}</div>
+                                    <div class="text-[11px] text-slate-500 font-medium mt-1">🎯 Persona: <span class="text-indigo-500">\${persona||'Unclassified'}</span></div>
+                                </div>
+                                <button onclick="viewQuickReview('\${cid}', '\${status}')" class="bg-slate-100 text-slate-600 border border-slate-200 px-4 py-2 rounded-lg text-xs font-bold group-hover:bg-slate-800 group-hover:text-white transition shadow-sm">
+                                    พรีวิวข้อมูล
+                                </button>
+                            </div>\`;
+                        });
+                        h += '</div>';
+                    }
+                    document.getElementById('modalBody').innerHTML = h;
+                    document.getElementById('drillModal').classList.remove('hidden');
+                };
+
+                window.viewQuickReview = function(clientId, backStatus) {
+                    let client = window.FA_CLIENTS.find(x => (x.XN === clientId) || (x.id === clientId) || (x._tempId === clientId));
+                    if(!client || !client.visits || client.visits.length === 0) return alert("⚠️ ไม่พบข้อมูลรายละเอียดของลูกค้ารายนี้");
+
+                    let latestVisit = client.visits[0];
+                    let p = latestVisit.dataSnapshot ? (latestVisit.dataSnapshot.profile || {}) : {};
+                    let d = latestVisit.dataSnapshot ? (latestVisit.dataSnapshot.dynamic || {}) : {};
+
+                    const fmtRev = (num) => Number(num || 0).toLocaleString('th-TH', {minimumFractionDigits: 0, maximumFractionDigits: 0});
+
+                    // คำนวณสรุปการเงิน
+                    let totalAst = (d.c_assets || []).reduce((sum, item) => sum + (Number(item.val || item[1]) || 0), 0);
+                    let totalLiab = (d.c_liab || []).reduce((sum, item) => sum + (Number(item.val || item[1]) || 0), 0);
+                    let totalInc = (d.c_inc || []).reduce((sum, item) => sum + (Number(item.val || item[1]) || 0), 0);
+                    let totalExp = (d.c_exp || []).reduce((sum, item) => sum + (Number(item.val || item[1]) || 0), 0);
+                    let netWorth = latestVisit.netWorth || (totalAst - totalLiab);
+                    let netCashflow = totalInc - totalExp;
+
+                    // พอร์ตกรมธรรม์ประกันชีวิต
+                    let insHtml = '';
+                    if (d.c_ins && d.c_ins.length > 0) {
+                        insHtml = d.c_ins.map(ins => {
+                            let isBase = ins[0] === 'สัญญาหลัก';
+                            let name = isBase ? ins[1] : ins[2]; 
+                            let type = isBase ? ins[2] : ins[3]; 
+                            let val = isBase ? ins[3] : ins[4];  
+                            let prem = isBase ? ins[7] : ins[5]; 
+                            return \`
+                            <div class="flex justify-between items-center py-2 border-b border-slate-100 last:border-0 pl-2">
+                                <div>
+                                    <span class="text-[10px] \${isBase ? 'bg-purple-100 text-purple-700' : 'bg-orange-100 text-orange-700'} px-1.5 py-0.5 rounded mr-1">\${isBase ? 'หลัก' : 'เพิ่มเติม'}</span>
+                                    <span class="text-sm font-medium text-slate-800">\${name || 'ไม่ระบุ'}</span><p class="text-[10px] text-slate-500 mt-0.5">\${type || '-'}</p>
+                                </div>
+                                <div class="text-right"><p class="text-xs text-slate-800 font-bold">ทุน: \${fmtRev(val)}</p><p class="text-[10px] text-slate-500">เบี้ย: \${fmtRev(prem)}/ปี</p></div>
+                            </div>\`;
+                        }).join('');
+                    } else { insHtml = '<p class="text-center text-sm text-slate-400 py-4">ไม่มีข้อมูลกรมธรรม์</p>'; }
+
+                    // พอร์ตการลงทุนปัจจุบัน
+                    let invHtml = '';
+                    if (d.c_invest_current && d.c_invest_current.length > 0) {
+                        invHtml = d.c_invest_current.map(inv => \`
+                            <div class="flex justify-between items-center py-2 border-b border-slate-100 last:border-0 pl-2">
+                                <div><p class="text-sm font-medium text-slate-800">\${inv[0] || 'ไม่ระบุ'}</p><p class="text-[10px] text-slate-500 mt-0.5">เป้าหมาย: \${inv[3] || '-'}</p></div>
+                                <div class="text-right"><p class="text-sm text-blue-700 font-bold">\${fmtRev(inv[1])}</p><p class="text-[10px] text-emerald-600 font-semibold">คาดหวัง \${inv[2] || 0}%</p></div>
+                            </div>\`).join('');
+                    } else { invHtml = '<p class="text-center text-sm text-slate-400 py-4">ไม่มีข้อมูลการลงทุน</p>'; }
+
+                    // กราฟวิวัฒนาการ
+                    let progressHtml = \`
+                        <div class="bg-white p-4 md:p-5 rounded-xl border border-slate-200 shadow-sm w-full flex flex-col mt-6">
+                            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-3 border-b border-indigo-100 pb-2 gap-2">
+                                <div>
+                                    <h4 class="font-bold text-indigo-800 flex items-center gap-2"><span class="text-xl">📈</span> พัฒนาการทางการเงิน (Trend Evolution)</h4>
+                                    <p class="text-[10px] text-slate-500 mt-1">แสดงแนวโน้มเปรียบเทียบการเติบโต (จุดเริ่มต้น = 0)</p>
+                                </div>
+                            </div>
+                            \${(!client.visits || client.visits.length < 2) 
+                                ? '<div class="bg-slate-50 text-slate-500 text-sm text-center py-8 rounded-lg border border-dashed flex-grow flex items-center justify-center">มีประวัติเพียง 1 ครั้ง จะเริ่มแสดงกราฟเทรนด์เมื่อมีการอัปเดต (VN ถัดไป)</div>'
+                                : '<div class="relative w-full flex-grow min-h-[250px] md:min-h-[300px]"><canvas id="clientProgressChart"></canvas></div><div id="chartDataTableContainer" class="mt-4 overflow-x-auto custom-scrollbar"></div>'}
+                        </div>\`;
+
+                    document.getElementById('modalTitle').innerHTML = \`<button onclick="openDrillModal('\${backStatus}')" class="text-xs bg-slate-200 hover:bg-slate-300 text-slate-700 px-3 py-1.5 rounded-lg mr-3 transition font-bold">&larr; กลับ</button> <span class="text-slate-500">🔍 พรีวิวข้อมูลลูกค้า: \${client.name || 'ไม่ระบุชื่อ'} (\${latestVisit.VN || '-'})</span>\`;
+
+                    let modalContent = \`
+                        <div class="p-6 bg-slate-50 min-h-full">
+                            <div class="flex flex-col md:flex-row gap-4 w-full mb-6">
+                                <div class="flex-1 bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-center">
+                                    <p class="text-xs text-slate-500 font-bold uppercase tracking-wider mb-2">👤 ข้อมูลพื้นฐาน</p>
+                                    <p class="text-sm text-slate-800"><b>อายุ:</b> \${p.p_age || '-'} ปี</p>
+                                    <p class="text-sm text-slate-800 mt-1"><b>อาชีพ:</b> \${p.p_occ || '-'}</p>
+                                </div>
+                                <div class="flex-1 bg-gradient-to-br from-indigo-50 to-blue-50 p-4 rounded-xl border border-indigo-100 shadow-sm flex flex-col justify-center items-center text-center">
+                                    <p class="text-xs text-indigo-500 font-bold uppercase tracking-wider mb-2">🧠 AI Score (ความสำเร็จ)</p>
+                                    <h4 class="text-3xl font-black text-indigo-700">\${latestVisit.aiScore || '-'}</h4>
+                                </div>
+                                <div class="flex-1 bg-gradient-to-br from-teal-50 to-emerald-50 p-4 rounded-xl border border-teal-100 shadow-sm flex flex-col justify-center items-center text-center">
+                                    <p class="text-xs text-teal-600 font-bold uppercase tracking-wider mb-2">📊 AI Cluster (กลุ่มพฤติกรรม)</p>
+                                    <h4 class="text-sm font-bold text-teal-800 leading-tight">\${latestVisit.aiCluster || '-'}</h4>
+                                </div>
+                            </div>
+
+                            <div class="mb-6">
+                                <h4 class="font-bold text-slate-800 mb-3 flex items-center gap-2"><span class="text-lg">💰</span> สรุปสถานะการเงิน ณ \${latestVisit.dateString || '-'}</h4>
+                                <div class="flex flex-col md:flex-row gap-3 w-full">
+                                    <div class="flex-1 bg-white p-3 rounded-lg border border-slate-200 shadow-sm text-center"><p class="text-[10px] text-slate-500 mb-1">สินทรัพย์รวม</p><p class="text-sm md:text-base font-bold text-emerald-600">\${fmtRev(totalAst)}</p></div>
+                                    <div class="flex-1 bg-white p-3 rounded-lg border border-slate-200 shadow-sm text-center"><p class="text-[10px] text-slate-500 mb-1">หนี้สินรวม</p><p class="text-sm md:text-base font-bold text-red-500">\${fmtRev(totalLiab)}</p></div>
+                                    <div class="flex-1 bg-white p-3 rounded-lg border border-blue-200 shadow-sm text-center bg-blue-50/30"><p class="text-[10px] text-blue-600 mb-1 font-bold">ความมั่งคั่งสุทธิ</p><p class="text-base md:text-lg font-black text-blue-700">\${fmtRev(netWorth)}</p></div>
+                                    <div class="flex-1 bg-white p-3 rounded-lg border border-slate-200 shadow-sm text-center"><p class="text-[10px] text-slate-500 mb-1">กระแสเงินสดคงเหลือ/เดือน</p><p class="text-sm md:text-base font-bold \${netCashflow >= 0 ? 'text-emerald-600' : 'text-red-500'}">\${fmtRev(netCashflow)}</p></div>
+                                </div>
+                            </div>
+
+                            <div class="flex flex-col md:flex-row gap-4 w-full">
+                                <div class="flex-1 bg-white rounded-xl border border-slate-200 shadow-sm flex flex-col h-64">
+                                    <div class="bg-purple-50 p-3 border-b border-purple-100 rounded-t-xl"><h4 class="font-bold text-purple-800 flex items-center gap-2 text-sm">🛡️ พอร์ตกรมธรรม์ประกันชีวิต</h4></div>
+                                    <div class="p-3 overflow-y-auto custom-scrollbar flex-grow bg-white rounded-b-xl">\${insHtml}</div>
+                                </div>
+                                <div class="flex-1 bg-white rounded-xl border border-slate-200 shadow-sm flex flex-col h-64">
+                                    <div class="bg-blue-50 p-3 border-b border-blue-100 rounded-t-xl"><h4 class="font-bold text-blue-800 flex items-center gap-2 text-sm">📈 พอร์ตการลงทุนปัจจุบัน</h4></div>
+                                    <div class="p-3 overflow-y-auto custom-scrollbar flex-grow bg-white rounded-b-xl">\${invHtml}</div>
+                                </div>
+                            </div>
+
+                            \${progressHtml}
+                        </div>
+                    \`;
+
+                    document.getElementById('modalBody').innerHTML = modalContent;
+
+                    // สั่งวาดกราฟหลังจากแสดง Modal
+                    if (client.visits && client.visits.length >= 2) {
+                        setTimeout(() => { window.updateClientChart(client.id || client._tempId || client.XN); }, 50);
+                    }
+                };
+
+                window.updateClientChart = function(clientId) {
+                    let client = window.FA_CLIENTS.find(x => (x.XN === clientId) || (x.id === clientId) || (x._tempId === clientId));
+                    if (!client || !client.visits) return;
+                    
+                    try {
+                        let ctx = document.getElementById('clientProgressChart');
+                        let tableContainer = document.getElementById('chartDataTableContainer');
+                        if (!ctx) return;
+
+                        let visits = [...client.visits].reverse();
+                        let labels = visits.map(v => v.VN || '-');
+                        
+                        let rawData = { nw: [], ast: [], liab: [], cf: [], score: [] };
+
+                        visits.forEach(v => {
+                            let dyn = (v.dataSnapshot && v.dataSnapshot.dynamic) ? v.dataSnapshot.dynamic : {};
+                            let c_assets = Array.isArray(dyn.c_assets) ? dyn.c_assets : [];
+                            let c_liab = Array.isArray(dyn.c_liab) ? dyn.c_liab : [];
+                            let c_inc = Array.isArray(dyn.c_inc) ? dyn.c_inc : [];
+                            let c_exp = Array.isArray(dyn.c_exp) ? dyn.c_exp : [];
+
+                            let tAst = c_assets.reduce((sum, item) => sum + (Number(item.val || item[1]) || 0), 0);
+                            let tLiab = c_liab.reduce((sum, item) => sum + (Number(item.val || item[1]) || 0), 0);
+                            let tInc = c_inc.reduce((sum, item) => sum + (Number(item.val || item[1]) || 0), 0);
+                            let tExp = c_exp.reduce((sum, item) => sum + (Number(item.val || item[1]) || 0), 0);
+                            
+                            rawData.ast.push(tAst);
+                            rawData.liab.push(tLiab);
+                            rawData.nw.push(v.netWorth || (tAst - tLiab));
+                            rawData.cf.push(tInc - tExp);
+                            rawData.score.push(parseInt(v.aiScore) || 0);
+                        });
+
+                        const calculateTrend = (dataArray) => {
+                            if (dataArray.length === 0) return [];
+                            let baseValue = dataArray[0] === 0 ? 1 : Math.abs(dataArray[0]);
+                            return dataArray.map(val => ((val - dataArray[0]) / baseValue) * 100);
+                        };
+
+                        let trendData = {
+                            nw: calculateTrend(rawData.nw), ast: calculateTrend(rawData.ast),
+                            liab: calculateTrend(rawData.liab), cf: calculateTrend(rawData.cf),
+                            score: calculateTrend(rawData.score)
+                        };
+
+                        if (window.crmChartInstance) {
+                            window.crmChartInstance.destroy();
+                            window.crmChartInstance = null;
+                        }
+
+                        let datasets = [
+                            { label: 'ความมั่งคั่งสุทธิ', data: trendData.nw, borderColor: '#4338ca', backgroundColor: 'transparent', borderWidth: 3, tension: 0.4 },
+                            { label: 'สินทรัพย์รวม', data: trendData.ast, borderColor: '#10b981', backgroundColor: 'transparent', borderWidth: 2, borderDash: [5, 5], tension: 0.4 },
+                            { label: 'หนี้สินรวม', data: trendData.liab, borderColor: '#ef4444', backgroundColor: 'transparent', borderWidth: 2, borderDash: [5, 5], tension: 0.4 },
+                            { label: 'กระแสเงินสด', data: trendData.cf, borderColor: '#f59e0b', backgroundColor: 'transparent', borderWidth: 2, borderDash: [5, 5], tension: 0.4 },
+                            { label: 'AI Score', data: trendData.score, borderColor: '#8b5cf6', backgroundColor: 'transparent', borderWidth: 3, tension: 0.4 }
+                        ];
+
+                        window.crmChartInstance = new Chart(ctx, {
+                            type: 'line',
+                            data: { labels: labels, datasets: datasets },
+                            options: {
+                                responsive: true, maintainAspectRatio: false,
+                                interaction: { mode: 'index', intersect: false },
+                                plugins: { 
+                                    legend: { position: 'top', labels: { font: { family: 'Prompt', size: 10 }, usePointStyle: true } },
+                                    datalabels: { display: false } 
+                                },
+                                elements: { point: { radius: 3, hoverRadius: 5 } }, 
+                                scales: {
+                                    x: { grid: { display: false }, ticks: { font: { family: 'Prompt', size: 9 } } },
+                                    y: { display: false } 
+                                }
+                            }
+                        });
+
+                        if (tableContainer) {
+                            let tableHtml = \`<table class="w-full text-[10px] md:text-xs text-right border-collapse mt-2">\`;
+                            tableHtml += \`<thead class="bg-indigo-50/50 text-indigo-800 font-bold border-y border-indigo-100"><tr>\`;
+                            tableHtml += \`<th class="p-2.5 text-center whitespace-nowrap w-24">รหัสแผน (VN)</th>\`;
+                            
+                            let displayLabels = ['ความมั่งคั่งสุทธิ', 'สินทรัพย์รวม', 'หนี้สินรวม', 'กระแสเงินสด', 'AI Score'];
+                            displayLabels.forEach(lbl => { tableHtml += \`<th class="p-2.5 whitespace-nowrap">\${lbl}</th>\`; });
+                            tableHtml += \`</tr></thead><tbody class="bg-white">\`;
+
+                            const fmtTableNum = (num) => Number(num || 0).toLocaleString('th-TH', {minimumFractionDigits: 0, maximumFractionDigits: 0});
+
+                            for (let i = labels.length - 1; i >= 0; i--) {
+                                let isLatest = (i === labels.length - 1);
+                                tableHtml += \`<tr class="hover:bg-slate-50 border-b border-slate-100 transition-colors">\`;
+                                tableHtml += \`<td class="p-2.5 text-center font-bold \${isLatest ? 'text-indigo-600 bg-indigo-50/20' : 'text-slate-600'} whitespace-nowrap">\${labels[i]} \${isLatest ? '<br><span class="text-[8px] bg-indigo-100 text-indigo-600 px-1.5 py-0.5 rounded-full inline-block mt-0.5">ล่าสุด</span>' : ''}</td>\`;
+                                
+                                let keys = ['nw', 'ast', 'liab', 'cf', 'score'];
+                                keys.forEach((k, idx) => {
+                                    let currVal = rawData[k][i];
+                                    let displayVal = idx === 4 ? currVal + '%' : fmtTableNum(currVal);
+                                    let textClass = (currVal < 0 && idx !== 4) ? 'text-red-500 font-bold' : 'text-slate-800 font-bold';
+                                    
+                                    let changeHtml = '';
+                                    if (i > 0) { 
+                                        let prevVal = rawData[k][i-1];
+                                        let pct = 0;
+                                        let diff = currVal - prevVal;
+                                        
+                                        if (prevVal === 0) pct = currVal > 0 ? 100 : (currVal < 0 ? -100 : 0);
+                                        else pct = (diff / Math.abs(prevVal)) * 100;
+
+                                        if (pct > 0) changeHtml = \`<br><span class="text-emerald-600 text-[9px] font-bold bg-emerald-50 px-1.5 py-0.5 rounded-full inline-flex items-center mt-1 border border-emerald-100">▲ +\${pct.toFixed(1)}%</span>\`;
+                                        else if (pct < 0) changeHtml = \`<br><span class="text-red-500 text-[9px] font-bold bg-red-50 px-1.5 py-0.5 rounded-full inline-flex items-center mt-1 border border-red-100">▼ \${pct.toFixed(1)}%</span>\`;
+                                        else changeHtml = \`<br><span class="text-slate-400 text-[9px] inline-flex items-center mt-1">- 0.0%</span>\`;
+                                    } else {
+                                        changeHtml = \`<br><span class="text-slate-300 text-[9px] inline-flex items-center mt-1">ฐาน (Base)</span>\`;
+                                    }
+
+                                    tableHtml += \`<td class="p-2.5 align-middle leading-tight"><span class="\${textClass}">\${displayVal}</span>\${changeHtml}</td>\`;
+                                });
+                                tableHtml += \`</tr>\`;
+                            }
+                            tableHtml += \`</tbody></table>\`;
+                            tableContainer.innerHTML = tableHtml;
+                        }
+
+                    } catch (err) {
+                        console.error("เกิดข้อผิดพลาดในการวาดกราฟ Dashboard:", err);
+                    }
+                };
+
+                window.closeModal = function() { 
+                    document.getElementById('drillModal').classList.add('hidden'); 
+                    if (window.crmChartInstance) {
+                        window.crmChartInstance.destroy();
+                        window.crmChartInstance = null;
+                    }
+                };
+                // ==========================================
 
                 function toggleFormType() {
                     let isSale = document.getElementById('s_type').value === 'sale';
@@ -341,10 +714,39 @@ async function openExecutiveDashboard() {
                     els.forEach(el => el.style.display = isSale ? 'block' : 'none');
                     if(!isSale) { 
                         document.getElementById('s_prod').value = ''; 
+                        document.getElementById('s_plan_name').value = ''; 
                         document.getElementById('s_sa').value = ''; 
                         document.getElementById('s_is_new_case').value = 'true';
+                        window.currentRiders = [];
+                        window.renderRiderInputs();
                     }
                 }
+
+                window.renderRiderInputs = function() {
+                    let h = '';
+                    window.currentRiders.forEach(function(r, idx) {
+                        h += '<div class="flex flex-wrap gap-2 items-end bg-white p-2 rounded border border-indigo-100 relative">';
+                        h += '<button type="button" onclick="removeRiderInput('+idx+')" class="absolute -top-2 -right-2 bg-red-100 hover:bg-red-200 text-red-600 rounded-full w-4 h-4 flex items-center justify-center text-[10px] shadow-sm no-print">×</button>';
+                        h += '<div class="w-32"><label class="text-[9px] font-bold text-slate-500 mb-1 block">หมวดหมู่ Rider</label>';
+                        h += '<select onchange="updateRider('+idx+', \\'prod\\', this.value)" class="text-[11px] p-1.5 border-slate-200 rounded w-full bg-slate-50">';
+                        h += '<option value="">เลือก...</option>';
+                        h += '<option value="สัญญาเพิ่มเติม-สุขภาพ" ' + (r.prod==='สัญญาเพิ่มเติม-สุขภาพ'?'selected':'') + '>สุขภาพ</option>';
+                        h += '<option value="สัญญาเพิ่มเติม-โรคร้ายแรง" ' + (r.prod==='สัญญาเพิ่มเติม-โรคร้ายแรง'?'selected':'') + '>โรคร้ายแรง</option>';
+                        h += '<option value="สัญญาเพิ่มเติม-ชดเชยรายวัน" ' + (r.prod==='สัญญาเพิ่มเติม-ชดเชยรายวัน'?'selected':'') + '>ชดเชยรายวัน</option>';
+                        h += '<option value="สัญญาเพิ่มเติม-อุบัติเหตุ" ' + (r.prod==='สัญญาเพิ่มเติม-อุบัติเหตุ'?'selected':'') + '>อุบัติเหตุ</option>';
+                        h += '<option value="อื่นๆ" ' + (r.prod==='อื่นๆ'?'selected':'') + '>อื่นๆ</option>';
+                        h += '</select></div>';
+                        h += '<div class="flex-1 min-w-[100px]"><label class="text-[9px] font-bold text-slate-500 mb-1 block">ชื่อแผน Rider</label><input type="text" onchange="updateRider('+idx+', \\'planName\\', this.value)" value="'+(r.planName||'')+'" class="text-[11px] p-1.5 border-slate-200 rounded w-full bg-slate-50" placeholder="เช่น Health Fit"></div>';
+                        h += '<div class="w-20"><label class="text-[9px] font-bold text-slate-500 mb-1 block">ทุน (Rider)</label><input type="number" onchange="updateRider('+idx+', \\'sa\\', this.value)" value="'+(r.sa||'')+'" class="text-[11px] p-1.5 border-slate-200 rounded w-full bg-slate-50"></div>';
+                        h += '<div class="w-20"><label class="text-[9px] font-bold text-emerald-600 mb-1 block">FYP</label><input type="number" onchange="updateRider('+idx+', \\'fyp\\', this.value)" value="'+(r.fyp||'')+'" class="text-[11px] p-1.5 border-emerald-200 rounded w-full bg-emerald-50"></div>';
+                        h += '<div class="w-20"><label class="text-[9px] font-bold text-blue-600 mb-1 block">FYC</label><input type="number" onchange="updateRider('+idx+', \\'fyc\\', this.value)" value="'+(r.fyc||'')+'" class="text-[11px] p-1.5 border-blue-200 rounded w-full bg-blue-50"></div>';
+                        h += '</div>';
+                    });
+                    document.getElementById('riders_list').innerHTML = h;
+                };
+                window.addRiderInput = function() { window.currentRiders.push({ prod: '', planName: '', sa: '', fyp: '', fyc: '' }); window.renderRiderInputs(); };
+                window.removeRiderInput = function(idx) { window.currentRiders.splice(idx, 1); window.renderRiderInputs(); };
+                window.updateRider = function(idx, field, val) { window.currentRiders[idx][field] = val; };
 
                 window.changeMonth = function(offset) {
                     viewDate.setMonth(viewDate.getMonth() + offset);
@@ -363,29 +765,62 @@ async function openExecutiveDashboard() {
                     let tFYP = 0, tFYC = 0, tCases = 0, tRecruit = 0;
                     let mFYP = 0, mFYC = 0, mCases = 0;
                     let wData = [ {fyp:0, fyc:0, case:0}, {fyp:0, fyc:0, case:0}, {fyp:0, fyc:0, case:0}, {fyp:0, fyc:0, case:0} ];
+                    
+                    let internalProductMix = { 'สุขภาพ/โรคร้าย': 0, 'ตลอดชีพ/มรดก': 0, 'สะสมทรัพย์/บำนาญ': 0, 'ควบการลงทุน (UL)': 0, 'อื่นๆ': 0 };
 
                     plannerData.salesLedger.forEach(s => {
                         let sd = new Date(s.date);
                         let isThisYear = sd.getFullYear() === vYear;
                         let isThisMonth = isThisYear && sd.getMonth() === vMonth;
 
+                        let rowFyp = s.fyp || 0;
+                        let rowFyc = s.fyc || 0;
+                        if(s.riders && s.riders.length > 0) {
+                            s.riders.forEach(r => { rowFyp += (r.fyp||0); rowFyc += (r.fyc||0); });
+                        }
+
                         if (isThisYear) {
-                            tFYP += s.fyp; tFYC += s.fyc;
+                            tFYP += rowFyp; tFYC += rowFyc;
                             if (s.type === 'sale' && s.isNewCase !== false && s.isNewCase !== 'false') tCases++;
                             if (s.type === 'recruit') tRecruit++;
+
+                            if (s.type === 'sale') {
+                                let p = s.prod || '';
+                                if(p.includes('สุขภาพ') || p.includes('โรคร้าย') || p.includes('ชดเชย')) internalProductMix['สุขภาพ/โรคร้าย']++;
+                                else if(p.includes('ตลอดชีพ')) internalProductMix['ตลอดชีพ/มรดก']++;
+                                else if(p.includes('สะสมทรัพย์') || p.includes('บำนาญ')) internalProductMix['สะสมทรัพย์/บำนาญ']++;
+                                else if(p.includes('Unit Linked') || p.includes('ลงทุน')) internalProductMix['ควบการลงทุน (UL)']++;
+                                else if(p !== '' && p !== '-') internalProductMix['อื่นๆ']++;
+
+                                if(s.riders && s.riders.length > 0) {
+                                    s.riders.forEach(r => {
+                                        let rp = r.prod || '';
+                                        if(rp.includes('สุขภาพ') || rp.includes('โรคร้าย') || rp.includes('ชดเชย')) internalProductMix['สุขภาพ/โรคร้าย']++;
+                                        else if(rp.includes('ตลอดชีพ')) internalProductMix['ตลอดชีพ/มรดก']++;
+                                        else if(rp.includes('สะสมทรัพย์') || rp.includes('บำนาญ')) internalProductMix['สะสมทรัพย์/บำนาญ']++;
+                                        else if(rp.includes('Unit Linked') || rp.includes('ลงทุน')) internalProductMix['ควบการลงทุน (UL)']++;
+                                        else if(rp !== '' && rp !== '-') internalProductMix['อื่นๆ']++;
+                                    });
+                                }
+                            }
                         }
 
                         if (isThisMonth) {
-                            mFYP += s.fyp; mFYC += s.fyc;
+                            mFYP += rowFyp; mFYC += rowFyc;
                             if (s.type === 'sale' && s.isNewCase !== false && s.isNewCase !== 'false') mCases++;
 
                             let d = sd.getDate();
                             let wIdx = d <= 7 ? 0 : d <= 14 ? 1 : d <= 21 ? 2 : 3;
-                            wData[wIdx].fyp += s.fyp;
-                            wData[wIdx].fyc += s.fyc;
+                            wData[wIdx].fyp += rowFyp;
+                            wData[wIdx].fyc += rowFyc;
                             if (s.type === 'sale' && s.isNewCase !== false && s.isNewCase !== 'false') wData[wIdx].case += 1;
                         }
                     });
+
+                    let avgCaseSize = tCases > 0 ? (tFYP / tCases) : 0;
+                    let avgFycPct = tFYP > 0 ? (tFYC / tFYP) * 100 : 0;
+                    document.getElementById('ui_stat_case_size').innerText = avgCaseSize.toLocaleString('th-TH', {maximumFractionDigits:0}) + ' ฿';
+                    document.getElementById('ui_stat_fyc_pct').innerText = avgFycPct.toFixed(1) + '%';
 
                     window.currentStats = { year: vYear, monthStr: monthNames[vMonth], tFYP, tFYC, tCases, tRecruit, mFYP, mFYC, mCases };
 
@@ -442,7 +877,9 @@ async function openExecutiveDashboard() {
 
                     document.getElementById('ui_cta').value = plannerData.cta || "";
                     renderChecklists();
-                    renderSalesTable();
+                    
+                    renderSalesTable(vYear, vMonth);
+                    drawCharts(internalProductMix);
                 }
 
                 function updateKPI(key, actual, target) {
@@ -463,11 +900,49 @@ async function openExecutiveDashboard() {
 
                 document.getElementById('ui_cta').addEventListener('input', (e) => { plannerData.cta = e.target.value; saveData(); });
 
+                window.editingSaleId = null; 
+
+                window.editSaleRecord = function(id) {
+                    let record = plannerData.salesLedger.find(s => s.id === id);
+                    if (!record) return;
+
+                    document.getElementById('s_type').value = record.type || 'sale';
+                    toggleFormType(); 
+                    
+                    document.getElementById('s_date').value = record.date;
+                    document.getElementById('s_name').value = record.name;
+                    
+                    if (record.type === 'sale') {
+                        document.getElementById('s_is_new_case').value = (record.isNewCase !== false && record.isNewCase !== 'false') ? 'true' : 'false';
+                        document.getElementById('s_prod').value = record.prod || '';
+                        document.getElementById('s_plan_name').value = record.planName || ''; 
+                        document.getElementById('s_sa').value = record.sa || '';
+                    }
+                    
+                    document.getElementById('s_fyp').value = record.fyp || '';
+                    document.getElementById('s_fyc').value = record.fyc || '';
+
+                    window.currentRiders = record.riders ? JSON.parse(JSON.stringify(record.riders)) : [];
+                    window.renderRiderInputs();
+
+                    window.editingSaleId = id; 
+                    
+                    let saveBtn = document.getElementById('btn_save_sale');
+                    if (saveBtn) {
+                        saveBtn.innerText = "อัปเดต";
+                        saveBtn.classList.remove('bg-slate-800', 'hover:bg-slate-900');
+                        saveBtn.classList.add('bg-amber-500', 'hover:bg-amber-600');
+                    }
+                    
+                    document.getElementById('btn_save_sale').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                };
+
                 window.addSaleRecord = function() {
                     let type = document.getElementById('s_type').value;
                     let date = document.getElementById('s_date').value;
                     let name = document.getElementById('s_name').value.trim();
                     let prod = type === 'sale' ? document.getElementById('s_prod').value.trim() : '-';
+                    let planName = type === 'sale' ? document.getElementById('s_plan_name').value.trim() : ''; 
                     let sa = type === 'sale' ? (parseFloat(document.getElementById('s_sa').value) || 0) : 0;
                     let isNewCase = type === 'sale' ? (document.getElementById('s_is_new_case').value === 'true') : false;
                     let fyp = parseFloat(document.getElementById('s_fyp').value) || 0;
@@ -475,11 +950,47 @@ async function openExecutiveDashboard() {
 
                     if(!date || !name) return alert("กรุณากรอกวันที่และชื่อ ให้ครบถ้วนครับ");
 
-                    plannerData.salesLedger.push({ id: Date.now().toString(), date, type, name, prod, sa, fyp, fyc, isNewCase });
-                    saveData(); initUI();
+                    let ridersToSave = [];
+                    if(type === 'sale') {
+                        ridersToSave = window.currentRiders.map(r => ({
+                            prod: r.prod || '',
+                            planName: r.planName || '',
+                            sa: parseFloat(r.sa) || 0,
+                            fyp: parseFloat(r.fyp) || 0,
+                            fyc: parseFloat(r.fyc) || 0
+                        })).filter(r => r.prod || r.planName || r.fyp > 0);
+                    }
+
+                    if (window.editingSaleId) {
+                        let index = plannerData.salesLedger.findIndex(s => s.id === window.editingSaleId);
+                        if (index !== -1) {
+                            plannerData.salesLedger[index] = { 
+                                id: window.editingSaleId, date, type, name, prod, planName, sa, fyp, fyc, isNewCase, riders: ridersToSave 
+                            };
+                        }
+                        window.editingSaleId = null; 
+                        let saveBtn = document.getElementById('btn_save_sale');
+                        if (saveBtn) {
+                            saveBtn.innerText = "บันทึก";
+                            saveBtn.classList.remove('bg-amber-500', 'hover:bg-amber-600');
+                            saveBtn.classList.add('bg-slate-800', 'hover:bg-slate-900');
+                        }
+                    } else {
+                        plannerData.salesLedger.push({ id: Date.now().toString(), date, type, name, prod, planName, sa, fyp, fyc, isNewCase, riders: ridersToSave });
+                    }
+
+                    saveData(); 
+                    initUI();
                     
-                    document.getElementById('s_name').value = ''; document.getElementById('s_prod').value = '';
-                    document.getElementById('s_sa').value = ''; document.getElementById('s_fyp').value = ''; document.getElementById('s_fyc').value = '';
+                    document.getElementById('s_name').value = ''; 
+                    document.getElementById('s_prod').value = '';
+                    document.getElementById('s_plan_name').value = ''; 
+                    document.getElementById('s_sa').value = ''; 
+                    document.getElementById('s_fyp').value = ''; 
+                    document.getElementById('s_fyc').value = '';
+                    
+                    window.currentRiders = [];
+                    window.renderRiderInputs();
                 };
 
                 window.deleteSaleRecord = function(id) {
@@ -489,31 +1000,55 @@ async function openExecutiveDashboard() {
                     }
                 };
 
-                function renderSalesTable() {
-                    let sorted = [...plannerData.salesLedger].sort((a,b) => new Date(b.date) - new Date(a.date));
+                function renderSalesTable(viewYear, viewMonth) {
+                    let sorted = plannerData.salesLedger.filter(s => {
+                        let d = new Date(s.date);
+                        return d.getFullYear() === viewYear && d.getMonth() === viewMonth;
+                    }).sort((a,b) => new Date(b.date) - new Date(a.date));
+
                     let tbody = document.getElementById('ui_sales_table');
                     if(sorted.length === 0) {
-                        tbody.innerHTML = '<tr><td colspan="8" class="px-4 py-6 text-center text-slate-400 text-xs">ยังไม่มีบันทึกผลงาน</td></tr>'; return;
+                        tbody.innerHTML = '<tr><td colspan="8" class="px-4 py-6 text-center text-slate-400 text-xs italic">ไม่มีบันทึกผลงานของเดือนที่เลือก</td></tr>'; return;
                     }
-                    tbody.innerHTML = sorted.map(s => {
+                    
+                    let htmlString = '';
+                    sorted.forEach(s => {
                         let isSale = s.type === 'sale';
                         let typeBadge = isSale ? '<span class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded text-[10px] font-bold">Sale</span>' : '<span class="bg-amber-100 text-amber-700 px-2 py-0.5 rounded text-[10px] font-bold">Recruit</span>';
                         let isNew = (s.isNewCase !== false && s.isNewCase !== 'false');
                         let caseBadge = (!isSale || !isNew) ? '<br><span class="text-[9px] text-slate-400">(Renewal/ไม่นับเคส)</span>' : '';
                         
-                        return \`
+                        let prodHtml = '<div class="font-bold text-[11px] text-slate-800">' + (s.prod || '-') + '</div><div class="text-[10px] text-slate-500">' + (s.planName ? '('+s.planName+')' : '') + '</div>';
+                        let saHtml = '<div class="text-slate-600">' + (s.sa ? s.sa.toLocaleString('th-TH') : '-') + '</div>';
+                        let fypHtml = '<div class="font-bold text-emerald-600">' + (s.fyp ? s.fyp.toLocaleString('th-TH') : '0') + '</div>';
+                        let fycHtml = '<div class="font-bold text-blue-600">' + (s.fyc ? s.fyc.toLocaleString('th-TH') : '0') + '</div>';
+
+                        if (s.riders && s.riders.length > 0) {
+                            s.riders.forEach(r => {
+                                prodHtml += '<div class="mt-1 text-[10px] text-indigo-500 font-bold border-t border-slate-100 pt-1">+ ' + (r.prod || 'Rider') + '</div><div class="text-[9px] text-slate-400">' + (r.planName ? '('+r.planName+')' : '') + '</div>';
+                                saHtml += '<div class="mt-1 text-[10px] text-slate-400 border-t border-slate-100 pt-1">' + (r.sa ? r.sa.toLocaleString('th-TH') : '-') + '</div>';
+                                fypHtml += '<div class="mt-1 text-[10px] text-emerald-500 border-t border-slate-100 pt-1">' + (r.fyp ? r.fyp.toLocaleString('th-TH') : '0') + '</div>';
+                                fycHtml += '<div class="mt-1 text-[10px] text-blue-500 border-t border-slate-100 pt-1">' + (r.fyc ? r.fyc.toLocaleString('th-TH') : '0') + '</div>';
+                            });
+                        }
+
+                        htmlString += \`
                             <tr class="hover:bg-slate-50 transition border-b border-slate-100">
-                                <td class="px-4 py-2 text-slate-600">\${new Date(s.date).toLocaleDateString('th-TH',{day:'numeric',month:'short',year:'2-digit'})}</td>
-                                <td class="px-4 py-2 text-center">\${typeBadge}\${caseBadge}</td>
-                                <td class="px-4 py-2 font-bold text-slate-800">\${s.name}</td>
-                                <td class="px-4 py-2 text-slate-600">\${s.prod || '-'}</td>
-                                <td class="px-4 py-2 text-right text-slate-600">\${s.sa ? s.sa.toLocaleString('th-TH') : '-'}</td>
-                                <td class="px-4 py-2 text-right font-bold text-emerald-600">\${s.fyp.toLocaleString('th-TH')}</td>
-                                <td class="px-4 py-2 text-right font-bold text-blue-600">\${s.fyc.toLocaleString('th-TH')}</td>
-                                <td class="px-4 py-2 text-center no-print"><button onclick="deleteSaleRecord('\${s.id}')" class="text-red-400 hover:text-red-600 text-xs bg-red-50 hover:bg-red-100 px-2 py-1 rounded">ลบ</button></td>
+                                <td class="px-4 py-3 align-top text-slate-600">\${new Date(s.date).toLocaleDateString('th-TH',{day:'numeric',month:'short',year:'2-digit'})}</td>
+                                <td class="px-4 py-3 align-top text-center">\${typeBadge}\${caseBadge}</td>
+                                <td class="px-4 py-3 align-top font-bold text-slate-800">\${s.name}</td>
+                                <td class="px-4 py-3 align-top">\${prodHtml}</td>
+                                <td class="px-4 py-3 align-top text-right">\${saHtml}</td>
+                                <td class="px-4 py-3 align-top text-right">\${fypHtml}</td>
+                                <td class="px-4 py-3 align-top text-right">\${fycHtml}</td>
+                                <td class="px-4 py-3 align-top text-center no-print space-x-1">
+                                    <button onclick="editSaleRecord('\${s.id}')" class="text-amber-500 hover:text-amber-600 text-xs bg-amber-50 hover:bg-amber-100 px-2 py-1 rounded">แก้ไข</button>
+                                    <button onclick="deleteSaleRecord('\${s.id}')" class="text-red-400 hover:text-red-600 text-xs bg-red-50 hover:bg-red-100 px-2 py-1 rounded">ลบ</button>
+                                </td>
                             </tr>
                         \`;
-                    }).join('');
+                    });
+                    tbody.innerHTML = htmlString;
                 }
 
                 function renderChecklists() {
@@ -543,26 +1078,41 @@ async function openExecutiveDashboard() {
                 window.toggleCheck = function(id, isChecked) { let item = plannerData.checklists.find(x => x.id === id); if(item) { item.done = isChecked; saveData(); renderChecklists(); } };
                 window.deleteCheck = function(id) { if(confirm("ลบรายการนี้ใช่หรือไม่?")) { plannerData.checklists = plannerData.checklists.filter(x => x.id !== id); saveData(); renderChecklists(); } };
 
-                // --- 🌟 FORMAL PRINT REPORT GENERATOR (A4 Landscape, Editable) ---
                 window.printFormalReport = function() {
                     let printWin = window.open('', '_blank');
                     let ds = window.currentStats; 
                     let printDate = new Date().toLocaleDateString('th-TH', {year:'numeric', month:'long', day:'numeric'});
                     
                     let ledgerRows = plannerData.salesLedger.filter(s => new Date(s.date).getFullYear() === ds.year).sort((a,b) => new Date(a.date) - new Date(b.date));
-                    let tableHtml = ledgerRows.map(s => {
+                    let tableHtml = '';
+                    ledgerRows.forEach(s => {
                         let isNew = (s.isNewCase !== false && s.isNewCase !== 'false');
                         let typeStr = s.type === 'sale' ? (isNew ? 'New Case' : 'Renewal') : 'Recruit';
-                        return \`<tr>
-                            <td style="padding:8px; border-bottom:1px solid #ddd; text-align:center;">\${new Date(s.date).toLocaleDateString('th-TH',{day:'2-digit',month:'short'})}</td>
-                            <td style="padding:8px; border-bottom:1px solid #ddd; text-align:center; font-weight:bold; color: #475569;">\${typeStr}</td>
-                            <td style="padding:8px; border-bottom:1px solid #ddd; font-weight:bold;">\${s.name}</td>
-                            <td style="padding:8px; border-bottom:1px solid #ddd;">\${s.prod || '-'}</td>
-                            <td style="padding:8px; border-bottom:1px solid #ddd; text-align:right;">\${s.sa ? s.sa.toLocaleString('th-TH') : '-'}</td>
-                            <td style="padding:8px; border-bottom:1px solid #ddd; text-align:right; font-weight:bold; color:#059669;">\${s.fyp.toLocaleString('th-TH')}</td>
-                            <td style="padding:8px; border-bottom:1px solid #ddd; text-align:right; font-weight:bold; color:#2563eb;">\${s.fyc.toLocaleString('th-TH')}</td>
+                        
+                        let prodHtml = (s.prod || '-') + (s.planName ? '<br><span style="font-size:11px; color:#64748b;">(' + s.planName + ')</span>' : '');
+                        let saHtml = (s.sa ? s.sa.toLocaleString('th-TH') : '-');
+                        let fypHtml = (s.fyp ? s.fyp.toLocaleString('th-TH') : '0');
+                        let fycHtml = (s.fyc ? s.fyc.toLocaleString('th-TH') : '0');
+
+                        if (s.riders && s.riders.length > 0) {
+                            s.riders.forEach(r => {
+                                prodHtml += '<div style="margin-top:4px; padding-top:4px; border-top:1px dashed #e2e8f0; font-size:11px; color:#4f46e5;">+ ' + (r.prod || 'Rider') + '</div>' + (r.planName ? '<div style="font-size:10px; color:#64748b;">(' + r.planName + ')</div>' : '');
+                                saHtml += '<div style="margin-top:4px; padding-top:4px; border-top:1px dashed #e2e8f0; font-size:11px; color:#64748b;">' + (r.sa ? r.sa.toLocaleString('th-TH') : '-') + '</div>';
+                                fypHtml += '<div style="margin-top:4px; padding-top:4px; border-top:1px dashed #e2e8f0; font-size:11px; color:#059669;">' + (r.fyp ? r.fyp.toLocaleString('th-TH') : '0') + '</div>';
+                                fycHtml += '<div style="margin-top:4px; padding-top:4px; border-top:1px dashed #e2e8f0; font-size:11px; color:#2563eb;">' + (r.fyc ? r.fyc.toLocaleString('th-TH') : '0') + '</div>';
+                            });
+                        }
+
+                        tableHtml += \`<tr>
+                            <td style="padding:8px; border-bottom:1px solid #ddd; text-align:center; vertical-align:top;">\${new Date(s.date).toLocaleDateString('th-TH',{day:'2-digit',month:'short'})}</td>
+                            <td style="padding:8px; border-bottom:1px solid #ddd; text-align:center; font-weight:bold; color: #475569; vertical-align:top;">\${typeStr}</td>
+                            <td style="padding:8px; border-bottom:1px solid #ddd; font-weight:bold; vertical-align:top;">\${s.name}</td>
+                            <td style="padding:8px; border-bottom:1px solid #ddd; vertical-align:top;">\${prodHtml}</td>
+                            <td style="padding:8px; border-bottom:1px solid #ddd; text-align:right; vertical-align:top;">\${saHtml}</td>
+                            <td style="padding:8px; border-bottom:1px solid #ddd; text-align:right; font-weight:bold; color:#059669; vertical-align:top;">\${fypHtml}</td>
+                            <td style="padding:8px; border-bottom:1px solid #ddd; text-align:right; font-weight:bold; color:#2563eb; vertical-align:top;">\${fycHtml}</td>
                         </tr>\`;
-                    }).join('');
+                    });
 
                     if(tableHtml === '') tableHtml = '<tr><td colspan="7" style="text-align:center; padding:20px; color:#999; font-style:italic;">ยังไม่มีบันทึกผลงานในปีนี้</td></tr>';
 
@@ -576,30 +1126,21 @@ async function openExecutiveDashboard() {
                             @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap');
                             body { font-family: 'Sarabun', sans-serif; font-size: 14px; color: #1e293b; padding: 20px; background: #f8fafc; }
                             .page-container { background: white; padding: 30px 40px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border-radius: 8px; max-width: 1100px; margin: 0 auto; }
-                            
                             .action-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid #e2e8f0; }
                             .btn { padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; font-family: 'Sarabun', sans-serif; font-size: 14px; font-weight: bold; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px; }
                             .btn-back { background-color: #f1f5f9; color: #475569; }
-                            .btn-back:hover { background-color: #e2e8f0; }
-                            .btn-print { background-color: #2563eb; color: white; box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2); }
-                            .btn-print:hover { background-color: #1d4ed8; }
-
+                            .btn-print { background-color: #2563eb; color: white; }
                             h1 { color: #0f172a; text-align: center; margin: 0 0 5px 0; font-size: 26px; text-transform: uppercase; letter-spacing: 1px; }
                             .subtitle { text-align: center; color: #64748b; margin-bottom: 30px; font-size: 13px; }
-                            
                             .box-container { display: flex; justify-content: space-between; gap: 20px; margin-bottom: 30px; }
                             .kpi-box { flex: 1; border: 1px solid #e2e8f0; border-radius: 10px; padding: 15px 20px; text-align: center; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-                            .kpi-title { font-size: 12px; font-weight: bold; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px dashed #e2e8f0; padding-bottom: 5px; margin-bottom: 10px; }
+                            .kpi-title { font-size: 12px; font-weight: bold; color: #64748b; text-transform: uppercase; border-bottom: 1px dashed #e2e8f0; padding-bottom: 5px; margin-bottom: 10px; }
                             .kpi-actual { font-size: 24px; font-weight: bold; margin: 5px 0; }
                             .kpi-target { font-size: 12px; color: #94a3b8; }
-                            
                             h2 { font-size: 16px; color: #1e293b; border-bottom: 2px solid #cbd5e1; padding-bottom: 8px; margin-top: 10px; display: flex; justify-content: space-between; }
-                            
                             table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 13px; }
-                            th { background-color: #f8fafc; padding: 10px 8px; text-align: left; border-bottom: 2px solid #cbd5e1; color: #334155; font-weight: bold; text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px; }
-                            
+                            th { background-color: #f8fafc; padding: 10px 8px; text-align: left; border-bottom: 2px solid #cbd5e1; color: #334155; font-weight: bold; text-transform: uppercase; font-size: 11px; }
                             .cta-box { background: #f0fdf4; border: 1px dashed #bbf7d0; padding: 15px; border-radius: 8px; text-align: center; font-weight: bold; color: #166534; margin-top: 30px; font-size: 16px; }
-                            
                             @media print { 
                                 @page { size: A4 landscape; margin: 10mm; } 
                                 body { background: none; padding: 0; }
@@ -615,54 +1156,24 @@ async function openExecutiveDashboard() {
                             <div class="no-print action-bar">
                                 <div><button class="btn btn-back" onclick="window.close()">⬅️ กลับ</button></div>
                                 <div>
-                                    <span style="font-size:12px; color:#64748b; margin-right:10px;">* หากกดพิมพ์แล้วหน้ากระดาษเป็นแนวตั้ง ให้เปลี่ยน Layout เป็น Landscape ในหน้าต่างตั้งค่าพิมพ์</span>
+                                    <span style="font-size:12px; color:#64748b; margin-right:10px;">* หากกดพิมพ์แล้วหน้ากระดาษเป็นแนวตั้ง ให้เปลี่ยน Layout เป็น Landscape</span>
                                     <button class="btn btn-print" onclick="window.print()">🖨️ สั่งพิมพ์ (A4 แนวนอน)</button>
                                 </div>
                             </div>
-
                             <h1>FA Business Executive Report</h1>
                             <div class="subtitle">รายงานสรุปผลการดำเนินงานประจำปี \${ds.year} | พิมพ์เมื่อ: \${printDate}</div>
-                            
                             <div class="box-container">
-                                <div class="kpi-box">
-                                    <div class="kpi-title">FYP (เบี้ยปีแรก)</div>
-                                    <div class="kpi-actual" style="color: #059669;">\${ds.tFYP.toLocaleString('th-TH')} ฿</div>
-                                    <div class="kpi-target">เป้าหมาย: \${plannerData.targets.fyp.toLocaleString('th-TH')}</div>
-                                </div>
-                                <div class="kpi-box">
-                                    <div class="kpi-title">FYC (คอมมิชชัน)</div>
-                                    <div class="kpi-actual" style="color: #2563eb;">\${ds.tFYC.toLocaleString('th-TH')} ฿</div>
-                                    <div class="kpi-target">เป้าหมาย: \${plannerData.targets.fyc.toLocaleString('th-TH')}</div>
-                                </div>
-                                <div class="kpi-box">
-                                    <div class="kpi-title">Total Cases</div>
-                                    <div class="kpi-actual" style="color: #9333ea;">\${ds.tCases} ราย</div>
-                                    <div class="kpi-target">เป้าหมาย: \${plannerData.targets.cases}</div>
-                                </div>
-                                <div class="kpi-box">
-                                    <div class="kpi-title">Recruits</div>
-                                    <div class="kpi-actual" style="color: #d97706;">\${ds.tRecruit} คน</div>
-                                    <div class="kpi-target">เป้าหมาย: \${plannerData.targets.recruit}</div>
-                                </div>
+                                <div class="kpi-box"><div class="kpi-title">FYP (เบี้ยปีแรก)</div><div class="kpi-actual" style="color: #059669;">\${ds.tFYP.toLocaleString('th-TH')} ฿</div><div class="kpi-target">เป้าหมาย: \${plannerData.targets.fyp.toLocaleString('th-TH')}</div></div>
+                                <div class="kpi-box"><div class="kpi-title">FYC (คอมมิชชัน)</div><div class="kpi-actual" style="color: #2563eb;">\${ds.tFYC.toLocaleString('th-TH')} ฿</div><div class="kpi-target">เป้าหมาย: \${plannerData.targets.fyc.toLocaleString('th-TH')}</div></div>
+                                <div class="kpi-box"><div class="kpi-title">Total Cases</div><div class="kpi-actual" style="color: #9333ea;">\${ds.tCases} ราย</div><div class="kpi-target">เป้าหมาย: \${plannerData.targets.cases}</div></div>
+                                <div class="kpi-box"><div class="kpi-title">Recruits</div><div class="kpi-actual" style="color: #d97706;">\${ds.tRecruit} คน</div><div class="kpi-target">เป้าหมาย: \${plannerData.targets.recruit}</div></div>
                             </div>
-
                             <h2><span>📝 บันทึกผลงานการขาย (Sales Ledger)</span> <span style="font-size:12px; font-weight:normal; color:#64748b;">เฉพาะปี \${ds.year}</span></h2>
                             <table>
-                                <thead><tr>
-                                    <th style="text-align:center; width:80px;">วันที่</th>
-                                    <th style="text-align:center; width:80px;">สถานะ</th>
-                                    <th>ชื่อลูกค้า / ทีมงาน</th>
-                                    <th>สินค้า / แผน</th>
-                                    <th style="text-align:right;">ทุนประกัน</th>
-                                    <th style="text-align:right;">FYP</th>
-                                    <th style="text-align:right;">FYC</th>
-                                </tr></thead>
+                                <thead><tr><th style="text-align:center; width:80px;">วันที่</th><th style="text-align:center; width:80px;">สถานะ</th><th>ชื่อลูกค้า / ทีมงาน</th><th>สินค้า / แผน</th><th style="text-align:right;">ทุนประกัน</th><th style="text-align:right;">FYP</th><th style="text-align:right;">FYC</th></tr></thead>
                                 <tbody>\${tableHtml}</tbody>
                             </table>
-
-                            <div class="cta-box">
-                                " \${plannerData.cta || 'FA Professional Business Report'} "
-                            </div>
+                            <div class="cta-box">" \${plannerData.cta || 'FA Professional Business Report'} "</div>
                         </div>
                     </body>
                     </html>
@@ -673,15 +1184,12 @@ async function openExecutiveDashboard() {
                     printWin.document.close();
                 };
 
-                // --- Backup Data (Import/Export Planner) ---
                 window.exportBackup = function() {
                     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(plannerData, null, 2));
                     const dl = document.createElement('a');
                     dl.setAttribute("href", dataStr);
                     dl.setAttribute("download", "FA_Planner_Backup.json");
-                    document.body.appendChild(dl);
-                    dl.click();
-                    document.body.removeChild(dl);
+                    document.body.appendChild(dl); dl.click(); document.body.removeChild(dl);
                 };
 
                 window.importBackup = function() { document.getElementById('fileImport').click(); };
@@ -701,28 +1209,38 @@ async function openExecutiveDashboard() {
                     reader.readAsText(file); e.target.value = '';
                 });
 
-                // --- 📊 วาดกราฟ CRM ---
-                window.onload = function() {
-                    toggleFormType(); 
-                    initUI();
-                    
+                let chart1, chart2;
+
+                function drawCharts(internalMixObj) {
                     if(typeof ChartDataLabels !== 'undefined') Chart.register(ChartDataLabels);
 
+                    if(chart1) chart1.destroy();
                     let pLabels = Object.keys(crmData.personas); let pData = Object.values(crmData.personas);
                     if(pLabels.length > 0) {
-                        new Chart(document.getElementById('chartPersona').getContext('2d'), {
+                        chart1 = new Chart(document.getElementById('chartPersona').getContext('2d'), {
                             type: 'doughnut', data: { labels: pLabels, datasets: [{ data: pData, backgroundColor: chartColors, borderWidth: 2, borderColor: '#fff' }] },
                             options: { responsive: true, maintainAspectRatio: false, cutout: '60%', plugins: { legend: { position: 'right', labels: { font: { family: 'Prompt', size: 10 }, boxWidth: 10 } }, datalabels: { color: '#fff', font: { weight: 'bold', family: 'Prompt', size: 12 }, formatter: (val, ctx) => { let sum = ctx.chart.data.datasets[0].data.reduce((a, b) => a + b, 0); return Math.round((val / sum) * 100) + '%'; } } } }
                         });
                     }
 
-                    let pmData = Object.values(crmData.productMix); let pmSum = pmData.reduce((a, b) => a + b, 0);
-                    if(pmSum > 0) {
-                        new Chart(document.getElementById('chartProductMix').getContext('2d'), {
-                            type: 'pie', data: { labels: Object.keys(crmData.productMix), datasets: [{ data: pmData, backgroundColor: productColors, borderColor: '#ffffff', borderWidth: 2 }] },
+                    if(chart2) chart2.destroy();
+                    let pmLabels = Object.keys(internalMixObj).filter(k => internalMixObj[k] > 0); 
+                    let pmData = pmLabels.map(k => internalMixObj[k]);
+                    
+                    if(pmData.length > 0) {
+                        chart2 = new Chart(document.getElementById('chartProductMix').getContext('2d'), {
+                            type: 'pie', data: { labels: pmLabels, datasets: [{ data: pmData, backgroundColor: productColors, borderColor: '#ffffff', borderWidth: 2 }] },
                             options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { font: { family: 'Prompt', size: 10 }, boxWidth: 10 } }, datalabels: { color: '#fff', font: { weight: 'bold', family: 'Prompt', size: 12 }, formatter: (val) => val > 0 ? val : '' } } }
                         });
+                    } else {
+                        let ctx = document.getElementById('chartProductMix').getContext('2d');
+                        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
                     }
+                }
+
+                window.onload = function() {
+                    toggleFormType(); 
+                    initUI(); 
                 };
             </script>
         </body>
@@ -734,7 +1252,17 @@ async function openExecutiveDashboard() {
         dashWin.document.close();
 
     } catch (error) {
-        console.error(error);
-        alert("❌ เกิดข้อผิดพลาดในการโหลดข้อมูล Dashboard");
+        console.error("Dashboard Error:", error);
+        alert("❌ เกิดข้อผิดพลาด: " + (error.message || error));
+        
+        if (dashWin && !dashWin.closed) {
+            dashWin.document.body.innerHTML = `
+                <div style="display:flex; flex-direction:column; justify-content:center; align-items:center; height:100vh; font-family:sans-serif; text-align:center;">
+                    <h2 style="color: #ef4444; margin-bottom: 10px;">❌ ไม่สามารถประมวลผลได้</h2>
+                    <p style="color: #64748b; background: #f1f5f9; padding: 10px; border-radius: 8px;">\${error.message || error}</p>
+                    <button onclick="window.close()" style="margin-top: 20px; padding: 8px 16px; cursor: pointer;">ปิดหน้าต่างนี้</button>
+                </div>
+            `;
+        }
     }
 }

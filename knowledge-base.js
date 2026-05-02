@@ -1,12 +1,180 @@
 // ==========================================
 // 📚 Financial Planner - Comprehensive Knowledge Base Module
-// ไฟล์นี้รวบรวมพจนานุกรมคำอธิบายระบบและทฤษฎีอ้างอิง
+// ไฟล์นี้รวบรวมคู่มือการใช้งาน พจนานุกรมคำอธิบายระบบ และทฤษฎีอ้างอิงทั้งหมด
 // ==========================================
 
-const systemDictionary = {
+window.systemDictionary = {
+    // --- ส่วนคู่มือการใช้งาน (ย้ายมาจาก HTML) ---
+    "manual-1": {
+        icon: "🎯",
+        iconClass: "bg-emerald-100 text-emerald-600",
+        title: "ส่วนที่ 1: บทนำและวิสัยทัศน์ (Vision & Introduction)",
+        content: `
+            <div class="text-sm text-gray-700 leading-relaxed space-y-4 pl-0 md:pl-15">
+                <p class="text-lg font-semibold text-gray-800">"ยกระดับการวางแผนการเงิน จากกระดาษคำนวณ สู่ห้องทดลองชีวิตเสมือนจริง"</p>
+                <p><b>Financial Planner Pro Advisor</b> ถูกออกแบบมาเพื่อลบข้อจำกัดของการวางแผนการเงินแบบดั้งเดิม (Deterministic Approach) ที่มักทึกทักเอาว่า <i>"ผลตอบแทนจะโต 5% เท่ากันทุกปี"</i> หรือ <i>"ลูกค้าจะออมเงินได้เป๊ะๆ ทุกเดือน"</i> ซึ่งในโลกความเป็นจริงนั้นเต็มไปด้วยความผันผวน (Volatility) และอคติทางอารมณ์ (Behavioral Bias)</p>
+                <p>ระบบนี้จึงทำงานเสมือน <b>Hybrid Co-Advisor</b> ที่ผสานมาตรฐานวิชาชีพ <b>CFP (Certified Financial Planner)</b> เข้ากับ <b>Data Science</b> ขั้นสูง ภายใต้สถาปัตยกรรม <b class="text-emerald-700">Privacy-First (100% Local Execution)</b> ที่ทุกการคำนวณเกิดขึ้นบนเครื่องของคุณเองโดยปราศจากการส่งต่อข้อมูลส่วนตัวขึ้นสู่เซิร์ฟเวอร์คลาวด์</p>
+            </div>
+        `
+    },
+    "manual-2": {
+        icon: "🧠",
+        iconClass: "bg-blue-100 text-blue-600",
+        title: "ส่วนที่ 2: สถาปัตยกรรมสมองกล (AI Pipeline Architecture)",
+        content: `
+            <p class="text-sm text-gray-600 mb-6">เมื่อคุณกดปุ่ม <b>"ประมวลผล"</b> ระบบจะวิ่งผ่านกระบวนการ 5 ขั้นตอน (5-Stage Engine) ภายในเวลาไม่กี่วินาที ดังนี้:</p>
+            <div class="space-y-5">
+                <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex flex-col md:flex-row gap-5 hover-scale transition">
+                    <div class="w-14 h-14 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center font-black text-xl flex-shrink-0 border-2 border-indigo-100">1</div>
+                    <div>
+                        <h4 class="font-bold text-gray-800 text-base mb-2">Diagnostic Engine (การวินิจฉัยสุขภาพการเงิน)</h4>
+                        <p class="text-xs text-gray-600 leading-relaxed mb-2">สกัดข้อมูลดิบ (งบดุลและกระแสเงินสด) มาคำนวณเป็นอัตราส่วนทางการเงินสากล เช่น Survival Ratio, Liquidity Ratio, DTI และ Savings Ratio</p>
+                        <div class="bg-gray-50 p-2 rounded text-[11px] text-gray-500 border border-gray-100">
+                            <b>Output:</b> ประเมิน <span class="text-indigo-600 font-bold">Financial Health Score</span> เต็ม 100 คะแนน เพื่อวิเคราะห์ความเสี่ยงล้มละลาย (Risk of Ruin) ขั้นพื้นฐาน
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex flex-col md:flex-row gap-5 hover-scale transition">
+                    <div class="w-14 h-14 bg-purple-50 text-purple-600 rounded-full flex items-center justify-center font-black text-xl flex-shrink-0 border-2 border-purple-100">2</div>
+                    <div>
+                        <h4 class="font-bold text-gray-800 text-base mb-2">Behavioral K-Means Clustering (AI จัดกลุ่มพฤติกรรม)</h4>
+                        <p class="text-xs text-gray-600 leading-relaxed mb-2">ป้อนข้อมูลเข้าสู่โมเดล Machine Learning (8D K-Means) วิเคราะห์พฤติกรรม 8 แกน (อายุ, รายได้, ความมั่งคั่ง, ภาระหนี้, ความเสี่ยง, ความสม่ำเสมอ, วินัย, ภาระอุปการะ) เพื่อหา Persona ที่ซ่อนอยู่</p>
+                        <div class="bg-gray-50 p-2 rounded text-[11px] text-gray-500 border border-gray-100">
+                            <b>Output:</b> ระบบจะจัดลูกค้าเข้าสู่กลุ่มเฉพาะ (เช่น UHNW, Cash Hoarder, Overleveraged) และปรับโครงสร้าง "สามเหลี่ยมการเงิน" ให้ดิ้นได้ตามความเสี่ยงนั้นๆ
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex flex-col md:flex-row gap-5 hover-scale transition">
+                    <div class="w-14 h-14 bg-orange-50 text-orange-600 rounded-full flex items-center justify-center font-black text-xl flex-shrink-0 border-2 border-orange-100">3</div>
+                    <div>
+                        <h4 class="font-bold text-gray-800 text-base mb-2">Optimization & DP Knapsack (อัลกอริทึมจัดสรรและแก้ปัญหา)</h4>
+                        <p class="text-xs text-gray-600 leading-relaxed mb-2">AI จะคำนวณงบประมาณส่วนเกินที่แท้จริง (Elastic Budget) และใช้คณิตศาสตร์ <b class="text-orange-600">Dynamic Programming</b> เลือกแบบประกัน "Base + Rider" ที่ให้ความคุ้มครองสูงสุดโดยไม่เกินงบ (Knapsack Problem) พร้อมคำนวณการโยกเงินเพื่อ <b class="text-blue-600">Tax Alpha</b> (ลดหย่อนภาษี) และ <b class="text-red-600">Debt Snowball</b> (ปลดหนี้)</p>
+                        <div class="bg-gray-50 p-2 rounded text-[11px] text-gray-500 border border-gray-100">
+                            <b>Output:</b> จัดตะกร้าสินค้า (Product Assembly) ออกมาเป็น 3 ทางเลือก พร้อมแผนกระแสเงินสด Benchmark ใหม่
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex flex-col md:flex-row gap-5 hover-scale transition">
+                    <div class="w-14 h-14 bg-red-50 text-red-600 rounded-full flex items-center justify-center font-black text-xl flex-shrink-0 border-2 border-red-100">4</div>
+                    <div>
+                        <h4 class="font-bold text-gray-800 text-base mb-2">Stochastic Simulation (แบบจำลอง Monte Carlo & Stress Test)</h4>
+                        <p class="text-xs text-gray-600 leading-relaxed mb-2">ระบบจะรันโลกคู่ขนาน 2,000 รอบ สุ่มสภาวะตลาด (กระทิง/หมี) ผสานทฤษฎี <b class="text-red-600">Merton's Jump Diffusion</b> จำลองวิกฤตเศรษฐกิจเฉียบพลัน และควบคุมการถอนเงินหลังเกษียณด้วย <b class="text-emerald-600">Guyton-Klinger Rules</b> ป้องกันพอร์ตแตก</p>
+                        <div class="bg-gray-50 p-2 rounded text-[11px] text-gray-500 border border-gray-100">
+                            <b>Output:</b> โอกาสความสำเร็จ (Probability of Success) พร้อมช่วงความเชื่อมั่น 95% และกราฟจำลองการลงทุน 5 ปีล่วงหน้า (CVaR)
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex flex-col md:flex-row gap-5 hover-scale transition">
+                    <div class="w-14 h-14 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center font-black text-xl flex-shrink-0 border-2 border-emerald-100">5</div>
+                    <div>
+                        <h4 class="font-bold text-gray-800 text-base mb-2">Natural Language Generation (NLG Storytelling)</h4>
+                        <p class="text-xs text-gray-600 leading-relaxed mb-2">แปลผลลัพธ์ทางคณิตศาสตร์ทั้งหมด ออกมาเป็นภาษาที่มนุษย์เข้าใจได้ โดยใช้หลักจิตวิทยา DISC ปรับโทนข้อความให้เข้ากับความกลัวและความคาดหวังของลูกค้า</p>
+                        <div class="bg-gray-50 p-2 rounded text-[11px] text-gray-500 border border-gray-100">
+                            <b>Output:</b> บทวิเคราะห์ข้อความบนหน้ารายงาน (Executive Summary) ที่พร้อมสำหรับนำไปใช้นำเสนอลูกค้า
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `
+    },
+    "manual-3": {
+        icon: "💻",
+        iconClass: "bg-orange-100 text-orange-600",
+        title: "ส่วนที่ 3: วิธีใช้งานระดับมืออาชีพ และการจัดเก็บส่งมอบ",
+        content: `
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="border border-gray-200 rounded-xl overflow-hidden shadow-sm hover-scale transition">
+                    <div class="bg-gray-100 p-3 border-b border-gray-200 font-bold text-gray-800 flex items-center gap-2">
+                        <span class="bg-gray-800 text-white w-6 h-6 rounded flex items-center justify-center text-xs">1</span> 
+                        การตั้งค่าระบบ (System Configuration)
+                    </div>
+                    <div class="p-4 text-xs text-gray-700 space-y-3">
+                        <p>ก่อนใช้งานครั้งแรก ควรตั้งค่าโปรไฟล์ผู้จัดทำและตัวแปรทางเศรษฐศาสตร์เพื่อความแม่นยำสูงสุด</p>
+                        <ul class="list-disc list-inside space-y-1.5 ml-1">
+                            <li>คลิก <b>"⚙️ ตั้งค่าระบบ"</b> ที่แถบเมนูด้านบน</li>
+                            <li>ใส่ PIN <code class="bg-gray-200 px-1 py-0.5 rounded text-red-600 font-mono">123456</code> (เปลี่ยนได้ภายหลัง)</li>
+                            <li>แท็บ <b>[ตั้งค่าข้อมูลผู้จัดทำ]</b>: ใส่ชื่อและใบอนุญาต เพื่อโชว์บนหน้าปก PDF</li>
+                            <li>แท็บ <b>[จัดการข้อมูล]</b>: โหลดไฟล์ JSON เพื่ออัปเดต <i>ฐานภาษีปีล่าสุด</i> หรือกู้คืนข้อมูล (Auto-Recovery) กรณีเน็ตหลุด</li>
+                        </ul>
+                        <div class="bg-orange-50 p-2 rounded border border-orange-100 text-orange-800 mt-2">
+                            <b>💡 Pro Tip:</b> ใช้เมนูจัดการคลังแบบประกัน (Library) เพื่อบันทึกชื่อแบบประกันหรือกองทุนที่คุณใช้บ่อยๆ เข้าสู่ระบบ Dropdown อัตโนมัติ
+                        </div>
+                    </div>
+                </div>
+                <div class="border border-gray-200 rounded-xl overflow-hidden shadow-sm hover-scale transition">
+                    <div class="bg-gray-100 p-3 border-b border-gray-200 font-bold text-gray-800 flex items-center gap-2">
+                        <span class="bg-gray-800 text-white w-6 h-6 rounded flex items-center justify-center text-xs">2</span> 
+                        การนำเข้าข้อมูล (Data Intake)
+                    </div>
+                    <div class="p-4 text-xs text-gray-700 space-y-3">
+                        <p>กรอกข้อมูลลูกค้าลงในฟอร์ม โดยระบบออกแบบมาให้กรอกง่ายที่สุดผ่าน Dropdown อัจฉริยะ</p>
+                        <ul class="list-disc list-inside space-y-1.5 ml-1">
+                            <li><b>ส่วนที่ 1 & 1.2:</b> ข้อมูลทั่วไปและแบบทดสอบพฤติกรรม (สำคัญมากต่อการจัดกลุ่ม AI)</li>
+                            <li><b>ส่วนที่ 2:</b> งบดุลและกระแสเงินสด (ใส่เป็นตัวเลขรายเดือน)</li>
+                            <li><b>ส่วนที่ 3:</b> เป้าหมาย, กรมธรรม์เดิม และการลงทุนปัจจุบัน <i>(ระบบจะดึงเบี้ยประกันไปหักลบในรายจ่ายให้อัตโนมัติ)</i></li>
+                        </ul>
+                        <div class="bg-blue-50 p-2 rounded border border-blue-100 text-blue-800 mt-2">
+                            <b>💡 Pro Tip:</b> เพื่อฝึกฝนการใช้งาน ลองกดปุ่ม <b>"🎲 สร้างกรณีศึกษา"</b> ระบบจะสุ่มโปรไฟล์ลูกค้า (เช่น หมอ, แม่ค้า, DINKs) ขึ้นมาให้วิเคราะห์ได้ทันที
+                        </div>
+                    </div>
+                </div>
+                <div class="border border-gray-200 rounded-xl overflow-hidden shadow-sm hover-scale transition">
+                    <div class="bg-gray-100 p-3 border-b border-gray-200 font-bold text-gray-800 flex items-center gap-2">
+                        <span class="bg-gray-800 text-white w-6 h-6 rounded flex items-center justify-center text-xs">3</span> 
+                        การประมวลผล (Processing & Engine)
+                    </div>
+                    <div class="p-4 text-xs text-gray-700 space-y-3">
+                        <p>เมื่อกรอกครบ ให้กดปุ่ม <b>"⚙️ ประมวลผล"</b> สีแดงด้านล่างสุด</p>
+                        <ul class="list-disc list-inside space-y-1.5 ml-1">
+                            <li>ระบบจะแสดงหน้าต่าง Overlay โหลด <b>Machine Learning</b> ใช้เวลา 2-5 วินาที</li>
+                            <li>หน้าจอจะสลับเข้าสู่โหมดรายงาน (Report View) อัตโนมัติ</li>
+                            <li>คุณจะเห็นแผง Dashboard สรุปอาการ, กราฟความมั่งคั่ง, สามเหลี่ยมการเงินที่ขยับได้ตามความเสี่ยงจริง, แผนภาษี, และพอร์ตทางเลือก 3 รูปแบบ</li>
+                        </ul>
+                        <div class="bg-indigo-50 p-2 rounded border border-indigo-100 text-indigo-800 mt-2">
+                            <b>💡 Pro Tip:</b> อ่าน <b>"บทสรุปจากผู้จัดทำ (Executive Summary)"</b> ที่หน้าแรกของรายงาน ซึ่ง AI สังเคราะห์ภาษามาให้แล้ว สามารถใช้อ่านนำเสนอลูกค้าได้เลย
+                        </div>
+                    </div>
+                </div>
+                <div class="border border-gray-200 rounded-xl overflow-hidden shadow-sm hover-scale transition">
+                    <div class="bg-gray-100 p-3 border-b border-gray-200 font-bold text-gray-800 flex items-center gap-2">
+                        <span class="bg-gray-800 text-white w-6 h-6 rounded flex items-center justify-center text-xs">4</span> 
+                        การวิเคราะห์สด (Interactive What-If)
+                    </div>
+                    <div class="p-4 text-xs text-gray-700 space-y-3">
+                        <p>ในหัวข้อที่ 7 (แบบจำลองเกษียณ) จะมี <b>ห้องทดลองทางเลือก (Playground)</b> ให้ลูกค้าเล่น</p>
+                        <ul class="list-disc list-inside space-y-1.5 ml-1">
+                            <li>คุณสามารถเลื่อน <b>แถบสไลเดอร์</b> ปรับ อายุเกษียณ, เงินออมต่อเดือน, หรือผลตอบแทนคาดหวัง ได้สดๆ</li>
+                            <li>เส้นกราฟสีม่วง (พอร์ตจัดเอง) จะขยับตามทันที</li>
+                            <li>เมื่อปล่อยเมาส์ ระบบจะแอบรัน Monte Carlo ใหม่อีก 2,000 รอบในพื้นหลัง และอัปเดต <b>% โอกาสสำเร็จ</b> ใหม่ให้ภายใน 1 วินาที</li>
+                        </ul>
+                        <div class="bg-green-50 p-2 rounded border border-green-100 text-green-800 mt-2">
+                            <b>💡 Pro Tip:</b> ใช้ฟีเจอร์นี้ทำ <i>Trade-off</i> กับลูกค้า เช่น "ถ้าพี่ไม่อยากเพิ่มเงินออม งั้นพี่โอเคไหมถ้าต้องเลื่อนเกษียณไปอีก 3 ปี? ลองเลื่อนดูครับ"
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-6 border border-gray-800 bg-gray-900 rounded-xl p-5 flex flex-col md:flex-row items-center justify-between shadow-xl">
+                <div class="text-white">
+                    <h4 class="font-bold mb-2 flex items-center gap-2"><span class="bg-white text-gray-900 w-6 h-6 rounded flex items-center justify-center text-xs">5</span> การจัดเก็บและส่งมอบ (Archive & Delivery)</h4>
+                    <ul class="list-disc list-inside text-xs text-gray-300 space-y-1.5 ml-1">
+                        <li>กดปุ่ม <b>"💾 บันทึก"</b> เพื่อเซฟข้อมูลทั้งหมดเป็นไฟล์ <code class="text-emerald-400">.json</code> เก็บไว้ในเครื่องคุณ (ปลอดภัย 100%) วันหลังสามารถกด "📂 โหลด" ไฟล์เดิมมาแก้ไขต่อได้</li>
+                        <li>กดปุ่ม <b>"🖨️ พิมพ์ / PDF"</b> ระบบจะแปลงหน้าเว็บนี้ ตัดปุ่มและเมนูที่ไม่จำเป็นออก จัดหน้ากระดาษ A4 เติมหน้าปกที่มีชื่อคุณ และแทรกลายน้ำให้อัตโนมัติ พร้อมส่งเป็นเล่มรายงานให้ลูกค้าทันที</li>
+                    </ul>
+                </div>
+                <div class="text-6xl opacity-80 mt-4 md:mt-0 pl-6 border-l border-gray-700 hidden md:block">📄</div>
+            </div>
+            <div class="mt-8 p-4 bg-gray-100 rounded-lg border border-gray-200 text-xs text-gray-500 leading-relaxed text-center shadow-inner">
+                <b>หมายเหตุ:</b> *เครื่องมือนี้ออกแบบมาเพื่อจำลองและประเมินทิศทางแบบวิชาการเท่านั้น
+            </div>
+        `
+    },
+
+    // --- ส่วนพจนานุกรม (ข้อมูลเดิม) ---
     "math-cfp": {
         icon: "📊",
-        title: "1. กลุ่มสมการประเมินสุขภาพการเงิน (Financial Ratios - CFP Standards)",
+        iconClass: "bg-blue-100 text-blue-600",
+        title: "5. กลุ่มสมการประเมินสุขภาพการเงิน (Financial Ratios - CFP Standards)",
         content: `
         <p class="mb-3">ใช้สำหรับวินิจฉัยจุดอ่อนและจุดแข็งของกระแสเงินสดและงบดุล อิงตามมาตรฐานคณะกรรมการวิชาชีพนักวางแผนการเงิน (CFP Board)</p>
         <div class="space-y-4">
@@ -42,7 +210,8 @@ const systemDictionary = {
     },
     "math-tvm": {
         icon: "⏳",
-        title: "2. กลุ่มสมการมูลค่าเงินตามเวลาและการจัดการหนี้ (TVM & Debt Management)",
+        iconClass: "bg-blue-100 text-blue-600",
+        title: "6. กลุ่มสมการมูลค่าเงินตามเวลาและการจัดการหนี้ (TVM & Debt Management)",
         content: `
         <p class="mb-3">ใช้สำหรับคำนวณเป้าหมายเกษียณ การเติบโตของพอร์ต และกลยุทธ์การปลดหนี้ (Debt Snowball/Avalanche)</p>
         <div class="space-y-4">
@@ -73,7 +242,8 @@ const systemDictionary = {
     },
     "math-dnn": {
         icon: "🕸️",
-        title: "3. โครงข่ายประสาทเทียมประเมินโอกาสสำเร็จ (Deep Neural Network - Doctor AI)",
+        iconClass: "bg-blue-100 text-blue-600",
+        title: "7. โครงข่ายประสาทเทียมประเมินโอกาสสำเร็จ (Deep Neural Network - Doctor AI)",
         content: `
         <p class="mb-3">โครงสร้าง <b>Multi-Layer Perceptron (MLP)</b> ที่ผ่านการฝึกสอน (Pre-trained Weights) ฝังไว้ใน Client-side เพื่อประมวลผล Success Probability แบบ Offline 100%</p>
         <div class="space-y-4">
@@ -85,7 +255,7 @@ const systemDictionary = {
                 <b class="text-blue-800">2. สมการโครงข่ายประสาทเทียม (Forward Pass Execution)</b>
                 <ul class="font-mono text-xs text-gray-700 bg-gray-50 p-3 rounded border border-gray-200 mt-2 space-y-1">
                     <li>H<sup>(1)</sup> = ReLU(Z &middot; W<sup>(0)</sup> + B<sup>(0)</sup>)</li>
-                    <li>H<sup>(2)</sup> = ReLU(H<sup>(1)</sup> &middot; W<sup>(2)} + B<sup>(2)</sup>)</li>
+                    <li>H<sup>(2)</sup> = ReLU(H<sup>(1)</sup> &middot; W<sup>(2)</sup> + B<sup>(2)</sup>)</li>
                     <li class="text-blue-700 font-bold border-t pt-1 mt-1">P<sub>raw</sub> = 1 / (1 + e<sup>-(H<sup>(2)</sup> &middot; W<sup>(3)</sup> + B<sup>(3)</sup>)</sup>)</li>
                 </ul>
             </div>
@@ -97,7 +267,8 @@ const systemDictionary = {
     },
     "math-kmeans": {
         icon: "🧬",
-        title: "4. ระบบจัดกลุ่มอัตลักษณ์ลูกค้า (8D K-Means Clustering)",
+        iconClass: "bg-blue-100 text-blue-600",
+        title: "8. ระบบจัดกลุ่มอัตลักษณ์ลูกค้า (8D K-Means Clustering)",
         content: `
         <p class="mb-3">อัลกอริทึมจัดกลุ่มลูกค้า (Persona Profiling) ประมวลผลจากข้อมูล 8 แกน</p>
         <div class="space-y-4">
@@ -112,7 +283,8 @@ const systemDictionary = {
     },
     "math-consensus": {
         icon: "⚖️",
-        title: "5. กลไกตัดสินใจร่วม (Hybrid Co-Advisor Consensus Engine)",
+        iconClass: "bg-blue-100 text-blue-600",
+        title: "9. กลไกตัดสินใจร่วม (Hybrid Co-Advisor Consensus Engine)",
         content: `
         <p class="mb-3">ป้องกัน <b>AI Hallucinations</b> โดยนำคะแนน ML มาปะทะกับเกณฑ์ผู้เชี่ยวชาญ (Human-in-the-loop)</p>
         <div class="space-y-3">
@@ -145,7 +317,8 @@ const systemDictionary = {
     },
     "math-market": {
         icon: "📉",
-        title: "6. สมการผลตอบแทนตลาดและสภาวะวิกฤต (Market Dynamics)",
+        iconClass: "bg-blue-100 text-blue-600",
+        title: "10. สมการผลตอบแทนตลาดและสภาวะวิกฤต (Market Dynamics)",
         content: `
         <p class="mb-3">วิศวกรรมการเงินที่รองรับ Black Swan และ Market Regimes</p>
         <div class="space-y-4">
@@ -160,7 +333,8 @@ const systemDictionary = {
     },
     "math-accum": {
         icon: "📈",
-        title: "7. กลไกช่วงสะสมความมั่งคั่ง (Accumulation Phase Dynamics)",
+        iconClass: "bg-blue-100 text-blue-600",
+        title: "11. กลไกช่วงสะสมความมั่งคั่ง (Accumulation Phase Dynamics)",
         content: `
         <p class="mb-3">จำลองการเติบโตแบบความน่าจะเป็น (Stochastic Growth) ก่อนวัยเกษียณ</p>
         <div class="space-y-4">
@@ -178,7 +352,8 @@ const systemDictionary = {
     },
     "math-decum": {
         icon: "🏛️",
-        title: "8. กลไกหลังเกษียณและประเมินความเสี่ยงขาลง (Decumulation & Tail Risk)",
+        iconClass: "bg-blue-100 text-blue-600",
+        title: "12. กลไกหลังเกษียณและประเมินความเสี่ยงขาลง (Decumulation & Tail Risk)",
         content: `
         <p class="mb-3">กลยุทธ์ป้องกัน Longevity Risk และการรับมือวิกฤตเศรษฐกิจ (Stress Test)</p>
         <div class="space-y-4">
@@ -197,7 +372,8 @@ const systemDictionary = {
     },
     "math-knapsack": {
         icon: "🎒",
-        title: "9. อัลกอริทึมจัดกระเป๋าผลิตภัณฑ์ (DP Knapsack & Optimization)",
+        iconClass: "bg-blue-100 text-blue-600",
+        title: "13. อัลกอริทึมจัดกระเป๋าผลิตภัณฑ์ (DP Knapsack & Optimization)",
         content: `
         <div class="space-y-4">
             <div class="bg-white p-4 rounded-lg border shadow-sm">
@@ -212,7 +388,8 @@ const systemDictionary = {
     },
     "math-taxalpha": {
         icon: "⚖️",
-        title: "10. อัลกอริทึมประเมินภาษีเชิงรุก (Tax Alpha Engine)",
+        iconClass: "bg-blue-100 text-blue-600",
+        title: "14. อัลกอริทึมประเมินภาษีเชิงรุก (Tax Alpha Engine)",
         content: `
         <p class="mb-3">ระบบคำนวณประหยัดภาษี (Tax Optimization) อิงตามกฎหมาย ภ.ง.ด. 90/91 (เกณฑ์ปี 2568)</p>
         <div class="space-y-4">
@@ -228,7 +405,8 @@ const systemDictionary = {
     },
     "term-invest": {
         icon: "📈",
-        title: "11. พจนานุกรม: การวิเคราะห์และกลยุทธ์การลงทุน (Investment & Strategy)",
+        iconClass: "bg-gray-100 text-gray-600",
+        title: "15. พจนานุกรม: การวิเคราะห์และกลยุทธ์การลงทุน (Investment & Strategy)",
         content: `<ul class="list-disc list-inside mt-2 space-y-3 text-sm text-gray-700">
             <li><b>Asset Allocation (การจัดสรรสินทรัพย์):</b> การกระจายสัดส่วนเงินลงทุนไปในสินทรัพย์ประเภทต่างๆ เพื่อรักษาสมดุลระหว่างผลตอบแทนและความเสี่ยง</li>
             <li><b>Expected Shortfall (CVaR 95%):</b> มูลค่าความเสียหายที่คาดว่าจะเกิดขึ้น ในกรณีที่ตลาดตกต่ำที่สุด 5%</li>
@@ -237,7 +415,8 @@ const systemDictionary = {
     },
     "term-behavior": {
         icon: "🎭",
-        title: "12. พจนานุกรม: จิตวิทยาและพฤติกรรมทางการเงิน (Behavioral Finance & DISC)",
+        iconClass: "bg-gray-100 text-gray-600",
+        title: "16. พจนานุกรม: จิตวิทยาและพฤติกรรมทางการเงิน (Behavioral Finance & DISC)",
         content: `
         <ul class="list-disc list-inside mt-2 space-y-2 text-sm text-gray-700">
             <li><b>Loss Aversion (ความเกลียดกลัวการขาดทุน):</b> อคติที่มนุษย์จะรู้สึกเจ็บปวดกับการขาดทุน มากกว่าความดีใจที่ได้กำไรในจำนวนเงินที่เท่ากัน (ประมาณ 2-2.5 เท่า)</li>
