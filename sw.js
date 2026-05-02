@@ -1,4 +1,4 @@
-const CACHE_NAME = 'fa-planner-v1';
+const CACHE_NAME = 'fa-planner-v2';
 const assets = [
   './',
   './index.html',
