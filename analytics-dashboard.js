@@ -36,7 +36,7 @@ async function openExecutiveDashboard() {
 
     // 🌟 เขียนหน้าต่างโหลดข้อมูลรอไว้ก่อน
     dashWin.document.write(`
-        <div style="display:flex; justify-content:center; align-items:center; height:100vh; font-family:sans-serif; color:#475569;">
+        <div style="display:flex; justify-content:center; align-items:center; height:100vh; font-family:sans-serif; color:#475569; background-color:#f8fafc;">
             <h2 style="margin-top:20%;">⏳ กำลังประมวลผลข้อมูล Executive Dashboard...</h2>
         </div>
     `);
@@ -92,7 +92,8 @@ async function openExecutiveDashboard() {
             <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
             <style>
                 @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap');
-                body { font-family: 'Prompt', sans-serif; background-color: #f1f5f9; color: #1e293b; }
+                /* ปรับพื้นหลังให้เป็นสี slate-50 (อ่อนๆ สบายตา ไม่จ้าเท่าสีขาว) */
+                body { font-family: 'Prompt', sans-serif; background-color: #f8fafc; color: #334155; }
                 .custom-scrollbar::-webkit-scrollbar { width: 6px; }
                 .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
                 .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
@@ -113,23 +114,24 @@ async function openExecutiveDashboard() {
                         <p class="text-slate-500 mt-1 text-sm font-medium">จัดการเป้าหมาย Sale Builder และวิเคราะห์พอร์ตโฟลิโอ</p>
                     </div>
                     <div class="flex flex-wrap gap-2 no-print">
-                        <button onclick="importBackup()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 px-3 py-1.5 rounded font-bold text-xs transition">📥 นำเข้า JSON</button>
-                        <button onclick="exportBackup()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 px-3 py-1.5 rounded font-bold text-xs transition">📤 ส่งออกสำรองข้อมูล</button>
-                        <button onclick="printFormalReport()" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded font-bold text-xs transition shadow-sm">🖨️ พิมพ์รายงานผลงาน</button>
-                        <button onclick="window.close()" class="bg-white border border-slate-300 text-slate-700 hover:bg-red-50 hover:text-red-600 px-3 py-1.5 rounded font-bold text-xs transition shadow-sm">ปิดหน้าต่าง</button>
-                        <input type="file" id="fileImport" style="display:none" accept=".json">
+                        <!-- นำปุ่ม Import/Export ออก แล้วเหลือแค่ พิมพ์ และ ปิดหน้าต่าง -->
+                        <button onclick="printFormalReport()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-bold text-xs transition shadow-sm flex items-center gap-2">
+                            <span>🖨️</span> พิมพ์รายงานผลงาน
+                        </button>
+                        <button onclick="window.close()" class="bg-white border border-slate-300 text-slate-700 hover:bg-red-50 hover:text-red-600 px-4 py-2 rounded-lg font-bold text-xs transition shadow-sm">❌ ปิดหน้าต่าง</button>
                     </div>
                 </div>
 
                 <!-- ================== ส่วน KPI กล่องสรุปผล ================== -->
-                <div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-6 shadow-xl text-white relative overflow-hidden">
+                <!-- ปรับสีกรอบและพื้นหลังเล็กน้อยให้ดูละมุนขึ้น -->
+                <div class="bg-gradient-to-br from-slate-700 to-slate-900 rounded-2xl p-6 shadow-lg text-white relative overflow-hidden">
                     <div class="absolute top-0 right-0 p-4 opacity-10 text-6xl">📅</div>
-                    <h2 class="text-xl font-bold mb-4 flex items-center gap-2 border-b border-slate-700 pb-2 relative z-10">
+                    <h2 class="text-xl font-bold mb-4 flex items-center gap-2 border-b border-slate-600 pb-2 relative z-10">
                         <span>🎯</span> YEAR PLAN: เป้าหมายและผลงานประจำปี <span id="ui_current_year" class="text-emerald-400 ml-2"></span>
                     </h2>
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10">
-                        <div class="bg-slate-800/80 p-4 rounded-xl border border-slate-600 relative">
+                        <div class="bg-slate-800 p-4 rounded-xl border border-slate-600 relative shadow-inner">
                             <button onclick="editTarget('fyp')" class="absolute top-3 right-3 text-[10px] bg-slate-700 hover:bg-slate-600 px-2 py-1 rounded no-print">ตั้งเป้า</button>
                             <p class="text-xs text-slate-400 font-bold uppercase mb-1">FYP (เบี้ยปีแรก)</p>
                             <p class="text-2xl font-black text-emerald-400" id="ui_act_fyp">0</p>
@@ -137,7 +139,7 @@ async function openExecutiveDashboard() {
                             <div class="flex justify-between text-[10px] text-slate-300"><span>เป้า: <span id="ui_tgt_fyp">0</span></span><span id="pct_fyp" class="font-bold text-emerald-400">0%</span></div>
                         </div>
 
-                        <div class="bg-slate-800/80 p-4 rounded-xl border border-slate-600 relative">
+                        <div class="bg-slate-800 p-4 rounded-xl border border-slate-600 relative shadow-inner">
                             <button onclick="editTarget('fyc')" class="absolute top-3 right-3 text-[10px] bg-slate-700 hover:bg-slate-600 px-2 py-1 rounded no-print">ตั้งเป้า</button>
                             <p class="text-xs text-slate-400 font-bold uppercase mb-1">FYC (คอมมิชชัน)</p>
                             <p class="text-2xl font-black text-blue-400" id="ui_act_fyc">0</p>
@@ -145,7 +147,7 @@ async function openExecutiveDashboard() {
                             <div class="flex justify-between text-[10px] text-slate-300"><span>เป้า: <span id="ui_tgt_fyc">0</span></span><span id="pct_fyc" class="font-bold text-blue-400">0%</span></div>
                         </div>
 
-                        <div class="bg-slate-800/80 p-4 rounded-xl border border-slate-600 relative">
+                        <div class="bg-slate-800 p-4 rounded-xl border border-slate-600 relative shadow-inner">
                             <button onclick="editTarget('cases')" class="absolute top-3 right-3 text-[10px] bg-slate-700 hover:bg-slate-600 px-2 py-1 rounded no-print">ตั้งเป้า</button>
                             <p class="text-xs text-slate-400 font-bold uppercase mb-1">Total Cases (ราย)</p>
                             <p class="text-2xl font-black text-purple-400" id="ui_act_cases">0</p>
@@ -153,7 +155,7 @@ async function openExecutiveDashboard() {
                             <div class="flex justify-between text-[10px] text-slate-300"><span>เป้า: <span id="ui_tgt_cases">0</span></span><span id="pct_cases" class="font-bold text-purple-400">0%</span></div>
                         </div>
 
-                        <div class="bg-slate-800/80 p-4 rounded-xl border border-slate-600 relative">
+                        <div class="bg-slate-800 p-4 rounded-xl border border-slate-600 relative shadow-inner">
                             <button onclick="editTarget('recruit')" class="absolute top-3 right-3 text-[10px] bg-slate-700 hover:bg-slate-600 px-2 py-1 rounded no-print">ตั้งเป้า</button>
                             <p class="text-xs text-slate-400 font-bold uppercase mb-1">Recruits (ทีมงาน)</p>
                             <p class="text-2xl font-black text-amber-400" id="ui_act_recruit">0</p>
@@ -163,15 +165,15 @@ async function openExecutiveDashboard() {
                     </div>
                 </div>
 
-                <!-- ================== ส่วนอื่นๆ ของ Planner (คงเดิม) ================== -->
+                <!-- ================== ส่วนอื่นๆ ของ Planner ================== -->
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <div class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-indigo-100 flex flex-col overflow-hidden">
-                        <div class="bg-indigo-50 border-b border-indigo-100 p-4 flex justify-between items-center no-print">
-                            <h2 class="font-bold text-indigo-900 flex items-center gap-2"><span>🗓️</span> Sale Builder (แผนและผลงานรายเดือน)</h2>
-                            <div class="flex items-center gap-3 bg-white rounded-lg border border-indigo-200 px-2 py-1 shadow-sm">
-                                <button onclick="changeMonth(-1)" class="text-indigo-600 hover:bg-indigo-100 p-1 rounded font-bold">&lt;</button>
-                                <span id="ui_view_month" class="text-sm font-bold w-24 text-center text-indigo-900"></span>
-                                <button onclick="changeMonth(1)" class="text-indigo-600 hover:bg-indigo-100 p-1 rounded font-bold">&gt;</button>
+                    <div class="lg:col-span-2 bg-white rounded-2xl shadow-md border border-slate-200 flex flex-col overflow-hidden">
+                        <div class="bg-slate-50 border-b border-slate-200 p-4 flex justify-between items-center no-print">
+                            <h2 class="font-bold text-slate-800 flex items-center gap-2"><span>🗓️</span> Sale Builder (แผนและผลงานรายเดือน)</h2>
+                            <div class="flex items-center gap-3 bg-white rounded-lg border border-slate-200 px-2 py-1 shadow-sm">
+                                <button onclick="changeMonth(-1)" class="text-slate-600 hover:bg-slate-100 p-1 rounded font-bold">&lt;</button>
+                                <span id="ui_view_month" class="text-sm font-bold w-24 text-center text-slate-800"></span>
+                                <button onclick="changeMonth(1)" class="text-slate-600 hover:bg-slate-100 p-1 rounded font-bold">&gt;</button>
                             </div>
                         </div>
 
@@ -205,26 +207,26 @@ async function openExecutiveDashboard() {
 
                         <div class="p-0 flex-grow overflow-x-auto">
                             <table class="w-full text-sm text-center">
-                                <thead class="bg-indigo-900 text-white text-xs whitespace-nowrap">
+                                <thead class="bg-slate-800 text-white text-xs whitespace-nowrap border-b-2 border-slate-900">
                                     <tr>
-                                        <th class="py-3 px-2 border-r border-indigo-700 w-16">สัปดาห์</th>
-                                        <th class="py-3 px-2 border-r border-indigo-700 bg-indigo-800">เป้า FYP</th>
-                                        <th class="py-3 px-2 border-r border-indigo-700 text-emerald-300">ทำได้ FYP</th>
-                                        <th class="py-3 px-2 border-r border-indigo-700 bg-indigo-800">เป้า FYC</th>
-                                        <th class="py-3 px-2 border-r border-indigo-700 text-blue-300">ทำได้ FYC</th>
-                                        <th class="py-3 px-2 border-r border-indigo-700 bg-indigo-800">เป้า Case</th>
+                                        <th class="py-3 px-2 border-r border-slate-700 w-16">สัปดาห์</th>
+                                        <th class="py-3 px-2 border-r border-slate-700 bg-slate-700">เป้า FYP</th>
+                                        <th class="py-3 px-2 border-r border-slate-700 text-emerald-300">ทำได้ FYP</th>
+                                        <th class="py-3 px-2 border-r border-slate-700 bg-slate-700">เป้า FYC</th>
+                                        <th class="py-3 px-2 border-r border-slate-700 text-blue-300">ทำได้ FYC</th>
+                                        <th class="py-3 px-2 border-r border-slate-700 bg-slate-700">เป้า Case</th>
                                         <th class="py-3 px-2 text-purple-300">ทำได้ Case</th>
                                     </tr>
                                 </thead>
                                 <tbody id="ui_weekly_table" class="divide-y divide-slate-100"></tbody>
-                                <tfoot class="bg-slate-50 font-bold border-t-2 border-slate-200 text-xs">
+                                <tfoot class="bg-slate-100 font-bold border-t-2 border-slate-300 text-xs">
                                     <tr>
-                                        <td class="py-3 px-2 border-r text-slate-700">รวม</td>
-                                        <td class="py-3 px-2 border-r text-slate-500" id="ui_m_t_fyp">0</td>
-                                        <td class="py-3 px-2 border-r text-emerald-600" id="ui_m_a_fyp">0</td>
-                                        <td class="py-3 px-2 border-r text-slate-500" id="ui_m_t_fyc">0</td>
-                                        <td class="py-3 px-2 border-r text-blue-600" id="ui_m_a_fyc">0</td>
-                                        <td class="py-3 px-2 border-r text-slate-500" id="ui_m_t_cases">0</td>
+                                        <td class="py-3 px-2 border-r border-slate-200 text-slate-700">รวม</td>
+                                        <td class="py-3 px-2 border-r border-slate-200 text-slate-500" id="ui_m_t_fyp">0</td>
+                                        <td class="py-3 px-2 border-r border-slate-200 text-emerald-600" id="ui_m_a_fyp">0</td>
+                                        <td class="py-3 px-2 border-r border-slate-200 text-slate-500" id="ui_m_t_fyc">0</td>
+                                        <td class="py-3 px-2 border-r border-slate-200 text-blue-600" id="ui_m_a_fyc">0</td>
+                                        <td class="py-3 px-2 border-r border-slate-200 text-slate-500" id="ui_m_t_cases">0</td>
                                         <td class="py-3 px-2 text-purple-600" id="ui_m_a_cases">0</td>
                                     </tr>
                                 </tfoot>
@@ -232,7 +234,7 @@ async function openExecutiveDashboard() {
                         </div>
                     </div>
 
-                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 flex flex-col">
+                    <div class="bg-white rounded-2xl shadow-md border border-slate-200 p-5 flex flex-col">
                         <div class="bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl p-4 border border-amber-200 mb-6 relative">
                             <p class="text-[10px] text-amber-600 font-bold uppercase mb-1">🔥 เป้าหมายปลุกพลัง (Action Plan)</p>
                             <textarea id="ui_cta" class="w-full bg-transparent border-none text-slate-800 font-bold text-sm focus:outline-none resize-none h-16 custom-scrollbar" placeholder="พิมพ์คติประจำใจ หรือเป้าหมายสัปดาห์นี้..."></textarea>
@@ -240,18 +242,18 @@ async function openExecutiveDashboard() {
                         
                         <h3 class="font-bold text-sm text-slate-800 mb-3 flex justify-between items-center border-b pb-2">
                             <span>☑️ To-Do / Follow up</span>
-                            <button onclick="addChecklist()" class="text-[10px] bg-slate-800 hover:bg-slate-700 text-white px-2 py-1 rounded no-print">+ เพิ่มงาน</button>
+                            <button onclick="addChecklist()" class="text-[10px] bg-slate-800 hover:bg-slate-700 text-white px-2 py-1 rounded shadow-sm no-print">+ เพิ่มงาน</button>
                         </h3>
                         <div id="ui_checklists" class="space-y-2 overflow-y-auto max-h-[300px] custom-scrollbar pr-1 flex-grow"></div>
                     </div>
                 </div>
 
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
+                <div class="bg-white rounded-2xl p-6 shadow-md border border-slate-200">
                     <h2 class="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2 border-b border-slate-200 pb-2">
                         <span>📝</span> SALES LEDGER: สมุดบันทึกผลงานจริง
                     </h2>
                     
-                    <div class="bg-slate-50 rounded-xl p-4 border border-slate-200 mb-4 flex flex-col gap-3 no-print">
+                    <div class="bg-slate-50 rounded-xl p-4 border border-slate-200 mb-4 flex flex-col gap-3 no-print shadow-inner">
                         <div class="flex flex-wrap gap-3 items-end">
                             <div class="w-28"><label class="text-[10px] font-bold text-slate-600 mb-1 block">ประเภท</label>
                                 <select id="s_type" onchange="toggleFormType()">
@@ -291,21 +293,21 @@ async function openExecutiveDashboard() {
                             <div class="w-24 s-sale-only"><label class="text-[10px] font-bold text-slate-600 mb-1 block">ทุนประกัน</label><input type="number" id="s_sa" placeholder="0"></div>
                             <div class="w-24"><label class="text-[10px] font-bold text-emerald-600 mb-1 block">FYP</label><input type="number" id="s_fyp" placeholder="0" class="border-emerald-300"></div>
                             <div class="w-24"><label class="text-[10px] font-bold text-blue-600 mb-1 block">FYC</label><input type="number" id="s_fyc" placeholder="0" class="border-blue-300"></div>
-                            <div><button id="btn_save_sale" onclick="addSaleRecord()" class="bg-slate-800 hover:bg-slate-900 text-white font-bold py-1.5 px-4 rounded-lg text-sm transition h-[32px]">บันทึก</button></div>
+                            <div><button id="btn_save_sale" onclick="addSaleRecord()" class="bg-slate-800 hover:bg-slate-900 text-white font-bold py-1.5 px-4 rounded-lg text-sm transition h-[32px] shadow-sm">บันทึก</button></div>
                         </div>
 
                         <div class="w-full pt-3 border-t border-slate-200 s-sale-only">
                             <div class="flex justify-between items-center mb-1">
                                 <label class="text-[10px] font-bold text-indigo-700 block">➕ สัญญาเพิ่มเติม (Riders)</label>
-                                <button type="button" onclick="addRiderInput()" class="text-[9px] bg-indigo-100 hover:bg-indigo-200 text-indigo-700 px-2 py-1 rounded font-bold transition no-print">+ เพิ่ม Rider</button>
+                                <button type="button" onclick="addRiderInput()" class="text-[9px] bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 text-indigo-700 px-2 py-1 rounded font-bold transition shadow-sm no-print">+ เพิ่ม Rider</button>
                             </div>
                             <div id="riders_list" class="w-full flex flex-col gap-2"></div>
                         </div>
                     </div>
 
-                    <div class="overflow-x-auto border rounded-lg">
+                    <div class="overflow-x-auto border border-slate-200 rounded-lg shadow-sm">
                         <table class="w-full text-sm text-left whitespace-nowrap">
-                            <thead class="text-xs text-slate-500 bg-slate-100 uppercase border-b">
+                            <thead class="text-xs text-slate-600 bg-slate-100 uppercase border-b border-slate-200">
                                 <tr>
                                     <th class="px-4 py-3">วันที่</th><th class="px-4 py-3 text-center">ประเภท</th><th class="px-4 py-3">ชื่อรายละเอียด</th>
                                     <th class="px-4 py-3">สินค้า / แผน</th><th class="px-4 py-3 text-right">ทุนประกัน</th>
@@ -313,33 +315,33 @@ async function openExecutiveDashboard() {
                                     <th class="px-4 py-3 text-center no-print">จัดการ</th>
                                 </tr>
                             </thead>
-                            <tbody id="ui_sales_table" class="divide-y divide-slate-100"></tbody>
+                            <tbody id="ui_sales_table" class="divide-y divide-slate-100 bg-white"></tbody>
                         </table>
                     </div>
                 </div>
 
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 break-inside-avoid">
+                <div class="bg-white rounded-2xl p-6 shadow-md border border-slate-200 break-inside-avoid">
                     <h2 class="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2 border-b border-slate-200 pb-2">
                         <span>🗂️</span> CRM OVERVIEW: ภาพรวมฐานข้อมูลลูกค้าทั้งหมด <span class="text-xs text-slate-400 font-normal ml-2 no-print">(คลิกที่กล่องเพื่อดูรายชื่อ)</span>
                     </h2>
 
                     <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3 mb-6">
                         <div onclick="openDrillModal('ผู้มุ่งหวัง')" class="cursor-pointer hover:shadow-md hover:-translate-y-1 transition transform bg-slate-50 p-3 rounded-lg border border-slate-200 text-center"><p class="text-[10px] font-bold text-slate-500 mb-1">ผู้มุ่งหวัง</p><p class="text-xl font-black text-slate-700"><span id="crm_funnel_0"></span></p></div>
-                        <div onclick="openDrillModal('นำเสนอแผน')" class="cursor-pointer hover:shadow-md hover:-translate-y-1 transition transform bg-blue-50 p-3 rounded-lg border border-blue-100 text-center"><p class="text-[10px] font-bold text-blue-500 mb-1">นำเสนอแผน</p><p class="text-xl font-black text-blue-700"><span id="crm_funnel_1"></span></p></div>
-                        <div onclick="openDrillModal('กำลังติดตาม')" class="cursor-pointer hover:shadow-md hover:-translate-y-1 transition transform bg-purple-50 p-3 rounded-lg border border-purple-100 text-center"><p class="text-[10px] font-bold text-purple-500 mb-1">กำลังติดตาม</p><p class="text-xl font-black text-purple-700"><span id="crm_funnel_2"></span></p></div>
-                        <div onclick="openDrillModal('รอดำเนินการ')" class="cursor-pointer hover:shadow-md hover:-translate-y-1 transition transform bg-yellow-50 p-3 rounded-lg border border-yellow-100 text-center"><p class="text-[10px] font-bold text-yellow-600 mb-1">รอดำเนินการ</p><p class="text-xl font-black text-yellow-700"><span id="crm_funnel_3"></span></p></div>
-                        <div onclick="openDrillModal('ปิดการขาย')" class="cursor-pointer hover:shadow-md hover:-translate-y-1 transition transform bg-emerald-50 p-3 rounded-lg border border-emerald-200 text-center shadow-sm"><p class="text-[10px] font-bold text-emerald-600 mb-1">ปิดการขาย</p><p class="text-xl font-black text-emerald-700"><span id="crm_funnel_4"></span></p></div>
-                        <div onclick="openDrillModal('เข้าเยี่ยมหลังการขาย')" class="cursor-pointer hover:shadow-md hover:-translate-y-1 transition transform bg-teal-50 p-3 rounded-lg border border-teal-100 text-center"><p class="text-[10px] font-bold text-teal-600 mb-1">บริการหลังขาย</p><p class="text-xl font-black text-teal-700"><span id="crm_funnel_5"></span></p></div>
-                        <div onclick="openDrillModal('ปฏิเสธ')" class="cursor-pointer hover:shadow-md hover:-translate-y-1 transition transform bg-red-50 p-3 rounded-lg border border-red-100 text-center"><p class="text-[10px] font-bold text-red-500 mb-1">ปฏิเสธ</p><p class="text-xl font-black text-red-700"><span id="crm_funnel_6"></span></p></div>
+                        <div onclick="openDrillModal('นำเสนอแผน')" class="cursor-pointer hover:shadow-md hover:-translate-y-1 transition transform bg-blue-50 p-3 rounded-lg border border-blue-200 text-center"><p class="text-[10px] font-bold text-blue-600 mb-1">นำเสนอแผน</p><p class="text-xl font-black text-blue-800"><span id="crm_funnel_1"></span></p></div>
+                        <div onclick="openDrillModal('กำลังติดตาม')" class="cursor-pointer hover:shadow-md hover:-translate-y-1 transition transform bg-purple-50 p-3 rounded-lg border border-purple-200 text-center"><p class="text-[10px] font-bold text-purple-600 mb-1">กำลังติดตาม</p><p class="text-xl font-black text-purple-800"><span id="crm_funnel_2"></span></p></div>
+                        <div onclick="openDrillModal('รอดำเนินการ')" class="cursor-pointer hover:shadow-md hover:-translate-y-1 transition transform bg-yellow-50 p-3 rounded-lg border border-yellow-200 text-center"><p class="text-[10px] font-bold text-yellow-600 mb-1">รอดำเนินการ</p><p class="text-xl font-black text-yellow-700"><span id="crm_funnel_3"></span></p></div>
+                        <div onclick="openDrillModal('ปิดการขาย')" class="cursor-pointer hover:shadow-md hover:-translate-y-1 transition transform bg-emerald-50 p-3 rounded-lg border border-emerald-200 text-center shadow-sm"><p class="text-[10px] font-bold text-emerald-600 mb-1">ปิดการขาย</p><p class="text-xl font-black text-emerald-800"><span id="crm_funnel_4"></span></p></div>
+                        <div onclick="openDrillModal('เข้าเยี่ยมหลังการขาย')" class="cursor-pointer hover:shadow-md hover:-translate-y-1 transition transform bg-teal-50 p-3 rounded-lg border border-teal-200 text-center"><p class="text-[10px] font-bold text-teal-600 mb-1">บริการหลังขาย</p><p class="text-xl font-black text-teal-800"><span id="crm_funnel_5"></span></p></div>
+                        <div onclick="openDrillModal('ปฏิเสธ')" class="cursor-pointer hover:shadow-md hover:-translate-y-1 transition transform bg-red-50 p-3 rounded-lg border border-red-200 text-center"><p class="text-[10px] font-bold text-red-600 mb-1">ปฏิเสธ</p><p class="text-xl font-black text-red-800"><span id="crm_funnel_6"></span></p></div>
                     </div>
 
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        <div class="bg-white p-5 rounded-xl border border-slate-200 flex flex-col h-[250px]">
-                            <h3 class="font-bold text-slate-800 text-sm mb-4 border-b pb-2">🧬 กลุ่มลูกค้าที่เข้าพบ (AI Personas)</h3>
+                        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col h-[250px]">
+                            <h3 class="font-bold text-slate-800 text-sm mb-4 border-b border-slate-100 pb-2">🧬 กลุ่มลูกค้าที่เข้าพบ (AI Personas)</h3>
                             <div class="relative flex-grow"><canvas id="chartPersona"></canvas></div>
                         </div>
-                        <div class="bg-white p-5 rounded-xl border border-slate-200 flex flex-col h-[250px]">
-                            <h3 class="font-bold text-slate-800 text-sm mb-4 border-b pb-2">🥧 สัดส่วนสินค้าพอร์ตลูกค้า (Internal Product Mix)</h3>
+                        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col h-[250px]">
+                            <h3 class="font-bold text-slate-800 text-sm mb-4 border-b border-slate-100 pb-2">🥧 สัดส่วนสินค้าพอร์ตลูกค้า (Internal Product Mix)</h3>
                             <div class="relative flex-grow"><canvas id="chartProductMix"></canvas></div>
                         </div>
                     </div>
@@ -361,12 +363,12 @@ async function openExecutiveDashboard() {
             <script>
                 const DB_KEY = 'FA_Ultimate_Planner_V8_Secured';
                 
-                // 🌟 รับข้อมูลมาจาก Node พ่อ
+                // รับข้อมูลมาจาก Node พ่อ
                 window.FA_CLIENTS = ${safeClientData}; 
 
                 let plannerData = { targets: { fyp: 1000000, fyc: 300000, cases: 50, recruit: 5 }, salesLedger: [], checklists: [], cta: "ฉันคือนักขายระดับท็อป!" };
                 window.currentRiders = []; 
-                window.crmChartInstance = null; // ตัวแปรสำหรับเก็บ Chart อัปเดตแนวโน้มทางการเงิน
+                window.crmChartInstance = null;
 
                 function loadPlannerData() {
                     let saved = localStorage.getItem(DB_KEY);
@@ -423,9 +425,6 @@ async function openExecutiveDashboard() {
 
                 document.getElementById('s_date').value = viewDate.toISOString().slice(0, 10);
 
-                // ==========================================
-                // 🌟 V8.3: Data Drill-down & CRM Quick View (อัปเกรด 100% CRM Review)
-                // ==========================================
                 window.openDrillModal = function(status) {
                     let list = window.FA_CLIENTS.filter(c => (c.status || "ผู้มุ่งหวัง") === status);
                     document.getElementById('modalTitle').innerHTML = '📋 รายชื่อลูกค้ากลุ่ม: <span class="text-indigo-600 font-black">' + status + '</span> (' + list.length + ' ราย)';
@@ -438,7 +437,7 @@ async function openExecutiveDashboard() {
                         list.forEach((c) => {
                             let name = c.name || 'ไม่ระบุชื่อ';
                             let cid = c.id || Math.random().toString();
-                            c._tempId = cid; // ฝัง id ชั่วคราวกรณีไม่มี
+                            c._tempId = cid; 
                             let persona = (c.visits && c.visits.length > 0) ? (c.visits[0].aiCluster || '').split('[')[0] : '-';
                             h += \`
                             <div class="bg-white p-4 border border-slate-200 rounded-xl flex justify-between items-center hover:border-indigo-300 transition shadow-sm group">
@@ -446,7 +445,7 @@ async function openExecutiveDashboard() {
                                     <div class="font-bold text-slate-800 text-base">\${name}</div>
                                     <div class="text-[11px] text-slate-500 font-medium mt-1">🎯 Persona: <span class="text-indigo-500">\${persona||'Unclassified'}</span></div>
                                 </div>
-                                <button onclick="viewQuickReview('\${cid}', '\${status}')" class="bg-slate-100 text-slate-600 border border-slate-200 px-4 py-2 rounded-lg text-xs font-bold group-hover:bg-slate-800 group-hover:text-white transition shadow-sm">
+                                <button onclick="viewQuickReview('\${cid}', '\${status}')" class="bg-slate-100 text-slate-600 border border-slate-300 px-4 py-2 rounded-lg text-xs font-bold group-hover:bg-slate-800 group-hover:text-white transition shadow-sm">
                                     พรีวิวข้อมูล
                                 </button>
                             </div>\`;
@@ -467,7 +466,6 @@ async function openExecutiveDashboard() {
 
                     const fmtRev = (num) => Number(num || 0).toLocaleString('th-TH', {minimumFractionDigits: 0, maximumFractionDigits: 0});
 
-                    // คำนวณสรุปการเงิน
                     let totalAst = (d.c_assets || []).reduce((sum, item) => sum + (Number(item.val || item[1]) || 0), 0);
                     let totalLiab = (d.c_liab || []).reduce((sum, item) => sum + (Number(item.val || item[1]) || 0), 0);
                     let totalInc = (d.c_inc || []).reduce((sum, item) => sum + (Number(item.val || item[1]) || 0), 0);
@@ -475,7 +473,6 @@ async function openExecutiveDashboard() {
                     let netWorth = latestVisit.netWorth || (totalAst - totalLiab);
                     let netCashflow = totalInc - totalExp;
 
-                    // พอร์ตกรมธรรม์ประกันชีวิต
                     let insHtml = '';
                     if (d.c_ins && d.c_ins.length > 0) {
                         insHtml = d.c_ins.map(ins => {
@@ -495,7 +492,6 @@ async function openExecutiveDashboard() {
                         }).join('');
                     } else { insHtml = '<p class="text-center text-sm text-slate-400 py-4">ไม่มีข้อมูลกรมธรรม์</p>'; }
 
-                    // พอร์ตการลงทุนปัจจุบัน
                     let invHtml = '';
                     if (d.c_invest_current && d.c_invest_current.length > 0) {
                         invHtml = d.c_invest_current.map(inv => \`
@@ -505,7 +501,6 @@ async function openExecutiveDashboard() {
                             </div>\`).join('');
                     } else { invHtml = '<p class="text-center text-sm text-slate-400 py-4">ไม่มีข้อมูลการลงทุน</p>'; }
 
-                    // กราฟวิวัฒนาการ
                     let progressHtml = \`
                         <div class="bg-white p-4 md:p-5 rounded-xl border border-slate-200 shadow-sm w-full flex flex-col mt-6">
                             <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-3 border-b border-indigo-100 pb-2 gap-2">
@@ -519,7 +514,7 @@ async function openExecutiveDashboard() {
                                 : '<div class="relative w-full flex-grow min-h-[250px] md:min-h-[300px]"><canvas id="clientProgressChart"></canvas></div><div id="chartDataTableContainer" class="mt-4 overflow-x-auto custom-scrollbar"></div>'}
                         </div>\`;
 
-                    document.getElementById('modalTitle').innerHTML = \`<button onclick="openDrillModal('\${backStatus}')" class="text-xs bg-slate-200 hover:bg-slate-300 text-slate-700 px-3 py-1.5 rounded-lg mr-3 transition font-bold">&larr; กลับ</button> <span class="text-slate-500">🔍 พรีวิวข้อมูลลูกค้า: \${client.name || 'ไม่ระบุชื่อ'} (\${latestVisit.VN || '-'})</span>\`;
+                    document.getElementById('modalTitle').innerHTML = \`<button onclick="openDrillModal('\${backStatus}')" class="text-xs bg-slate-200 hover:bg-slate-300 text-slate-700 px-3 py-1.5 rounded-lg mr-3 transition font-bold border border-slate-300">&larr; กลับ</button> <span class="text-slate-500">🔍 พรีวิวข้อมูลลูกค้า: <span class="text-slate-800">\${client.name || 'ไม่ระบุชื่อ'}</span> (\${latestVisit.VN || '-'})</span>\`;
 
                     let modalContent = \`
                         <div class="p-6 bg-slate-50 min-h-full">
@@ -529,23 +524,23 @@ async function openExecutiveDashboard() {
                                     <p class="text-sm text-slate-800"><b>อายุ:</b> \${p.p_age || '-'} ปี</p>
                                     <p class="text-sm text-slate-800 mt-1"><b>อาชีพ:</b> \${p.p_occ || '-'}</p>
                                 </div>
-                                <div class="flex-1 bg-gradient-to-br from-indigo-50 to-blue-50 p-4 rounded-xl border border-indigo-100 shadow-sm flex flex-col justify-center items-center text-center">
-                                    <p class="text-xs text-indigo-500 font-bold uppercase tracking-wider mb-2">🧠 AI Score (ความสำเร็จ)</p>
+                                <div class="flex-1 bg-gradient-to-br from-indigo-50 to-blue-50 p-4 rounded-xl border border-indigo-200 shadow-sm flex flex-col justify-center items-center text-center">
+                                    <p class="text-xs text-indigo-600 font-bold uppercase tracking-wider mb-2">🧠 AI Score (ความสำเร็จ)</p>
                                     <h4 class="text-3xl font-black text-indigo-700">\${latestVisit.aiScore || '-'}</h4>
                                 </div>
-                                <div class="flex-1 bg-gradient-to-br from-teal-50 to-emerald-50 p-4 rounded-xl border border-teal-100 shadow-sm flex flex-col justify-center items-center text-center">
+                                <div class="flex-1 bg-gradient-to-br from-teal-50 to-emerald-50 p-4 rounded-xl border border-teal-200 shadow-sm flex flex-col justify-center items-center text-center">
                                     <p class="text-xs text-teal-600 font-bold uppercase tracking-wider mb-2">📊 AI Cluster (กลุ่มพฤติกรรม)</p>
                                     <h4 class="text-sm font-bold text-teal-800 leading-tight">\${latestVisit.aiCluster || '-'}</h4>
                                 </div>
                             </div>
 
-                            <div class="mb-6">
-                                <h4 class="font-bold text-slate-800 mb-3 flex items-center gap-2"><span class="text-lg">💰</span> สรุปสถานะการเงิน ณ \${latestVisit.dateString || '-'}</h4>
+                            <div class="mb-6 bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                                <h4 class="font-bold text-slate-800 mb-4 flex items-center gap-2 border-b border-slate-100 pb-2"><span class="text-lg">💰</span> สรุปสถานะการเงิน ณ \${latestVisit.dateString || '-'}</h4>
                                 <div class="flex flex-col md:flex-row gap-3 w-full">
-                                    <div class="flex-1 bg-white p-3 rounded-lg border border-slate-200 shadow-sm text-center"><p class="text-[10px] text-slate-500 mb-1">สินทรัพย์รวม</p><p class="text-sm md:text-base font-bold text-emerald-600">\${fmtRev(totalAst)}</p></div>
-                                    <div class="flex-1 bg-white p-3 rounded-lg border border-slate-200 shadow-sm text-center"><p class="text-[10px] text-slate-500 mb-1">หนี้สินรวม</p><p class="text-sm md:text-base font-bold text-red-500">\${fmtRev(totalLiab)}</p></div>
-                                    <div class="flex-1 bg-white p-3 rounded-lg border border-blue-200 shadow-sm text-center bg-blue-50/30"><p class="text-[10px] text-blue-600 mb-1 font-bold">ความมั่งคั่งสุทธิ</p><p class="text-base md:text-lg font-black text-blue-700">\${fmtRev(netWorth)}</p></div>
-                                    <div class="flex-1 bg-white p-3 rounded-lg border border-slate-200 shadow-sm text-center"><p class="text-[10px] text-slate-500 mb-1">กระแสเงินสดคงเหลือ/เดือน</p><p class="text-sm md:text-base font-bold \${netCashflow >= 0 ? 'text-emerald-600' : 'text-red-500'}">\${fmtRev(netCashflow)}</p></div>
+                                    <div class="flex-1 bg-slate-50 p-3 rounded-lg border border-slate-200 text-center"><p class="text-[10px] text-slate-500 mb-1">สินทรัพย์รวม</p><p class="text-sm md:text-base font-bold text-emerald-600">\${fmtRev(totalAst)}</p></div>
+                                    <div class="flex-1 bg-slate-50 p-3 rounded-lg border border-slate-200 text-center"><p class="text-[10px] text-slate-500 mb-1">หนี้สินรวม</p><p class="text-sm md:text-base font-bold text-red-500">\${fmtRev(totalLiab)}</p></div>
+                                    <div class="flex-1 p-3 rounded-lg border border-blue-200 text-center bg-blue-50"><p class="text-[10px] text-blue-600 mb-1 font-bold">ความมั่งคั่งสุทธิ</p><p class="text-base md:text-lg font-black text-blue-700">\${fmtRev(netWorth)}</p></div>
+                                    <div class="flex-1 bg-slate-50 p-3 rounded-lg border border-slate-200 text-center"><p class="text-[10px] text-slate-500 mb-1">กระแสเงินสดคงเหลือ/เดือน</p><p class="text-sm md:text-base font-bold \${netCashflow >= 0 ? 'text-emerald-600' : 'text-red-500'}">\${fmtRev(netCashflow)}</p></div>
                                 </div>
                             </div>
 
@@ -559,7 +554,6 @@ async function openExecutiveDashboard() {
                                     <div class="p-3 overflow-y-auto custom-scrollbar flex-grow bg-white rounded-b-xl">\${invHtml}</div>
                                 </div>
                             </div>
-
                             \${progressHtml}
                         </div>
                     \`;
@@ -650,19 +644,19 @@ async function openExecutiveDashboard() {
 
                         if (tableContainer) {
                             let tableHtml = \`<table class="w-full text-[10px] md:text-xs text-right border-collapse mt-2">\`;
-                            tableHtml += \`<thead class="bg-indigo-50/50 text-indigo-800 font-bold border-y border-indigo-100"><tr>\`;
+                            tableHtml += \`<thead class="bg-indigo-50/50 text-indigo-800 font-bold border-y border-indigo-200"><tr>\`;
                             tableHtml += \`<th class="p-2.5 text-center whitespace-nowrap w-24">รหัสแผน (VN)</th>\`;
                             
                             let displayLabels = ['ความมั่งคั่งสุทธิ', 'สินทรัพย์รวม', 'หนี้สินรวม', 'กระแสเงินสด', 'AI Score'];
                             displayLabels.forEach(lbl => { tableHtml += \`<th class="p-2.5 whitespace-nowrap">\${lbl}</th>\`; });
-                            tableHtml += \`</tr></thead><tbody class="bg-white">\`;
+                            tableHtml += \`</tr></thead><tbody class="bg-white border-b border-indigo-100">\`;
 
                             const fmtTableNum = (num) => Number(num || 0).toLocaleString('th-TH', {minimumFractionDigits: 0, maximumFractionDigits: 0});
 
                             for (let i = labels.length - 1; i >= 0; i--) {
                                 let isLatest = (i === labels.length - 1);
                                 tableHtml += \`<tr class="hover:bg-slate-50 border-b border-slate-100 transition-colors">\`;
-                                tableHtml += \`<td class="p-2.5 text-center font-bold \${isLatest ? 'text-indigo-600 bg-indigo-50/20' : 'text-slate-600'} whitespace-nowrap">\${labels[i]} \${isLatest ? '<br><span class="text-[8px] bg-indigo-100 text-indigo-600 px-1.5 py-0.5 rounded-full inline-block mt-0.5">ล่าสุด</span>' : ''}</td>\`;
+                                tableHtml += \`<td class="p-2.5 text-center font-bold \${isLatest ? 'text-indigo-600 bg-indigo-50/20' : 'text-slate-600'} whitespace-nowrap">\${labels[i]} \${isLatest ? '<br><span class="text-[8px] bg-indigo-100 text-indigo-600 px-1.5 py-0.5 rounded-full inline-block mt-0.5 border border-indigo-200">ล่าสุด</span>' : ''}</td>\`;
                                 
                                 let keys = ['nw', 'ast', 'liab', 'cf', 'score'];
                                 keys.forEach((k, idx) => {
@@ -679,14 +673,14 @@ async function openExecutiveDashboard() {
                                         if (prevVal === 0) pct = currVal > 0 ? 100 : (currVal < 0 ? -100 : 0);
                                         else pct = (diff / Math.abs(prevVal)) * 100;
 
-                                        if (pct > 0) changeHtml = \`<br><span class="text-emerald-600 text-[9px] font-bold bg-emerald-50 px-1.5 py-0.5 rounded-full inline-flex items-center mt-1 border border-emerald-100">▲ +\${pct.toFixed(1)}%</span>\`;
-                                        else if (pct < 0) changeHtml = \`<br><span class="text-red-500 text-[9px] font-bold bg-red-50 px-1.5 py-0.5 rounded-full inline-flex items-center mt-1 border border-red-100">▼ \${pct.toFixed(1)}%</span>\`;
+                                        if (pct > 0) changeHtml = \`<br><span class="text-emerald-600 text-[9px] font-bold bg-emerald-50 px-1.5 py-0.5 rounded-full inline-flex items-center mt-1 border border-emerald-200">▲ +\${pct.toFixed(1)}%</span>\`;
+                                        else if (pct < 0) changeHtml = \`<br><span class="text-red-500 text-[9px] font-bold bg-red-50 px-1.5 py-0.5 rounded-full inline-flex items-center mt-1 border border-red-200">▼ \${pct.toFixed(1)}%</span>\`;
                                         else changeHtml = \`<br><span class="text-slate-400 text-[9px] inline-flex items-center mt-1">- 0.0%</span>\`;
                                     } else {
                                         changeHtml = \`<br><span class="text-slate-300 text-[9px] inline-flex items-center mt-1">ฐาน (Base)</span>\`;
                                     }
 
-                                    tableHtml += \`<td class="p-2.5 align-middle leading-tight"><span class="\${textClass}">\${displayVal}</span>\${changeHtml}</td>\`;
+                                    tableHtml += \`<td class="p-2.5 align-middle leading-tight border-l border-slate-50"><span class="\${textClass}">\${displayVal}</span>\${changeHtml}</td>\`;
                                 });
                                 tableHtml += \`</tr>\`;
                             }
@@ -725,10 +719,10 @@ async function openExecutiveDashboard() {
                 window.renderRiderInputs = function() {
                     let h = '';
                     window.currentRiders.forEach(function(r, idx) {
-                        h += '<div class="flex flex-wrap gap-2 items-end bg-white p-2 rounded border border-indigo-100 relative">';
-                        h += '<button type="button" onclick="removeRiderInput('+idx+')" class="absolute -top-2 -right-2 bg-red-100 hover:bg-red-200 text-red-600 rounded-full w-4 h-4 flex items-center justify-center text-[10px] shadow-sm no-print">×</button>';
+                        h += '<div class="flex flex-wrap gap-2 items-end bg-white p-2 rounded border border-indigo-100 relative shadow-sm">';
+                        h += '<button type="button" onclick="removeRiderInput('+idx+')" class="absolute -top-2 -right-2 bg-red-100 hover:bg-red-200 text-red-600 rounded-full w-4 h-4 flex items-center justify-center text-[10px] shadow-sm no-print border border-red-200">×</button>';
                         h += '<div class="w-32"><label class="text-[9px] font-bold text-slate-500 mb-1 block">หมวดหมู่ Rider</label>';
-                        h += '<select onchange="updateRider('+idx+', \\'prod\\', this.value)" class="text-[11px] p-1.5 border-slate-200 rounded w-full bg-slate-50">';
+                        h += '<select onchange="updateRider('+idx+', \\'prod\\', this.value)" class="text-[11px] p-1.5 border border-slate-200 rounded w-full bg-slate-50 focus:ring-1 focus:ring-indigo-500 outline-none">';
                         h += '<option value="">เลือก...</option>';
                         h += '<option value="สัญญาเพิ่มเติม-สุขภาพ" ' + (r.prod==='สัญญาเพิ่มเติม-สุขภาพ'?'selected':'') + '>สุขภาพ</option>';
                         h += '<option value="สัญญาเพิ่มเติม-โรคร้ายแรง" ' + (r.prod==='สัญญาเพิ่มเติม-โรคร้ายแรง'?'selected':'') + '>โรคร้ายแรง</option>';
@@ -736,10 +730,10 @@ async function openExecutiveDashboard() {
                         h += '<option value="สัญญาเพิ่มเติม-อุบัติเหตุ" ' + (r.prod==='สัญญาเพิ่มเติม-อุบัติเหตุ'?'selected':'') + '>อุบัติเหตุ</option>';
                         h += '<option value="อื่นๆ" ' + (r.prod==='อื่นๆ'?'selected':'') + '>อื่นๆ</option>';
                         h += '</select></div>';
-                        h += '<div class="flex-1 min-w-[100px]"><label class="text-[9px] font-bold text-slate-500 mb-1 block">ชื่อแผน Rider</label><input type="text" onchange="updateRider('+idx+', \\'planName\\', this.value)" value="'+(r.planName||'')+'" class="text-[11px] p-1.5 border-slate-200 rounded w-full bg-slate-50" placeholder="เช่น Health Fit"></div>';
-                        h += '<div class="w-20"><label class="text-[9px] font-bold text-slate-500 mb-1 block">ทุน (Rider)</label><input type="number" onchange="updateRider('+idx+', \\'sa\\', this.value)" value="'+(r.sa||'')+'" class="text-[11px] p-1.5 border-slate-200 rounded w-full bg-slate-50"></div>';
-                        h += '<div class="w-20"><label class="text-[9px] font-bold text-emerald-600 mb-1 block">FYP</label><input type="number" onchange="updateRider('+idx+', \\'fyp\\', this.value)" value="'+(r.fyp||'')+'" class="text-[11px] p-1.5 border-emerald-200 rounded w-full bg-emerald-50"></div>';
-                        h += '<div class="w-20"><label class="text-[9px] font-bold text-blue-600 mb-1 block">FYC</label><input type="number" onchange="updateRider('+idx+', \\'fyc\\', this.value)" value="'+(r.fyc||'')+'" class="text-[11px] p-1.5 border-blue-200 rounded w-full bg-blue-50"></div>';
+                        h += '<div class="flex-1 min-w-[100px]"><label class="text-[9px] font-bold text-slate-500 mb-1 block">ชื่อแผน Rider</label><input type="text" onchange="updateRider('+idx+', \\'planName\\', this.value)" value="'+(r.planName||'')+'" class="text-[11px] p-1.5 border border-slate-200 rounded w-full bg-slate-50 focus:ring-1 focus:ring-indigo-500 outline-none" placeholder="เช่น Health Fit"></div>';
+                        h += '<div class="w-20"><label class="text-[9px] font-bold text-slate-500 mb-1 block">ทุน (Rider)</label><input type="number" onchange="updateRider('+idx+', \\'sa\\', this.value)" value="'+(r.sa||'')+'" class="text-[11px] p-1.5 border border-slate-200 rounded w-full bg-slate-50 focus:ring-1 focus:ring-indigo-500 outline-none"></div>';
+                        h += '<div class="w-20"><label class="text-[9px] font-bold text-emerald-600 mb-1 block">FYP</label><input type="number" onchange="updateRider('+idx+', \\'fyp\\', this.value)" value="'+(r.fyp||'')+'" class="text-[11px] p-1.5 border border-emerald-200 rounded w-full bg-emerald-50 focus:ring-1 focus:ring-emerald-500 outline-none"></div>';
+                        h += '<div class="w-20"><label class="text-[9px] font-bold text-blue-600 mb-1 block">FYC</label><input type="number" onchange="updateRider('+idx+', \\'fyc\\', this.value)" value="'+(r.fyc||'')+'" class="text-[11px] p-1.5 border border-blue-200 rounded w-full bg-blue-50 focus:ring-1 focus:ring-blue-500 outline-none"></div>';
                         h += '</div>';
                     });
                     document.getElementById('riders_list').innerHTML = h;
@@ -855,14 +849,14 @@ async function openExecutiveDashboard() {
                         let isOkFYC = wData[i].fyc >= tgtWFYC;
                         let isOkCase = wData[i].case >= tgtWCase;
                         wHtml += \`
-                            <tr class="hover:bg-slate-50 border-b border-slate-100">
-                                <td class="py-2 px-1 border-r text-slate-600 font-bold">W\${i+1}</td>
-                                <td class="py-2 px-1 border-r text-slate-500">\${tgtWFYP.toLocaleString('th-TH',{maximumFractionDigits:0})}</td>
-                                <td class="py-2 px-1 border-r font-bold \${isOkFYP ? 'text-emerald-600':'text-amber-500'}">\${wData[i].fyp.toLocaleString('th-TH')}</td>
-                                <td class="py-2 px-1 border-r text-slate-500">\${tgtWFYC.toLocaleString('th-TH',{maximumFractionDigits:0})}</td>
-                                <td class="py-2 px-1 border-r font-bold \${isOkFYC ? 'text-blue-600':'text-amber-500'}">\${wData[i].fyc.toLocaleString('th-TH')}</td>
-                                <td class="py-2 px-1 border-r text-slate-500">\${tgtWCase.toFixed(1)}</td>
-                                <td class="py-2 px-1 font-bold \${isOkCase ? 'text-purple-600':'text-amber-500'}">\${wData[i].case}</td>
+                            <tr class="hover:bg-slate-50 border-b border-slate-100 transition">
+                                <td class="py-2.5 px-1 border-r border-slate-100 text-slate-600 font-bold">W\${i+1}</td>
+                                <td class="py-2.5 px-1 border-r border-slate-100 text-slate-500">\${tgtWFYP.toLocaleString('th-TH',{maximumFractionDigits:0})}</td>
+                                <td class="py-2.5 px-1 border-r border-slate-100 font-bold \${isOkFYP ? 'text-emerald-600':'text-amber-500'}">\${wData[i].fyp.toLocaleString('th-TH')}</td>
+                                <td class="py-2.5 px-1 border-r border-slate-100 text-slate-500">\${tgtWFYC.toLocaleString('th-TH',{maximumFractionDigits:0})}</td>
+                                <td class="py-2.5 px-1 border-r border-slate-100 font-bold \${isOkFYC ? 'text-blue-600':'text-amber-500'}">\${wData[i].fyc.toLocaleString('th-TH')}</td>
+                                <td class="py-2.5 px-1 border-r border-slate-100 text-slate-500">\${tgtWCase.toFixed(1)}</td>
+                                <td class="py-2.5 px-1 font-bold \${isOkCase ? 'text-purple-600':'text-amber-500'}">\${wData[i].case}</td>
                             </tr>
                         \`;
                     }
@@ -1014,27 +1008,27 @@ async function openExecutiveDashboard() {
                     let htmlString = '';
                     sorted.forEach(s => {
                         let isSale = s.type === 'sale';
-                        let typeBadge = isSale ? '<span class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded text-[10px] font-bold">Sale</span>' : '<span class="bg-amber-100 text-amber-700 px-2 py-0.5 rounded text-[10px] font-bold">Recruit</span>';
+                        let typeBadge = isSale ? '<span class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded text-[10px] font-bold border border-blue-200 shadow-sm">Sale</span>' : '<span class="bg-amber-100 text-amber-700 px-2 py-0.5 rounded text-[10px] font-bold border border-amber-200 shadow-sm">Recruit</span>';
                         let isNew = (s.isNewCase !== false && s.isNewCase !== 'false');
-                        let caseBadge = (!isSale || !isNew) ? '<br><span class="text-[9px] text-slate-400">(Renewal/ไม่นับเคส)</span>' : '';
+                        let caseBadge = (!isSale || !isNew) ? '<br><span class="text-[9px] text-slate-400 font-medium">(Renewal/ไม่นับเคส)</span>' : '';
                         
                         let prodHtml = '<div class="font-bold text-[11px] text-slate-800">' + (s.prod || '-') + '</div><div class="text-[10px] text-slate-500">' + (s.planName ? '('+s.planName+')' : '') + '</div>';
-                        let saHtml = '<div class="text-slate-600">' + (s.sa ? s.sa.toLocaleString('th-TH') : '-') + '</div>';
+                        let saHtml = '<div class="text-slate-600 font-medium">' + (s.sa ? s.sa.toLocaleString('th-TH') : '-') + '</div>';
                         let fypHtml = '<div class="font-bold text-emerald-600">' + (s.fyp ? s.fyp.toLocaleString('th-TH') : '0') + '</div>';
                         let fycHtml = '<div class="font-bold text-blue-600">' + (s.fyc ? s.fyc.toLocaleString('th-TH') : '0') + '</div>';
 
                         if (s.riders && s.riders.length > 0) {
                             s.riders.forEach(r => {
                                 prodHtml += '<div class="mt-1 text-[10px] text-indigo-500 font-bold border-t border-slate-100 pt-1">+ ' + (r.prod || 'Rider') + '</div><div class="text-[9px] text-slate-400">' + (r.planName ? '('+r.planName+')' : '') + '</div>';
-                                saHtml += '<div class="mt-1 text-[10px] text-slate-400 border-t border-slate-100 pt-1">' + (r.sa ? r.sa.toLocaleString('th-TH') : '-') + '</div>';
-                                fypHtml += '<div class="mt-1 text-[10px] text-emerald-500 border-t border-slate-100 pt-1">' + (r.fyp ? r.fyp.toLocaleString('th-TH') : '0') + '</div>';
-                                fycHtml += '<div class="mt-1 text-[10px] text-blue-500 border-t border-slate-100 pt-1">' + (r.fyc ? r.fyc.toLocaleString('th-TH') : '0') + '</div>';
+                                saHtml += '<div class="mt-1 text-[10px] text-slate-400 border-t border-slate-100 pt-1 font-medium">' + (r.sa ? r.sa.toLocaleString('th-TH') : '-') + '</div>';
+                                fypHtml += '<div class="mt-1 text-[10px] text-emerald-500 border-t border-slate-100 pt-1 font-bold">' + (r.fyp ? r.fyp.toLocaleString('th-TH') : '0') + '</div>';
+                                fycHtml += '<div class="mt-1 text-[10px] text-blue-500 border-t border-slate-100 pt-1 font-bold">' + (r.fyc ? r.fyc.toLocaleString('th-TH') : '0') + '</div>';
                             });
                         }
 
                         htmlString += \`
                             <tr class="hover:bg-slate-50 transition border-b border-slate-100">
-                                <td class="px-4 py-3 align-top text-slate-600">\${new Date(s.date).toLocaleDateString('th-TH',{day:'numeric',month:'short',year:'2-digit'})}</td>
+                                <td class="px-4 py-3 align-top text-slate-600 font-medium">\${new Date(s.date).toLocaleDateString('th-TH',{day:'numeric',month:'short',year:'2-digit'})}</td>
                                 <td class="px-4 py-3 align-top text-center">\${typeBadge}\${caseBadge}</td>
                                 <td class="px-4 py-3 align-top font-bold text-slate-800">\${s.name}</td>
                                 <td class="px-4 py-3 align-top">\${prodHtml}</td>
@@ -1042,8 +1036,8 @@ async function openExecutiveDashboard() {
                                 <td class="px-4 py-3 align-top text-right">\${fypHtml}</td>
                                 <td class="px-4 py-3 align-top text-right">\${fycHtml}</td>
                                 <td class="px-4 py-3 align-top text-center no-print space-x-1">
-                                    <button onclick="editSaleRecord('\${s.id}')" class="text-amber-500 hover:text-amber-600 text-xs bg-amber-50 hover:bg-amber-100 px-2 py-1 rounded">แก้ไข</button>
-                                    <button onclick="deleteSaleRecord('\${s.id}')" class="text-red-400 hover:text-red-600 text-xs bg-red-50 hover:bg-red-100 px-2 py-1 rounded">ลบ</button>
+                                    <button onclick="editSaleRecord('\${s.id}')" class="text-amber-600 hover:text-amber-700 text-xs bg-amber-50 hover:bg-amber-100 border border-amber-200 px-2 py-1 rounded transition shadow-sm font-medium">แก้ไข</button>
+                                    <button onclick="deleteSaleRecord('\${s.id}')" class="text-red-500 hover:text-red-700 text-xs bg-red-50 hover:bg-red-100 border border-red-200 px-2 py-1 rounded transition shadow-sm font-medium">ลบ</button>
                                 </td>
                             </tr>
                         \`;
@@ -1056,15 +1050,15 @@ async function openExecutiveDashboard() {
                     if(plannerData.checklists.length === 0) { c.innerHTML = '<p class="text-xs text-slate-500 italic text-center mt-4">ยังไม่มีเป้าหมาย</p>'; return; }
                     let sorted = [...plannerData.checklists].sort((a,b) => { if(a.done !== b.done) return a.done ? 1 : -1; return new Date(a.deadline) - new Date(b.deadline); });
                     c.innerHTML = sorted.map(t => \`
-                        <div class="p-2 border-b border-slate-100 flex justify-between items-center group">
-                            <div class="flex items-center gap-2 overflow-hidden">
+                        <div class="p-2.5 border border-slate-100 rounded-lg mb-2 flex justify-between items-center group bg-white shadow-sm transition hover:shadow-md">
+                            <div class="flex items-center gap-3 overflow-hidden">
                                 <input type="checkbox" id="chk_\${t.id}" class="task-cb rounded border-slate-300 flex-shrink-0 no-print" \${t.done ? 'checked' : ''} onchange="toggleCheck('\${t.id}', this.checked)">
                                 <div class="truncate">
-                                    <label for="chk_\${t.id}" class="text-sm cursor-pointer select-none \${t.done ? 'text-slate-400 line-through' : 'text-slate-700 font-medium'}">\${t.text}</label>
-                                    <p class="text-[9px] \${t.done ? 'text-slate-400' : 'text-red-500'}">⏳ \${t.deadline || 'ไม่ระบุ'}</p>
+                                    <label for="chk_\${t.id}" class="text-sm cursor-pointer select-none \${t.done ? 'text-slate-400 line-through' : 'text-slate-700 font-bold'} transition-colors">\${t.text}</label>
+                                    <p class="text-[9px] \${t.done ? 'text-slate-400' : 'text-red-500 font-bold'} mt-0.5">⏳ \${t.deadline || 'ไม่ระบุ'}</p>
                                 </div>
                             </div>
-                            <button onclick="deleteCheck('\${t.id}')" class="text-[10px] text-red-400 opacity-0 group-hover:opacity-100 transition px-2 no-print">ลบ</button>
+                            <button onclick="deleteCheck('\${t.id}')" class="text-[10px] text-red-500 bg-red-50 hover:bg-red-100 border border-red-200 rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition shadow-sm font-medium no-print">ลบ</button>
                         </div>
                     \`).join('');
                 }
@@ -1184,31 +1178,6 @@ async function openExecutiveDashboard() {
                     printWin.document.close();
                 };
 
-                window.exportBackup = function() {
-                    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(plannerData, null, 2));
-                    const dl = document.createElement('a');
-                    dl.setAttribute("href", dataStr);
-                    dl.setAttribute("download", "FA_Planner_Backup.json");
-                    document.body.appendChild(dl); dl.click(); document.body.removeChild(dl);
-                };
-
-                window.importBackup = function() { document.getElementById('fileImport').click(); };
-                document.getElementById('fileImport').addEventListener('change', function(e) {
-                    const file = e.target.files[0]; if(!file) return;
-                    const reader = new FileReader();
-                    reader.onload = function(evt) {
-                        try {
-                            const imported = JSON.parse(evt.target.result);
-                            if(imported.targets && imported.salesLedger) {
-                                if(confirm("ต้องการเขียนทับข้อมูล Planner ด้วยไฟล์ Backup นี้ใช่หรือไม่?")) {
-                                    plannerData = imported; saveData(); initUI(); alert("✅ นำเข้าข้อมูลสำเร็จ!");
-                                }
-                            } else { alert("❌ รูปแบบไฟล์ไม่ถูกต้อง"); }
-                        } catch(err) { alert("❌ ไม่สามารถอ่านไฟล์ JSON ได้"); }
-                    };
-                    reader.readAsText(file); e.target.value = '';
-                });
-
                 let chart1, chart2;
 
                 function drawCharts(internalMixObj) {
@@ -1265,4 +1234,4 @@ async function openExecutiveDashboard() {
             `;
         }
     }
-}
+};

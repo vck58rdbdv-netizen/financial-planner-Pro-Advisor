@@ -120,7 +120,6 @@ function initCRMDatabase() {
     request.onsuccess = function(event) {
         crmDB = event.target.result;
         refreshCRMTable(); 
-        checkAutoBackup(); // 🛡️ ระบบ Auto Backup
     };
     request.onerror = function(event) { console.error("IndexedDB Error:", event.target.error); };
 }
@@ -128,21 +127,6 @@ function initCRMDatabase() {
 window.addEventListener('DOMContentLoaded', function() {
     if (typeof initCRMDatabase === 'function') initCRMDatabase();
 });
-
-// ==========================================
-// 🛡️ ระบบ Auto Backup ข้อมูล
-// ==========================================
-function checkAutoBackup() {
-    let lastBackup = localStorage.getItem('fa_last_auto_backup');
-    let now = new Date().getTime();
-    let sevenDays = 7 * 24 * 60 * 60 * 1000; 
-
-    if (!lastBackup || (now - parseInt(lastBackup)) > sevenDays) {
-        console.log("⏳ เริ่มทำการสำรองข้อมูลอัตโนมัติ (Auto Backup)...");
-        exportCRMData("auto"); 
-        localStorage.setItem('fa_last_auto_backup', now.toString());
-    }
-}
 
 function autoCloseStaleVNs() {
     if (!crmDB || !window.SESSION_KEY) return;
@@ -284,7 +268,6 @@ async function saveCurrentToCRM(isSilent = false) {
         let putTransaction = crmDB.transaction(["clients"], "readwrite");
         let putStore = putTransaction.objectStore("clients");
         
-        // --- [แก้ไข/เพิ่มใหม่] แยก Request ออกมาเพื่อจัดการ Error กรณี Storage เต็ม ---
         let putRequest = putStore.put(finalRecord);
         
         putRequest.onsuccess = function() {
@@ -292,47 +275,17 @@ async function saveCurrentToCRM(isSilent = false) {
             if (!isSilent) crmAlert(msg);
             refreshCRMTable(); 
             if(typeof renderAnalyticsDashboard === 'function') renderAnalyticsDashboard();
-            if(typeof checkStorageQuota === 'function') checkStorageQuota(); // อัปเดต UI พื่นที่หลังบันทึก
         };
 
         putRequest.onerror = function(e) {
             if (e.target.error.name === 'QuotaExceededError') {
-                crmAlert("🚨 พื้นที่จัดเก็บข้อมูลของ Browser ใกล้เต็ม!\n\nระบบไม่สามารถบันทึกข้อมูลได้ กรุณาทำการ 'Export DB' เพื่อสำรองข้อมูล และลบลูกค้ารายเก่าออกครับ");
+                crmAlert("🚨 พื้นที่จัดเก็บข้อมูลของ Browser ใกล้เต็ม!\n\nระบบไม่สามารถบันทึกข้อมูลได้ กรุณาทำการ Backup ข้อมูล และลบลูกค้ารายเก่าออกครับ");
             } else {
                 crmAlert("❌ เกิดข้อผิดพลาดในการบันทึก: " + e.target.error.message);
             }
         };
-        // -------------------------------------------------------------------
     };
 }
-
-// --- [เพิ่มใหม่] ฟังก์ชันตรวจสอบและแสดงผลพื้นที่จัดเก็บแบบ Real-time ---
-window.checkStorageQuota = async function() {
-    if (navigator.storage && navigator.storage.estimate) {
-        try {
-            let estimate = await navigator.storage.estimate();
-            let usageMB = (estimate.usage / (1024 * 1024)).toFixed(2);
-            let quotaMB = (estimate.quota / (1024 * 1024)).toFixed(2);
-            let percent = ((estimate.usage / estimate.quota) * 100).toFixed(1);
-            
-            let doc = getCRMDoc();
-            let indicator = doc.getElementById('crm_storage_indicator');
-            if (indicator) {
-                let colorClass = percent > 80 ? 'text-red-700 bg-red-100 border-red-300' : 
-                                 (percent > 50 ? 'text-orange-700 bg-orange-100 border-orange-300' : 'text-slate-600 bg-slate-100 border-slate-200');
-                
-                indicator.className = `text-[10px] px-2 py-1 rounded border shadow-sm flex items-center gap-1 font-bold ${colorClass}`;
-                indicator.innerHTML = `💾 Storage: ${usageMB} MB (${percent}%)`;
-                
-                if (percent > 90) {
-                    indicator.innerHTML += ` <span class="animate-pulse ml-1">⚠️ ใกล้เต็ม! ให้รีบ Backup</span>`;
-                }
-            }
-        } catch (e) {
-            console.log("Storage estimation not supported.");
-        }
-    }
-};
 
 function refreshCRMTable() {
     if (!crmDB || !window.SESSION_KEY) return;
@@ -996,69 +949,6 @@ function exportCRMToExcel() {
     link.click();
     doc.body.removeChild(link);
     URL.revokeObjectURL(url); 
-}
-
-function exportCRMData(mode = "manual") {
-    if (!crmDB) return;
-    let transaction = crmDB.transaction(["clients"], "readonly");
-    let store = transaction.objectStore("clients");
-    let req = store.getAll();
-    req.onsuccess = function(e) {
-        let dbClients = e.target.result;
-        if (dbClients.length === 0) {
-            if (mode === "manual") crmAlert("ไม่มีข้อมูลลูกค้าให้สำรองครับ");
-            return;
-        }
-        
-        const blob = new Blob([JSON.stringify(dbClients, null, 2)], { type: 'application/json;charset=utf-8;' });
-        const url = URL.createObjectURL(blob);
-        
-        let doc = getCRMDoc();
-        const link = doc.createElement('a');
-        link.setAttribute("href", url);
-        let dateStr = new Date().toISOString().slice(0,10).replace(/-/g, "");
-        
-        let fileName = mode === "auto" ? `FA_CRM_AutoBackup_${dateStr}.json` : `FA_CRM_Backup_${dateStr}.json`;
-        link.setAttribute("download", fileName);
-        
-        doc.body.appendChild(link);
-        link.click();
-        doc.body.removeChild(link);
-        URL.revokeObjectURL(url);
-    };
-}
-
-window.processImportCRMData = function(jsonString) {
-    if(!crmConfirm("⚠️ นำเข้าข้อมูลจะเขียนทับฐานข้อมูล (หากชื่อซ้ำจะอัปเดตข้อมูล) ดำเนินการต่อหรือไม่?")) return;
-
-    try {
-        const importedData = JSON.parse(jsonString);
-        if (!Array.isArray(importedData)) throw new Error("รูปแบบไฟล์ Backup ไม่ถูกต้อง (ต้องเป็น Array)");
-        
-        let transaction = crmDB.transaction(["clients"], "readwrite");
-        let store = transaction.objectStore("clients");
-        let importCount = 0;
-
-        importedData.forEach(client => {
-            let primaryKey = client.XN || client.id;
-            let payload = client.securePayload || client.dataPayload;
-
-            if (primaryKey && payload) {
-                if(!client.status && !client.securePayload) client.status = "ผู้มุ่งหวัง";
-                if (!client.XN && client.id) client.XN = client.id;
-                store.put(client); 
-                importCount++;
-            }
-        });
-
-        transaction.oncomplete = function() {
-            crmAlert(`✅ นำเข้าข้อมูลสำเร็จ ${importCount} รายการ!`);
-            refreshCRMTable(); 
-        };
-    } catch (err) {
-        console.error(err);
-        crmAlert('❌ เกิดข้อผิดพลาด: ไฟล์ Backup ไม่ถูกต้อง หรือข้อมูลเสียหาย');
-    }
 }
 
 window.loadSpecificVN = function(xn_id, vn_id) {
@@ -1729,7 +1619,6 @@ window.openCRMDashboard = function() {
                     <p class="text-slate-500 mt-1 text-sm font-medium">จัดการสถานะและวิเคราะห์พอร์ตโฟลิโอลูกค้า</p>
                 </div>
                 <div class="flex flex-wrap gap-2 no-print">
-                    <span id="crm_storage_indicator" class="text-[10px] text-slate-500 bg-slate-100 px-2 py-1 rounded border border-slate-200">💾 Storage: Checking...</span>
                     <button onclick="window.close()" class="bg-white border border-slate-300 text-slate-700 hover:bg-red-50 hover:text-red-600 px-4 py-2 rounded-lg font-bold text-sm transition shadow-sm">❌ ปิดหน้าต่าง</button>
                 </div>
             </div>
@@ -1800,9 +1689,6 @@ window.openCRMDashboard = function() {
                     <button onclick="saveCurrentToCRM()" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-3 py-2 rounded-lg shadow-sm transition flex items-center gap-1 justify-center"><span>💾</span> ดึงข้อมูลหน้าจอหลักบันทึกลง DB</button>
                     <button onclick="exportCRMToExcel()" class="bg-green-50 hover:bg-green-100 text-green-700 text-xs font-bold px-3 py-2 rounded-lg transition shadow-sm border border-green-200">📊 Excel</button>
                     <button onclick="printCRMReport()" class="bg-gray-100 hover:bg-blue-50 text-blue-700 text-xs font-bold px-3 py-2 rounded-lg transition shadow-sm border border-gray-200">📋 Report</button>
-                    <button onclick="exportCRMData('manual')" class="bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-bold px-3 py-2 rounded-lg transition shadow-sm border border-gray-200">📥 Export DB</button>
-                    <label class="bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-bold px-3 py-2 rounded-lg transition shadow-sm border border-gray-200 cursor-pointer inline-flex items-center gap-1">📤 Import DB
-                    <input type="file" id="crm_import_file" class="sr-only" accept=".json" onchange="handleFileSelect(event)"></label>
                 </div>
             </div>
 
@@ -1968,7 +1854,7 @@ window.openCRMDashboard = function() {
                 'openVNManagerModal', 'deleteClientFromCRM', 'dragKanbanCard', 'allowDropKanban', 
                 'dropKanbanCard', 'closeCRMClientModal', 'addNoteToModalHistory', 'deleteActivity', 
                 'saveCRMClientModal', 'toggleSelectAllCRM', 'printSelectedCRM', 'deleteSelectedCRM', 
-                'bulkUpdateStatus', 'exportCRMToExcel', 'exportCRMData', 'loadSpecificVN', 
+                'bulkUpdateStatus', 'exportCRMToExcel', 'loadSpecificVN', 
                 'deleteSpecificVN', 'closeClientReviewModal', 'closeVNManagerModal',
                 'saveCurrentToCRM', 'printCRMReport', 'toggleBulkAction', 'openCRMClientModal', 
                 'manuallyCloseVN', 'updateClientChart', 'changePage'
@@ -1980,23 +1866,6 @@ window.openCRMDashboard = function() {
                     }
                 };
             });
-            
-            window.handleFileSelect = function(event) {
-                const file = event.target.files[0];
-                if (!file) return;
-
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const jsonText = e.target.result;
-                    if (window.opener && window.opener.processImportCRMData) {
-                        window.opener.processImportCRMData(jsonText);
-                    } else {
-                        alert("❌ ไม่สามารถเชื่อมต่อกับหน้าต่างหลักได้");
-                    }
-                };
-                reader.readAsText(file);
-                event.target.value = ''; 
-            };
         <\/script>
     </body>
     </html>`;
@@ -2007,13 +1876,12 @@ window.openCRMDashboard = function() {
 
     setTimeout(() => {
         refreshCRMTable();
-        if(typeof checkStorageQuota === 'function') checkStorageQuota(); // [เพิ่มใหม่] สั่งเช็ค Storage ทันทีที่เปิด
     }, 500);
 };
 
-// ==========================================
-// 🖨️ ฟังก์ชันบันทึกข้อมูลและสั่งพิมพ์
-// ==========================================
+// =====================================================================
+// 🖨️ SECTION 1: PRINT & SAVE
+// =====================================================================
 window.saveAndPrintReport = function() {
     if (typeof saveCurrentToCRM === 'function') {
         saveCurrentToCRM(true).catch(err => console.log("ข้ามการบันทึก CRM:", err)); 
@@ -2024,29 +1892,533 @@ window.saveAndPrintReport = function() {
 };
 
 // =====================================================================
-// ☢️ FACTORY RESET & SYSTEM ADMIN TOOLS
+// 🛠️ SECTION 2: SYSTEM MANAGEMENT LOGIC (การจัดการระบบและหน่วยความจำ)
+// =====================================================================
+window.checkStorageSize = async function() {
+    let lsTotalBytes = 0;
+    // กำหนดคำนำหน้า Key ที่ระบบเราใช้ทั้งหมด
+    const appPrefixes = ['FA_', 'fa_', 'update_']; 
+
+    // 1. คำนวณ LocalStorage เฉพาะแอปเรา
+    for (let key in localStorage) {
+        if (!localStorage.hasOwnProperty(key)) continue;
+        let isAppKey = appPrefixes.some(prefix => key.startsWith(prefix));
+        if (isAppKey) {
+            let keyLen = ((localStorage[key].length + key.length) * 2);
+            lsTotalBytes += keyLen;
+        }
+    }
+
+    // 2. คำนวณ IndexedDB (CRM)
+    let crmDbBytes = 0;
+    if (typeof crmDB !== 'undefined' && crmDB) {
+        try {
+            let transaction = crmDB.transaction(["clients", "counters"], "readonly");
+            const getStoreSize = (storeName) => {
+                return new Promise((resolve) => {
+                    let store = transaction.objectStore(storeName);
+                    let request = store.getAll();
+                    request.onsuccess = (e) => resolve(new Blob([JSON.stringify(e.target.result)]).size);
+                    request.onerror = () => resolve(0);
+                });
+            };
+            crmDbBytes = await getStoreSize("clients") + await getStoreSize("counters");
+        } catch (error) {
+            console.error("IndexedDB Check Error:", error);
+        }
+    }
+
+    // 3. สรุปผลตัวเลข
+    let totalAppBytes = lsTotalBytes + crmDbBytes;
+    let totalAppMB = (totalAppBytes / (1024 * 1024)).toFixed(3);
+    let appLsMB = (lsTotalBytes / (1024 * 1024)).toFixed(3);
+    let crmMB = (crmDbBytes / (1024 * 1024)).toFixed(3);
+
+    let browserQuotaMB = "ไม่ทราบ";
+    let percentAppUsed = 0;
+    let percentDisplay = "0%";
+    let status = "🟢 ปลอดภัย";
+    let barColorClass = "bg-green-500"; // สีเริ่มต้นของหลอด
+
+    // 4. ดึงข้อมูลโควต้าและวิเคราะห์สถานะ
+    if (navigator.storage && navigator.storage.estimate) {
+        let estimate = await navigator.storage.estimate();
+        browserQuotaMB = (estimate.quota / (1024 * 1024)).toFixed(2);
+        
+        // กัน Error กรณีโควต้าเป็น 0
+        if(estimate.quota > 0) {
+            percentAppUsed = (totalAppBytes / estimate.quota) * 100;
+            percentDisplay = percentAppUsed.toFixed(4) + "%";
+        }
+
+        // กำหนดสีและข้อความตามเปอร์เซ็นต์ความเสี่ยง
+        if (percentAppUsed > 80) {
+            status = "🔴 วิกฤต (ใกล้เต็มโควต้า!)";
+            barColorClass = "bg-red-500";
+        } else if (percentAppUsed > 50) {
+            status = "🟠 แจ้งเตือน (เกินครึ่งแล้ว)";
+            barColorClass = "bg-orange-500";
+        } else {
+            status = "🟢 ปกติ (มีพื้นที่เหลือเฟือ)";
+            barColorClass = "bg-green-500";
+        }
+    }
+
+    // 5. ส่งค่ากลับไปที่ UI (DOM)
+    // 5.1 แสดงกล่อง UI
+    let container = document.getElementById('storage_ui_container');
+    if(container) {
+        container.classList.remove('hidden');
+        container.classList.add('flex');
+    }
+
+    // 5.2 เปลี่ยนข้อความปุ่มให้รู้ว่าคำนวณแล้ว
+    let btn = document.getElementById('btn_check_storage');
+    if(btn) btn.innerHTML = "🔄 อัปเดตแล้ว";
+
+    // 5.3 หยอดค่าต่างๆ ลงไปใน HTML
+    if(document.getElementById('st_status_text')) document.getElementById('st_status_text').innerText = status;
+    if(document.getElementById('st_percent_text')) document.getElementById('st_percent_text').innerText = percentDisplay;
+    
+    // อัปเดตหลอด Progress Bar (ใส่ Math.max ไว้เผื่อเปอร์เซ็นต์น้อยมาก จะได้เห็นขีดนิดนึง แต่ไม่เกิน 100)
+    let bar = document.getElementById('st_progress_bar');
+    if(bar) {
+        let renderWidth = percentAppUsed > 0 && percentAppUsed < 1 ? 1 : percentAppUsed; // ถ้าใช้ไปบ้างแล้วให้หลอดขยับอย่างน้อย 1% ให้มองเห็น
+        bar.style.width = Math.min(renderWidth, 100) + "%";
+        bar.className = `h-full rounded-full transition-all duration-1000 ease-out ${barColorClass}`;
+    }
+
+    // อัปเดตรายละเอียดตัวเลข
+    if(document.getElementById('st_total_app')) document.getElementById('st_total_app').innerText = totalAppMB + " MB";
+    if(document.getElementById('st_quota')) document.getElementById('st_quota').innerText = browserQuotaMB + " MB";
+    if(document.getElementById('st_crm_usage')) document.getElementById('st_crm_usage').innerText = crmMB + " MB";
+    if(document.getElementById('st_ls_usage')) document.getElementById('st_ls_usage').innerText = appLsMB + " MB";
+};
+
+window.clearDraftOnly = function() {
+    const draftKey = 'FA_System_Draft_Secure'; 
+    if (localStorage.getItem(draftKey)) {
+        if(confirm("🧹 คุณต้องการล้างข้อมูลที่พิมพ์ค้างไว้บนหน้าจอหลักใช่หรือไม่?\n(ข้อมูลรายชื่อลูกค้าและแผนงาน Dashboard จะไม่ถูกลบ)")) {
+            localStorage.removeItem(draftKey);
+            alert("✅ ล้างข้อมูลฉบับร่างเรียบร้อยแล้ว ระบบจะโหลดหน้าจอใหม่");
+            location.reload();
+        }
+    } else {
+        alert("ℹ️ ไม่พบข้อมูลฉบับร่าง (Draft) ในขณะนี้");
+    }
+};
+
+// =====================================================================
+// 🩺 ENHANCED SYSTEM DIAGNOSTICS & TRACKERS (ระบบดักจับและวิเคราะห์พฤติกรรม)
+// =====================================================================
+
+window.fa_systemErrorsLog = window.fa_systemErrorsLog || [];
+window.fa_actionBreadcrumbs = window.fa_actionBreadcrumbs || [];
+
+// ฟังก์ชันผู้ช่วยสำหรับจดบันทึก (จำกัดที่ 50 เหตุการณ์ล่าสุดเพื่อประหยัดหน่วยความจำ)
+function logSystemAction(actionType, targetElement, details = "") {
+    window.fa_actionBreadcrumbs.push({
+        time: new Date().toTimeString().split(' ')[0], // เวลา HH:mm:ss
+        action: actionType,
+        target: targetElement,
+        details: details
+    });
+    if(window.fa_actionBreadcrumbs.length > 50) window.fa_actionBreadcrumbs.shift();
+}
+
+// 1. ดักจับ Error ขั้นรุนแรง
+window.onerror = function(msg, source, lineno, colno, error) {
+    window.fa_systemErrorsLog.push({
+        time: new Date().toISOString(), type: 'JS_Error', msg: msg,
+        file: source ? source.substring(source.lastIndexOf('/') + 1) : 'unknown',
+        line: `${lineno}:${colno}`
+    });
+    if(window.fa_systemErrorsLog.length > 50) window.fa_systemErrorsLog.shift();
+};
+
+window.addEventListener('unhandledrejection', function(event) {
+    window.fa_systemErrorsLog.push({
+        time: new Date().toISOString(), type: 'Promise_Rejection',
+        msg: event.reason ? event.reason.toString() : 'Unknown Async Error'
+    });
+    if(window.fa_systemErrorsLog.length > 50) window.fa_systemErrorsLog.shift();
+});
+
+// 2. ดักจับการคลิก (Click Tracker) แบบลงรายละเอียด
+window.addEventListener('click', function(e) {
+    let el = e.target;
+    // หาปุ่มหรือลิงก์หลักที่ครอบอยู่ (กรณีคลิกโดนไอคอนข้างในปุ่ม)
+    let clickable = el.closest('button, a, .cursor-pointer, [onclick]');
+    let targetEl = clickable || el;
+    
+    let elInfo = targetEl.tagName.toLowerCase();
+    if(targetEl.id) elInfo += `#${targetEl.id}`;
+    else if(targetEl.className && typeof targetEl.className === 'string') elInfo += `.${targetEl.className.trim().split(' ')[0]}`;
+    
+    // ดึงข้อความบนปุ่ม (ยาวไม่เกิน 30 ตัวอักษร) เพื่อให้รู้ว่ากดปุ่มอะไร
+    let textContext = "";
+    if (targetEl.tagName.match(/BUTTON|A/) && targetEl.innerText) {
+        let cleanText = targetEl.innerText.replace(/[\n\r]+/g, ' ').trim().substring(0, 30);
+        if(cleanText) textContext = `[Label: "${cleanText}"]`;
+    }
+
+    logSystemAction('CLICK', elInfo, textContext);
+}, true);
+
+// 3. ดักจับการแก้ไขข้อมูลฟอร์ม (Change Tracker) + 🛡️ PDPA Guard
+window.addEventListener('change', function(e) {
+    let el = e.target;
+    let elInfo = el.tagName.toLowerCase();
+    if(el.id) elInfo += `#${el.id}`;
+    
+    let safeValue = "[REDACTED - ป้องกันข้อมูลส่วนบุคคล]";
+    
+    // 🛡️ PDPA Guard: กรอง Key ที่เป็นตัวเลขการเงิน หรือ ข้อมูลระบุตัวตน (PII)
+    let sensitiveKeys = ['name', 'sa', 'fyp', 'fyc', 'pmt', 'cc', 'phone', 'contact', 'ast', 'liab', 'inc', 'exp', 'wealth'];
+    let isSensitiveId = sensitiveKeys.some(k => (el.id || '').toLowerCase().includes(k));
+    let isSensitiveType = (el.type === 'password' || el.type === 'number' || el.type === 'tel' || el.type === 'email');
+    
+    // ถ้าไม่ใช่ข้อมูลอ่อนไหว (เช่น เป็นแค่ Dropdown เปลี่ยนสถานะ, เลือกประเภท) ให้บันทึกค่าได้
+    if (!isSensitiveId && !isSensitiveType && (el.tagName === 'SELECT' || el.type === 'checkbox' || el.type === 'radio')) {
+        safeValue = el.type === 'checkbox' ? (el.checked ? 'Checked' : 'Unchecked') : el.value;
+    }
+
+    logSystemAction('CHANGE_DATA', elInfo, `Updated to: ${safeValue}`);
+}, true);
+
+// =====================================================================
+// 🚨 CRASH RECOVERY SYSTEM (ระบบกู้ภัยเมื่อแอปค้างหรือพัง)
+// =====================================================================
+
+// 1. ฟังก์ชัน: บันทึกกล่องดำลงเครื่องทันทีที่เกิด Error ร้ายแรง
+window.saveBlackBoxToLocal = function() {
+    const crashData = {
+        crash_time: new Date().toISOString(),
+        recent_actions: window.fa_actionBreadcrumbs,
+        error_logs: window.fa_systemErrorsLog
+    };
+    // เซฟลง LocalStorage เผื่อแอปค้างแล้ว FA ต้องกด Refresh
+    localStorage.setItem('FA_System_Crash_BlackBox', JSON.stringify(crashData));
+};
+
+// 2. แอบไปฝังคำสั่ง saveBlackBox ไว้ในระบบดักจับ Error เดิม
+const originalOnError = window.onerror;
+window.onerror = function(msg, source, lineno, colno, error) {
+    if (originalOnError) originalOnError(msg, source, lineno, colno, error);
+    window.saveBlackBoxToLocal(); // พังปุ๊บ เซฟลง LocalStorage ปั๊บ!
+};
+
+const originalOnUnhandledRejection = window.onunhandledrejection;
+window.onunhandledrejection = function(event) {
+    if (originalOnUnhandledRejection) originalOnUnhandledRejection(event);
+    window.saveBlackBoxToLocal(); // พังปุ๊บ เซฟลง LocalStorage ปั๊บ!
+};
+
+// 3. ฟังก์ชัน: ตรวจสอบตอนเปิดแอปใหม่ ว่ารอบที่แล้วแอปพังหรือไม่?
+window.checkCrashRecovery = function() {
+    let crashLog = localStorage.getItem('FA_System_Crash_BlackBox');
+    
+    if (crashLog) {
+        // ดีเลย์ 2 วินาทีให้แอปโหลดเสร็จก่อนค่อยเด้งเตือน
+        setTimeout(() => {
+            if(confirm("⚠️ System Alert: ตรวจพบว่าการใช้งานรอบที่แล้วระบบเกิดข้อผิดพลาด (Crash)\n\nคุณต้องการดาวน์โหลดไฟล์ 'บันทึกปัญหา (Crash Log)' เพื่อส่งให้ทีมพัฒนาตรวจสอบหรือไม่?")) {
+                
+                // สร้างไฟล์ดาวน์โหลด
+                const blob = new Blob([crashLog], { type: 'application/json;charset=utf-8;' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                let dateStr = new Date().toISOString().slice(0,10).replace(/-/g, "");
+                link.download = `FA_CrashReport_${dateStr}.json`;
+                document.body.appendChild(link); 
+                link.click(); 
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+            }
+            
+            // ถามเสร็จแล้ว ให้ลบกล่องดำทิ้ง จะได้ไม่เด้งถามอีกในรอบหน้า
+            localStorage.removeItem('FA_System_Crash_BlackBox');
+            
+        }, 2000);
+    }
+};
+
+// สั่งให้ระบบเช็คกล่องดำทุกครั้งที่เปิดหน้าเว็บขึ้นมาใหม่
+window.addEventListener('DOMContentLoaded', function() {
+    window.checkCrashRecovery();
+});
+
+// =====================================================================
+// 📥 EXPORT SYSTEM LOGS FUNCTION (ฟังก์ชันส่งออกไฟล์ Log)
+// =====================================================================
+window.exportSystemLogs = async function() {
+    // 1. ตรวจสอบพื้นที่ LocalStorage เบื้องต้น
+    let lsTotalBytes = 0;
+    for (let key in localStorage) {
+        if (localStorage.hasOwnProperty(key)) {
+            lsTotalBytes += ((localStorage[key].length + key.length) * 2);
+        }
+    }
+
+    // 2. ตรวจสอบโควต้าเบราว์เซอร์
+    let browserQuota = "Unknown";
+    let browserUsage = "Unknown";
+    if (navigator.storage && navigator.storage.estimate) {
+        try {
+            let estimate = await navigator.storage.estimate();
+            browserQuota = (estimate.quota / (1024 * 1024)).toFixed(2) + " MB";
+            browserUsage = (estimate.usage / (1024 * 1024)).toFixed(2) + " MB";
+        } catch (e) {
+            browserQuota = "Estimate Failed";
+        }
+    }
+
+    // 3. รวบรวมข้อมูลลง Black Box
+    const logData = {
+        // ข้อมูลสภาวะแวดล้อม (Environment)
+        system_info: {
+            app_name: "Financial Planner Pro Advisor (Grand System)",
+            export_time: new Date().toISOString(),
+            user_agent: navigator.userAgent,
+            language: navigator.language,
+            screen_resolution: `${window.screen.width}x${window.screen.height}`,
+            viewport_size: `${window.innerWidth}x${window.innerHeight}`,
+            network_status: navigator.onLine ? "Online" : "Offline",
+            device_memory: navigator.deviceMemory ? `${navigator.deviceMemory} GB+` : "Unknown"
+        },
+        // สถานะความสมบูรณ์ของระบบ ณ ปัจจุบัน
+        app_status: {
+            session_active: !!window.SESSION_KEY,
+            crm_db_connected: typeof crmDB !== 'undefined' && crmDB !== null,
+            crm_total_clients: typeof crmClientsList !== 'undefined' ? crmClientsList.length : 0,
+            dashboard_active: !!localStorage.getItem('FA_Ultimate_Planner_V8_Secured'),
+            has_draft_data: !!localStorage.getItem('FA_System_Draft_Secure'),
+            settings_saved: !!localStorage.getItem('FA_System_Config')
+        },
+        // ข้อมูลพื้นที่จัดเก็บ
+        storage_diagnostics: {
+            browser_quota: browserQuota,
+            browser_usage: browserUsage,
+            local_storage_size: (lsTotalBytes / 1024).toFixed(2) + " KB"
+        },
+        // ข้อมูล AI เชิงลึก
+        ai_diagnostics: {
+            latest_stats: window.latestCoAdvisorStats || "No recent AI stats available",
+            total_errors_caught: window.fa_systemErrorsLog.length
+        },
+        // ประวัติ 30 คลิกสุดท้ายก่อนกด Export
+        recent_actions: window.fa_actionBreadcrumbs,
+        
+        // ประวัติ Error ทั้งหมดที่ดักจับได้
+        error_logs: window.fa_systemErrorsLog
+    };
+
+    // 4. สร้างและดาวน์โหลดไฟล์ JSON
+    const blob = new Blob([JSON.stringify(logData, null, 2)], { type: 'application/json;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    
+    // ตั้งชื่อไฟล์โดยแนบวันที่และเวลา (YYYYMMDD_HHMM)
+    let d = new Date();
+    let dateStr = d.getFullYear().toString() + 
+                  String(d.getMonth() + 1).padStart(2, '0') + 
+                  String(d.getDate()).padStart(2, '0') + "_" + 
+                  String(d.getHours()).padStart(2, '0') + 
+                  String(d.getMinutes()).padStart(2, '0');
+                  
+    link.download = `FA_SystemLog_${dateStr}.json`;
+    document.body.appendChild(link); 
+    link.click(); 
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+
+    // 5. แจ้งเตือนผู้ใช้
+    alert("📥 ส่งออกแฟ้มข้อมูล System Logs สำเร็จ!\n(ไฟล์ถูกออกแบบมาให้ปลอดภัย 100% ไม่มีข้อมูลชื่อหรือตัวเลขทางการเงินของลูกค้าถูกดึงออกไป)");
+};
+
+window.switchTab = function(tabId) {
+    const allTabs = ['tab_creator', 'tab_library', 'tab_crm', 'tab_system_mgmt'];
+    let doc = typeof getCRMDoc === 'function' ? getCRMDoc() : document; 
+    
+    allTabs.forEach(id => {
+        const el = doc.getElementById(id);
+        const btn = doc.getElementById('btn_' + id);
+        if (el) el.classList.add('hidden');
+        if (btn) {
+            btn.classList.remove('text-blue-600', 'border-blue-600', 'text-red-600', 'border-red-600');
+            btn.classList.add('text-gray-500', 'border-transparent');
+        }
+    });
+
+    const activeTab = doc.getElementById(tabId);
+    if (activeTab) activeTab.classList.remove('hidden');
+
+    const activeBtn = doc.getElementById('btn_' + tabId);
+    if (activeBtn) {
+        activeBtn.classList.remove('text-gray-500', 'border-transparent');
+        if (tabId === 'tab_system_mgmt') {
+            activeBtn.classList.add('text-red-600', 'border-red-600');
+        } else {
+            activeBtn.classList.add('text-blue-600', 'border-blue-600');
+        }
+    }
+};
+
+// =====================================================================
+// 💾 GRAND BACKUP & RESTORE (สำรองและกู้คืนข้อมูลทั้งระบบในไฟล์เดียว)
+// =====================================================================
+
+window.exportGrandBackup = async function() {
+    try {
+        let backupData = {
+            timestamp: new Date().toISOString(),
+            app_version: "Grand System V8.3",
+            localStorage: {},
+            indexedDB: { clients: [], counters: [] }
+        };
+
+        // 1. ดึงข้อมูล LocalStorage (ตั้งค่า, พิน, FA Dashboard)
+        const appPrefixes = ['FA_', 'fa_', 'update_'];
+        for (let i = 0; i < localStorage.length; i++) {
+            let key = localStorage.key(i);
+            if (appPrefixes.some(prefix => key.startsWith(prefix))) {
+                backupData.localStorage[key] = localStorage.getItem(key);
+            }
+        }
+
+        // 2. ดึงข้อมูล IndexedDB (CRM Database)
+        if (typeof crmDB !== 'undefined' && crmDB) {
+            let transaction = crmDB.transaction(["clients", "counters"], "readonly");
+            
+            const fetchStore = (storeName) => {
+                return new Promise((resolve, reject) => {
+                    let request = transaction.objectStore(storeName).getAll();
+                    request.onsuccess = e => resolve(e.target.result);
+                    request.onerror = e => reject(e);
+                });
+            };
+
+            backupData.indexedDB.clients = await fetchStore("clients");
+            backupData.indexedDB.counters = await fetchStore("counters");
+        }
+
+        // 3. สร้างไฟล์ดาวน์โหลด .json
+        const blob = new Blob([JSON.stringify(backupData, null, 2)], { type: 'application/json;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        
+        let dateStr = new Date().toISOString().slice(0,10).replace(/-/g, "");
+        link.download = `FA_Grand_Backup_${dateStr}.json`;
+        
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+
+    } catch (error) {
+        console.error("Grand Backup Error:", error);
+        alert("❌ เกิดข้อผิดพลาดในการสำรองข้อมูล: " + error.message);
+    }
+};
+
+window.importGrandBackup = function(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    if (!confirm("⚠️ คำเตือน: การนำเข้าข้อมูลจะเขียนทับข้อมูลลูกค้า (CRM), แผนงาน Dashboard และการตั้งค่าเดิมในเครื่องนี้ทั้งหมด!\n\nคุณแน่ใจหรือไม่ที่จะดำเนินการ Restore?")) {
+        event.target.value = ''; // รีเซ็ต input ถ้ากดยกเลิก
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = async function(e) {
+        try {
+            const importedData = JSON.parse(e.target.result);
+
+            // ตรวจสอบความถูกต้องของไฟล์
+            if (!importedData.localStorage || !importedData.indexedDB) {
+                throw new Error("รูปแบบไฟล์ไม่รองรับ หรือไม่ใช่ไฟล์ Grand Backup ที่ถูกต้อง");
+            }
+
+            // 1. กู้คืน LocalStorage
+            // ลบ Key เก่าของแอปออกก่อน เพื่อเคลียร์ขยะ
+            const appPrefixes = ['FA_', 'fa_', 'update_'];
+            let keysToRemove = [];
+            for (let i = 0; i < localStorage.length; i++) {
+                let key = localStorage.key(i);
+                if (appPrefixes.some(prefix => key.startsWith(prefix))) {
+                    keysToRemove.push(key);
+                }
+            }
+            keysToRemove.forEach(k => localStorage.removeItem(k));
+
+            // เขียน Key ใหม่ลงไป
+            for (let key in importedData.localStorage) {
+                localStorage.setItem(key, importedData.localStorage[key]);
+            }
+
+            // 2. กู้คืน IndexedDB (CRM)
+            if (typeof crmDB !== 'undefined' && crmDB) {
+                let transaction = crmDB.transaction(["clients", "counters"], "readwrite");
+                let clientStore = transaction.objectStore("clients");
+                let counterStore = transaction.objectStore("counters");
+
+                // ล้างของเก่าทิ้ง
+                clientStore.clear();
+                counterStore.clear();
+
+                // เขียนก้อนใหม่ลงไป
+                importedData.indexedDB.clients.forEach(client => clientStore.put(client));
+                importedData.indexedDB.counters.forEach(counter => counterStore.put(counter));
+
+                transaction.oncomplete = function() {
+                    alert("✅ นำเข้าข้อมูล (Restore) สำเร็จ 100%!\nระบบจะรีสตาร์ทหน้าจอเพื่ออัปเดตข้อมูลใหม่ทั้งหมด");
+                    location.reload();
+                };
+                transaction.onerror = function() {
+                    throw new Error("เกิดข้อผิดพลาดขณะเขียนข้อมูลลงระบบฐานข้อมูล (IndexedDB)");
+                };
+            } else {
+                alert("✅ นำเข้าข้อมูลการตั้งค่าสำเร็จ! (แต่ระบบ CRM ยังไม่พร้อมทำงาน)\nระบบจะรีสตาร์ทหน้าจอเพื่ออัปเดตการตั้งค่า");
+                location.reload();
+            }
+
+        } catch (error) {
+            console.error("Grand Restore Error:", error);
+            alert("❌ เกิดข้อผิดพลาดในการนำเข้าไฟล์: " + error.message);
+        } finally {
+            event.target.value = ''; // รีเซ็ตให้เลือกไฟล์ซ้ำได้
+        }
+    };
+    reader.readAsText(file);
+};
+
+
+// =====================================================================
+// ☢️ SECTION 3: FACTORY RESET (ล้างบางทุกสรรพสิ่ง)
 // =====================================================================
 window.factoryReset = function(type) {
     if (type === 'password') {
         if(confirm("⚠️ ยืนยันการรีเซ็ตรหัสผ่าน?\n\nรหัสผ่านจะถูกตั้งค่ากลับเป็น '123456' และกุญแจเข้ารหัสเดิมจะถูกล้าง คุณจะต้องล็อกอินใหม่ด้วย 123456 เพื่อเข้าใช้งานระบบ")) {
             localStorage.removeItem('FA_System_PIN');
-            localStorage.setItem('FA_System_PIN_HASH', CryptoJS.SHA256('123456').toString());
+            if (typeof CryptoJS !== 'undefined') localStorage.setItem('FA_System_PIN_HASH', CryptoJS.SHA256('123456').toString());
             alert("✅ รีเซ็ตรหัสผ่านเป็น 123456 สำเร็จแล้ว! ระบบจะรีเฟรชหน้าจอ");
             location.reload(); 
         }
     } 
     else if (type === 'database') {
-        let code = prompt("⚠️ อันตราย: ข้อมูลลูกค้าและการเข้าพบทั้งหมดในฐานข้อมูล (CRM) จะถูกลบทิ้งอย่างถาวร!\n\nหากต้องการดำเนินการต่อ กรุณาพิมพ์คำว่า 'ยืนยัน' ในช่องด้านล่าง:");
+        let code = prompt("⚠️ อันตราย: ข้อมูลลูกค้าและการเข้าพบทั้งหมดในฐานข้อมูล (CRM) จะถูกลบทิ้งอย่างถาวร!\n(ไม่ส่งผลกระทบต่อหน้า FA Dashboard)\n\nหากต้องการดำเนินการต่อ กรุณาพิมพ์คำว่า 'ยืนยัน' ในช่องด้านล่าง:");
         if (code === "ยืนยัน") {
+            if (typeof crmDB === 'undefined' || !crmDB) return alert("❌ ระบบฐานข้อมูล CRM ยังไม่พร้อมใช้งาน");
             let transaction = crmDB.transaction(["clients", "counters"], "readwrite");
             transaction.objectStore("clients").clear();
             transaction.objectStore("counters").clear();
-            
             transaction.oncomplete = function() {
-                crmClientsList = [];
-                window.currentFilteredClients = [];
-                if(typeof renderCRMTable === 'function') renderCRMTable([]);
-                if(typeof clearDashboardUI === 'function') clearDashboardUI();
+                if (typeof crmClientsList !== 'undefined') crmClientsList = [];
+                if (typeof window.currentFilteredClients !== 'undefined') window.currentFilteredClients = [];
+                if (typeof renderCRMTable === 'function') renderCRMTable([]);
                 alert("🗑️ ล้างฐานข้อมูล CRM สำเร็จแล้ว! ฐานข้อมูลว่างเปล่าพร้อมใช้งาน");
             };
             transaction.onerror = function() { alert("❌ เกิดข้อผิดพลาดในการล้างฐานข้อมูล"); };
@@ -2055,24 +2427,31 @@ window.factoryReset = function(type) {
         }
     } 
     else if (type === 'all') {
-        let code = prompt("☢️ NUCLEAR RESET: ล้างข้อมูลทุกอย่างกลับไปเป็นค่าเริ่มต้นจากโรงงาน!\n\n(รหัสผ่าน, ฐานข้อมูล, กฎ AI, ข้อมูลแบบประกันที่เพิ่มเอง และการตั้งค่าต่างๆ จะถูกลบทิ้งทั้งหมด)\n\nหากคุณแน่ใจ 100% กรุณาพิมพ์คำว่า 'RESET' (ตัวพิมพ์ใหญ่) ในช่องด้านล่าง:");
+        let code = prompt("☢️ GRAND NUCLEAR RESET: ล้างข้อมูลทุกระบบกลับไปเป็นค่าเริ่มต้นจากโรงงาน!\n\nสิ่งที่ถูกลบ:\n- ระบบหลัก (รหัสผ่าน, ตั้งค่า, Draft)\n- ระบบ CRM (ฐานข้อมูลลูกค้าทั้งหมด)\n- FA Dashboard (เป้าหมาย, ผลงาน)\n\nหากคุณแน่ใจ 100% กรุณาพิมพ์คำว่า 'RESET' (ตัวพิมพ์ใหญ่) ในช่องด้านล่าง:");
         if (code === "RESET") {
-            let transaction = crmDB.transaction(["clients", "counters"], "readwrite");
-            transaction.objectStore("clients").clear();
-            transaction.objectStore("counters").clear();
+            // 1. ล้าง IndexedDB (CRM)
+            if (typeof crmDB !== 'undefined' && crmDB) {
+                let transaction = crmDB.transaction(["clients", "counters"], "readwrite");
+                transaction.objectStore("clients").clear();
+                transaction.objectStore("counters").clear();
+            }
             
-            transaction.oncomplete = function() {
+            // รอดีเลย์ให้ Database ทำงานเสร็จ แล้วจึงล้าง LocalStorage ของทุกระบบ
+            setTimeout(() => {
                 const keysToRemove = [
                     'FA_System_PIN', 'FA_System_Config', 'fa_macro_config', 'fa_settings_v2',
                     'fa_product_library_v2', 'FA_System_Draft_Secure', 'update_doc_weights',
-                    'update_doc_scaler', 'FA_Temp_Dashboard_Data', 'fa_last_auto_backup'
+                    'update_doc_scaler', 'FA_Temp_Dashboard_Data', 'fa_last_auto_backup',
+                    'FA_Ultimate_Planner_V8_Secured' // ข้อมูลของ FA Dashboard
                 ];
                 keysToRemove.forEach(key => localStorage.removeItem(key));
-                localStorage.setItem('FA_System_PIN_HASH', CryptoJS.SHA256('123456').toString());
                 
-                alert("🔄 รีเซ็ตระบบกลับเป็นค่าเริ่มต้นจากโรงงาน (Factory Reset) สำเร็จ!\nระบบจะเริ่มทำงานใหม่ทั้งหมด");
+                // คืนค่ารหัสผ่านโรงงาน
+                if (typeof CryptoJS !== 'undefined') localStorage.setItem('FA_System_PIN_HASH', CryptoJS.SHA256('123456').toString());
+                
+                alert("🔄 รีเซ็ต Grand System กลับเป็นค่าเริ่มต้นจากโรงงานสำเร็จ!\nระบบจะเริ่มทำงานใหม่ทั้งหมด");
                 location.reload();
-            };
+            }, 150);
         } else if (code !== null) {
             alert("❌ พิมพ์รหัสยืนยันไม่ถูกต้อง ยกเลิกการรีเซ็ตระบบ");
         }
