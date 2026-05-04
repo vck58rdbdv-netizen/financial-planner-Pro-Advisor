@@ -293,6 +293,27 @@
                 font-size: 16px !important;
             }
         }
+        /* ========================================= */
+        /* 🚀 iPad & Mobile Performance Optimization */
+        /* ========================================= */
+        @media (max-width: 1024px) {
+            /* 1. ปิด Backdrop Blur บนอุปกรณ์พกพาหากเครื่องเริ่มร้อน (ใช้สีทึบแบบมี Opacity แทน) */
+            .backdrop-blur-md {
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+                background-color: rgba(255, 255, 255, 0.08) !important;
+            }
+
+            /* 2. ปิดเอฟเฟกต์แว่นขยาย / ซูม ตอนพิมพ์บน iPad */
+            input, select, textarea {
+                font-size: 16px !important;
+            }
+
+            /* 3. ทำให้การไถหน้าจอในกล่องที่มี Scrollbar ลื่นปรื๊ด (Momentum Scrolling) */
+            .custom-scrollbar, .overflow-y-auto, .overflow-x-auto {
+                -webkit-overflow-scrolling: touch !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -356,7 +377,7 @@
 <div id="mlLoadingOverlay" class="hidden fixed inset-0 bg-gray-900/90 backdrop-blur-md z-[10001] flex flex-col items-center justify-center transition-opacity duration-300">
     <div class="w-20 h-20 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mb-6"></div>
     <h2 class="text-2xl font-bold text-white mb-2 tracking-wide">AI Predictive Engine is Running...</h2>
-    <p id="mlLoadingText" class="text-cyan-300 font-medium text-sm animate-pulse">Initializing Machine Learning Models</p>
+    <p id="mlLoadingText" class="text-cyan-300 font-medium text-sm drop-shadow-md">Initializing Machine Learning Models</p>
     <div class="mt-8 w-64 bg-gray-700 rounded-full h-2 overflow-hidden">
         <div id="mlProgressBar" class="bg-gradient-to-r from-cyan-400 to-blue-600 h-full w-0 transition-all duration-300"></div>
     </div>
@@ -861,9 +882,9 @@
 <!-- ================= [NEW] HOME SCREEN ================= -->
 <div id="homeScreen" class="hidden fixed inset-0 bg-gray-900 z-[100] flex-col items-center justify-center p-6 overflow-y-auto min-h-screen">
     
-    <!-- วงกลมตกแต่ง Background ให้ดูมีมิติ -->
-    <div class="absolute top-[-10%] left-[-10%] w-96 h-96 bg-blue-600 rounded-full mix-blend-multiply filter blur-[128px] opacity-40 animate-pulse-soft pointer-events-none"></div>
-    <div class="absolute bottom-[-10%] right-[-10%] w-96 h-96 bg-purple-600 rounded-full mix-blend-multiply filter blur-[128px] opacity-40 animate-pulse-soft pointer-events-none"></div>
+    <!-- วงกลมตกแต่ง Background ประหยัดพลังงาน (iPad Optimized) -->
+    <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] rounded-full pointer-events-none" style="background: radial-gradient(circle, rgba(37,99,235,0.15) 0%, rgba(37,99,235,0) 70%); transform: translateZ(0);"></div>
+    <div class="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] rounded-full pointer-events-none" style="background: radial-gradient(circle, rgba(147,51,234,0.15) 0%, rgba(147,51,234,0) 70%); transform: translateZ(0);"></div>
 
     <div class="relative z-10 w-full max-w-4xl mx-auto flex flex-col items-center text-center animate-fade-in">
         
@@ -882,13 +903,13 @@
             </div>
         </div>
 
-        <!-- 3 Action Cards (Grid) -->
+        <!-- 3 Action Cards (Grid) - iPad Optimized (No Animations) -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full mt-4">
             
             <!-- Card 1: คู่มือระบบ -->
-            <button onclick="openManualOnly()" class="group bg-white/10 hover:bg-white/20 border border-white/10 hover:border-white/30 backdrop-blur-md p-8 rounded-3xl transition-all duration-300 transform hover:-translate-y-2 text-left flex flex-col justify-between h-full shadow-xl">
+            <button onclick="openManualOnly()" class="bg-white/10 hover:bg-white/20 border border-white/10 hover:border-white/30 p-8 rounded-3xl text-left flex flex-col justify-between h-full shadow-lg">
                 <div>
-                    <div class="w-14 h-14 bg-emerald-500/20 text-emerald-400 rounded-full flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
+                    <div class="w-14 h-14 bg-emerald-500/20 text-emerald-400 rounded-full flex items-center justify-center text-2xl mb-6">
                         📖
                     </div>
                     <h3 class="text-xl font-bold text-white mb-2">คู่มือ / แนะนำระบบ</h3>
@@ -897,15 +918,15 @@
                     </p>
                 </div>
                 <div class="mt-6 flex items-center text-emerald-400 text-sm font-bold">
-                    เปิดอ่าน <span class="ml-2 group-hover:ml-3 transition-all">→</span>
+                    เปิดอ่าน <span class="ml-2">→</span>
                 </div>
             </button>
 
             <!-- Card 2: ประเมินการเงิน (Main App) -->
-            <button onclick="goToAssessment()" class="group bg-gradient-to-b from-blue-600/20 to-indigo-900/40 hover:from-blue-500/30 hover:to-indigo-800/50 border border-blue-500/30 hover:border-blue-400/50 backdrop-blur-md p-8 rounded-3xl transition-all duration-300 transform hover:-translate-y-2 text-left flex flex-col justify-between h-full shadow-2xl relative overflow-hidden">
-                <div class="absolute top-0 right-0 p-4 opacity-10 text-6xl group-hover:scale-110 transition-transform duration-500">⚙️</div>
+            <button onclick="goToAssessment()" class="bg-gradient-to-b from-blue-600/20 to-indigo-900/40 hover:from-blue-500/30 hover:to-indigo-800/50 border border-blue-500/30 hover:border-blue-400/50 p-8 rounded-3xl text-left flex flex-col justify-between h-full shadow-lg relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-4 opacity-10 text-6xl">⚙️</div>
                 <div class="relative z-10">
-                    <div class="w-14 h-14 bg-blue-500/20 text-blue-400 rounded-full flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
+                    <div class="w-14 h-14 bg-blue-500/20 text-blue-400 rounded-full flex items-center justify-center text-2xl mb-6">
                         📝
                     </div>
                     <h3 class="text-xl font-bold text-white mb-2">ระบบประเมินการเงิน</h3>
@@ -914,22 +935,21 @@
                     </p>
                 </div>
                 <div class="relative z-10 mt-6 flex items-center text-blue-400 text-sm font-bold">
-                    เริ่มต้นใช้งาน <span class="ml-2 group-hover:ml-3 transition-all">→</span>
+                    เริ่มต้นใช้งาน <span class="ml-2">→</span>
                 </div>
             </button>
 
             <!-- Card 3: ตั้งค่าระบบ -->
-            <!-- เปลี่ยน onclick จาก openSettings() เป็น requireAuthForSettings() -->
-            <button onclick="requireAuthForSettings()" class="group bg-white/10 hover:bg-white/20 border border-white/10 hover:border-white/30 backdrop-blur-md p-8 rounded-3xl transition-all duration-300 transform hover:-translate-y-2 text-left flex flex-col justify-between h-full shadow-xl">
+            <button onclick="requireAuthForSettings()" class="bg-white/10 hover:bg-white/20 border border-white/10 hover:border-white/30 p-8 rounded-3xl text-left flex flex-col justify-between h-full shadow-lg">
                 <div>
-                    <div class="w-14 h-14 bg-purple-500/20 text-purple-400 rounded-full flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
+                    <div class="w-14 h-14 bg-purple-500/20 text-purple-400 rounded-full flex items-center justify-center text-2xl mb-6">
                         ⚙️
                     </div>
                     <h3 class="text-xl font-bold text-white mb-2">ตั้งค่าระบบ</h3>
                     <p class="text-sm text-gray-400 line-clamp-3">จัดการข้อมูลผู้จัดทำ ตั้งค่ารหัสผ่าน ฐานข้อมูลลูกค้า (CRM) และการจำลองเศรษฐศาสตร์</p>
                 </div>
                 <div class="mt-6 flex items-center text-purple-400 text-sm font-bold">
-                    จัดการระบบ <span class="ml-2 group-hover:ml-3 transition-all">→</span>
+                    จัดการระบบ <span class="ml-2">→</span>
                 </div>
             </button>
 
@@ -1841,7 +1861,7 @@
             </div>
             
             <div class="text-center">
-                <div class="text-blue-500 text-2xl animate-pulse">➔</div>
+                <div class="text-blue-500 text-2xl font-bold">➔</div>
                 <div id="ml_leap_value" class="text-green-400 font-bold text-[11px]">+0.0%</div>
             </div>
             
