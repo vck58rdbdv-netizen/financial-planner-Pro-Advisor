@@ -181,7 +181,7 @@ async function saveCurrentToCRM(isSilent = false) {
     if (!clientName) return (!isSilent && crmAlert("⚠️ กรุณาระบุ 'ชื่อ-สกุล' ของลูกค้าก่อนบันทึกครับ"));
 
     let netWorth = typeof parseNum === 'function' ? parseNum(document.getElementById('val_networth')?.innerText || 0) : 0;
-    let aiScore = document.getElementById('ml_prob_proposed') ? document.getElementById('ml_prob_proposed').innerText : "-";
+    let aiScore = document.getElementById('ml_prob_current') ? document.getElementById('ml_prob_current').innerText : "-";
     let clusterBox = document.getElementById('profile_cluster');
     let aiCluster = clusterBox ? clusterBox.innerText.split('\n')[0].trim() : "-";
     
