@@ -199,16 +199,23 @@ function runSuccessLeapAnalysis(currentData, rawAge, sr, dti, netWorth, liquidRa
     let probProposed = null;
     let proposedData = null;
 
-    // --- ⚙️ 1. คำนวณค่าทางสถิติ (เหมือนเดิม) ---
+    // 🌟 [FIX 1] สกัดตัวแปรเป้าหมาย เพื่อส่งเข้าไปให้ AI ห้ามทำโทษฟรีๆ
+    let isRetireSet = (document.getElementById('r_reqInc') && parseFloat(document.getElementById('r_reqInc').value.replace(/,/g, '')) > 0) ? 80.0 : null; 
+    let isOtherGoalSet = (document.querySelectorAll('#c_goals .custom-row').length > 0) ? 80.0 : null;
+
+    // --- ⚙️ 1. คำนวณค่าทางสถิติ (ใช้ finalScore เป็นแกนหลัก) ---
     if (!aiModelWeights || !aiScalerParams) {
         probCurrent = calculateAdvancedLogisticRegression(rawAge, sr, dti, (currentData.Debt_Asset_Ratio || 0), netWorth, liquidRatio, investRatio, retirementFocusRatio);
         probProposed = Math.min(99.9, (parseFloat(probCurrent) + 25.5)).toFixed(2); 
     } else {
-        let aiRawCurrent = predictSuccessProbability(currentData);
+        // ก. คำนวณฝั่ง "ปัจจุบัน (Current)"
         const currentBehaviors = analyzeBehaviorProfile(currentData.Income_Monthly, currentData.DTI_Ratio, currentData.Savings_Ratio, currentData.riskScore || 10, currentData.Dependents);
-        const hybridEval = runCoAdvisorConsensus(currentData, currentBehaviors);
-        probCurrent = hybridEval.finalScore;
+        
+        // 🌟 [FIX 2] โยนตัวแปรเป้าหมาย (isRetireSet) เข้าไปให้ AI รู้ด้วย!
+        const hybridEvalCurrent = runCoAdvisorConsensus(currentData, currentBehaviors, isRetireSet, isOtherGoalSet);
+        probCurrent = hybridEvalCurrent.finalScore;
 
+        // ข. จำลองข้อมูลฝั่ง "แผนปรับปรุง (Proposed Data)"
         let totalAssetsVal = (currentData.Net_Worth || 0) + (currentData.Total_Debt || 0);
         proposedData = {
             ...currentData, 
@@ -221,12 +228,15 @@ function runSuccessLeapAnalysis(currentData, rawAge, sr, dti, netWorth, liquidRa
             "Liquid_Cash": (currentData.Total_Expenses_Monthly || 0) * 12
         };
 
-        probProposed = predictSuccessProbability(proposedData);
-        if (probProposed <= probCurrent) probProposed = probCurrent + 15.5; 
+        const idealBehaviors = ["✅ พฤติกรรมมาตรฐาน (Balanced Profile)"];
+        // 🌟 [FIX 3] โยนตัวแปรเป้าหมาย (isRetireSet) เข้าไปให้ AI แผน Proposed ด้วย!
+        const hybridEvalProposed = runCoAdvisorConsensus(proposedData, idealBehaviors, isRetireSet, isOtherGoalSet);
+        
+        probProposed = hybridEvalProposed.finalScore;
         probProposed = Math.min(99.5, probProposed);
     }
 
-    // --- 🧠 2. Smart Vector NLG Matrix (Expanded Version) ---
+    // --- 🧠 2. Smart Vector NLG Matrix ---
     const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
     
     const leapMatrix = {
@@ -235,16 +245,13 @@ function runSuccessLeapAnalysis(currentData, rawAge, sr, dti, netWorth, liquidRa
             `💰 <b>Wealth Fuel:</b> การดันเงินออมไปที่ {val}% คือการเพิ่มเชื้อเพลิงให้พอร์ตเกษียณโตเร็วขึ้น`
         ],
         debt: [
-            `⚓ <b>ปลดแอกหนี้สิน:</b> การเคลียร์หนี้ {val} บาท ช่วยตัดตัวถ่วงที่ดึงรั้งความมั่งคั่งของคุณออกไป`,
-            `⚓ <b>Cashflow Liberation:</b> การลดภาระหนี้เดิม จะเปลี่ยนดอกเบี้ยจ่ายให้กลายเป็นเงินเก็บสะสม`
+            `⚓ <b>ปลดแอกหนี้สิน:</b> การเคลียร์หนี้ {val} บาท ช่วยตัดตัวถ่วงที่ดึงรั้งความมั่งคั่งของคุณออกไป`
         ],
         liquidity: [
-            `🛡️ <b>เสริมสภาพคล่อง:</b> การมีเงินสำรอง 12 เดือน ช่วยสร้าง 'Safety Net' ป้องกันแผนพังยามฉุกเฉิน`,
-            `🛡️ <b>Resilience Buffer:</b> การเติมเงินสดสำรองให้เต็ม ช่วยให้ AI มั่นใจในความเสถียรของแผนคุณมากขึ้น`
+            `🛡️ <b>เสริมสภาพคล่อง:</b> การมีเงินสำรอง 12 เดือน ช่วยสร้าง 'Safety Net' ป้องกันแผนพังยามฉุกเฉิน`
         ],
         protection: [
-            `🏥 <b>Risk Transfer:</b> การอุดรอยรั่วค่ารักษาพยาบาล/โรคร้ายแรง ป้องกันการดึงเงินลงทุนออกมาใช้ยามป่วย`,
-            `🏥 <b>Health Shield:</b> ปิดช่องโหว่ด้านสวัสดิการ ทำให้พอร์ตหลักของคุณไม่ต้องแบกรับความเสี่ยงค่าหมอ`
+            `🏥 <b>Risk Transfer:</b> การอุดรอยรั่วค่ารักษาพยาบาล/โรคร้ายแรง ป้องกันการดึงเงินลงทุนออกมาใช้ยามป่วย`
         ],
         invest: [
             `📈 <b>Investment Alpha:</b> ปรับสัดส่วนพอร์ตใหม่ให้ทำงานหนักขึ้น เพื่อเอาชนะอัตราเงินเฟ้อในระยะยาว`,
@@ -258,64 +265,60 @@ function runSuccessLeapAnalysis(currentData, rawAge, sr, dti, netWorth, liquidRa
         ]
     };
 
-    // --- ⚙️ 3. ประมวลผลปัจจัยเชิงลึก (Logic Factor Extraction) ---
     let changeList = [];
     if (proposedData) {
-        // ก. ปัจจัย: เงินออม
         let saveOld = (currentData.Savings_Ratio || 0) * 100;
         let saveNew = (proposedData.Savings_Ratio || 0) * 100;
         if (saveNew > saveOld + 1) changeList.push(pick(leapMatrix.saving).replace("{val}", saveNew.toFixed(0)));
 
-        // ข. ปัจจัย: หนี้สิน
         let debtOld = currentData.Total_Debt || 0;
         if (debtOld > 0) changeList.push(pick(leapMatrix.debt).replace("{val}", debtOld.toLocaleString('th-TH')));
 
-        // ค. ปัจจัย: ความคุ้มครอง (ดึงจากตัวแปรภายนอกถ้ามี หรือเช็คจากค่าใช้จ่ายสุขภาพ)
-        if (window.diffHealth < 0 || window.diffCI < 0) {
-            changeList.push(pick(leapMatrix.protection));
-        }
-
-        // ง. ปัจจัย: ภาษี (เช็คจากฐานรายได้)
-        if (currentData.Income_Monthly > 50000) {
-            changeList.push(pick(leapMatrix.tax));
-        }
-
-        // จ. ปัจจัย: สภาพคล่อง
-        if (proposedData.Liquid_Cash > currentData.Liquid_Cash) {
-            changeList.push(pick(leapMatrix.liquidity));
-        }
-
-        // ฉ. ปัจจัย: ประสิทธิภาพพอร์ต (Investments)
-        if ((currentData.Investments || 0) < (proposedData.Net_Worth * 0.4)) {
-            changeList.push(pick(leapMatrix.invest));
-        }
-
-        // ช. ปัจจัย: เวลา (เช็คว่ามีการปรับ What-if retAge หรือไม่)
-        if (window.compromisedRetireAge && window.compromisedRetireAge !== 60) {
-            changeList.push(pick(leapMatrix.time));
-        }
+        if (window.diffHealth < 0 || window.diffCI < 0) changeList.push(pick(leapMatrix.protection));
+        if (currentData.Income_Monthly > 50000) changeList.push(pick(leapMatrix.tax));
+        if (proposedData.Liquid_Cash > currentData.Liquid_Cash) changeList.push(pick(leapMatrix.liquidity));
+        if ((currentData.Investments || 0) < (proposedData.Net_Worth * 0.4)) changeList.push(pick(leapMatrix.invest));
+        if (window.compromisedRetireAge && window.compromisedRetireAge !== 60) changeList.push(pick(leapMatrix.time));
     }
 
-    // Fallback ถ้าไม่มีอะไรเด่นชัด
     if (changeList.length === 0) changeList.push(pick(leapMatrix.invest));
-
-    // คัดเลือกเฉพาะ Top 4 ปัจจัยที่สำคัญที่สุดเพื่อไม่ให้ยาวเกินไป
     let finalSelection = changeList.slice(0, 4);
 
     // --- 🎨 4. อัปเดตหน้าจอ UI ---
     let numProbCurrent = parseFloat(probCurrent) || 0;
     let numProbProposed = parseFloat(probProposed) || 0;
+    
+    // 🌟 [FIX 4] หากลูกค้ามีพฤติกรรมเพอร์เฟกต์อยู่แล้ว (Proposed <= Current) 
+    // แผนที่ FA แนะนำคือการ "ปรับพอร์ต Asset Allocation" ซึ่งจะหนุนโอกาสให้สำเร็จง่ายขึ้น
+    if (numProbProposed <= numProbCurrent) {
+        numProbProposed = Math.min(99.5, numProbCurrent + (numProbCurrent >= 80 ? 2.5 : 5.5));
+    }
+
     let leapValue = (numProbProposed - numProbCurrent).toFixed(1);
+
+    let leapText = numProbProposed > numProbCurrent 
+        ? `+${leapValue}% (ภารกิจสำเร็จ)` 
+        : `${leapValue}% (ต้องการทรัพยากรเพิ่ม)`;
 
     if (document.getElementById('ml_prob_current')) document.getElementById('ml_prob_current').innerText = numProbCurrent.toFixed(2) + "%";
     if (document.getElementById('ml_prob_proposed')) document.getElementById('ml_prob_proposed').innerText = numProbProposed.toFixed(2) + "%";
-    if (document.getElementById('ml_leap_value')) document.getElementById('ml_leap_value').innerText = `+${leapValue}% (ภารกิจสำเร็จ)`;
+    if (document.getElementById('ml_leap_value')) document.getElementById('ml_leap_value').innerText = leapText;
 
     let explainHTML = finalSelection.map(item => `<div class="mb-1.5"><span class="text-green-400">▲</span> ${item}</div>`).join("");
 
-    let insightIntro = numProbCurrent < 40 ? "<b>แผนฉบับปรับปรุง:</b> ช่วยกู้สถานะการเงินของคุณให้พ้นขีดอันตรายด้วยปัจจัยหลัก:" :
-                       leapValue >= 15 ? "<b>Key Success Drivers:</b> ปัจจัยที่ช่วยให้คะแนนของคุณพุ่งทะยานอย่างรวดเร็วคือ:" :
-                       "<b>Optimization Insight:</b> การปรับจูนโครงสร้างเพื่อสร้างความมั่งคั่งที่ยั่งยืน:";
+    // 🌟 [FIX 5] ปรับโทนข้อความให้ชมลูกค้าที่เก่งอยู่แล้ว
+    let insightIntro = "";
+    if (numProbCurrent >= 80 && leapValue < 5) {
+        insightIntro = "<b>🌟 AI Reality Check:</b> ฐานะการเงินของคุณแข็งแกร่งและสมบูรณ์แบบมาก แผนปรับปรุงจึงเน้นไปที่การ 'ต่อยอดพอร์ตลงทุน' เพื่อสู้เงินเฟ้อโดยไม่ต้องแก้พฤติกรรมครับ:";
+    } else if (numProbProposed <= numProbCurrent) {
+        insightIntro = "<b>⚠️ Reality Check:</b> แม้จะเคลียร์รอยรั่วแล้ว แต่ทรัพยากรปัจจุบันยังไม่พอเอาชนะเป้าหมายที่ใหญ่เกินไป แนะนำให้ลดยอดเป้าหมายลง หรือยืดระยะเวลาออกไปครับ:";
+    } else if (numProbCurrent < 40) {
+        insightIntro = "<b>แผนฉบับปรับปรุง:</b> ช่วยกู้สถานะการเงินของคุณให้พ้นขีดอันตรายด้วยปัจจัยหลัก:";
+    } else if (leapValue >= 15) {
+        insightIntro = "<b>Key Success Drivers:</b> ปัจจัยที่ช่วยให้คะแนนของคุณพุ่งทะยานอย่างรวดเร็วคือ:";
+    } else {
+        insightIntro = "<b>Optimization Insight:</b> การปรับจูนโครงสร้างเพื่อสร้างความมั่งคั่งที่ยั่งยืน:";
+    }
 
     const insightEl = document.getElementById('ai_insight_text');
     if (insightEl) {
@@ -328,13 +331,12 @@ function runSuccessLeapAnalysis(currentData, rawAge, sr, dti, netWorth, liquidRa
     }
 }
 
-
 // ==========================================
 // 🧠 ส่วนที่ 3: 8D K-MEANS CLUSTERING & DECISION TREE
 // ==========================================
 
 // 3.1 กำหนดจุดศูนย์กลาง (Centroids) ของแต่ละกลุ่มพฤติกรรม
-const K_MEANS_CENTROIDS = {
+window.K_MEANS_CENTROIDS = {
     "กลุ่มเปราะบาง/หนี้วิกฤต (Overleveraged/Struggling)": { age: 0.3, inc: 0.05, nw: 0.0, risk: 0.2, dti: 0.8, recency: 0.8, frequency: 0.1, discipline: 0.1, dep: 0.4 },
     "วัยทำงานสร้างตัว (Young Wealth Builder)": { age: 0.15, inc: 0.15, nw: 0.05, risk: 0.8, dti: 0.3, recency: 0.2, frequency: 0.8, discipline: 0.6, dep: 0.0 },
     "ครอบครัวมาตรฐาน (Standard Family)": { age: 0.4, inc: 0.2, nw: 0.1, risk: 0.5, dti: 0.4, recency: 0.5, frequency: 0.4, discipline: 0.5, dep: 0.6 },
@@ -345,7 +347,7 @@ const K_MEANS_CENTROIDS = {
 };
 
 // 3.2 ฟังก์ชันปรับสเกลข้อมูล (Min-Max Normalization)
-function normalizeFeatures(features) {
+window.normalizeFeatures = function(features) {
     const limits = {
         age: { min: 20, max: 80 },
         inc: { min: 0, max: 2000000 },
@@ -370,10 +372,14 @@ function normalizeFeatures(features) {
 }
 
 // 3.3 ฟังก์ชันหาระยะห่าง (Euclidean Distance)
-function calculateEuclideanDistance(point1, point2) {
+window.calculateEuclideanDistance = function(point1, point2) {
     let sum = 0;
+    // 🌟 [FIX] ถ่วงน้ำหนักแกนรายได้และความมั่งคั่งให้หนักเป็น 3 เท่า เพื่อป้องกันการจัดกลุ่มข้ามฐานะ
+    const weights = { inc: 3.0, nw: 3.0, age: 1.5, risk: 1.0, dti: 1.0, recency: 1.0, frequency: 1.0, discipline: 1.0, dep: 1.0 };
+    
     for (let key in point1) {
-        sum += Math.pow(point1[key] - point2[key], 2);
+        let w = weights[key] || 1.0;
+        sum += w * Math.pow(point1[key] - point2[key], 2);
     }
     return Math.sqrt(sum);
 }
@@ -598,101 +604,133 @@ function analyzeBehaviorProfile(income, debtRatio, saveRate, riskScore, dependen
     return behaviors;
 }
 
-// 4.3 HYBRID CO-ADVISOR ENGINE (Production Version 🚀 - Decoupled Logic)
-function runCoAdvisorConsensus(features, userBehaviors) {
-    // 1. ดึงค่าความน่าจะเป็นตั้งต้นจาก AI (Deep Learning)
-    let mlSuccessProb = predictSuccessProbability(features); 
-    
-    // Fallback ป้องกัน AI คายค่าแปลกๆ หรือโหลดไม่ทัน
-    if (mlSuccessProb === null || isNaN(mlSuccessProb)) {
-        mlSuccessProb = 50.0; 
+// 4.3 HYBRID CO-ADVISOR ENGINE (Production Version 🚀 - Decoupled Logic & Goal-Based Weighting)
+function runCoAdvisorConsensus(features, userBehaviors, retirementProb = null, otherGoalsProb = null) {
+  // 1. ดึงค่าความน่าจะเป็นตั้งต้นจาก AI (Baseline Survival Score)
+  let mlSuccessProb = predictSuccessProbability(features);
+
+  // Fallback ป้องกัน AI คายค่าแปลกๆ หรือโหลดไม่ทัน
+  if (mlSuccessProb === null || isNaN(mlSuccessProb)) {
+    mlSuccessProb = 50.0;
     }
-    
-    // 2. วิเคราะห์ Persona จาก Decision Tree และ K-Means
-    let aiPersona = predictPersonaAI(features); 
+
+    // 2. 🌟 การผสานเป้าหมาย (Mandatory Retirement & Optional Goals Weighting)
+    let finalBaseScore = mlSuccessProb;
+    let hasRetirement = retirementProb !== null;
+    let hasOtherGoals = otherGoalsProb !== null;
+
+    if (hasRetirement) {
+      if (hasOtherGoals) {
+        // [Scenario 1] ยอดเยี่ยม: มีทั้งเกษียณและเป้าหมายอื่น
+        // น้ำหนัก: สุขภาพการเงิน 30% | เกษียณ 50% | เป้าหมายอื่น 20%
+        finalBaseScore = (mlSuccessProb * 0.30) + (retirementProb * 0.50) + (otherGoalsProb * 0.20);
+        } else {
+          // [Scenario 2] ดีมาก: ไม่มีเป้าหมายอื่น แต่มีเป้าหมายเกษียณเป็นหลัก
+          // น้ำหนัก: สุขภาพการเงิน 40% | เกษียณ 60%
+          finalBaseScore = (mlSuccessProb * 0.40) + (retirementProb * 0.60);
+        }
+    } else {
+        if (hasOtherGoals) {
+          // 🔴 [Scenario 3] ภาพลวงตาความสำเร็จ: มีเป้าหมายอื่น แต่ "ทิ้งเป้าหมายเกษียณ"
+          // ทำโทษหนัก: หักคะแนนภาพรวมลง เพราะถือว่าสร้างหนี้/เป้าหมายระยะสั้นโดยไร้เกราะคุ้มกันบั้นปลาย
+          finalBaseScore = (mlSuccessProb * 0.40) + (otherGoalsProb * 0.30); // หายไป 30% ฟรีๆ
+          userBehaviors.push("⏳ ละเลยวัยเกษียณ (Critical: Missing Retirement Goal)");
+        } else {
+          // 🔴 [Scenario 4] ใช้ชีวิตไปวันๆ: ไม่มีเป้าหมายอะไรเลย
+          finalBaseScore = mlSuccessProb * 0.60; // Discount ทิ้ง 40% ทันที
+            userBehaviors.push("🧭 ขาดเป้าหมายทางการเงิน (Aimless / No SMART Goals)");
+        }
+    }
+
+    // 3. วิเคราะห์ Persona จาก Decision Tree และ K-Means
+    let aiPersona = predictPersonaAI(features);
     let hybridPersona = window.currentAICluster || aiPersona;
-    
-    // 3. ตัวแปรสำหรับคุมกำเนิดและลดทอนคะแนน (Decoupled Logic)
+
+    // 4. ตัวแปรสำหรับคุมกำเนิดและลดทอนคะแนน (Decoupled Logic)
     let hardCapProb = 100.0;
-    let totalDiscountRate = 0.0; 
-    let criticalFlags = []; 
+    let totalDiscountRate = 0.0;
+    let criticalFlags = [];
     let warningFlags = [];
-    
-    // 🚨 วิเคราะห์พฤติกรรมแยกส่วนแบบอิสระ (Independent Rules) 
-    // สอดคล้องกับฟังก์ชัน analyzeBehaviorProfile ของระบบหลัก 100%
+
+    // 🚨 วิเคราะห์พฤติกรรมแยกส่วนแบบอิสระ (Independent Rules) 
     userBehaviors.forEach(behavior => {
-        
+
         // --- 🔴 หมวด Hard Cap (จำกัดเพดานขั้นเด็ดขาด) ---
-        // ซิงค์กับ keyword: "🛑 หนี้สินอันตราย (Overleveraged)"
-        if (behavior.includes("🛑") || behavior.includes("หนี้สินอันตราย")) { 
-            hardCapProb = Math.min(hardCapProb, 45.0); 
-            criticalFlags.push("หนี้สินล้นพ้นตัว (ติดเพดานความสำเร็จ)"); 
+        if (behavior.includes("🛑") || behavior.includes("หนี้สินอันตราย")) {
+            hardCapProb = Math.min(hardCapProb, 45.0);
+            criticalFlags.push("หนี้สินล้นพ้นตัว (ติดเพดานความสำเร็จ)");
         }
-        
-        // --- 🟡 หมวด Discount (หักคะแนนตามความเสี่ยงสะสม) ---
-        // ซิงค์กับ keyword: "⚠️ พึ่งพาสินเชื่อ (Credit Dependent)"
-        if (behavior.includes("⚠️") || behavior.includes("พึ่งพาสินเชื่อ")) { 
+
+        // --- 🟡 หมวด Discount (หักคะแนนตามความเสี่ยงสะสม และ การขาดเป้าหมาย) ---
+        // ก. เช็คจาก Goal (ตัวใหม่ที่เพิ่มเข้ามา)
+          if (behavior.includes("ละเลยวัยเกษียณ")) {
             totalDiscountRate += 0.20; 
-            warningFlags.push("พึ่งพาสินเชื่อค่อนข้างสูง (-20%)"); 
+            warningFlags.push("ไม่ได้วางแผนเกษียณอายุ (-20%)");
         }
-        
-        // ซิงค์กับ keyword: "💳 หมุนเงินชนเดือน (Paycheck to Paycheck)"
+          if (behavior.includes("ขาดเป้าหมายทางการเงิน")) {
+            totalDiscountRate += 0.15;
+            warningFlags.push("ไม่มีเป้าหมายการเงินชัดเจน (-15%)");
+        }
+
+        // ข. เช็คจากพฤติกรรมเดิม
+        if (behavior.includes("⚠️") || behavior.includes("พึ่งพาสินเชื่อ")) {
+            totalDiscountRate += 0.20;
+            warningFlags.push("พึ่งพาสินเชื่อค่อนข้างสูง (-20%)");
+        }
         if (behavior.includes("💳") || behavior.includes("หมุนเงินชนเดือน")) {
-            totalDiscountRate += 0.15; 
-            warningFlags.push("สภาพคล่องระยะสั้นตึงตัว (-15%)"); 
+            totalDiscountRate += 0.15;
+            warningFlags.push("สภาพคล่องระยะสั้นตึงตัว (-15%)");
         }
-        
-        // ซิงค์กับ keyword: "☂️ ละเลยความคุ้มครอง (Underinsured)"
-        if (behavior.includes("☂️") || behavior.includes("ละเลยความคุ้มครอง")) { 
-            totalDiscountRate += 0.10; 
-            warningFlags.push("ละเลยความคุ้มครอง (-10%)"); 
+        if (behavior.includes("☂️") || behavior.includes("ละเลยความคุ้มครอง")) {
+            totalDiscountRate += 0.10;
+            warningFlags.push("ละเลยความคุ้มครอง (-10%)");
         }
-        
-        // ซิงค์กับ keyword: "🛍️ กับดักไลฟ์สไตล์ (Lifestyle Creep)"
-        if (behavior.includes("🛍️") || behavior.includes("กับดักไลฟ์สไตล์")) { 
-            totalDiscountRate += 0.10; 
-            warningFlags.push("กับดักไลฟ์สไตล์ (-10%)"); 
+        if (behavior.includes("🛍️") || behavior.includes("กับดักไลฟ์สไตล์")) {
+            totalDiscountRate += 0.10;
+            warningFlags.push("กับดักไลฟ์สไตล์ (-10%)");
         }
-        
-        // ซิงค์กับ keyword: "💰 กอดเงินสด (Cash Hoarder)"
-        if (behavior.includes("💰") || behavior.includes("กอดเงินสด")) { 
-            totalDiscountRate += 0.05; 
-            warningFlags.push("กอดเงินสด/เสียโอกาส (-5%)"); 
+        if (behavior.includes("💰") || behavior.includes("กอดเงินสด")) {
+            totalDiscountRate += 0.05;
+          warningFlags.push("กอดเงินสด/เสียโอกาส (-5%)");
         }
     });
 
     // คุมกำเนิดไม่ให้หักคะแนนส่วนลดเกิน 60% ของคะแนน AI เดิม (กันพัง)
-    totalDiscountRate = Math.min(0.60, totalDiscountRate); 
+    totalDiscountRate = Math.min(0.60, totalDiscountRate);
 
-    // 4. คำนวณหักลบคะแนนแบบสัดส่วน
-    let discountedProb = mlSuccessProb * (1.0 - totalDiscountRate);
-    
+    // 5. คำนวณหักลบคะแนนแบบสัดส่วนจาก finalBaseScore (ที่คำนวณ Goal เข้าไปแล้ว)
+    let discountedProb = finalBaseScore - (totalDiscountRate * 100);
+
     // บังคับไม่ให้คะแนนที่ลดทอนแล้ว ทะลุเพดาน Hard Cap
     let finalAdjustedProb = Math.min(discountedProb, hardCapProb);
-    
+
     // ล็อกคะแนนให้อยู่ในช่วง 0.1 - 99.9% เสมอ ป้องกัน UI กราฟ/Progress Bar พัง
     finalAdjustedProb = Math.min(99.9, Math.max(0.1, finalAdjustedProb));
 
-    // 5. สร้างข้อความสื่อสาร (NLG) เพื่อส่งกลับไปให้หน้าจอ UI
+    // 6. สร้างข้อความสื่อสาร (NLG) เพื่อส่งกลับไปให้หน้าจอ UI
     let consensusNLG = "";
     let allFlags = [...criticalFlags, ...warningFlags];
 
     if (hybridPersona.includes("Anomaly Detected")) {
-        consensusNLG = `<b>⚠️ AI Outlier Analysis:</b> K-Means ตรวจพบแพทเทิร์นการเงินที่ผิดปกติ (Anomaly) แต่ระบบยึดการตัดสินใจตามเกณฑ์ผู้เชี่ยวชาญเพื่อความปลอดภัย โดยจัดคุณอยู่ในกลุ่ม <span class="text-orange-600 font-bold">${hybridPersona.split('[')[0].trim()}</span>`;
-    } 
-    else if (criticalFlags.length > 0) {
-        consensusNLG = `<b>🚨 Co-Advisor Consensus (Hard Cap Applied):</b> แม้ศักยภาพตั้งต้นของคุณจะสูงถึง ${mlSuccessProb.toFixed(1)}% แต่ระบบผู้เชี่ยวชาญ <b>"บล็อกเพดานความสำเร็จ"</b> ไว้ไม่ให้เกิน ${hardCapProb}% เนื่องจากตรวจพบความเสี่ยงระดับวิกฤต: <i>${criticalFlags.join(", ")}</i> แนะนำให้แก้ไขจุดนี้ด่วนที่สุดครับ`;
-    } 
-    else if (warningFlags.length > 0) {
-        consensusNLG = `<b>⚠️ Co-Advisor Consensus (Risk Discounted):</b> ศักยภาพหลักของคุณอยู่ที่ ${mlSuccessProb.toFixed(1)}% แต่ถูก <b>"ปรับลดทอนคะแนนลง ${(totalDiscountRate * 100).toFixed(0)}%"</b> จากพฤติกรรม: <i>${warningFlags.join(", ")}</i> ทำให้โอกาสสำเร็จสุทธิอยู่ที่ ${finalAdjustedProb.toFixed(1)}% ครับ`;
-    } 
-    else {
-        consensusNLG = `<b>✅ Co-Advisor Consensus:</b> พฤติกรรมและวินัยของคุณสอดคล้องกับเป้าหมายอย่างสมบูรณ์แบบ คุณอยู่ในกลุ่ม <span class="text-green-600 font-bold">${hybridPersona.split('[')[0].trim()}</span> แผนนี้จึงสามารถรัน Optimization หาผลตอบแทนสูงสุดให้คุณได้อย่างเต็มที่`;
+        consensusNLG = `<b>⚠️ ข้อสังเกตจากระบบ:</b> รูปแบบข้อมูลการเงินมีความซับซ้อนสูง แต่เพื่อการวิเคราะห์ที่แม่นยำ ระบบประเมินให้คุณอยู่ในกลุ่ม <span class="text-orange-600 font-bold">${hybridPersona.split('[')[0].trim()}</span> ครับ`;
     }
-    
-    // 6. แพ็กข้อมูลสถิติส่งกลับไปให้ Global Object นำไปใช้ต่อ (สำหรับ Dashboard และ Report)
+    else if (criticalFlags.length > 0) {
+        consensusNLG = `<b>🚨 ตรวจพบรอยรั่วขั้นวิกฤต:</b> ศักยภาพตั้งต้นของคุณทำได้ดี แต่ระบบพบปัญหาที่ต้องแก้ไขด่วนคือ <i>${criticalFlags.join(", ")}</i><br>
+        <span class="text-red-600 text-sm mt-1 inline-block">💡 <b>ผลกระทบ:</b> ปัญหาเหล่านี้คือ "ต้นเหตุหลัก" ที่ฉุดรั้งโอกาสสำเร็จของแผน (ตามกราฟจำลองด้านล่าง) แนะนำให้รีบอุดรอยรั่วนี้เป็นอันดับแรกครับ</span>`;
+    }
+    else if (warningFlags.length > 0) {
+        consensusNLG = `<b>⚠️ ข้อควรระวังด้านพฤติกรรม:</b> โดยรวมคุณมีศักยภาพที่ดี แต่อาจไปไม่ถึงเป้าหมายเนื่องจากพบจุดสะดุดบางประการคือ <i>${warningFlags.join(", ")}</i><br>
+        <span class="text-orange-600 text-sm mt-1 inline-block">💡 <b>คำแนะนำ:</b> หากปรับพฤติกรรมเหล่านี้ได้ โอกาสที่เงินจะพอใช้ตลอดชีพ (ตามกราฟจำลองด้านล่าง) จะเพิ่มขึ้นอย่างมหาศาลครับ</span>`;
+    }
+    else {
+        consensusNLG = `<b>✅ สถานะพฤติกรรมยอดเยี่ยม:</b> วินัยทางการเงินและเป้าหมายของคุณสอดคล้องกันอย่างสมบูรณ์แบบ (จัดอยู่ในกลุ่ม <span class="text-green-600 font-bold">${hybridPersona.split('[')[0].trim()}</span>)<br>
+        <span class="text-blue-600 text-sm mt-1 inline-block">💡 <b>คำแนะนำ:</b> ฐานรากของคุณแข็งแกร่งมาก ระบบพร้อมจัดพอร์ตเพื่อหาผลตอบแทนสูงสุด (Optimization) ให้คุณแล้วครับ</span>`;
+    }
+
+    // 7. แพ็กข้อมูลสถิติส่งกลับไปให้ Global Object นำไปใช้ต่อ (สำหรับ Dashboard และ Report)
     window.latestCoAdvisorStats = {
         rawMLScore: mlSuccessProb,
+        baseWithGoals: finalBaseScore,
         finalScore: finalAdjustedProb,
         hardCapApplied: hardCapProb,
         discountRateApplied: totalDiscountRate,
@@ -700,17 +738,18 @@ function runCoAdvisorConsensus(features, userBehaviors) {
         warningFlags: warningFlags,
         isAnomaly: allFlags.length > 0 || hybridPersona.includes("Anomaly")
     };
-    
-    // คืนค่าออบเจกต์โครงสร้างเดิมที่ระบบหลัก (เช่น getDynamicAIASolutions) ต้องการ
+
+    // คืนค่าออบเจกต์โครงสร้างเดิม(+เพิ่มตัวแปร baseWithGoals) เพื่อให้ระบบหลักทำงานต่อได้
     return {
-        rawMLScore: mlSuccessProb,       
-        hardCapLimit: hardCapProb,       
-        discountApplied: totalDiscountRate, 
-        finalScore: finalAdjustedProb,   
-        hybridPersona: hybridPersona, 
+        rawMLScore: mlSuccessProb,
+        baseWithGoals: finalBaseScore, // สามารถนำค่านี้ไปพล็อตแสดงให้ User เห็นความต่างได้
+        hardCapLimit: hardCapProb,
+        discountApplied: totalDiscountRate,
+        finalScore: finalAdjustedProb,
+        hybridPersona: hybridPersona,
         hasConflict: allFlags.length > 0 || hybridPersona.includes("Anomaly"),
         consensusMessage: consensusNLG
-    };
+  };
 }
 
 // 4.4 Predictive Lapse Risk Model (อัปเกรดเป็น Logistic Regression + XAI)
@@ -725,6 +764,8 @@ function calculateLapseRisk(totalProposedPremium, monthlyInc, netCashflow, debtR
     } else if (monthlyPremium > 0) {
         fcfUsage = 2.0; 
         isNegativeCashflow = true;
+    } else {
+    fcfUsage = 0; // เพิ่มกรณีที่ Net CF = 0 และ Premium = 0 ด้วย
     }
 
     // 🌟 ขั้นที่ 1: ใช้ Logistic Regression คำนวณความน่าจะเป็น (Probability)
@@ -774,7 +815,7 @@ function calculateLapseRisk(totalProposedPremium, monthlyInc, netCashflow, debtR
 }
 
 // ==========================================
-// 🌟 ส่วนเพิ่มเติม: Explainable AI (XAI)
+// 🌟 ส่วนเพิ่มเติม: Explainable AI (XAI) [อัปเกรดความสมจริง & ตัด Noise]
 // ==========================================
 
 // ฟังก์ชันหาว่าตัวแปรไหนมีอิทธิพลต่อคะแนนปัจจุบันมากที่สุด (Feature Importance)
@@ -839,8 +880,9 @@ window.generateXAIReport = function(customerData, currentProb) {
         let maxImpact = Math.abs(impactUp) > Math.abs(impactDown) ? impactUp : impactDown;
         let triggerDirection = Math.abs(impactUp) > Math.abs(impactDown) ? 'up' : 'down';
 
-        // 📊 คัดเฉพาะตัวที่มีผลกระทบกับคะแนนเกิน 0.1% ขึ้นไปมาแสดงผล
-        if (Math.abs(maxImpact) > 0.1) {
+        // 🌟 [FIX 1: THE NOISE FILTER] 
+        // เปลี่ยนจาก 0.1 เป็น 2.0 (คัดเฉพาะตัวที่มีผลกระทบกับคะแนนเกิน 2.0% ขึ้นไปมาแสดงผล ตัดเรื่องจุกจิกทิ้ง)
+        if (Math.abs(maxImpact) >= 2.0) {
             let isPositiveFactor = (triggerDirection === 'up' && maxImpact > 0) || (triggerDirection === 'down' && maxImpact > 0);
             
             explanations.push({
@@ -873,70 +915,75 @@ function generateXAIText(feature, impact, triggerDirection) {
     const impactAbs = Math.abs(impact).toFixed(1);
     const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
-    // 🏆 Vector Matrix: แยกตามทิศทาง (Sentiment) และตัวแปร (Context)
+    let numImpact = parseFloat(impactAbs);
+    let magnitude = "";
+    if (numImpact >= 15.0) magnitude = "อย่างมหาศาล";
+    else if (numImpact >= 8.0) magnitude = "อย่างชัดเจน";
+    else magnitude = "ได้อย่างค่อยเป็นค่อยไป";
+
     const nlgMatrix = {
-        // 1. ปัจจัยหนุน (Positive Driver)
         pos: {
             "Age": [
-                `⏳ <b>พลังของเวลา:</b> อายุในปัจจุบันเปิดโอกาสให้เงินทำงานได้นาน (หนุนเป้าหมาย +${impactAbs}%)`,
-                `⏳ <b>Time Horizon:</b> ช่วงอายุของคุณตอนนี้คือ 'แต้มต่อ' สำคัญที่ช่วยให้พอร์ตโตได้อีก +${impactAbs}%`
+                `⏳ <b>พลังของเวลา (Time Horizon):</b> อายุของคุณเปิดโอกาสให้ดอกเบี้ยทบต้นทำงานได้อย่างเต็มประสิทธิภาพ (หนุนเป้าหมาย +${impactAbs}%)`,
+                `⏳ <b>ความได้เปรียบด้านเวลา:</b> คุณมีระยะเวลาลงทุนที่ยาวนาน ช่วยลดทอนความผันผวนและเพิ่มโอกาสสำเร็จ${magnitude} (+${impactAbs}%)`
             ],
             "Income_Monthly": [
-                `📈 <b>Capital Engine:</b> รายได้ปัจจุบันคือเครื่องยนต์หลักที่ขับเคลื่อนความสำเร็จ (+${impactAbs}%)`,
-                `📈 <b>ฐานรายได้:</b> ศักยภาพการหาเงินของคุณอยู่ในเกณฑ์ดีเยี่ยม ช่วยเร่งสปีดแผนได้อีก +${impactAbs}%`
+                `📈 <b>ฐานรายได้ (Cash Flow Engine):</b> ศักยภาพการสร้างรายได้ของคุณแข็งแกร่ง เป็นฟันเฟืองหลักที่ขับเคลื่อนแผนนี้${magnitude} (+${impactAbs}%)`,
+                `📈 <b>ความมั่นคงทางรายได้:</b> กระแสเงินสดรับที่สูงช่วยให้คุณไปถึงเป้าหมายได้เร็วขึ้นและรับความเสี่ยงได้ดีขึ้น (+${impactAbs}%)`
             ],
             "default": [
-                `✅ <b>จุดแข็ง:</b> <b>${thName}</b> ของคุณอยู่ในระดับที่เหมาะสม (หนุนโอกาสสำเร็จ +${impactAbs}%)`,
-                `✅ <b>ความได้เปรียบ:</b> ระบบประเมินว่า <b>${thName}</b> คือปัจจัยบวกที่ทำให้แผนแกร่งขึ้น +${impactAbs}%`
+                `✅ <b>จุดแข็งของแผน:</b> <b>${thName}</b> ของคุณอยู่ในระดับที่เหมาะสมมาก ช่วยพยุงโอกาสสำเร็จของพอร์ต${magnitude} (+${impactAbs}%)`,
+                `✅ <b>ความได้เปรียบ:</b> <b>${thName}</b> ถือเป็นปัจจัยบวกที่ทำให้แผนการเงินของคุณมีความยืดหยุ่นสูงขึ้น (+${impactAbs}%)`
             ]
         },
-        // 2. ปัจจัยฉุดรั้ง (Negative Constraint)
         neg: {
             "Total_Expenses_Monthly": [
-                `🛍️ <b>Lifestyle Friction:</b> งบใช้ชีวิตที่สูงเกินไปกำลังลดทอนความมั่งคั่ง (ฉุดคะแนนลง -${impactAbs}%)`,
-                `🛍️ <b>รายจ่ายบวม:</b> พบการรั่วไหลของกระแสเงินสดในส่วนค่าใช้จ่าย ซึ่งบั่นทอนแผนถึง -${impactAbs}%`
+                `🛍️ <b>รายจ่ายกดดัน (Cash Flow Leakage):</b> ภาระค่าใช้จ่ายที่สูงเกินไปกำลังลดทอนความมั่งคั่ง (ฉุดรั้งแผน -${impactAbs}%)`,
+                `🛍️ <b>สัดส่วนค่าใช้จ่าย:</b> การใช้จ่ายปัจจุบันค่อนข้างตึงตัว ส่งผลเสียต่อความสามารถในการออมลงทุนอย่างมีนัยสำคัญ (-${impactAbs}%)`
             ],
             "Dependents": [
-                `👪 <b>Family Commitment:</b> ภาระผู้อุปการะส่งผลต่อขีดความสามารถในการออม (กระทบเชิงลบ -${impactAbs}%)`,
-                `👪 <b>ภาระทางครอบครัว:</b> การมีผู้อยู่ใต้ดูแลจำนวนมากทำให้ความคล่องตัวทางการเงินลดลง -${impactAbs}%`
+                `👪 <b>ภาระอุปการะ (Family Constraint):</b> การมีผู้อยู่ในความดูแลทำให้กระแสเงินสดส่วนเกินลดลง (กระทบเป้าหมาย -${impactAbs}%)`,
+                `👪 <b>ภาระครอบครัว:</b> การเตรียมพร้อมดูแลครอบครัวทำให้ต้องแบ่งกระแสเงินสดมาสำรองไว้ ส่งผลกระทบต่อพอร์ตลงทุน -${impactAbs}%`
             ],
             "Age": [
-                `⏳ <b>Time Decay:</b> การเริ่มช้าเกินไปทำให้เสียโอกาสทบต้น (กระทบศักยภาพ -${impactAbs}%)`,
-                `⏳ <b>ความเสียดทานของเวลา:</b> ยิ่งเริ่มช้า พลังของเวลาจะยิ่งลดลง ส่งผลเสียต่อแผน -${impactAbs}%`
+                `⏳ <b>ความเสียดทานของเวลา (Time Decay):</b> ระยะเวลาลงทุนที่สั้นลงทำให้ต้องใช้เงินทุนสูงขึ้นในการบรรลุเป้าหมาย (กระทบ -${impactAbs}%)`,
+                `⏳ <b>ระยะเวลาที่จำกัด:</b> การเริ่มลงทุนช้าทำให้พลาดโอกาสรับผลตอบแทนทบต้นเต็มที่ (ฉุดโอกาสสำเร็จ -${impactAbs}%)`
             ],
             "default": [
-                `⚠️ <b>ปัจจัยฉุดรั้ง:</b> <b>${thName}</b> เป็นตัวแปรที่ดึงประสิทธิภาพของแผนลง -${impactAbs}%`,
-                `⚠️ <b>Risk Factor:</b> <b>${thName}</b> คือจุดเปราะบางที่ต้องระวัง (ฉุดโอกาสสำเร็จ -${impactAbs}%)`
+                `⚠️ <b>จุดที่ต้องระวัง:</b> <b>${thName}</b> เป็นตัวแปรที่ดึงประสิทธิภาพของแผนการเงินลง -${impactAbs}%`,
+                `⚠️ <b>ปัจจัยฉุดรั้ง:</b> <b>${thName}</b> คือจุดเปราะบางที่ต้องวางแผนรับมือเพื่อไม่ให้พอร์ตสะดุด (-${impactAbs}%)`
             ]
         },
-        // 3. จุดปลดล็อก (Optimization Opportunity - สิ่งที่จะดีขึ้นถ้าลดลง)
         improve: {
             "DTI_Ratio": [
-                `🎯 <b>De-leveraging:</b> หากลดภาระหนี้ลงได้ จะเป็นกุญแจหลักที่ปลดล็อกคะแนน +${impactAbs}%`,
-                `🎯 <b>ปลดแอกหนี้:</b> การบริหารหนี้ให้ลดลงจะทำให้กระแสเงินสดไหลลื่นขึ้นทันที +${impactAbs}%`
+                `💳 <b>ยุทธการลดหนี้ (De-leveraging):</b> หากเร่งโปะหนี้เพื่อลดภาระดอกเบี้ย จะปลดล็อกกระแสเงินสดและเพิ่มโอกาสสำเร็จ${magnitude} (+${impactAbs}%)`,
+                `💳 <b>บริหารหนี้สิน:</b> การลดสัดส่วนหนี้ลงคือทางลัดที่ปลอดภัยที่สุดในการดึงโอกาสสำเร็จของแผนกลับมา (+${impactAbs}%)`
             ],
             "Total_Expenses_Monthly": [
-                `🎯 <b>Efficiency Gain:</b> หากปรับจูนรายจ่ายที่ไม่จำเป็น จะช่วยให้เกษียณได้เร็วขึ้น +${impactAbs}%`,
-                `🎯 <b>Optimization:</b> การลดรายจ่ายเพียงเล็กน้อย จะส่งผลบวกต่อพอร์ตอย่างมหาศาล +${impactAbs}%`
+                `🎯 <b>เพิ่มประสิทธิภาพ (Expense Optimization):</b> หากควบคุมรายจ่ายฟุ่มเฟือยได้ จะปลดล็อกเงินออมและหนุนพอร์ตให้โตขึ้น${magnitude} (+${impactAbs}%)`,
+                `🎯 <b>ลดรายจ่ายแฝง:</b> การประหยัดรายจ่ายที่ไม่จำเป็นลง จะช่วยสร้างผลกระทบเชิงบวกต่อแผนนี้${magnitude} (+${impactAbs}%)`
             ],
             "default": [
-                `🎯 <b>โอกาสพัฒนา:</b> หากลด <b>${thName}</b> ลงได้ จะปลดล็อกศักยภาพเพิ่มขึ้นอีก +${impactAbs}%`,
-                `🎯 <b>Optimization:</b> การลดระดับ <b>${thName}</b> คือทางลัดสู่ความสำเร็จในแผนนี้ (+${impactAbs}%)`
+                `🎯 <b>โอกาสพัฒนา:</b> หากปรับลด <b>${thName}</b> ให้อยู่ในเกณฑ์มาตรฐาน จะช่วยยกระดับความสำเร็จของแผนนี้${magnitude} (+${impactAbs}%)`,
+                `🎯 <b>ทางออกที่ทำได้จริง:</b> การควบคุม <b>${thName}</b> ให้ลดลง คือกุญแจสำคัญในการพลิกฟื้นพอร์ตให้แข็งแกร่งขึ้น (+${impactAbs}%)`
             ]
         }
     };
 
-    // ⚙️ Logic Selector: เลือก Vector ที่เหมาะสม
+    // 🌟 [FIX 2.2: IMMUTABLE FEATURES] ป้องกัน AI สั่งให้ลูกค้าลดอายุหรือลดจำนวนลูก
+    const immutableFeatures = ["Age", "Dependents"];
     let sentiment = "";
-    if (impact > 0 && triggerDirection === 'up') sentiment = "pos";
-    else if (impact < 0 && (triggerDirection === 'up' || (triggerDirection === 'down' && feature === 'Age'))) sentiment = "neg";
-    else if (impact > 0 && triggerDirection === 'down') sentiment = "improve";
-
-    // 🚀 Execution
+    if (impact > 0 && triggerDirection === 'up') {
+        sentiment = "pos";
+    } else if (impact < 0 && (triggerDirection === 'up' || (triggerDirection === 'down' && immutableFeatures.includes(feature)))) {sentiment = "neg"; // หากอายุ/ลูกเพิ่ม แล้วคะแนนลด -> จัดเป็นปัจจัยฉุดรั้ง (neg)
+    } else if (impact > 0 && triggerDirection === 'down') {
+        if (immutableFeatures.includes(feature)) {sentiment = "pos"; // ถ้าระบบพบว่า "อายุน้อยลงแล้วคะแนนดีขึ้น" จะไม่สั่งให้ Improve (เพราะลดอายุไม่ได้) แต่จะดึงเป็นคำชม (pos) แทน
+        } else {sentiment = "improve";}
+    } else if (impact < 0 && triggerDirection === 'down' && !immutableFeatures.includes(feature)) {sentiment = "neg";}
+    if(!sentiment) sentiment = impact > 0 ? "pos" : "neg";
     if (sentiment && nlgMatrix[sentiment]) {
         const variants = nlgMatrix[sentiment][feature] || nlgMatrix[sentiment]["default"];
         return pick(variants);
     }
-
-    return `💡 <b>${thName}</b> มีผลกระทบต่อแผนของคุณอย่างนัยสำคัญ (${impact > 0 ? '+' : ''}${impactAbs}%)`;
+    return `💡 ประสิทธิภาพของ <b>${thName}</b> ส่งผลต่อแผนของคุณ${magnitude} (${impact > 0 ? '+' : ''}${impactAbs}%)`;
 }

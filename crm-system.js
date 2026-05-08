@@ -955,7 +955,7 @@ window.loadSpecificVN = function(xn_id, vn_id) {
     loadClientFromCRM(xn_id, vn_id);
 };
 
-function loadClientFromCRM(id, vn_id = null) {
+window.loadClientFromCRM = function(id, vn_id = null) {
     if (!crmDB || !window.SESSION_KEY) return;
     let clientToLoad = crmClientsList.find(c => c.id === id); 
 
@@ -971,73 +971,60 @@ function loadClientFromCRM(id, vn_id = null) {
 
         let planName = vn_id ? `แผน ${vn_id}` : `ข้อมูลล่าสุด`;
 
-        // 🟢 ขั้นตอนที่ 1: ขึ้น popup action เพื่อให้เลือกรายการ ยืนยัน / ยกเลิก
-        if(crmConfirm(`คุณต้องการโหลดข้อมูล${planName} ของ "${SecurityCore.escapeHTML(clientToLoad.name)}" ลงหน้าจอหลักใช่หรือไม่?\n(ข้อมูลบนหน้าจอปัจจุบันจะถูกล้างและเขียนทับใหม่)`)) {
+        // 🚨 [แก้บั๊กจอนิ่ง] กลับมาใช้ crmConfirm เพื่อให้กล่องเด้งที่หน้าต่าง CRM ทันที!
+        if(crmConfirm(`คุณต้องการโหลดข้อมูล${planName} ของ "${clientToLoad.name}" ลงหน้าจอหลักใช่หรือไม่?`)) {
             
-            // 🟢 ขั้นตอนที่ 2 (ส่วนที่ 1): ยืนยัน --- ดึงข้อมูลมาใส่ในหน้าจอหลัก (หน้าฟอร์ม) 
-            if (typeof closeSettings === 'function') closeSettings();
-            if (typeof toggleMode === 'function') toggleMode('edit');
-            if (typeof clearDataForLoad === 'function') clearDataForLoad();
-            
-            if(document.getElementById('mainForm')) document.getElementById('mainForm').reset();
-            
-            let data = targetVisit.dataSnapshot; 
-            if(data.profile) { 
-                for (let key in data.profile) { 
-                    if(document.getElementById(key)) document.getElementById(key).value = data.profile[key]; 
-                } 
-            }
-            
-            if(data.dynamic) {
-                if(typeof loadStandardRows === 'function') {
-                    loadStandardRows('c_assets', data.dynamic.c_assets, ['ชื่อรายการ', 'มูลค่า (บาท)'], 'ast_list');
-                    loadStandardRows('c_liab', data.dynamic.c_liab, ['ชื่อรายการ', 'ยอดคงเหลือ (บาท)'], 'liab_list');
-                    loadStandardRows('c_inc', data.dynamic.c_inc, ['ชื่อรายการ', 'จำนวน (บาท/เดือน)'], 'inc_list');
-                    loadStandardRows('c_exp', data.dynamic.c_exp, ['ชื่อรายการ', 'จำนวน (บาท/เดือน)'], 'exp_list');
-                }
-                if(data.dynamic.c_ins && typeof addInsRow === 'function') {
-                    data.dynamic.c_ins.forEach(vals => {
-                        if (vals[0] === 'สัญญาหลัก') addInsRow(vals[1], vals[2], vals[3], vals[7], vals[0], vals[5], vals[6], vals[4]);
-                        else if (vals[0] === 'สัญญาเพิ่มเติม') addInsRow(vals[2], vals[3], vals[4], vals[5], vals[0]);
-                        else {
-                            if(vals.length >= 8) addInsRow(vals[0], vals[2], vals[3], vals[7], vals[1], vals[4], vals[5], vals[6]);
-                            else addInsRow(vals[0], vals[1], vals[2], vals[3]);
-                        }
-                    });
-                }
-                
-                if(data.dynamic.c_invest_current && typeof addInvestRow === 'function') {
-                    data.dynamic.c_invest_current.forEach(vals => addInvestRow(vals[0], vals[1], vals[2], vals[3]));
-                }
-                if(data.dynamic.c_tax_current && typeof addCustomRow === 'function') {
-                    data.dynamic.c_tax_current.forEach(vals => addCustomRow('c_tax_current', ['รายการลดหย่อน (อ้างอิง ภ.ง.ด.90/91)', 'จำนวนเงิน (บาท)'], vals, ['tax_list', '']));
-                }
-            }
-            if(typeof syncAgeToRisk === 'function') syncAgeToRisk();
+            try {
+                // 1. นำข้อมูลจำลองเป็น File เพื่อส่งให้ระบบโหลดดั้งเดิมทำงาน (แก้บั๊กได้ 100%)
+                const dataJson = JSON.stringify(targetVisit.dataSnapshot || {});
+                const virtualFile = new File([dataJson], "crm_load.json", { type: "application/json" });
+                const dummyEvent = { target: { files: [virtualFile], value: '' } };
 
-            // 🟢 ขั้นตอนที่ 2 (ส่วนที่ 2): โหลดข้อมูลเสร็จ -> ปิดหน้าแท็บ CRM ทั้งหมดทิ้งทันที
-            if (window.crmWindow && !window.crmWindow.closed) {
-                window.crmWindow.close();
-            }
-
-            // 🟢 ขั้นตอนที่ 2 (ส่วนที่ 3): แล้วเด้งโฟกัสกลับมาที่หน้าจอหลัก
-            window.focus();
-
-            // ดีเลย์ 0.3 วินาที รอให้ Browser สลับแท็บกลับมาหน้าหลักให้เสร็จก่อน แล้วค่อยแจ้งเตือน
-            setTimeout(() => {
-                // เปลี่ยนมาใช้ confirm() ของหน้าจอหลักแทน crmConfirm() เพราะหน้าต่าง CRM ถูกปิดไปแล้ว
-                if(confirm(`✅ โหลดข้อมูลลงหน้าจอหลักสำเร็จ!\n\nต้องการให้ AI ประมวลผลและสร้างรายงาน (Report) ใหม่ทันทีหรือไม่?`)) {
-                    if (typeof processReportInit === 'function') processReportInit(); 
+                // 🌟 2. บังคับให้ระบบปลดล็อกหน้าจอหลักออกจากสถานะ Hidden (แก้บั๊กจอขาว) 🌟
+                if (typeof switchFromHomeToAppUI === 'function') {
+                    switchFromHomeToAppUI(); 
                 } else {
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    document.getElementById('homeScreen')?.classList.add('hidden');
+                    document.getElementById('sysHeader')?.classList.remove('hidden');
+                    document.getElementById('sysHeader')?.classList.add('flex');
+                    const mainApp = document.getElementById('app');
+                    if (mainApp) mainApp.classList.remove('hidden');
+                    document.getElementById('inputSection').style.display = 'block';
+                    document.getElementById('reportSection').style.display = 'none';
+                    if (typeof toggleMode === 'function') toggleMode('edit');
                 }
-            }, 300); 
 
+                // ปิด Modals อื่นๆ ทั้งหมดที่อาจจะบังจออยู่
+                document.getElementById('workspaceMenuModal')?.classList.add('hidden');
+                document.getElementById('preAssessmentModal')?.classList.add('hidden');
+                document.getElementById('vnManagerModal')?.classList.add('hidden');
+
+                // 3. ปิดหน้าต่าง CRM 
+                if (window.crmWindow && !window.crmWindow.closed) {
+                    window.crmWindow.close();
+                }
+
+                // 4. หน่วงเวลา 0.5 วิ ให้ UI โชว์ตัวเสร็จ แล้วโยนข้อมูลลงฟอร์ม!
+                setTimeout(() => {
+                    window.focus();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    
+                    if (typeof handleFileLoad === 'function') {
+                        handleFileLoad(dummyEvent); // สั่งโหลดข้อมูลใส่ฟอร์ม
+                    } else {
+                        alert("❌ เกิดข้อผิดพลาด: ไม่พบฟังก์ชันโหลดข้อมูล");
+                    }
+                }, 500);
+
+            } catch (error) {
+                console.error("Virtual File Load Error:", error);
+                alert("❌ เกิดข้อผิดพลาดในการโหลดข้อมูล: " + error.message);
+            }
         }
     } else {
-        crmAlert("⚠️ ไม่พบประวัติการเข้าพบ (VN) ของลูกค้ารายนี้ หรือข้อมูลอยู่ในรูปแบบเก่าที่ไม่รองรับครับ");
+        crmAlert("⚠️ ไม่พบประวัติการเข้าพบ (VN) ของลูกค้ารายนี้ หรือข้อมูลว่างเปล่าครับ");
     }
-}
+};
 
 function deleteClientFromCRM(id, name) {
     if(crmConfirm(`⚠️ คำเตือน: คุณแน่ใจหรือไม่ที่จะลบข้อมูลของ "${name}" อย่างถาวร?\n(ประวัติการเข้าพบ VN ทั้งหมดจะถูกลบไปด้วย)`)) {
@@ -1619,7 +1606,7 @@ window.openCRMDashboard = function() {
                     <p class="text-slate-500 mt-1 text-sm font-medium">จัดการสถานะและวิเคราะห์พอร์ตโฟลิโอลูกค้า</p>
                 </div>
                 <div class="flex flex-wrap gap-2 no-print">
-                    <button onclick="window.close()" class="bg-white border border-slate-300 text-slate-700 hover:bg-red-50 hover:text-red-600 px-4 py-2 rounded-lg font-bold text-sm transition shadow-sm">❌ ปิดหน้าต่าง</button>
+                    <button onclick="closeCRMWindow()" class="bg-white border border-slate-300 text-slate-700 hover:bg-red-50 hover:text-red-600 px-4 py-2 rounded-lg font-bold text-sm transition shadow-sm">❌ ปิดหน้าต่าง</button>
                 </div>
             </div>
 
@@ -1848,6 +1835,18 @@ window.openCRMDashboard = function() {
                 dragImageTranslateOverride: MobileDragDrop.scrollBehaviourDragImageTranslateOverride
             });
             window.addEventListener('touchmove', function() {}, {passive: false});
+            
+            // 🎯 [เพิ่มใหม่] ฟังก์ชันสั่งให้หน้าหลักกลับหน้า Home แล้วปิดตัวเอง
+            window.closeCRMWindow = function() {
+                try {
+                    if (window.opener && !window.opener.closed && typeof window.opener.backToHome === 'function') {
+                        window.opener.backToHome();
+                    }
+                } catch(e) {
+                    console.warn("ไม่สามารถสั่งการหน้าต่างหลักได้:", e);
+                }
+                window.close(); // ปิดหน้าต่าง CRM
+            };
             
             const methods = [
                 'filterCRMTable', 'toggleCRMView', 'sortCRMTable', 'openClientReviewModal', 

@@ -112,10 +112,11 @@ function loadCaseStudy() {
     let bq1, bq2, bq3, bq4, bq5, bq6, bq7, bq8, bq9, bq10;
     const isStruggling = (inc < 30000 && dep > 0) || selectedJob.class.includes("Grassroots");
     const isWealthy = inc >= 200000 || selectedJob.class.includes("HNW") || selectedJob.class.includes("UHNW");
-    bq1 = isStruggling ? pickStr(["0", "1"]) : pickStr(["2", "3"]);
-    bq2 = isWealthy ? "3" : pickStr(["0", "1", "3"]);
-    bq3 = (welf.includes("ไม่มี") || isStruggling) ? pickStr(["0", "1"]) : pickStr(["1", "3"]);
-    bq4 = (selectedJob.class.includes("Civil")) ? "2" : (isStruggling ? "0" : "3");
+    bq1 = isStruggling ? pickStr(["0", "1"]) : (isWealthy ? pickStr(["2", "3"]) : pickStr(["1", "2", "3"]));
+    bq2 = isWealthy ? pickStr(["2", "3"]) : (isStruggling ? pickStr(["0", "1"]) : pickStr(["1", "2"]));
+    bq3 = isStruggling ? pickStr(["0", "1"]) : (isWealthy ? pickStr(["2", "3"]) : pickStr(["2", "3"]));
+    bq4 = isStruggling ? pickStr(["0", "1"]) : (isWealthy ? pickStr(["2", "3"]) : pickStr(["2", "3"]));
+        if(selectedJob.class.includes("Civil")) bq4 = pickStr(["2", "3"]);
     bq5 = isStruggling ? "survive" : (dep > 0 ? "family" : (isWealthy ? "invest" : "self"));
     bq6 = (age > 55 || selectedJob.class.includes("Civil")) ? "1" : (isWealthy ? pickStr(["2", "3"]) : "2");
     bq7 = isWealthy ? "3" : (age > 50 ? "1" : "2");
@@ -544,19 +545,71 @@ function loadCaseStudy() {
     alert(`✅ สร้างกรณีศึกษา: ${p_name} สำเร็จ!\n\n(AI จำลองข้อมูลระดับ 7 มิติ พร้อมสุ่มพอร์ตกรมธรรม์เดิมให้เรียบร้อย)`);
 }
 
-// 🟢 ฟังก์ชันทางเลือกเพื่อสร้างเคสเปล่าตอนโหลดเข้าโปรแกรม (สำหรับ AutoSave Init)
+// 🟢 ฟังก์ชันทางเลือกเพื่อสร้างเคสเริ่มต้น (คุณสมมติ - วางแผนดีเหมือนคนทั่วไป)
 function loadCaseStudy1() {
-    let elName = document.getElementById('p_name');
-    let elAge = document.getElementById('p_age');
-    let elOcc = document.getElementById('p_occ');
-    let elRetAge = document.getElementById('r_retAge');
-    let elReqInc = document.getElementById('r_reqInc');
+    // 1. ล้างข้อมูลตารางเก่าก่อน
+    if(typeof clearDataForLoad === 'function') clearDataForLoad();
 
-    if(elName) elName.value = "คุณ สมมติ รักการออม (กรณีศึกษา)";
-    if(elAge) elAge.value = "35";
-    if(elOcc) elOcc.value = "พนักงานบริษัทเอกชน";
-    if(elRetAge) elRetAge.value = "60";
-    if(elReqInc) elReqInc.value = "30000";
+    // 2. ข้อมูลส่วนตัวและพฤติกรรม
+    const initData = {
+        p_name: "คุณ สมมติ รักการออม (กรณีศึกษา)",
+        p_age: "35",
+        p_occ: "ผู้จัดการฝ่าย (พนักงานบริษัทเอกชน)",
+        p_province: "กรุงเทพมหานคร",
+        p_welfare: "ประกันกลุ่มองค์กร และ ประกันสังคม",
+        p_health: "แข็งแรงดี / ไม่มีโรคประจำตัวร้ายแรง",
+        p_dep: "1", // มีลูก 1 คน
+        
+        // แบบสอบถาม: สไตล์คนชั้นกลางที่บริหารเงินเป็น
+        bq_1: "2", // พยายามออมให้ได้เท่าๆ กันทุกเดือน
+        bq_2: "2", // รูดบัตรเครดิตแล้วจ่ายคืนเต็มจำนวนได้ (เอาแต้ม)
+        bq_3: "3", // ดึงจากเงินสำรองฉุกเฉินที่มี
+        bq_4: "2", // หนี้บ้าน/รถ ถือเป็นเรื่องปกติ ผ่อนไหว
+        bq_5: "family", // กังวลเป็นภาระครอบครัว (เดอะแบก)
+        
+        // ตัวแปรเกษียณ
+        r_retAge: "60",
+        r_reqInc: "40000",
+        r_lifeExp: "85",
+        r_preRet: window.globalMacroData ? window.globalMacroData.marketReturn : "5.0",
+        r_inf: window.globalMacroData ? window.globalMacroData.inflation : "3.0",
+        r_med_inf: window.globalMacroData ? window.globalMacroData.medInflation : "6.0"
+    };
+
+    // 3. ยัดค่าลง Form Elements
+    Object.keys(initData).forEach(key => {
+        let el = document.getElementById(key);
+        if(el) el.value = initData[key];
+    });
+
+    // 4. สร้างข้อมูลบัญชี/พอร์ต (ถ้ามีฟังก์ชัน loadStandardRows อยู่)
+    if(typeof loadStandardRows === 'function') {
+        // รายได้
+        loadStandardRows('c_inc', [
+            {catValue: "รายได้จากสินทรัพย์", catText: "รายได้จากสินทรัพย์", name: "เงินปันผลจากหุ้น/กองทุนรวม", val: 1500} 
+        ], ['ชื่อรายการ', 'จำนวน (บาท/เดือน)'], 'inc_list');
+        
+        // รายจ่าย (DTI ประมาณ 40% กำลังสวย)
+        loadStandardRows('c_exp', [
+            {catValue: "รายจ่ายประจำ/ใช้ชีวิต", catText: "รายจ่ายประจำ/ใช้ชีวิต", name: "ค่าใช้จ่ายส่วนตัวและในบ้าน", val: 25000},
+            {catValue: "เงินชำระคืนหนี้สิน", catText: "เงินชำระคืนหนี้สิน", name: "ผ่อนชำระสินเชื่อบ้าน", val: 18000},
+            {catValue: "ภาษี", catText: "ภาษี", name: "ภาษีและประกันสังคม", val: 2500}
+        ], ['ชื่อรายการ', 'จำนวน (บาท/เดือน)'], 'exp_list');
+
+        // สินทรัพย์
+        loadStandardRows('c_assets', [
+            {catValue: "สินทรัพย์สภาพคล่อง", catText: "สินทรัพย์สภาพคล่อง", name: "เงินฝากออมทรัพย์ (สำรองฉุกเฉิน)", val: 150000},
+            {catValue: "สินทรัพย์ลงทุน", catText: "สินทรัพย์ลงทุน", name: "กองทุนสำรองเลี้ยงชีพ (PVD)", val: 450000},
+            {catValue: "สินทรัพย์ลงทุน", catText: "สินทรัพย์ลงทุน", name: "พอร์ตหุ้นและกองทุนปันผล", val: 300000}, 
+            {catValue: "อสังหาริมทรัพย์และที่ดิน", catText: "อสังหาริมทรัพย์และที่ดิน", name: "บ้าน/คอนโด (ราคาประเมิน)", val: 3500000}
+        ], ['ชื่อรายการ', 'มูลค่า (บาท)'], 'ast_list');
+        
+        // หนี้สิน
+        loadStandardRows('c_liab', [
+            {catValue: "หนี้สินระยะยาว", catText: "หนี้สินระยะยาว", name: "สินเชื่อบ้าน (ยอดคงเหลือ)", val: 2600000}
+            // ไม่มีหนี้บัตรเครดิตคงค้าง เพราะจ่ายเต็ม
+        ], ['ชื่อรายการ', 'ยอดคงเหลือ (บาท)'], 'liab_list');
+    }
 
     if(typeof syncAgeToRisk === 'function') syncAgeToRisk();
 }

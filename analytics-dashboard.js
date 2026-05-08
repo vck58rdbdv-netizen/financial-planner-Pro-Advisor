@@ -118,7 +118,7 @@ async function openExecutiveDashboard() {
                         <button onclick="printFormalReport()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-bold text-xs transition shadow-sm flex items-center gap-2">
                             <span>🖨️</span> พิมพ์รายงานผลงาน
                         </button>
-                        <button onclick="window.close()" class="bg-white border border-slate-300 text-slate-700 hover:bg-red-50 hover:text-red-600 px-4 py-2 rounded-lg font-bold text-xs transition shadow-sm">❌ ปิดหน้าต่าง</button>
+                        <button onclick="closeDashboardWindow()" class="bg-white border border-slate-300 text-slate-700 hover:bg-red-50 hover:text-red-600 px-4 py-2 rounded-lg font-bold text-xs transition shadow-sm">❌ ปิดหน้าต่าง</button>
                     </div>
                 </div>
 
@@ -364,7 +364,19 @@ async function openExecutiveDashboard() {
                 const DB_KEY = 'FA_Ultimate_Planner_V8_Secured';
                 
                 // รับข้อมูลมาจาก Node พ่อ
-                window.FA_CLIENTS = ${safeClientData}; 
+                window.FA_CLIENTS = ${safeClientData};
+                
+                // 🎯 [เพิ่มใหม่] สั่งหน้าต่างแม่ให้กลับ Home แล้วปิดตัวเอง
+                window.closeDashboardWindow = function() {
+                    try {
+                        if (window.opener && !window.opener.closed && typeof window.opener.backToHome === 'function') {
+                            window.opener.backToHome();
+                        }
+                    } catch(e) {
+                        console.warn("ไม่สามารถสั่งการหน้าต่างหลักได้:", e);
+                    }
+                    window.close(); // ปิดหน้าต่าง Dashboard
+                }; 
 
                 let plannerData = { targets: { fyp: 1000000, fyc: 300000, cases: 50, recruit: 5 }, salesLedger: [], checklists: [], cta: "ฉันคือนักขายระดับท็อป!" };
                 window.currentRiders = []; 
