@@ -1,6 +1,6 @@
 // =====================================================================
 // 🧠 AiDAPC MODULE (AI Deep Analysis & Prediction Center)
-// สถาปัตยกรรม: AI/ML Core Diagnostics Engine (White-box Dashboard) v5.0 Ultimate
+// สถาปัตยกรรม: AI/ML Core Diagnostics Engine (White-box Dashboard) v5.1 Ultimate (Bug Fixed)
 // อัปเดต: Full Payload, 3D Risk Gap, Real AIA Product Matrix & Premium Calculator
 // =====================================================================
 
@@ -73,7 +73,6 @@ window.AIControlCenter = {
         </head>
         <body class="flex flex-col custom-scrollbar">
 
-            <!-- Sticky Header -->
             <header class="sticky top-0 shrink-0 flex justify-between items-center px-6 py-4 bg-slate-950/95 backdrop-blur-md border-b border-slate-800 z-50 shadow-xl">
                 <div class="flex items-center gap-4">
                     <div class="text-3xl drop-shadow-[0_0_10px_rgba(56,189,248,0.8)]">🧠</div>
@@ -94,13 +93,14 @@ window.AIControlCenter = {
                     <button onclick="window.runFullDiagnostics()" id="btn_execute" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white px-6 py-2 rounded-lg text-sm font-bold transition shadow-[0_0_15px_rgba(79,70,229,0.5)] flex items-center gap-2 disabled:opacity-50">
                         <span>▶️</span> Execute All AI Engines
                     </button>
+                    <button onclick="if(window.opener){window.opener.focus();} window.close();" class="bg-slate-800 hover:bg-rose-900/40 text-slate-400 hover:text-rose-400 border border-slate-700 hover:border-rose-500/50 px-4 py-2 rounded-lg text-sm font-bold transition flex items-center gap-2">
+                        ❌ ปิดหน้าต่าง
+                    </button>
                 </div>
             </header>
 
-            <!-- Scrollable Content Container -->
             <main class="flex-1 p-6 max-w-[1600px] mx-auto w-full space-y-8 pb-20">
                 
-                <!-- ROW 1: Data, Outlier Detector & NLP -->
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     
                     <div class="glass-panel rounded-xl p-5 lg:col-span-1 flex flex-col h-64">
@@ -149,7 +149,6 @@ window.AIControlCenter = {
 
                 </div>
 
-                <!-- ROW 2: Base ML, XAI & Counterfactual -->
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     
                     <div class="glass-panel rounded-xl p-5 lg:col-span-1 flex flex-col min-h-[300px]">
@@ -193,10 +192,8 @@ window.AIControlCenter = {
 
                 </div>
 
-                <!-- ROW 3: Recommender, 3D Risk Gap & Lapse -->
                 <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
                     
-                    <!-- 3D Risk Gap & AIA Product Matrix (Expanded width) -->
                     <div class="glass-panel rounded-xl p-5 xl:col-span-1 flex flex-col min-h-[350px]">
                         <div class="card-header flex justify-between items-center">
                             <h2 class="text-sm font-bold text-orange-400 uppercase tracking-wider">🛒 7. 3D Risk Gap & AIA Product Matrix</h2>
@@ -204,7 +201,6 @@ window.AIControlCenter = {
                         </div>
                         <div class="flex-1 flex flex-col gap-4 overflow-y-auto custom-scrollbar pr-2">
                             
-                            <!-- 3D Gaps -->
                             <div class="grid grid-cols-3 gap-2">
                                 <div class="bg-slate-900 p-2 rounded border border-slate-700 text-center">
                                     <p class="text-[9px] text-slate-400 uppercase">Emergency Gap</p>
@@ -220,7 +216,6 @@ window.AIControlCenter = {
                                 </div>
                             </div>
                             
-                            <!-- Recommended Products -->
                             <div class="flex-1 flex flex-col">
                                 <p class="text-[10px] text-slate-400 mb-2 font-bold">AIA Recommended Portfolio & Premium Allocation:</p>
                                 <div id="log_recommender" class="space-y-2">
@@ -232,10 +227,8 @@ window.AIControlCenter = {
                         </div>
                     </div>
 
-                    <!-- Clustering & Lapse (Combined in one column for space) -->
                     <div class="xl:col-span-1 flex flex-col gap-6">
                         
-                        <!-- 8D Clustering -->
                         <div class="glass-panel rounded-xl p-4 flex-1 flex flex-col min-h-[250px]">
                             <div class="card-header flex justify-between items-center pb-2 mb-2">
                                 <h2 class="text-sm font-bold text-emerald-400 uppercase tracking-wider">📊 8. 8D Clustering</h2>
@@ -253,7 +246,6 @@ window.AIControlCenter = {
                             </div>
                         </div>
 
-                        <!-- Predictive Lapse Risk -->
                         <div class="glass-panel rounded-xl p-4 flex-1 flex flex-col min-h-[200px]">
                             <div class="card-header flex justify-between items-center pb-2 mb-2">
                                 <h2 class="text-sm font-bold text-red-400 uppercase tracking-wider">⚠️ 9. Predictive Lapse Risk</h2>
@@ -275,7 +267,6 @@ window.AIControlCenter = {
 
                 </div>
 
-                <!-- ROW 4: Final Consensus & Terminal -->
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     
                     <div class="glass-panel rounded-xl p-5 border-indigo-500/50 shadow-[0_0_20px_rgba(99,102,241,0.15)] lg:col-span-2 flex flex-col min-h-[250px]">
@@ -779,7 +770,7 @@ window.AIControlCenter = {
                     },
 
                     analyzeSentiment: function(text) {
-                        let textLower = (text || "").toLowerCase();
+                        let textLower = String(text || "").toLowerCase();
                         let anxietyWords = ['กังวล', 'เครียด', 'ไม่พอ', 'บ่น', 'หนี้', 'จ่ายขั้นต่ำ', 'ค่าใช้จ่าย', 'ไม่มีเงิน', 'ลดลง', 'ป่วย', 'กู้'];
                         let positiveWords = ['สนใจ', 'ลดหย่อน', 'ลงทุน', 'มรดก', 'ออม', 'เกษียณ', 'วางแผน', 'เป้าหมาย', 'มั่นคง'];
                         
@@ -922,7 +913,7 @@ window.AIControlCenter = {
                         let hasHealth = false;
                         let hasCI = false;
                         (data.existingIns || []).forEach(ins => {
-                            let type = (ins[3] || ins[2] || "").toLowerCase();
+                            let type = String(ins[3] || ins[2] || "").toLowerCase();
                             if(type.includes('สุขภาพ') || type.includes('health') || type.includes('h&s')) hasHealth = true;
                             if(type.includes('โรคร้าย') || type.includes('ci')) hasCI = true;
                         });
@@ -1153,16 +1144,21 @@ window.AIControlCenter = {
                     let cluster = window.AIEngineCore.KMeans.classify(data);
                     document.getElementById('log_persona').innerText = cluster.persona;
                     
-                    const ctxSpider = document.getElementById('spiderChartCanvas').getContext('2d');
-                    if(spiderChartInstance) spiderChartInstance.destroy();
-                    spiderChartInstance = new Chart(ctxSpider, {
-                        type: 'radar',
-                        data: { labels: ['Age', 'Income', 'NetWorth', 'Risk', 'DTI'], datasets: [
-                            { label: 'Client', data: [cluster.clientVector.age, cluster.clientVector.inc, cluster.clientVector.nw, cluster.clientVector.risk, cluster.clientVector.dti], borderColor: '#10b981', backgroundColor: 'rgba(16, 185, 129, 0.2)' },
-                            { label: 'Centroid', data: [cluster.centroidVector.age, cluster.centroidVector.inc, cluster.centroidVector.nw, cluster.centroidVector.risk, cluster.centroidVector.dti], borderColor: '#64748b', borderDash: [5, 5], fill: false }
-                        ]},
-                        options: { responsive: true, maintainAspectRatio: false, scales: { r: { ticks: {display: false}, pointLabels: {color: '#94a3b8'} } }, plugins: { legend: { display: false } } }
-                    });
+                    try {
+                        const ctxSpider = document.getElementById('spiderChartCanvas').getContext('2d');
+                        if(spiderChartInstance) spiderChartInstance.destroy();
+                        spiderChartInstance = new Chart(ctxSpider, {
+                            type: 'radar',
+                            data: { labels: ['Age', 'Income', 'NetWorth', 'Risk', 'DTI'], datasets: [
+                                { label: 'Client', data: [cluster.clientVector.age, cluster.clientVector.inc, cluster.clientVector.nw, cluster.clientVector.risk, cluster.clientVector.dti], borderColor: '#10b981', backgroundColor: 'rgba(16, 185, 129, 0.2)' },
+                                { label: 'Centroid', data: [cluster.centroidVector.age, cluster.centroidVector.inc, cluster.centroidVector.nw, cluster.centroidVector.risk, cluster.centroidVector.dti], borderColor: '#64748b', borderDash: [5, 5], fill: false }
+                            ]},
+                            options: { responsive: true, maintainAspectRatio: false, scales: { r: { ticks: {display: false}, pointLabels: {color: '#94a3b8'} } }, plugins: { legend: { display: false } } }
+                        });
+                    } catch(err) {
+                        console.warn("Chart.js failed to load or render:", err);
+                        document.getElementById('spiderChartCanvas').outerHTML = "<p class='text-xs text-center text-slate-500 mt-10'>[ไม่สามารถโหลดกราฟได้เนื่องจากออฟไลน์]</p>";
+                    }
 
                     // 8. Recommender XAI & 3D Gaps
                     let rec = window.AIEngineCore.recommendProductsXAI(data);
