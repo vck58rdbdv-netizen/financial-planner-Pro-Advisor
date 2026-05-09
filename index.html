@@ -865,7 +865,7 @@
 
 <!-- ================= [WORKSPACE MENU MODAL] ================= -->
 <div id="workspaceMenuModal" class="hidden fixed inset-0 z-[10002] bg-gray-900/90 backdrop-blur-md flex items-center justify-center p-4 transition-opacity duration-300 opacity-0">
-    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-2xl transform transition-transform scale-95 flex flex-col overflow-hidden" id="workspace_modal_box">
+    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-4xl transform transition-transform scale-95 flex flex-col overflow-hidden" id="workspace_modal_box">
         
         <div class="bg-gradient-to-r from-teal-700 to-emerald-800 text-white p-6 flex justify-between items-center relative overflow-hidden">
             <div class="absolute -right-10 -top-10 text-8xl opacity-10">💼</div>
@@ -876,19 +876,24 @@
             <button onclick="closeWorkspaceMenu()" class="relative z-10 text-white hover:text-red-400 bg-white/10 hover:bg-white/20 w-10 h-10 rounded-full flex items-center justify-center transition-colors text-2xl font-bold">&times;</button>
         </div>
         
-        <div class="p-8 grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50">
-            <!-- ปุ่ม CRM -->
-            <button onclick="openWorkspaceTool('crm')" class="bg-white border-2 border-indigo-100 hover:border-indigo-500 rounded-2xl p-6 text-center shadow-sm hover:shadow-xl transition-all transform hover:-translate-y-1 group">
-                <div class="w-20 h-20 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center text-4xl mx-auto mb-4 group-hover:scale-110 transition-transform">🗂️</div>
-                <h4 class="font-bold text-gray-800 text-xl mb-2">ระบบจัดการลูกค้า (CRM)</h4>
-                <p class="text-sm text-gray-500">จัดการฐานข้อมูล, บันทึกการเข้าพบ (VN) และติดตามสถานะการขาย</p>
+        <div class="p-8 grid grid-cols-1 md:grid-cols-3 gap-6 bg-gray-50">
+            <button onclick="openWorkspaceTool('crm')" class="bg-white border-2 border-indigo-100 hover:border-indigo-500 rounded-2xl p-6 text-center shadow-sm hover:shadow-xl transition-all transform hover:-translate-y-1 group relative overflow-hidden">
+                <div class="w-16 h-16 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center text-3xl mx-auto mb-4 group-hover:scale-110 transition-transform">🗂️</div>
+                <h4 class="font-bold text-gray-800 text-lg mb-2">ระบบจัดการลูกค้า (CRM)</h4>
+                <p class="text-xs text-gray-500">จัดการฐานข้อมูล, บันทึกการเข้าพบ (VN)</p>
             </button>
             
-            <!-- ปุ่ม FA Dashboard -->
-            <button onclick="openWorkspaceTool('dashboard')" class="bg-white border-2 border-emerald-100 hover:border-emerald-500 rounded-2xl p-6 text-center shadow-sm hover:shadow-xl transition-all transform hover:-translate-y-1 group">
-                <div class="w-20 h-20 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center text-4xl mx-auto mb-4 group-hover:scale-110 transition-transform">📊</div>
-                <h4 class="font-bold text-gray-800 text-xl mb-2">FA Business Planner</h4>
-                <p class="text-sm text-gray-500">ดูภาพรวมพอร์ตโฟลิโอ, สถิติการขาย และเป้าหมายธุรกิจของคุณ</p>
+            <button onclick="openWorkspaceTool('dashboard')" class="bg-white border-2 border-emerald-100 hover:border-emerald-500 rounded-2xl p-6 text-center shadow-sm hover:shadow-xl transition-all transform hover:-translate-y-1 group relative overflow-hidden">
+                <div class="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center text-3xl mx-auto mb-4 group-hover:scale-110 transition-transform">📊</div>
+                <h4 class="font-bold text-gray-800 text-lg mb-2">FA Business Planner</h4>
+                <p class="text-xs text-gray-500">ดูภาพรวมพอร์ตโฟลิโอ และสถิติการขาย</p>
+            </button>
+
+            <button onclick="openWorkspaceTool('aidapc')" class="bg-gradient-to-b from-cyan-50 to-blue-50/50 border-2 border-cyan-200 hover:border-cyan-500 rounded-2xl p-6 text-center shadow-sm hover:shadow-xl transition-all transform hover:-translate-y-1 group relative overflow-hidden">
+                <div class="absolute -right-4 -bottom-4 text-6xl opacity-5">🧠</div>
+                <div class="w-16 h-16 bg-cyan-100 text-cyan-600 rounded-full flex items-center justify-center text-3xl mx-auto mb-4 group-hover:scale-110 transition-transform shadow-inner border border-cyan-200">🤖</div>
+                <h4 class="font-bold text-cyan-800 text-lg mb-2">AiDAPC Sandbox</h4>
+                <p class="text-xs text-slate-500">จำลองแผนการเงินแบบเจาะลึก (AI vs FA)</p>
             </button>
         </div>
     </div>
@@ -909,7 +914,7 @@
                 <button onclick="closeSettingsWorkspace()" class="text-slate-300 hover:text-white bg-white/10 hover:bg-white/20 w-12 h-12 rounded-full flex items-center justify-center transition-all text-2xl font-bold border border-white/10 hover:scale-110">&times;</button>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 relative z-10">
                 <div onclick="openSettingsTool('tab_creator')" class="bg-slate-800/50 hover:bg-slate-700/80 border border-slate-600/50 hover:border-blue-400/50 p-6 rounded-3xl flex flex-col items-center text-center cursor-pointer transition-all duration-300 transform hover:-translate-y-2 group shadow-lg">
                     <div class="w-16 h-16 bg-blue-500/20 text-blue-400 rounded-2xl flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform shadow-inner border border-blue-500/30">👤</div>
                     <h4 class="font-bold text-white text-lg mb-1">ข้อมูลผู้จัดทำ</h4>
@@ -924,12 +929,6 @@
                     <div class="w-16 h-16 bg-rose-500/20 text-rose-400 rounded-2xl flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform shadow-inner border border-rose-500/30">🛠️</div>
                     <h4 class="font-bold text-white text-lg mb-1">จัดการระบบ</h4>
                     <p class="text-xs text-slate-400 leading-relaxed">เช็คพื้นที่, Backup ข้อมูล, ล้างเครื่อง</p>
-                </div>
-                <div onclick="openSettingsTool('ai')" class="bg-slate-800/50 hover:bg-slate-700/80 border border-slate-600/50 hover:border-cyan-400/80 p-6 rounded-3xl flex flex-col items-center text-center cursor-pointer transition-all duration-300 transform hover:-translate-y-2 group shadow-[0_0_15px_rgba(34,211,238,0.15)] relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-50"></div>
-                    <div class="w-16 h-16 bg-cyan-500/20 text-cyan-400 rounded-2xl flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform shadow-inner border border-cyan-500/30">🤖</div>
-                    <h4 class="font-bold text-cyan-300 text-lg mb-1">AI Control Center</h4>
-                    <p class="text-xs text-slate-400 leading-relaxed">ศูนย์บัญชาการสมองกล (Diagnostics)</p>
                 </div>
             </div>
         </div>
@@ -3040,7 +3039,7 @@ function syncInsuranceData() {
 
 window.SESSION_KEY = null; // กุญแจเข้ารหัสจะอยู่แค่ใน RAM เท่านั้น ห้ามเซฟลง LocalStorage
 
-const SecurityCore = {
+window.SecurityCore = {
     // ฟังก์ชันเข้ารหัส
     encrypt: function(dataObj) {
         if (!window.SESSION_KEY) return null;
@@ -3491,33 +3490,31 @@ window.backToSettingsWorkspace = function() {
 };
 
 window.openSettingsTool = function(toolId) {
-    document.getElementById('settingsWorkspaceModal').classList.add('hidden');
-    document.getElementById('settingsWorkspaceModal').style.display = 'none';
+    const modal = document.getElementById('settingsWorkspaceModal');
+    if(modal) {
+        modal.classList.add('hidden');
+        modal.style.display = 'none';
+    }
 
-    if (toolId === 'ai') {
-        if (window.AIControlCenter && typeof window.AIControlCenter.open === 'function') {
-            window.AIControlCenter.open();
-        } else {
-            alert("⚠️ ยังไม่ได้ติดตั้ง Module AI Control Center ครับ (ต้องดึงไฟล์ js มาก่อน)");
-        }
-        backToSettingsWorkspace();
-    } else {
-        openSettings(); // เรียกกล่องสีขาวเดิมขึ้นมา
-        switchTab(toolId); 
-        
-        // 🌟 ซ่อน Tab Bar และเปิดโหมดหน้าต่างเดี่ยว 🌟
-        const tabBar = document.getElementById('settings_tab_bar');
-        const backBtn = document.getElementById('btn_back_to_workspace');
-        const titleSpan = document.getElementById('settings_dynamic_title');
-        
-        if (tabBar) tabBar.style.display = 'none'; 
-        if (backBtn) { backBtn.classList.remove('hidden'); backBtn.classList.add('flex'); }
+    if (typeof window.originalOpenSettings === 'function') window.originalOpenSettings();
+    else openSettings(); 
+    
+    switchTab(toolId); 
+    
+    const tabBar = document.getElementById('settings_tab_bar');
+    const backBtn = document.getElementById('btn_back_to_workspace');
+    const titleSpan = document.getElementById('settings_dynamic_title');
+    
+    if (tabBar) tabBar.style.display = 'none'; 
+    if (backBtn) {
+        backBtn.classList.remove('hidden');
+        backBtn.classList.add('flex'); 
+    }
 
-        if (titleSpan) {
-            if (toolId === 'tab_creator') titleSpan.innerText = '👤 ตั้งค่าข้อมูลผู้จัดทำ';
-            else if (toolId === 'tab_library') titleSpan.innerText = '📦 คลังข้อมูล (Library)';
-            else if (toolId === 'tab_system_mgmt') titleSpan.innerText = '🛠️ การจัดการระบบขั้นสูง';
-        }
+    if (titleSpan) {
+        if (toolId === 'tab_creator') titleSpan.innerText = '👤 ตั้งค่าข้อมูลผู้จัดทำ';
+        else if (toolId === 'tab_library') titleSpan.innerText = '📦 คลังข้อมูล (Library)';
+        else if (toolId === 'tab_system_mgmt') titleSpan.innerText = '🛠️ การจัดการระบบขั้นสูง';
     }
 };
 
@@ -3601,17 +3598,24 @@ window.closeWorkspaceMenu = function() {
 
 // ฟังก์ชันเปิดเครื่องมือที่เลือก
 window.openWorkspaceTool = function(tool) {
-    // ปิดเมนูเลือก
     document.getElementById('workspaceMenuModal').classList.add('hidden');
     document.getElementById('workspaceMenuModal').style.display = 'none';
     
-    // เรียกฟังก์ชันที่มีอยู่เดิมในระบบของคุณ เพื่อเปิดหน้าต่างนั้นๆ ขึ้นมา
     if (tool === 'crm') {
         if (typeof openCRMDashboard === 'function') {
             openCRMDashboard();
         } else {
-            // สำรองเผื่อกรณีระบบของคุณใช้ switchTab
-            openSettings();
+            if (typeof window.originalOpenSettings === 'function') window.originalOpenSettings();
+            else openSettings(); 
+
+            const tabBar = document.getElementById('settings_tab_bar');
+            const titleSpan = document.getElementById('settings_dynamic_title');
+            const backBtn = document.getElementById('btn_back_to_workspace');
+            
+            if (tabBar) tabBar.style.display = 'none';
+            if (titleSpan) titleSpan.innerText = '🗂️ ฐานข้อมูลลูกค้า (CRM)';
+            if (backBtn) { backBtn.classList.remove('flex'); backBtn.classList.add('hidden'); }
+            
             switchTab('tab_crm'); 
         }
     } else if (tool === 'dashboard') {
@@ -3620,6 +3624,14 @@ window.openWorkspaceTool = function(tool) {
         } else {
             alert('กำลังโหลด FA Business Planner...');
         }
+    } else if (tool === 'aidapc') {
+        // 🌟 เรียกใช้ AiDAPC Module
+        if (window.AIControlCenter && typeof window.AIControlCenter.open === 'function') {
+            window.AIControlCenter.open();
+        } else {
+            alert("⚠️ ยังไม่ได้ติดตั้ง Module AiDAPC ครับ");
+        }
+        backToHome(); // ปิดเมนูแล้วกลับไปรอที่หน้า Home
     }
 };
 
