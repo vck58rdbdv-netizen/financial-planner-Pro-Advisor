@@ -231,7 +231,7 @@ window.AIControlCenter = {
                         
                         <div class="glass-panel rounded-xl p-4 flex-1 flex flex-col min-h-[250px]">
                             <div class="card-header flex justify-between items-center pb-2 mb-2">
-                                <h2 class="text-sm font-bold text-emerald-400 uppercase tracking-wider">📊 8. 8D Clustering</h2>
+                                <h2 class="text-sm font-bold text-emerald-400 uppercase tracking-wider">📊 8. 9D Persona Clustering</h2>
                             </div>
                             <div class="flex flex-col md:flex-row gap-4 flex-1">
                                 <div class="w-full md:w-1/3 flex flex-col justify-center">
@@ -257,7 +257,8 @@ window.AIControlCenter = {
                                     <p class="text-4xl font-black text-red-400" id="log_lapse_score">--%</p>
                                     <p class="text-[9px] text-slate-400 uppercase mt-1">Churn Rate</p>
                                 </div>
-                                <div class="flex-1 w-full overflow-y-auto custom-scrollbar h-full max-h-[120px]">
+                                <!-- 🌟 ปลดล็อก max-h-[120px] ออกเป็น h-full เพื่อให้ขยายได้เต็มที่ 🌟 -->
+                                <div class="flex-1 w-full overflow-y-auto custom-scrollbar h-full">
                                     <div id="log_lapse_drivers" class="text-[11px] text-slate-300 space-y-1.5">
                                         <p class="text-slate-500 italic text-center mt-4">รอประมวลผลความเสี่ยงทิ้งกรมธรรม์...</p>
                                     </div>
@@ -328,10 +329,32 @@ window.AIControlCenter = {
                 // ==========================================
                 // ⚙️ ตัวแปร Global, Product Matrix & Utils
                 // ==========================================
+                
+                // 🛡️ Global Security & Configuration
+                const SYS_CONFIG = {
+                    HIGH_INCOME_THRESHOLD: 200000,
+                    CRITICAL_DTI: 0.8,
+                    WARNING_DTI: 0.6,
+                    SAFE_DTI: 0.4,
+                    EMERGENCY_MONTHS: 6
+                };
+
                 let spiderChartInstance = null;
                 let rawDatabaseCache = {};
 
                 const formatB = (num) => '฿' + Math.round(num || 0).toLocaleString('th-TH');
+
+                // XSS Protection Sanitizer
+                const escapeHTML = (str) => {
+                    return String(str).replace(/[&<>'"]/g, 
+                        tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+                    );
+                };
+
+                // Handle Before Unload Window Management
+                window.addEventListener('beforeunload', () => {
+                    if(window.opener && window.opener.AIControlCenter) window.opener.AIControlCenter.windowRef = null;
+                });
 
                 const termLog = (msg, type='info') => {
                     const el = document.getElementById('terminal_log');
@@ -674,27 +697,47 @@ window.AIControlCenter = {
                             const sumVals = (arr) => (arr || []).reduce((sum, item) => sum + (Number(item.val || item[1]) || 0), 0);
 
                             let tInc = sumVals(dyn.c_inc);
-                            let tExp = sumVals(dyn.c_exp);
+                            
+                            // 🌟 1. ดึงข้อมูลสินทรัพย์ (Assets) และหาสภาพคล่องจาก Dropdown 🌟
+                            let tAst = 0;
+                            let liquidAssets = 0;
+                            (dyn.c_assets || []).forEach(item => {
+                                let cat = String(item.type || item[0] || "").trim(); 
+                                let v = Number(item.val || item[2] || item[1]) || 0; 
+                                tAst += v;
+                                if (cat === "สินทรัพย์สภาพคล่อง") {
+                                    liquidAssets += v;
+                                }
+                            });
+                            if (liquidAssets === 0 && tAst > 0) {
+                                liquidAssets = tAst * 0.3; // Fallback
+                            }
+
+                            // 🌟 2. ดึงข้อมูลรายจ่าย (Expenses) และหาภาระผ่อนหนี้จาก Dropdown 🌟
+                            let tExp = 0;
+                            let totalDebtPmt = 0;
+                            (dyn.c_exp || []).forEach(item => {
+                                let cat = String(item.type || item[0] || "").trim();
+                                let v = Number(item.val || item[2] || item[1]) || 0;
+                                tExp += v;
+                                if (cat === "เงินชำระคืนหนี้สิน") {
+                                    totalDebtPmt += v;
+                                }
+                            });
+
+                            // 🌟 3. ดึงข้อมูลหนี้สิน (Liabilities) และหาหนี้เสียจาก Dropdown 🌟
                             let tLiab = 0; 
                             let badDebt = 0;
-                            
                             (dyn.c_liab || []).forEach(item => {
-                                let v = Number(item.val || item[1]) || 0;
-                                let name = String(item.name || item[0] || "").toLowerCase();
+                                let cat = String(item.type || item[0] || "").trim();
+                                let v = Number(item.val || item[2] || item[1]) || 0;
                                 tLiab += v;
-                                if(name.includes('บัตร') || name.includes('บุคคล') || name.includes('นอกระบบ') || name.includes('รถ')) {
+                                if (cat === "หนี้สินระยะสั้น") {
                                     badDebt += v;
                                 }
                             });
 
-                            let totalDebtPmt = 0;
-                            (dyn.c_exp || []).forEach(item => {
-                                let v = Number(item.val || item[1]) || 0;
-                                let name = String(item.name || item[0] || "").toLowerCase();
-                                if(name.includes('ผ่อน') || name.includes('หนี้') || name.includes('บัตร') || name.includes('สินเชื่อ') || name.includes('กู้') || name.includes('รถ') || name.includes('บ้าน') || name.includes('ขั้นต่ำ')) {
-                                    totalDebtPmt += v;
-                                }
-                            });
+                            // Fallback กรณีไม่ได้ระบุรายจ่ายชำระคืนหนี้สินใน Expense แต่มีหนี้ในฝั่ง Liabilities
                             if (totalDebtPmt === 0) {
                                 (dyn.c_liab || []).forEach(item => {
                                     let pmt = Number(item.pmt || item[2]) || 0;
@@ -705,18 +748,29 @@ window.AIControlCenter = {
                                 totalDebtPmt = tLiab * 0.03; 
                             }
                             
-                            let tAst = sumVals(dyn.c_assets);
                             let currentInsurance = dyn.c_ins || [];
                             let smartGoals = dyn.c_goals || [];
 
                             let netWorth = latestVisit.netWorth || (tAst - tLiab);
                             
-                            let dtiRatio = tInc > 0 ? (totalDebtPmt / tInc) : 0;
+                            // 🌟 1.1 Fixed Zero-Division in DTI Logic 🌟
+                            let dtiRatio = 0;
+                            if (tInc > 0) {
+                                dtiRatio = totalDebtPmt / tInc;
+                            } else if (totalDebtPmt > 0) {
+                                dtiRatio = 1.0; 
+                            }
                             dtiRatio = Math.min(1.0, Math.max(0, dtiRatio));
                             let badDebtRatio = tLiab > 0 ? (badDebt / tLiab) : 0;
 
                             let allNotes = latestVisit.activities ? latestVisit.activities.map(act => act.text).join(" | ") : "";
                             let originalScore = parseFloat(latestVisit.aiScore) || 50;
+                            
+                            // 🌟 1.4 Extracted 9D Behaviors 🌟
+                            let risk = parseFloat(prof.p_risk) || 0.5;
+                            let recency = parseFloat(prof.p_recency) || 0.5;
+                            let frequency = parseFloat(prof.p_frequency) || 0.5;
+                            let discipline = parseFloat(prof.p_discipline) || 0.5;
 
                             rawDatabaseCache[c.id] = {
                                 id: c.id,
@@ -733,7 +787,12 @@ window.AIControlCenter = {
                                 liabilities: tLiab,
                                 badDebtRatio: badDebtRatio,
                                 assets: tAst,
+                                liquidAssets: liquidAssets,
                                 dti: dtiRatio,
+                                risk: risk,
+                                recency: recency,
+                                frequency: frequency,
+                                discipline: discipline,
                                 notes: allNotes,
                                 originalScore: originalScore, 
                                 existingIns: currentInsurance,
@@ -793,8 +852,11 @@ window.AIControlCenter = {
                         let dtiPenalty = (dti * 100) * 0.6; 
                         let depPenalty = dep * 2;
 
-                        let score = base + incScore + nwScore - debtPenalty - dtiPenalty - depPenalty + occRiskScore;
-                        return Math.max(1.0, Math.min(99.9, score));
+                        // 🌟 1.2 Deep Learning Core Score Bounding (Sigmoid Function) 🌟
+                        let scoreRaw = base + incScore + nwScore - debtPenalty - dtiPenalty - depPenalty + occRiskScore;
+                        let finalScore = 100 / (1 + Math.exp(-0.05 * (scoreRaw - 50)));
+                        
+                        return Math.max(1.0, Math.min(99.9, finalScore));
                     },
 
                     detectOutliers: function(data) {
@@ -820,10 +882,10 @@ window.AIControlCenter = {
                             ]
                         };
 
-                        if (data.inc > 200000 && data.nw < 100000) {
+                        if (data.inc > SYS_CONFIG.HIGH_INCOME_THRESHOLD && data.nw < 100000) {
                             confidence -= 18; warnings.push(pickNLG(textVariations.highIncLowNw));
                         }
-                        if (data.dti > 0.8) {
+                        if (data.dti > SYS_CONFIG.CRITICAL_DTI) {
                             confidence -= 15; warnings.push(pickNLG(textVariations.highDti));
                         }
                         if (data.exp > data.inc && data.inc > 0) {
@@ -834,18 +896,29 @@ window.AIControlCenter = {
                         return { conf: Math.max(0, confidence), text: warnings };
                     },
 
+                    // 🌟 2.1 & 3.1 XSS Protection & Negation Handling 🌟
                     analyzeSentiment: function(text) {
-                        let textLower = String(text || "").toLowerCase();
+                        let safeText = escapeHTML(String(text || ""));
+                        let textLower = safeText.toLowerCase();
+                        
                         let anxietyWords = ['กังวล', 'เครียด', 'ไม่พอ', 'บ่น', 'หนี้', 'จ่ายขั้นต่ำ', 'ค่าใช้จ่าย', 'ไม่มีเงิน', 'ลดลง', 'ป่วย', 'กู้', 'หนักใจ'];
                         let positiveWords = ['สนใจ', 'ลดหย่อน', 'ลงทุน', 'มรดก', 'ออม', 'เกษียณ', 'วางแผน', 'เป้าหมาย', 'มั่นคง', 'พร้อม'];
                         
                         let anxietyScore = 30; 
-                        let highlights = text || "ไม่มีบันทึกประวัติการสนทนาในระบบ (No NLP Data)";
+                        let highlights = safeText || "ไม่มีบันทึกประวัติการสนทนาในระบบ (No NLP Data)";
 
                         anxietyWords.forEach(w => {
-                            if(textLower.includes(w)) {
-                                anxietyScore += 15;
-                                highlights = highlights.replace(new RegExp(w, 'gi'), '<span class="bg-pink-500/40 px-1 rounded border border-pink-500 text-white font-bold">' + w + '</span>');
+                            let idx = textLower.indexOf(w);
+                            if(idx !== -1) {
+                                let context = textLower.substring(Math.max(0, idx - 15), idx);
+                                let isNegated = context.includes('ไม่') || context.includes('หาย') || context.includes('ลด');
+                                
+                                if(!isNegated) {
+                                    anxietyScore += 15;
+                                    highlights = highlights.replace(new RegExp(w, 'gi'), '<span class="bg-pink-500/40 px-1 rounded border border-pink-500 text-white font-bold">' + w + '</span>');
+                                } else {
+                                    highlights = highlights.replace(new RegExp(w, 'gi'), '<span class="bg-emerald-500/30 border-b-2 border-emerald-500 text-emerald-300 font-bold">' + w + '</span>');
+                                }
                             }
                         });
                         positiveWords.forEach(w => {
@@ -866,7 +939,10 @@ window.AIControlCenter = {
                         features.forEach((feat) => {
                             let originalValue = parseFloat(data[feat]);
                             if (isNaN(originalValue) || originalValue === 0) return;
+                            
                             let delta = Math.abs(originalValue * PERTURBATION_RATE);
+                            // 🌟 1.3 Fix Integer features perturbation 🌟
+                            if (feat === 'dependents') delta = Math.ceil(delta);
                             
                             let testDataUp = { ...data }; testDataUp[feat] += delta;
                             let probUp = this.predictSuccessProbability(testDataUp);
@@ -990,8 +1066,8 @@ window.AIControlCenter = {
                         let gender = data.gender || 'M';
                         let age = data.age || 35;
 
-                        let reqEmergency = data.exp * 6;
-                        let currentLiquid = data.assets * 0.3; 
+                        let reqEmergency = data.exp * SYS_CONFIG.EMERGENCY_MONTHS;
+                        let currentLiquid = data.liquidAssets !== undefined ? data.liquidAssets : data.assets * 0.3; 
                         let gapEmergency = Math.max(0, reqEmergency - currentLiquid);
 
                         let reqLife = data.liabilities + (data.exp * 12 * 5);
@@ -1141,8 +1217,8 @@ window.AIControlCenter = {
                             ]
                         };
 
-                        if(data.dti > 0.6) { score += 40; drivers.push(pickNLG(lapseNLG.highDti)); }
-                        else if(data.dti > 0.4) { score += 15; drivers.push("⚠️ <b>หนี้เริ่มตึงตัว:</b> ต้องระวังการวางเบี้ยประกันที่หนักหรือตึงมือเกินไป"); }
+                        if(data.dti > SYS_CONFIG.WARNING_DTI) { score += 40; drivers.push(pickNLG(lapseNLG.highDti)); }
+                        else if(data.dti > SYS_CONFIG.SAFE_DTI) { score += 15; drivers.push("⚠️ <b>หนี้เริ่มตึงตัว:</b> ต้องระวังการวางเบี้ยประกันที่หนักหรือตึงมือเกินไป"); }
 
                         if(data.inc < 30000) { score += 20; drivers.push(pickNLG(lapseNLG.lowInc)); }
                         if(data.exp > data.inc && data.inc > 0) { score += 30; drivers.push(pickNLG(lapseNLG.negCf)); }
@@ -1160,10 +1236,26 @@ window.AIControlCenter = {
                         return { score: Math.min(99, Math.max(1, score)), drivers: drivers };
                     },
 
+                    // 🌟 1.4 9D Persona Clustering 🌟
                     KMeans: {
-                        Centroids: { "กลุ่มเปราะบาง/หนี้วิกฤต": { age: 0.3, inc: 0.05, nw: 0.0, risk: 0.2, dti: 0.8 }, "วัยทำงานสร้างตัว": { age: 0.15, inc: 0.15, nw: 0.05, risk: 0.8, dti: 0.3 }, "ครอบครัวมาตรฐาน": { age: 0.4, inc: 0.2, nw: 0.1, risk: 0.5, dti: 0.4 }, "ผู้บริหาร/เจ้าของกิจการ": { age: 0.6, inc: 0.8, nw: 0.8, risk: 0.6, dti: 0.1 } },
+                        Centroids: { 
+                            "กลุ่มเปราะบาง/หนี้วิกฤต": { age: 0.3, inc: 0.1, nw: 0.05, risk: 0.2, dti: 0.9, recency: 0.2, frequency: 0.2, discipline: 0.1, dep: 0.8 }, 
+                            "วัยทำงานสร้างตัว": { age: 0.2, inc: 0.3, nw: 0.1, risk: 0.7, dti: 0.5, recency: 0.6, frequency: 0.5, discipline: 0.6, dep: 0.2 }, 
+                            "ครอบครัวมาตรฐาน": { age: 0.5, inc: 0.5, nw: 0.4, risk: 0.5, dti: 0.4, recency: 0.7, frequency: 0.6, discipline: 0.8, dep: 0.6 }, 
+                            "ผู้บริหาร/เจ้าของกิจการ": { age: 0.7, inc: 0.9, nw: 0.8, risk: 0.6, dti: 0.2, recency: 0.8, frequency: 0.4, discipline: 0.9, dep: 0.4 } 
+                        },
                         classify: function(data) {
-                            let norm = { age: Math.min(1, data.age/80), inc: Math.min(1, data.inc/200000), nw: Math.min(1, data.nw/10000000), risk: 0.6, dti: data.dti };
+                            let norm = { 
+                                age: Math.min(1, data.age/80), 
+                                inc: Math.min(1, data.inc/SYS_CONFIG.HIGH_INCOME_THRESHOLD), 
+                                nw: Math.min(1, Math.max(0, data.nw)/10000000), 
+                                risk: data.risk || 0.5, 
+                                dti: Math.min(1, data.dti),
+                                recency: data.recency || 0.5,
+                                frequency: data.frequency || 0.5,
+                                discipline: data.discipline || 0.5,
+                                dep: Math.min(1, data.dependents/5)
+                            };
                             let closest = "วัยทำงานสร้างตัว"; let minDist = Infinity; let tVec = {};
                             for (let c in this.Centroids) {
                                 let sum = 0; let cent = this.Centroids[c];
@@ -1202,10 +1294,10 @@ window.AIControlCenter = {
                             cap = 30;
                             auditTrail.push('<div class="flex justify-between text-rose-500 border-b border-slate-800 pb-2 mb-2"><span><b>[CRITICAL CAP]</b> ' + pickNLG(auditNLG.pen_neg) + '</span><span class="font-bold whitespace-nowrap ml-2">Max 30%</span></div>');
                         }
-                        else if (features.dti >= 0.6) {
+                        else if (features.dti >= SYS_CONFIG.WARNING_DTI) {
                             cap = 45;
                             auditTrail.push('<div class="flex justify-between text-rose-400 border-b border-slate-800 pb-2 mb-2"><span><b>[HARD CAP]</b> ' + pickNLG(auditNLG.cap) + '</span><span class="font-bold whitespace-nowrap ml-2">Max 45%</span></div>');
-                        } else if (features.dti >= 0.4) {
+                        } else if (features.dti >= SYS_CONFIG.SAFE_DTI) {
                             discount += 15;
                             auditTrail.push('<div class="flex justify-between text-orange-400 border-b border-slate-800 pb-2 mb-2"><span><b>[PENALTY]</b> ' + pickNLG(auditNLG.pen_dti) + '</span><span class="font-bold whitespace-nowrap ml-2">-15%</span></div>');
                         } else {
@@ -1225,6 +1317,7 @@ window.AIControlCenter = {
                         return { finalScore: finalScore, discount: discount, auditTrail: auditTrail };
                     },
                     
+                    // 🌟 2.2 Re-Tone Executive Summary 🌟
                     generateExecutiveSummary: function(data, results) {
                         let p = results.persona;
                         let finalScore = results.con.finalScore;
@@ -1239,18 +1332,18 @@ window.AIControlCenter = {
                                  '<span class="text-slate-300">จัดอยู่ในกลุ่ม <b>"' + p + '"</b> มีโอกาสสำเร็จภาพรวมที่ <b>' + finalScore.toFixed(1) + '%</b></span><br>';
                                  
                         if (tone === "critical") {
-                            p1 += '<span class="text-rose-400 font-bold mt-1 block">🚨 คำวินิจฉัย: โครงสร้างการเงินอยู่ในโซนเปราะบาง ต้องเร่งแก้ปัญหาหนี้สินหรือกระแสเงินสดก่อนการลงทุน</span>';
+                            p1 += '<span class="text-rose-400 font-bold mt-1 block">🚨 โอกาสในการเข้าพบ: ลูกค้ามีโครงสร้างสภาพคล่องที่ท้าทาย แนะนำให้ชวนพูดคุยเรื่องการปรับโครงสร้างหนี้ (Debt Consolidation) เพื่อผ่อนแรงก่อนเริ่มแผนออม</span>';
                         } else if (tone === "positive") {
-                            p1 += '<span class="text-emerald-400 font-bold mt-1 block">🌟 คำวินิจฉัย: ฐานะการเงินแข็งแกร่ง พร้อมสำหรับการปกป้องและต่อยอดความมั่งคั่ง</span>';
+                            p1 += '<span class="text-emerald-400 font-bold mt-1 block">🌟 โอกาสในการเข้าพบ: ฐานะการเงินแข็งแกร่ง พร้อมสำหรับการแนะนำพอร์ตเพื่อปกป้องและต่อยอดความมั่งคั่งให้เต็มศักยภาพสูงสุด</span>';
                         } else {
-                            p1 += '<span class="text-orange-400 font-bold mt-1 block">⚠️ คำวินิจฉัย: สถานะปานกลาง มีจุดรั่วไหลที่ต้องอุดเพื่อป้องกันแผนสะดุดในระยะยาว</span>';
+                            p1 += '<span class="text-orange-400 font-bold mt-1 block">⚠️ โอกาสในการเข้าพบ: สถานะโดยรวมอยู่ในเกณฑ์ดี แต่อาจมีรอยรั่วที่ต้องช่วยลูกค้าอุดเพื่อป้องกันแผนสะดุดในระยะยาว (Risk Mitigation)</span>';
                         }
                         p1 += '</div>';
 
                         let p2 = '<div class="border-b border-fuchsia-500/30 pb-2 mb-2">' +
                                  '<b class="text-fuchsia-300 text-sm">🎯 2. กลยุทธ์การเปิดใจ (Ice Breaking Strategy):</b><br>';
                         if (topXai) {
-                            p2 += '<span class="text-slate-300 block mt-1">เริ่มบทสนทนาด้วยการชื่นชมจุดแข็งเรื่อง <b>"' + (topXai.isPositiveFactor ? topXai.feature : 'ความตั้งใจในการวางแผน') + '"</b> จากนั้นค่อยๆ เชื่อมโยงเข้าสู่จุดอ่อนเรื่อง <b>"' + (!topXai.isPositiveFactor ? topXai.feature : 'รอยรั่วทางการเงิน') + '"</b> เพื่อให้ลูกค้าตระหนักถึงปัญหาด้วยตนเองโดยไม่รู้สึกถูกต่อว่า</span>';
+                            p2 += '<span class="text-slate-300 block mt-1">เริ่มบทสนทนาด้วยการชื่นชมความตั้งใจเรื่อง <b>"' + (topXai.isPositiveFactor ? topXai.feature : 'การดูแลครอบครัว/วางแผนอนาคต') + '"</b> จากนั้นค่อยๆ เชื่อมโยงเข้าสู่จุดอ่อนเรื่อง <b>"' + (!topXai.isPositiveFactor ? topXai.feature : 'การจัดการสภาพคล่อง') + '"</b> เพื่อให้ลูกค้าตระหนักถึงปัญหาด้วยตนเองโดยไม่รู้สึกถูกต่อว่า</span>';
                         } else {
                             p2 += '<span class="text-slate-300 block mt-1">ชวนพูดคุยถึงเป้าหมายในอนาคต และประเมินความกังวลในปัจจุบันเพื่อหาจุดที่ FA สามารถเข้าไปช่วยอุดช่องโหว่ได้</span>';
                         }
@@ -1279,10 +1372,27 @@ window.AIControlCenter = {
                     let data = rawDatabaseCache[cId];
                     termLog('Pipeline Executing for: ' + cId, "highlight");
 
-                    // 1. Ingest Data
+                    // 1. Ingest Data (🌟 แปลงชื่อตัวแปรเป็นภาษาไทยให้ FA เข้าใจง่าย 🌟)
                     let displayData = { ...data };
                     delete displayData.rawProfile; delete displayData.rawRetirement; 
-                    document.getElementById('log_input_data').innerText = JSON.stringify(displayData, null, 2);
+                    
+                    const dictMap = {
+                        id: "รหัสลูกค้า (ID)", name: "ชื่อลูกค้า", age: "อายุ (ปี)", gender: "เพศ",
+                        dependents: "ผู้อยู่ในอุปการะ (คน)", occ: "อาชีพ", retireAge: "อายุเกษียณคาดหวัง",
+                        reqInc: "รายได้หลังเกษียณที่ต้องการ/เดือน", inc: "รายรับรวม/เดือน", exp: "รายจ่ายรวม/เดือน",
+                        nw: "ความมั่งคั่งสุทธิ (Net Worth)", liabilities: "หนี้สินรวม", badDebtRatio: "สัดส่วนหนี้บริโภค/หนี้รวม",
+                        assets: "สินทรัพย์รวม", liquidAssets: "สินทรัพย์สภาพคล่อง", dti: "อัตราส่วนภาระหนี้ต่อรายได้ (DTI)",
+                        risk: "ระดับความเสี่ยงที่รับได้", recency: "ความเคลื่อนไหวล่าสุด (Recency)",
+                        frequency: "ความถี่ในการทำธุรกรรม (Frequency)", discipline: "วินัยการออม (Discipline)",
+                        notes: "บันทึกการสนทนา (Notes)", originalScore: "คะแนนตั้งต้นจาก CRM",
+                        existingIns: "กรมธรรม์ที่มีอยู่", goals: "เป้าหมาย (Goals)", occType: "กลุ่มความเสี่ยงอาชีพ"
+                    };
+                    let translatedData = {};
+                    for(let key in displayData) {
+                        let mappedKey = dictMap[key] || key;
+                        translatedData[mappedKey] = displayData[key];
+                    }
+                    document.getElementById('log_input_data').innerText = JSON.stringify(translatedData, null, 2);
 
                     // 2. NLP Sentiment
                     let nlp = window.AIEngineCore.analyzeSentiment(data.notes);
@@ -1295,14 +1405,17 @@ window.AIControlCenter = {
                     document.getElementById('bar_conf').style.width = outlier.conf + "%";
                     document.getElementById('log_outlier_warning').innerHTML = outlier.text.map(t => '<p class="' + (t.includes('⚠️') ? 'text-orange-400' : 'text-emerald-400') + ' mb-1">' + t + '</p>').join('');
 
-                    // 4. Base ML
+                    // 4. Base ML (🌟 ปรับ Logic การแสดงผล Net Worth ให้รองรับค่าติดลบ 🌟)
                     let nnScore = window.AIEngineCore.predictSuccessProbability(data);
                     document.getElementById('log_nn_score').innerText = nnScore.toFixed(1) + "%";
                     
+                    let posFactors = '- ➕ ปัจจัยบวก: รายได้ (' + formatB(data.inc) + ')' + (data.nw >= 0 ? ' และ ความมั่งคั่งสุทธิ (' + formatB(data.nw) + ')' : '') + '<br>';
+                    let negFactors = '- ➖ ปัจจัยลบ: หนี้สะสม (' + formatB(data.liabilities) + ')' + (data.nw < 0 ? ', ความมั่งคั่งสุทธิติดลบ (' + formatB(data.nw) + ')' : '') + ', ภาระผ่อน (DTI ' + (data.dti*100).toFixed(0) + '%), ภาระดูแล (' + data.dependents + ' คน)';
+                    
                     let nnDescHtml = '<div class="space-y-1.5">' +
                         '<b class="text-purple-300 text-[11px]">⚙️ ตรรกะการคำนวณ (Cause & Effect):</b><br>' +
-                        '<span class="text-emerald-400 block mt-1 leading-snug"><b>จุดเริ่มต้น (Inputs):</b> <br>- ➕ ปัจจัยบวก: รายได้ (' + formatB(data.inc) + ') และ ทรัพย์สิน (' + formatB(data.nw) + ')<br>- ➖ ปัจจัยลบ: หนี้สะสม (' + formatB(data.liabilities) + '), ภาระผ่อนชำระหนี้ (DTI ' + (data.dti*100).toFixed(0) + '%), ภาระดูแล (' + data.dependents + ' คน)</span>' +
-                        '<span class="text-sky-300 block mt-1 leading-snug"><b>📊 การวิเคราะห์ความเสี่ยงรายได้ (Income Stability):</b> <br>- อาชีพ: ' + data.occ + ' ➡️ ความสม่ำเสมอ: ' + (data.occType || "ปานกลาง") + '</span>' +
+                        '<span class="text-emerald-400 block mt-1 leading-snug"><b>จุดเริ่มต้น (Inputs):</b> <br>' + posFactors + negFactors + '</span>' +
+                        '<span class="text-sky-300 block mt-1 leading-snug"><b>📊 การวิเคราะห์ความเสี่ยงรายได้ (Income Stability):</b> <br>- อาชีพ: ' + escapeHTML(data.occ) + ' ➡️ ความสม่ำเสมอ: ' + escapeHTML(data.occType || "ปานกลาง") + '</span>' +
                         '<span class="text-purple-300 block mt-2 pt-2 border-t border-purple-500/30"><b>ผลลัพธ์ (Result):</b> <br>➡️ AI ให้น้ำหนักปัจจัยบวก/ลบ และความเสี่ยงของแหล่งรายได้ สรุปคะแนนศักยภาพตั้งต้นที่ <b>' + nnScore.toFixed(1) + '%</b></span>' +
                     '</div>';
                     document.getElementById('log_nn_desc').innerHTML = nnDescHtml;
@@ -1326,20 +1439,58 @@ window.AIControlCenter = {
                     let cf = window.AIEngineCore.generateCounterfactuals(data, nnScore);
                     document.getElementById('log_counterfactual').innerHTML = cf.join('');
 
-                    // 7. Clustering
+                    // 7. Clustering (Now 9D Persona Clustering)
                     let cluster = window.AIEngineCore.KMeans.classify(data);
                     document.getElementById('log_persona').innerText = cluster.persona;
                     
                     try {
                         const ctxSpider = document.getElementById('spiderChartCanvas').getContext('2d');
                         if(spiderChartInstance) spiderChartInstance.destroy();
+                        
+                        // 🌟 Inverting DTI and Dep for Visual Polygon Expansion 🌟
+                        let clientPolygon = [
+                            cluster.clientVector.age, 
+                            cluster.clientVector.inc, 
+                            cluster.clientVector.nw, 
+                            cluster.clientVector.risk, 
+                            1 - cluster.clientVector.dti, 
+                            cluster.clientVector.recency,
+                            cluster.clientVector.frequency,
+                            cluster.clientVector.discipline,
+                            1 - cluster.clientVector.dep
+                        ];
+                        let centroidPolygon = [
+                            cluster.centroidVector.age, 
+                            cluster.centroidVector.inc, 
+                            cluster.centroidVector.nw, 
+                            cluster.centroidVector.risk, 
+                            1 - cluster.centroidVector.dti, 
+                            cluster.centroidVector.recency,
+                            cluster.centroidVector.frequency,
+                            cluster.centroidVector.discipline,
+                            1 - cluster.centroidVector.dep
+                        ];
+
                         spiderChartInstance = new Chart(ctxSpider, {
                             type: 'radar',
-                            data: { labels: ['Age', 'Income', 'NetWorth', 'Risk', 'DTI'], datasets: [
-                                { label: 'Client', data: [cluster.clientVector.age, cluster.clientVector.inc, cluster.clientVector.nw, cluster.clientVector.risk, cluster.clientVector.dti], borderColor: '#10b981', backgroundColor: 'rgba(16, 185, 129, 0.2)' },
-                                { label: 'Centroid', data: [cluster.centroidVector.age, cluster.centroidVector.inc, cluster.centroidVector.nw, cluster.centroidVector.risk, cluster.centroidVector.dti], borderColor: '#64748b', borderDash: [5, 5], fill: false }
-                            ]},
-                            options: { responsive: true, maintainAspectRatio: false, scales: { r: { ticks: {display: false}, pointLabels: {color: '#94a3b8'} } }, plugins: { legend: { display: false } } }
+                            data: { 
+                                labels: ['Age', 'Income', 'NetWorth', 'Risk', 'H.Liquidity(Inv DTI)', 'Recency', 'Frequency', 'Discipline', 'FreeLoad(Inv Dep)'], 
+                                datasets: [
+                                    { label: 'ลูกค้า (Client)', data: clientPolygon, borderColor: '#10b981', backgroundColor: 'rgba(16, 185, 129, 0.2)' },
+                                    { label: 'เป้าหมายกลุ่ม (Centroid)', data: centroidPolygon, borderColor: '#64748b', borderDash: [5, 5], fill: false }
+                                ]
+                            },
+                            // 🌟 เปิดใช้งาน Legend อธิบายกราฟ 🌟
+                            options: { 
+                                responsive: true, 
+                                maintainAspectRatio: false, 
+                                scales: { 
+                                    r: { ticks: {display: false}, pointLabels: {color: '#94a3b8', font: {size: 8}} } 
+                                }, 
+                                plugins: { 
+                                    legend: { display: true, position: 'bottom', labels: { color: '#94a3b8', font: {size: 10} } } 
+                                } 
+                            }
                         });
                     } catch(err) {
                         console.warn("Chart.js failed to load or render:", err);

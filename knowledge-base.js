@@ -69,7 +69,7 @@ window.systemDictionary = {
                         <div class="absolute -right-2 -top-2 text-6xl opacity-10 select-none pointer-events-none">💬</div>
                         <b class="text-emerald-800 text-sm block mb-2 relative z-10">💬 บทสนทนาสร้างความมั่นใจสำหรับ FA (Privacy Script)</b>
                         <p class="text-[12px] text-gray-700 leading-relaxed border-l-4 border-emerald-500 pl-4 py-2 bg-white rounded shadow-sm italic relative z-10">
-                            "คุณลูกค้าสบายใจเรื่องข้อมูลส่วนตัวได้ 100% เลยนะครับ ระบบวิเคราะห์ปัญญาประดิษฐ์ที่ผมนำมาใช้วางแผนให้คุณลูกค้าในวันนี้ เป็นสถาปัตยกรรมแบบ <b>Local Encrypted System</b> หมายความว่า ข้อมูลความมั่งคั่งทุกตัวอักษร จะถูกเข้ารหัสความปลอดภัยขั้นสูง (AES-256) และล็อกกุญแจเก็บไว้ในชิปหน่วยความจำของ iPad เครื่องนี้ของผมเท่านั้นครับ...<br><br>จะไม่มีการอัปโหลดขึ้น Cloud, ไม่มีการส่งข้อมูลผ่านอินเทอร์เน็ต และจะไม่มีแฮกเกอร์ หรือแม้แต่นักพัฒนาแอปคนไหนสามารถดึงข้อมูลของคุณลูกค้าไปได้ ถือเป็นมาตรฐานความปลอดภัยสูงสุดที่เหนือกว่ากฎหมาย PDPA อีกครับ"
+                            "คุณลูกค้าสบายใจเรื่องข้อมูลส่วนตัวได้ 100% เลยนะครับ ระบบวิเคราะห์ปัญญาประดิษฐ์ที่ผมนำมาใช้วางแผนให้คุณลูกค้าในวันนี้ เป็นสถาปัตยกรรมแบบ <b>Local Encrypted System</b> หมายความว่า ข้อมูลความมั่งคั่งทุกตัวอักษร จะถูกเข้ารหัสความปลอดภัยขั้นสูง (AES-256) และล็อกกุญแจเก็บไว้ในชิปหน่วยความจำของ iPad เครื่องนี้ของผมเท่านั้นครับ...<br><br>จะไม่มีการอัปโหลดขึ้น Cloud, ไม่มีการส่งข้อมูลผ่านอินเทอร์เน็ต และจะไม่มีแฮกเกอร์ หรือแม้แต่นักพัฒนาแอปคนไหนสามารถดึงข้อมูลของคุณลูกค้าไปได้ ถือเป็นมาตรฐานความปลอดภัยสูงสุดที่ตามกฎหมาย PDPA ครับ"
                         </p>
                     </div>
                 </div>
@@ -176,7 +176,7 @@ window.systemDictionary = {
                                 <ul class="list-disc list-inside text-[11px] text-gray-700 space-y-1.5 ml-1">
                                     <li><b class="text-green-600">รายจ่ายเพื่อออม/ลงทุน:</b> เงินที่จ่ายไปแล้วงอกเงย (เช่น ซื้อ RMF/SSF ทุกเดือน, DCA หุ้น)</li>
                                     <li><b class="text-red-600">เงินชำระคืนหนี้สิน:</b> ค่างวดที่ต้องส่งแบงก์ (เช่น ค่าผ่อนบ้าน, ค่าผ่อนรถ, จ่ายขั้นต่ำบัตร)</li>
-                                    <li><b class="text-orange-600">รายจ่ายประจำ/ใช้ชีวิต:</b> เงินที่ละลายหายไป (เช่น ค่าอาหาร, น้ำไฟเน็ต, ช้อปปิ้ง, ค่าเทอมลูก)</li>
+                                    <li><b class="text-orange-600">รายจ่ายประจำ/ใช้ชีวิต:</b> เงินที่ใช้หมดไปกับการบริโภค (เช่น ค่าอาหาร, น้ำไฟเน็ต, ช้อปปิ้ง, ค่าเทอมลูก)</li>
                                     <li><b class="text-purple-600">ภาษีหัก ณ ที่จ่าย:</b> ภาษีที่โดนหักจากเงินเดือนทุกเดือน</li>
                                     <li><b class="text-gray-600">รายจ่ายอื่น:</b> เช่น เงินให้พ่อแม่, เงินทำบุญ</li>
                                 </ul>
@@ -476,7 +476,7 @@ window.systemDictionary = {
                                     <b class="text-teal-800 flex items-center gap-2 mb-2"><span class="text-lg select-none">📝</span> บันทึกผลงาน (Sales Ledger)</b>
                                     <ul class="list-disc list-inside text-xs space-y-1.5 text-gray-700 flex-grow">
                                         <li><b>นับ Case ไหม?:</b> เลือกว่า <code class="bg-white px-1 border rounded text-emerald-600">New (นับ)</code> หรือ <code class="bg-white px-1 border rounded text-gray-500">Renewal (ไม่นับ)</code></li>
-                                        <li><b>ระบบยัดไส้:</b> คลิก <span class="text-indigo-600 font-bold bg-indigo-50 border border-indigo-200 px-1 rounded text-[10px]">+ เพิ่ม Rider</span> ซ้อนเข้าไปในบิลเดียวกันได้หลายๆ ตัว เพื่อให้ระบบดึงค่ารวมในบิลเดียว</li>
+                                        <li><b>แนบสัญญาเพิ่มเติม:</b> คลิก <span class="text-indigo-600 font-bold bg-indigo-50 border border-indigo-200 px-1 rounded text-[10px]">+ เพิ่ม Rider</span> ซ้อนเข้าไปในบิลเดียวกันได้หลายๆ ตัว เพื่อให้ระบบดึงค่ารวมในบิลเดียว</li>
                                     </ul>
                                 </div>
                             </div>
@@ -716,7 +716,7 @@ window.systemDictionary = {
             <div class="bg-emerald-50 p-5 rounded-xl border border-emerald-200 shadow-md flex flex-col relative overflow-hidden pb-safe">
                 <div class="absolute top-0 right-0 p-3 opacity-10 text-emerald-900 text-5xl select-none pointer-events-none">4</div>
                 <b class="text-emerald-800 mb-2 text-sm uppercase tracking-wide">Phase 4: Counterfactual Simulation (Success Leap Analysis)</b>
-                <span class="text-xs text-gray-700 mb-3 leading-relaxed">กระบวนการที่ล้ำลึกที่สุดของโมเดลนี้คือ การทำ <b>Counterfactual Inference (การวิเคราะห์เหตุการณ์สมมติ)</b> อัลกอริทึมจะคัดลอกสถานะการเงินปัจจุบัน (X<sub>current</sub>) มาสร้างเป็นแบบจำลองคู่ขนาน (X<sub>proposed</sub>) โดยอัดฉีดค่า "วินัยทางการเงินเชิงอุดมคติ (Ideal Behaviors)" เข้าไป เช่น การบังคับให้ DTI_Ratio = 0.0 และ Savings_Ratio &ge; 0.20 แล้วรันสมการ Neural Network อีกรอบเพื่อหาค่า $\\Delta$ (Delta)</span>
+                <span class="text-xs text-gray-700 mb-3 leading-relaxed">กระบวนการที่ล้ำลึกที่สุดของโมเดลนี้คือ การทำ <b>Counterfactual Inference (การวิเคราะห์เหตุการณ์สมมติ)</b> อัลกอริทึมจะคัดลอกสถานะการเงินปัจจุบัน (X<sub>current</sub>) มาสร้างเป็นแบบจำลองคู่ขนาน (X<sub>proposed</sub>) โดยสร้างค่า "วินัยทางการเงินเชิงอุดมคติ (Ideal Behaviors)" เข้าไป เช่น การบังคับให้ DTI_Ratio = 0.0 และ Savings_Ratio &ge; 0.20 แล้วรันสมการ Neural Network อีกรอบเพื่อหาค่า $\\Delta$ (Delta)</span>
                 
                 <div class="bg-white/70 p-4 rounded-lg border border-emerald-100 text-[11px] text-gray-700 mb-4 shadow-inner space-y-2">
                     <b class="text-emerald-900 border-b border-emerald-200 pb-1 block">The Marginal Utility of Financial Advice (มูลค่าส่วนเพิ่มของคำแนะนำ):</b>
@@ -780,7 +780,7 @@ window.systemDictionary = {
                         </p>
                     </div>
                     <div class="border border-red-200 bg-red-50 p-3 rounded-lg">
-                        <p class="text-xs font-bold text-red-800 mb-1">เคส B: คุณสุ (UHNW/หนี้ 177 ลบ.)</p>
+                        <p class="text-xs font-bold text-red-800 mb-1">เคส B: คุณสุ (UHNW/หนี้ 177 ล้านบาท.)</p>
                         <p class="text-[11px] text-red-900 mb-2">Age: 54 | NW: 100M+ | DTI: สูงปรี๊ด | Disc: ต่ำ</p>
                         <p class="text-xs text-gray-700 leading-relaxed border-t border-red-200 pt-2">
                             <b>AI Analysis:</b> แม้จะมี NW ระดับ UHNW แต่อัตราส่วน DTI ที่สูงลิ่ว และ Cash Flow ที่ติดลบ ทำให้เวกเตอร์ของคุณสุพุ่งไปตกในกลุ่ม <b>"Overleveraged/Struggling (กลุ่มเปราะบาง/หนี้วิกฤต)"</b> ระบบจึงเบรกการลงทุน และบังคับใช้โหมดปกป้องสภาพคล่องแทน
@@ -827,7 +827,7 @@ window.systemDictionary = {
                 <b class="text-blue-800 mb-2 flex items-center gap-2 select-none">Step 1: แบ่งกลุ่มพฤติกรรมภาพรวม (Macro Segmentation ด้วย 8D K-Means)</b>
                 <span class="text-xs text-gray-700 mb-2">อัลกอริทึมจะคำนวณระยะห่าง (Euclidean Distance) ใน 8 มิติพฤติกรรม เพื่อจับคู่ลูกค้าเข้ากับ 7 ศูนย์กลางกลุ่ม (Centroids) ได้แก่:</span>
                 <ul class="text-[11px] list-none p-3 font-mono bg-white border border-blue-100 rounded-lg text-blue-900 space-y-1.5 mb-1 overflow-x-auto touch-pan-x overscroll-x-contain">
-                    <li class="whitespace-nowrap"><b>1. กลุ่มเปราะบาง (Struggling):</b> หหนี้สูงปรี๊ด ทรัพย์สินน้อย วินัยการเงินต่ำ</li>
+                    <li class="whitespace-nowrap"><b>1. กลุ่มเปราะบาง (Struggling):</b> หนี้สูงปรี๊ด ทรัพย์สินน้อย วินัยการเงินต่ำ</li>
                     <li class="whitespace-nowrap"><b>2. วัยทำงานสร้างตัว (Young Builder):</b> อายุน้อย กล้าเสี่ยงสูง วินัยดี ไร้ภาระ</li>
                     <li class="whitespace-nowrap"><b>3. ครอบครัวมาตรฐาน (Standard Family):</b> วัยกลางคน ภาระปานกลาง ทุกอย่างทรงตัว</li>
                     <li class="whitespace-nowrap"><b>4. คู่รักไร้บุตร (High-Earner DINKs):</b> รายได้สูง วินัยดี กล้าเสี่ยง หนี้ต่ำ</li>
@@ -890,7 +890,7 @@ window.systemDictionary = {
 
                     <div class="bg-slate-700/50 p-3 rounded border border-slate-600 text-[11px] text-gray-200 space-y-1">
                         <b class="text-orange-400 text-xs">Case B: เจ้าของธุรกิจหนี้ท่วม (ML ประเมินตั้งต้น 85%)</b><br>
-                        <span class="text-slate-300">- <b>ตรวจพบพฤติกรรม:</b> หหนี้สินอันตราย (Cap 45%) และ ละเลยความคุ้มครอง (+0.10)</span><br>
+                        <span class="text-slate-300">- <b>ตรวจพบพฤติกรรม:</b> หนี้สินอันตราย (Cap 45%) และ ละเลยความคุ้มครอง (+0.10)</span><br>
                         <span class="text-yellow-400">- <b>คำนวณส่วนลด:</b> 85% &times; (1 - 0.10) = <b>76.5%</b></span><br>
                         <span class="text-red-400">- <b>ชนเพดาน Cap:</b> พบหนี้วิกฤต &rarr; min(76.5%, 45.0%)</span><br>
                         <span class="text-white font-bold">- <b>คะแนนสุทธิ = <span class="text-red-400">45.0%</span></b> (ระบบเข้าแทรกแซงขั้นสูงสุด)</span>
@@ -1183,7 +1183,7 @@ window.systemDictionary = {
                 <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 text-[11px] text-gray-700 space-y-2">
                     <b class="text-slate-800 border-b border-slate-200 pb-1 block">ตัวอย่างการคำนวณ (Case Study):</b>
                     <ul class="list-none space-y-1 mt-2 font-mono">
-                        <li><b>โจทย์:</b> หหนี้บัตร 100,000 บาท (PV), ดอกเบี้ย 18% ต่อปี &rarr; 1.5% ต่อเดือน (r = 0.015), ผ่อนเดือนละ 5,000 บาท (PMT)</li>
+                        <li><b>โจทย์:</b> หนี้บัตร 100,000 บาท (PV), ดอกเบี้ย 18% ต่อปี &rarr; 1.5% ต่อเดือน (r = 0.015), ผ่อนเดือนละ 5,000 บาท (PMT)</li>
                         <li><b>Step 1 (ภาระดอกเบี้ยต่อเดือน):</b> PV &times; r = 100,000 &times; 0.015 = 1,500 บาท</li>
                         <li><b>Step 2 (แทนค่าสมการ ln):</b> -ln( 1 - (1,500 / 5,000) ) / ln(1.015)</li>
                         <li><b>Step 3 (คำนวณ):</b> -ln( 1 - 0.3 ) / ln(1.015) = -ln(0.7) / 0.01488</li>
@@ -1271,7 +1271,7 @@ window.systemDictionary = {
 
                     <div class="bg-slate-900/80 p-4 rounded border border-slate-600 shadow-inner">
                         <b class="text-orange-400 text-xs block mb-1">เคส B: คุณสุ (โอกาสสำเร็จ 40%)</b>
-                        <span class="text-[10px] text-gray-400 block mb-2 border-b border-slate-700 pb-2">มหาเศรษฐี, พอร์ต 100 ล้าน+, หหนี้ธุรกิจสูง, เกษียณปีหน้า</span>
+                        <span class="text-[10px] text-gray-400 block mb-2 border-b border-slate-700 pb-2">มหาเศรษฐี, พอร์ต 100 ล้าน+, หนี้ธุรกิจสูง, เกษียณปีหน้า</span>
                         <p class="text-[11px] text-slate-300 leading-relaxed">
                             <b>การแปลผล:</b> เมื่อแบบจำลองสุ่มเจอ "วิกฤตเศรษฐกิจ" ในปีแรกๆ หลังเกษียณ (Sequence of Return Risk) พอร์ต 100 ล้านจะหายไปทันที 25 ล้าน ซ้ำร้ายยังต้อง <b>"ถอนเงินต้น"</b> มาจ่ายหนี้มหาศาลและใช้ชีวิตหรูหรา <b>พอร์ตจึงเข้าสู่สภาวะ "Death Spiral" (เงินต้นร่อยหรอจนทบต้นไม่ขึ้น)</b> โอกาสเงินหมดก่อนอายุขัยจึงสูงมาก
                         </p>
@@ -1289,7 +1289,7 @@ window.systemDictionary = {
                     <div class="bg-white p-3.5 rounded-lg border border-emerald-100 shadow-sm">
                         <b class="text-[12px] text-emerald-700 block mb-1">🛡️ รับมือความเสี่ยงพอร์ตพังวันเกษียณ (Sequence of Return Risk)</b>
                         <p class="text-[11px] text-gray-600 leading-relaxed">
-                            <b>ปัญหา:</b> ลูกค้ากังวลว่า "ถ้าเกษียณปีแรกแล้วเจอวิกฤตต้มยำกุ้งเลย พอร์ตไม่พังเหรอ?"<br>
+                            <b>ปัญหา:</b> ลูกค้ากังวลว่า "ถ้าเกษียณปีแรกแล้วเจอวิกฤตต้มยำกุ้งเลย พอร์ตจะไม่ได้รับผลกระทบหนักหรือ?"<br>
                             <b>กลไกของระบบ:</b> โมเดลนี้ได้ฝังกลยุทธ์ <b>Cash Buffer (Bucket Strategy)</b> ไว้เรียบร้อยแล้ว หากจำลองแล้วพบว่าผลตอบแทนติดลบรุนแรง (Market Crash) ระบบจะสั่งดึง <i>"เงินสดสำรองปลอดภัย"</i> ออกมาจ่ายเป็นค่าครองชีพแทนการ "บังคับขายหุ้นขาดทุน (Forced Sale)" เพื่อซื้อเวลาให้พอร์ตหุ้นฟื้นตัว<br>
                             <span class="text-emerald-600 font-semibold mt-1 block">💬 บทสนทนา FA: "แผนของผมออกแบบมาเผื่อวิกฤตแล้วครับ เรามีถังเงินสดเตรียมไว้รับแรงกระแทกเรียบร้อย ไม่ต้องขายสินทรัพย์หนีตายในช่วงตลาดแย่แน่นอน"</span>
                         </p>
@@ -1829,8 +1829,8 @@ window.systemDictionary = {
                     <div class="absolute -right-4 -top-4 text-7xl opacity-10 select-none pointer-events-none">⚙️</div>
                     <h3 class="text-xl font-bold mb-2 relative z-10 text-indigo-300">AiDAPC: Executive AI Diagnostics V5.5</h3>
                     <p class="text-gray-300 relative z-10">
-                        <b>จุดประสงค์:</b> เปลี่ยนระบบ AI จากที่เป็นเพียง "กล่องดำ (Black-box)" ที่พ่นแค่ตัวเลข ให้กลายเป็น "ผู้ช่วยคิดเชิงกลยุทธ์แบบโปร่งใส (White-box Co-Pilot)" 
-                        เพื่อให้ FA เข้าใจกระบวนการคิดของระบบ และสามารถหยิบเอาเหตุผลเหล่านั้นไปใช้ออกแบบคำแนะนำ (Recommendation) ที่เฉียบคม ทรงพลัง และจับต้องได้จริงสำหรับลูกค้า
+                        <b>จุดประสงค์:</b> เปลี่ยนระบบ AI จากที่เป็นเพียง "กล่องดำ (Black-box)" ให้กลายเป็น "ผู้ช่วยคิดเชิงกลยุทธ์แบบโปร่งใส (White-box Co-Pilot)" 
+                        เวอร์ชันล่าสุดนี้ทำงานบนฐานข้อมูลที่มีโครงสร้างชัดเจน (Structured Data) ทำให้ประเมินพฤติกรรมแบบ 9 มิติ (9D) ได้แม่นยำ เพื่อให้ FA ออกแบบคำแนะนำที่ทรงพลังและจับต้องได้จริง
                     </p>
                 </div>
 
@@ -1842,26 +1842,26 @@ window.systemDictionary = {
                         
                         <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 relative pl-12">
                             <div class="absolute left-4 top-4 w-6 h-6 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold text-xs">1</div>
-                            <h5 class="font-bold text-blue-700 mb-1">Full Data Ingestion (ดึงข้อมูล 100%)</h5>
-                            <p class="text-xs text-gray-600">ระบบจะทำการดึงข้อมูล Full Payload จาก CRM ทั้งสินทรัพย์, หนี้สิน, รายจ่าย, กรมธรรม์เดิม และเป้าหมาย Smart Goals เพื่อให้ AI เห็นภาพรวมชีวิตลูกค้าแบบ 360 องศา</p>
+                            <h5 class="font-bold text-blue-700 mb-1">Full Data Ingestion (แปลงและดึงข้อมูล 100%)</h5>
+                            <p class="text-xs text-gray-600">ระบบจะสกัดข้อมูลจาก <b>หมวดหมู่ (Dropdown)</b> ที่ FA จัดกลุ่มไว้แล้วโดยตรง ทำให้จำแนก "สินทรัพย์สภาพคล่อง" และ "หนี้เสีย" ได้แม่นยำ 100% พร้อมแปลงชื่อตัวแปร AI เป็นคำนิยามภาษาไทยให้ FA อ่านเข้าใจทันที</p>
                         </div>
 
                         <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 relative pl-12">
                             <div class="absolute left-4 top-4 w-6 h-6 bg-pink-100 text-pink-600 rounded-full flex items-center justify-center font-bold text-xs">2</div>
-                            <h5 class="font-bold text-pink-700 mb-1">NLP Sentiment Analysis (ถอดรหัสความกังวล)</h5>
-                            <p class="text-xs text-gray-600">อ่านข้อความบันทึกย่อ (FA Notes) เพื่อสกัดหา <b>ความกังวลแฝง (Financial Anxiety)</b> ช่วยให้ FA รู้ว่าควรคุยเน้นไปที่ Pain point ใด</p>
+                            <h5 class="font-bold text-pink-700 mb-1">NLP Sentiment Analysis (ถอดรหัสความกังวลอัจฉริยะ)</h5>
+                            <p class="text-xs text-gray-600">วิเคราะห์ข้อความบันทึกย่อ (FA Notes) ด้วยระบบ <b>Negation Handling (เข้าใจบริบทการปฏิเสธ เช่น "ไม่กังวล")</b> เพื่อประเมินคะแนน Financial Anxiety ที่แท้จริง ไม่ตื่นตูมไปกับคีย์เวิร์ดหลอก</p>
                         </div>
 
                         <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 relative pl-12">
                             <div class="absolute left-4 top-4 w-6 h-6 bg-teal-100 text-teal-600 rounded-full flex items-center justify-center font-bold text-xs">3</div>
                             <h5 class="font-bold text-teal-700 mb-1">Outlier & Confidence (เช็คความสมเหตุสมผล)</h5>
-                            <p class="text-xs text-gray-600">ตรวจสอบความขัดแย้งของข้อมูล (เช่น รายได้สูงแต่ทรัพย์สินต่ำ ชี้เป้าหนี้แฝง) เพื่อป้องกันไม่ให้ FA นำผลลัพธ์ที่ผิดพลาดไปนำเสนอลูกค้า</p>
+                            <p class="text-xs text-gray-600">ตรวจสอบความขัดแย้งของข้อมูลแบบเรียลไทม์ (เช่น รายได้สูงแต่ทรัพย์สินต่ำ ชี้เป้าหนี้แฝง หรือ DTI ทะลุเพดาน) เพื่อป้องกันไม่ให้ FA นำผลลัพธ์ที่ผิดพลาดไปนำเสนอลูกค้า</p>
                         </div>
 
                         <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 relative pl-12">
                             <div class="absolute left-4 top-4 w-6 h-6 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center font-bold text-xs">4</div>
-                            <h5 class="font-bold text-purple-700 mb-1">Deep Learning Core (วิเคราะห์ศักยภาพ & ความเสี่ยงรายได้)</h5>
-                            <p class="text-xs text-gray-600">คำนวณคะแนนดิบ (Raw Score) จากสินทรัพย์และหนี้สิน <b>พร้อมวิเคราะห์ความเสี่ยงฝั่งรายได้ (Income Stability)</b> เช่น อาชีพข้าราชการจะมีความมั่นคงสูงกว่าอาชีพอิสระที่ผันผวน</p>
+                            <h5 class="font-bold text-purple-700 mb-1">Deep Learning Core (วิเคราะห์ศักยภาพแบบไดนามิก)</h5>
+                            <p class="text-xs text-gray-600">คำนวณคะแนนดิบผ่านฟังก์ชัน Sigmoid โดยประเมิน <b>ความมั่งคั่งสุทธิ (Net Worth)</b> แบบแยกทิศทาง หากมีค่าเป็นบวก (มีทรัพย์สิน) จะหนุนคะแนนขึ้น แต่หาก <b>ติดลบ (หนี้ท่วม)</b> จะถูกจับเป็นปัจจัยฉุดรั้ง (Negative Factor) ทันที</p>
                         </div>
 
                         <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 relative pl-12">
@@ -1879,42 +1879,42 @@ window.systemDictionary = {
                         <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 relative pl-12">
                             <div class="absolute left-4 top-4 w-6 h-6 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center font-bold text-xs">7</div>
                             <h5 class="font-bold text-orange-700 mb-1">3D Risk Gap & Product Mapping (จัดพอร์ตสินค้าเชิงลึก)</h5>
-                            <p class="text-xs text-gray-600">คำนวณส่วนขาด 3 มิติ และจับคู่โปรดักส์จาก <b>AIA Product Matrix</b> โดยแยกระบุชัดเจนว่าแผนใดคือ <b>สัญญาหลัก (Base Plan)</b> และ <b>สัญญาเพิ่มเติม (Rider)</b> พร้อมระบุเบี้ยที่เหมาะสม</p>
+                            <p class="text-xs text-gray-600">คำนวณส่วนขาด 3 มิติ (ใช้ Asset สภาพคล่องของจริงจากข้อ 1) และจับคู่ <b>AIA Product Matrix</b> โดยระบุชัดเจนว่าแผนใดคือ <b>สัญญาหลัก (Base Plan)</b> และ <b>สัญญาเพิ่มเติม (Rider)</b> พร้อมระบุเบี้ยที่เหมาะสม</p>
                         </div>
 
                         <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 relative pl-12">
                             <div class="absolute left-4 top-4 w-6 h-6 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center font-bold text-xs">8</div>
-                            <h5 class="font-bold text-emerald-700 mb-1">8D Clustering (จัดอัตลักษณ์ลูกค้า)</h5>
-                            <p class="text-xs text-gray-600">วิเคราะห์พฤติกรรมลูกค้าผ่าน 8 มิติ เพื่อจัดกลุ่ม Persona (เช่น วัยทำงานสร้างตัว, มหาเศรษฐี) ให้ FA ทราบว่ากำลังเจรจากับลูกค้ากลุ่มไหน</p>
+                            <h5 class="font-bold text-emerald-700 mb-1">9D Persona Clustering (จัดอัตลักษณ์ลูกค้า 9 มิติ)</h5>
+                            <p class="text-xs text-gray-600">ผสานมิติพฤติกรรม (Risk, Recency, Frequency, Discipline) เข้ากับมิติการเงิน รวม 9 แกน พร้อม <b>Spider Chart</b> อัจฉริยะ (เส้นสีเขียว = ตัวลูกค้า, เส้นประสีเทา = ค่าเฉลี่ยกลุ่มเป้าหมาย) เพื่อให้ FA รู้ลึกถึงพฤติกรรมการจ่ายเงิน</p>
                         </div>
 
                         <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 relative pl-12">
                             <div class="absolute left-4 top-4 w-6 h-6 bg-red-100 text-red-600 rounded-full flex items-center justify-center font-bold text-xs">9</div>
                             <h5 class="font-bold text-red-700 mb-1">Predictive Lapse Risk (วิเคราะห์หนี้ดี/หนี้เสีย)</h5>
-                            <p class="text-xs text-gray-600">ประเมินความเสี่ยงทิ้งกรมธรรม์ โดยเจาะลึกถึง <b>คุณภาพหนี้สิน</b> (แยกหนี้บ้านที่เป็น Good Debt ออกจากหนี้บัตรที่เป็น Bad Debt) เพื่อเตือน FA ให้ระวังการเก็บเบี้ยที่หนักเกินไป</p>
+                            <p class="text-xs text-gray-600">ประเมินความเสี่ยงทิ้งกรมธรรม์ผ่าน UI แบบขยายขนาดอัตโนมัติ (Dynamic Auto-expand) เจาะลึกคุณภาพหนี้สินแบบตรงจุด เพื่อเตือน FA ให้ระวังการจัดเบี้ยประกันที่หนักเกินไปจนลูกค้าส่งไม่ไหว</p>
                         </div>
 
                         <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 relative pl-12">
                             <div class="absolute left-4 top-4 w-6 h-6 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center font-bold text-xs">10</div>
                             <h5 class="font-bold text-indigo-700 mb-1">Hybrid Consensus (ปรับจูนคะแนนโลกความจริง)</h5>
-                            <p class="text-xs text-gray-600">เปรียบเทียบคะแนนดิบจาก CRM แล้วนำมาหักลบด้วยกฎผู้เชี่ยวชาญ (เช่น กระแสเงินสดติดลบ) ออกมาเป็น <b>Final Adjusted Score</b> เพื่อเป็นเครื่องเตือนสติ (Reality Check) ให้ลูกค้า</p>
+                            <p class="text-xs text-gray-600">เปรียบเทียบคะแนนดิบ แล้วหักลบด้วยกฎผู้เชี่ยวชาญ (เช่น หนี้สินวิกฤต หรือกระแสเงินสดติดลบ) ออกมาเป็น <b>Final Adjusted Score</b> เพื่อเป็นเครื่องเตือนสติ (Reality Check) ให้ลูกค้าเห็นภาพจริง</p>
                         </div>
 
                         <div class="bg-white p-4 rounded-xl shadow-sm border border-fuchsia-200 relative pl-12">
                             <div class="absolute left-4 top-4 w-6 h-6 bg-fuchsia-100 text-fuchsia-600 rounded-full flex items-center justify-center font-bold text-xs">11</div>
                             <h5 class="font-bold text-fuchsia-700 mb-1">Executive AI Synthesis (บทสรุปกลยุทธ์ FA)</h5>
-                            <p class="text-xs text-gray-600">รวบรวมข้อมูลจากทั้ง 10 โมดูล มาเขียนสรุปเป็นภาษาพูด (NLG) เพื่อแนะนำ FA แบบชี้เป้าว่า "เคสนี้ต้องเข้าเปิดใจด้วยประเด็นไหน และปิดการขายด้วยโปรดักส์อะไร"</p>
+                            <p class="text-xs text-gray-600">รวบรวมข้อมูลจากทั้ง 10 โมดูล มาเขียนสรุปด้วยโทนภาษาจิตวิทยาการขาย (Consultative Selling) แบบชี้เป้าว่า "เคสนี้ต้องเข้าเปิดใจแบบไหน และควรระวังความเสี่ยงสภาพคล่องใดเป็นพิเศษ"</p>
                         </div>
 
                     </div>
                 </div>
 
                 <div class="bg-emerald-50 border border-emerald-200 p-5 rounded-xl mt-6">
-                    <h4 class="font-bold text-emerald-800 mb-2 flex items-center gap-2"><span class="text-xl">📊</span> ผลลัพธ์ที่ได้จาก AiDAPC</h4>
+                    <h4 class="font-bold text-emerald-800 mb-2 flex items-center gap-2"><span class="text-xl">📊</span> ผลลัพธ์ที่ได้จาก AiDAPC (Structured Data Era)</h4>
                     <ul class="list-disc pl-5 text-sm text-emerald-700 space-y-2">
-                        <li><b>Data-Driven Recommendation:</b> การเสนอแบบประกันไม่ได้เกิดจากความรู้สึก แต่เกิดจากการแยกส่วน Base/Rider เพื่ออุด 3D Risk Gap แบบเป๊ะๆ</li>
-                        <li><b>Quality Analysis:</b> การแยกวิเคราะห์ "ความเสี่ยงอาชีพ" และ "คุณภาพหนี้สิน" ทำให้ได้แผนการเงินที่จับต้องได้และปลอดภัยที่สุดสำหรับลูกค้าแต่ละคน</li>
-                        <li><b>Executive Readiness:</b> โมดูลที่ 11 ทำให้ FA สามารถอ่านสรุปแค่ 1 นาที ก็พร้อมเดินเข้าห้องประชุมเพื่อปิดการขายลูกค้าระดับสูงได้อย่างมั่นใจ</li>
+                        <li><b>100% Absolute Accuracy:</b> การจัดกลุ่มหมวดหมู่สินทรัพย์/หนี้สินแบบเจาะจง ทำให้คำนวณเงินสำรองฉุกเฉินและ DTI ได้แม่นยำระดับเดียวกับสถาบันการเงิน</li>
+                        <li><b>Behavioral Insight (9D):</b> AI ไม่ได้มองแค่ความรวย แต่เจาะทะลุไปถึง "วินัยและความถี่" ทำให้รู้ว่าแผนไหนจัดไปแล้วรอด หรือแผนไหนเสี่ยง Lapse</li>
+                        <li><b>Executive Readiness:</b> FA สามารถอ่านสรุปและตีความกราฟแมงมุม รวมถึงตัวแปรภาษาไทยได้ภายใน 1 นาที พร้อมเดินเข้าห้องประชุมปิดการขายได้อย่างโปรเฟสชันนัล</li>
                     </ul>
                 </div>
 
@@ -1926,10 +1926,10 @@ window.systemDictionary = {
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         
                         <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                            <h5 class="font-bold text-cyan-600 text-sm mb-2">เมื่อใช้ XAI & Deep Learning Core</h5>
-                            <p class="text-xs text-gray-600 mb-3"><b>เป้าหมาย:</b> ชี้แจงที่มาของคะแนนอย่างมีตรรกะ และวิเคราะห์ฝั่งรายได้</p>
+                            <h5 class="font-bold text-cyan-600 text-sm mb-2">เมื่อวิเคราะห์ศักยภาพ (Net Worth)</h5>
+                            <p class="text-xs text-gray-600 mb-3"><b>เป้าหมาย:</b> ชี้แจงที่มาของคะแนนอย่างมีตรรกะ ไม่ว่าจะบวกหรือลบ</p>
                             <div class="bg-white p-3 rounded border border-gray-100 text-xs italic text-gray-700">
-                                "พี่ครับ คะแนนที่เห็นนี้ไม่ได้มาจากการสุ่มนะครับ AI ประเมินจาก <b>'ความมั่นคงของอาชีพและรายได้'</b> ซึ่งเป็นจุดแข็งของพี่ ผนวกเข้ากับสินทรัพย์... แต่ระบบแจ้งเตือนสีแดงตรง <b>สัดส่วนหนี้สิน (DTI)</b> ที่กำลังฉุดรั้งคะแนนลง ถ้าเราไม่อุดรอยรั่วนี้ พลังดอกเบี้ยทบต้นจะทำงานไม่ได้เลยครับ"
+                                "พี่ครับ AI ประเมินจากความมั่นคงของอาชีพและรายได้ ซึ่งเป็นจุดแข็ง... แต่ระบบแจ้งเตือนสีแดงในส่วนของ <b>ความมั่งคั่งสุทธิที่กำลังติดลบ</b> และสัดส่วนภาระหนี้ หากเราไม่เริ่มอุดรอยรั่วนี้ พลังดอกเบี้ยทบต้นจะทำงานไม่ได้เลยครับ เรามาปรับโครงสร้างกันดีมั้ยครับ"
                             </div>
                         </div>
 
@@ -1937,23 +1937,23 @@ window.systemDictionary = {
                             <h5 class="font-bold text-amber-600 text-sm mb-2">เมื่อใช้ Counterfactual Path (ทางสายกลาง)</h5>
                             <p class="text-xs text-gray-600 mb-3"><b>เป้าหมาย:</b> ให้ทางออกที่ยืดหยุ่น ไม่บังคับให้ลูกค้าตึงเครียดจนเกินไป</p>
                             <div class="bg-white p-3 rounded border border-gray-100 text-xs italic text-gray-700">
-                                "ผมเข้าใจครับว่าตอนนี้อาจจะยังไม่สะดวกเพิ่มเงินออม... งั้น AI มีเสนอ <b>'ทางสายกลาง'</b> ครับ คือเราปรับแผนโดย 'ยืดเวลาเป้าหมายเกษียณออกไปอีก 2-3 ปี' หรือขยับเงินบางส่วนไปลงทุนที่รับความเสี่ยงได้มากขึ้นนิดนึง วิธีนี้พี่ไม่ต้องควักเงินเพิ่ม แต่พอร์ตก็ยังมีโอกาสรอดครับ ดีมั้ยครับ?"
+                                "ผมเข้าใจครับว่าตอนนี้อาจจะยังไม่สะดวกเพิ่มเงินออม... งั้น AI มีเสนอ <b>'ทางสายกลาง'</b> ครับ คือเราปรับแผนโดย 'ยืดเวลาเป้าหมายเกษียณออกไปอีก 2-3 ปี' หรือขยับเงินบางส่วนไปลงทุนที่รับความเสี่ยงได้มากขึ้นนิดนึง วิธีนี้พอร์ตก็ยังมีโอกาสรอดครับ ดีมั้ยครับ?"
                             </div>
                         </div>
 
                         <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                            <h5 class="font-bold text-orange-600 text-sm mb-2">เมื่อเสนอ AIA Product Matrix</h5>
-                            <p class="text-xs text-gray-600 mb-3"><b>เป้าหมาย:</b> อธิบายโครงสร้าง Base + Rider ให้ดูโปร่งใสที่สุด</p>
+                            <h5 class="font-bold text-orange-600 text-sm mb-2">เมื่อเสนอ 9D Persona & Product</h5>
+                            <p class="text-xs text-gray-600 mb-3"><b>เป้าหมาย:</b> ใช้พฤติกรรม (กราฟสีเขียว) สะท้อนความจริงในการเลือกแบบประกัน</p>
                             <div class="bg-white p-3 rounded border border-gray-100 text-xs italic text-gray-700">
-                                "เพื่อให้ตอบโจทย์ <b>Health Gap</b> ของพี่ได้ตรงจุดที่สุด AI จึงออกแบบโครงสร้างโดยใช้ <b>AIA 20 Pay Life เป็นสัญญาหลัก (Base)</b> เพื่อความคุ้มครองชีวิตระยะยาว แล้วค่อยแนบ <b>สัญญาเพิ่มเติม (Rider) เป็น Health Happy</b> เข้าไปครับ โครงสร้างนี้จะให้ความคุ้มครองที่สมบูรณ์ที่สุดในงบเบี้ยประกันที่เหมาะสมครับ"
+                                "จากกราฟ AI จะเห็นว่า <b>'วินัยการออม'</b> ของพี่โดดเด่นมากครับ (เส้นสีเขียวพุ่งทะลุกลุ่มเป้าหมาย) ดังนั้นเพื่อตอบโจทย์ Health Gap แบบเจ็บแต่จบ ผมขอเสนอโครงสร้างหลักเป็น <b>AIA 20 Pay Life</b> ผนวก <b>Rider Health Happy</b> ซึ่งจะล็อคความเสี่ยงระยะยาวให้คุ้มค่ากับวินัยของพี่ที่สุดครับ"
                             </div>
                         </div>
 
                         <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                            <h5 class="font-bold text-red-600 text-sm mb-2">เมื่อเจอ Lapse Risk (หนี้เสีย vs หนี้ดี)</h5>
+                            <h5 class="font-bold text-red-600 text-sm mb-2">เมื่อเจอ Lapse Risk (หนี้ระยะสั้น)</h5>
                             <p class="text-xs text-gray-600 mb-3"><b>เป้าหมาย:</b> สวมบทบาทเป็น Wealth Protector</p>
                             <div class="bg-white p-3 rounded border border-gray-100 text-xs italic text-gray-700">
-                                "พี่ครับ AI ตรวจพบว่าภาระของพี่ส่วนใหญ่เป็น 'หนี้บัตรเครดิตดอกเบี้ยสูง (Bad Debt)' ซึ่งดึงสภาพคล่องรายเดือนมาก... ใจจริงผมอยากเสนอแผนใหญ่เลย แต่ในฐานะที่ปรึกษา ผมอยากให้พี่ถือกรมธรรม์ได้รอดฝั่ง เรามาเริ่มจากการทำ <b>Debt Consolidation</b> รวบหนี้เพื่อลดดอกเบี้ยก่อน แล้วจัดแผนประกันขนาดพอดีตัว เพื่อปกป้องครอบครัวพี่ดีกว่าครับ"
+                                "พี่ครับ ระบบตรวจพบว่าภาระส่วนใหญ่ตกไปอยู่ที่ 'หนี้ระยะสั้น/บัตรเครดิต' ซึ่งดึงสภาพคล่องรายเดือนมาก ใจจริงผมอยากเสนอแผนใหญ่เลย แต่ผมอยากให้พี่ถือกรมธรรม์ได้รอดฝั่ง เรามาเริ่มทำ <b>Debt Consolidation</b> แล้วจัดแผนประกันขนาดพอดีตัว เพื่อปกป้องครอบครัวพี่ดีกว่าครับ"
                             </div>
                         </div>
 
@@ -2153,7 +2153,7 @@ window.systemDictionary = {
                         <div class="shrink-0 w-10 h-10 bg-rose-100 text-rose-600 rounded-full flex items-center justify-center font-bold">!</div>
                         <div>
                             <b class="text-rose-800">Pain Point (จุดเปราะบางแบบซ่อนเร้น):</b> 
-                            <p class="mt-1">1. <b>New Debt Creation (หนี้ก้อนใหม่ที่กำลังจะเกิด):</b> การเตรียมตัวซื้อบ้านแปลว่ากำลังจะสร้าง <b>"หนี้ระยะยาวก้อนใหญ่ที่สุดในชีวิต"</b> ในขณะที่ลูกค้าขาดทุนประกันชีวิต (Life Gap 1.76 ล้านบาท) หากคนผ่อนเป็นอะไรไป บ้านจะถูกธนาคารยึดและกลายเป็นภาระของคู่ชีวิตทันที</p>
+                            <p class="mt-1">1. <b>New Debt Creation (หนี้ก้อนใหม่ที่กำลังจะเกิด):</b> การเตรียมตัวซื้อบ้านแปลว่ากำลังจะสร้าง <b>"หนี้ระยะยาวก้อนใหญ่ที่สุดในชีวิต"</b> ในขณะที่ลูกค้าขาดความคุ้มครองด้านชีวิต (Life Gap 1.76 ล้านบาท) หากคนผ่อนเป็นอะไรไป บ้านจะถูกธนาคารยึดและกลายเป็นภาระของคู่ชีวิตทันที</p>
                             <p class="mt-1">2. <b>Asset Allocation Inefficiency:</b> เงินเก็บส่วนใหญ่ไปกระจุกตัวอยู่ในสินทรัพย์สภาพคล่อง (เงินฝาก 321,000 บาท) มากเกินไป ทำให้ผลตอบแทนรวมอาจเติบโตช้าและแพ้เงินเฟ้อในระยะยาว</p>
                         </div>
                     </div>
@@ -2171,7 +2171,7 @@ window.systemDictionary = {
                         <p class="text-sm leading-relaxed">
                             "คุณภัทรครับ จากรายงาน AI เราพบว่าคะแนนความสำเร็จของคุณภัทรสูงถึง <b>87.83%</b> ซึ่งยอดเยี่ยมมากครับ สภาพคล่องเยี่ยม หนี้สินเป็นศูนย์ แผนเกษียณเราเดินมาถูกทางแล้ว... <br><br>
                             แต่ใน <b>Optimization Insight</b> AI แนะนำให้ปรับแผนเพื่อบวกคะแนนเพิ่มอีก 0.12% ซึ่งมันไม่ได้มาจากเรื่องเกษียณครับ แต่มันคือการ <b>'อุดรอยรั่วจากการซื้อบ้านใหม่'</b><br><br>
-                            สวัสดิการข้าราชการดูแลค่าหมอให้เราได้เต็มที่ และคุณภัทรมีประกันโรคร้ายแรง CI Plus 1 ล้านเตรียมไว้แล้วถือว่าสมบูรณ์มากครับ... แต่สำหรับการกู้ซื้อบ้าน ผมอยากเสนอให้ใช้กระแสเงินสดที่เหลือเดือนละ 5 พันกว่าบาท แบ่งมาทำ <b>ประกันชีวิตคุ้มครองหนี้สิน (AIA 20 Pay Life หรือ AIA Issara Plus)</b> ทุนประกันสัก 1-2 ล้านบาท เพื่อให้มั่นใจว่า ไม่ว่าจะเกิดอะไรขึ้น 'บ้านหลังนี้' จะตกเป็นของคู่ชีวิต 100% โดยไม่ต้องรับภาระผ่อนต่อครับ และเงินส่วนที่เหลือเราจะนำมาจัดพอร์ตลงทุนให้เงินฝากที่นอนนิ่งอยู่เติบโตชนะเงินเฟ้อครับ"
+                            สวัสดิการข้าราชการดูแลค่าหมอให้เราได้เต็มที่ และคุณภัทรมีประกันโรคร้ายแรง CI Plus 1 ล้านเตรียมไว้แล้วถือว่าสมบูรณ์มากครับ... แต่สำหรับการกู้ซื้อบ้าน ผมอยากเสนอให้จัดสรรเงินที่เหลืออยู่สักเดือนละ 2-3 พันบาท แบ่งมาทำ <b>ประกันชีวิตคุ้มครองหนี้สิน (AIA 20 Pay Life หรือ AIA Issara Plus)</b> ทุนประกันสัก 1-2 ล้านบาท เพื่อให้มั่นใจว่า ไม่ว่าจะเกิดอะไรขึ้น 'บ้านหลังนี้' จะตกเป็นของคู่ชีวิต 100% โดยไม่ต้องรับภาระผ่อนต่อครับ และเงินส่วนที่เหลือเราจะนำมาจัดพอร์ตลงทุนให้เงินฝากที่นอนนิ่งอยู่เติบโตชนะเงินเฟ้อครับ"
                         </p>
                     </div>
                 </div>
@@ -2716,7 +2716,7 @@ window.systemDictionary = {
                     <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
                         <b class="text-orange-700 block mb-2 underline">ข้อมูลเชิงปริมาณ (Quantitative)</b>
                         <ul class="space-y-2 text-xs mt-2">
-                            <li>• <b>งบดุล (Balance Sheet):</b> ทรัพย์สินรวม 8,870,000.00 บาท | หหนี้สินรวม 3,568,500.00 บาท <br><span class="text-emerald-600 font-bold">(ความมั่งคั่งสุทธิ: 5,301,500.00 บาท)</span></li>
+                            <li>• <b>งบดุล (Balance Sheet):</b> ทรัพย์สินรวม 8,870,000.00 บาท | หนี้สินรวม 3,568,500.00 บาท <br><span class="text-emerald-600 font-bold">(ความมั่งคั่งสุทธิ: 5,301,500.00 บาท)</span></li>
                             <li>• <b>งบกระแสเงินสด (Cash Flow):</b> รายรับ 94,000.00 บ./เดือน | รายจ่ายรวม 106,600.00 บ./เดือน <br><span class="text-rose-500 font-bold">(กระแสเงินสดติดลบ: -12,600.00 บ./เดือน)</span></li>
                             <li>• <b>พอร์ตการลงทุนปัจจุบัน (4.25 ลบ.):</b> PVD 850K, RMF 490K, Thai ESG 325K, SSF 165K, กองทุนผสม 1.36M, ตราสารหนี้ 910K</li>
                             <li>• <b>พอร์ตกรมธรรม์ปัจจุบัน:</b> ไม่มีข้อมูลกรมธรรม์ปัจจุบัน</li>
@@ -2921,8 +2921,13 @@ window.renderManualKnowledgeBase = function() {
         // Sticky Header แบบ Glassmorphism กระทัดรัด
         let html = `
             <div class="sticky top-0 z-20 bg-white/85 backdrop-blur-lg border-b border-slate-200 px-4 py-3 flex items-center gap-3 shadow-sm animate-fade-in">
-                <button onclick="window.currentKBCategory = null; renderManualKnowledgeBase();" class="text-slate-500 hover:text-indigo-600 bg-slate-100 hover:bg-indigo-50 w-8 h-8 rounded-full flex items-center justify-center transition-colors shadow-sm border border-slate-200/50 flex-shrink-0" title="ย้อนกลับ">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" /></svg>
+                <button onclick="window.currentKBCategory = null; renderManualKnowledgeBase();" 
+                    class="text-slate-600 hover:text-indigo-700 bg-slate-100 hover:bg-indigo-50 px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-colors shadow-sm border border-slate-200/50 flex-shrink-0" 
+                    title="ย้อนกลับ">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" />
+                    </svg>
+                    <span class="text-xs font-bold">ย้อนกลับ</span>
                 </button>
                 <div class="flex flex-col">
                     <span class="text-[9px] font-bold text-${catInfo.color}-600 uppercase tracking-wider leading-none mb-0.5">${catInfo.subtitle}</span>
