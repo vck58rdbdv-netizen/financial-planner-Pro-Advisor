@@ -1815,19 +1815,19 @@ window.systemDictionary = {
         </div>`
     },
     // ==========================================
-    // 🧠 ส่วนที่ X: คู่มือเจาะลึก AiDAPC V5.0 Ultimate -> category: "c_aidapc"
+    // 🧠 ส่วนที่ X: คู่มือเจาะลึก AiDAPC V5.5 Ultimate -> category: "c_aidapc"
     // ==========================================
     "c_aidapc_manual": {
         category: "c_aidapc",
         icon: "🧠",
         iconClass: "bg-indigo-100 text-indigo-600",
-        title: "คู่มือเจาะลึก AiDAPC V5.0 (AI Diagnostics)",
+        title: "คู่มือเจาะลึก AiDAPC V5.5 (AI Diagnostics)",
         content: `
             <div class="text-sm text-gray-700 leading-relaxed space-y-6 pl-0 antialiased">
                 
                 <div class="bg-gradient-to-r from-slate-900 to-indigo-900 text-white p-6 rounded-2xl shadow-lg relative overflow-hidden">
                     <div class="absolute -right-4 -top-4 text-7xl opacity-10 select-none pointer-events-none">⚙️</div>
-                    <h3 class="text-xl font-bold mb-2 relative z-10 text-indigo-300">AiDAPC: Executive AI Diagnostics V5.0</h3>
+                    <h3 class="text-xl font-bold mb-2 relative z-10 text-indigo-300">AiDAPC: Executive AI Diagnostics V5.5</h3>
                     <p class="text-gray-300 relative z-10">
                         <b>จุดประสงค์:</b> เปลี่ยนระบบ AI จากที่เป็นเพียง "กล่องดำ (Black-box)" ที่พ่นแค่ตัวเลข ให้กลายเป็น "ผู้ช่วยคิดเชิงกลยุทธ์แบบโปร่งใส (White-box Co-Pilot)" 
                         เพื่อให้ FA เข้าใจกระบวนการคิดของระบบ และสามารถหยิบเอาเหตุผลเหล่านั้นไปใช้ออกแบบคำแนะนำ (Recommendation) ที่เฉียบคม ทรงพลัง และจับต้องได้จริงสำหรับลูกค้า
@@ -1836,56 +1836,74 @@ window.systemDictionary = {
 
                 <div>
                     <h4 class="font-bold text-lg text-indigo-800 border-b-2 border-indigo-100 pb-2 mb-4 flex items-center gap-2">
-                        <span class="text-2xl">🔄</span> กระบวนการทำงาน (Step-by-Step)
+                        <span class="text-2xl">🔄</span> กระบวนการทำงาน (11 Enterprise Modules)
                     </h4>
                     <div class="space-y-4">
                         
                         <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 relative pl-12">
                             <div class="absolute left-4 top-4 w-6 h-6 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold text-xs">1</div>
                             <h5 class="font-bold text-blue-700 mb-1">Full Data Ingestion (ดึงข้อมูล 100%)</h5>
-                            <p class="text-xs text-gray-600">ระบบจะทำการดึงข้อมูล Full Payload จาก CRM ทั้งสินทรัพย์, หนี้สิน, รายจ่าย, กรมธรรม์เดิม และเป้าหมาย Smart Goals เพื่อให้ AI เห็นภาพรวมชีวิตลูกค้าแบบ 360 องศา โดยไม่กระทบการทำงานของระบบหลัก (Decoupled Architecture)</p>
+                            <p class="text-xs text-gray-600">ระบบจะทำการดึงข้อมูล Full Payload จาก CRM ทั้งสินทรัพย์, หนี้สิน, รายจ่าย, กรมธรรม์เดิม และเป้าหมาย Smart Goals เพื่อให้ AI เห็นภาพรวมชีวิตลูกค้าแบบ 360 องศา</p>
                         </div>
 
                         <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 relative pl-12">
                             <div class="absolute left-4 top-4 w-6 h-6 bg-pink-100 text-pink-600 rounded-full flex items-center justify-center font-bold text-xs">2</div>
                             <h5 class="font-bold text-pink-700 mb-1">NLP Sentiment Analysis (ถอดรหัสความกังวล)</h5>
-                            <p class="text-xs text-gray-600">อ่านข้อความบันทึกย่อ (FA Notes) เพื่อสกัดหา <b>ความกังวลแฝง (Financial Anxiety)</b> เช่น คำว่า "หนี้", "ไม่พอ", "เครียด" ช่วยให้ FA รู้ว่าควรคุยเน้นไปที่ Pain point ใด</p>
+                            <p class="text-xs text-gray-600">อ่านข้อความบันทึกย่อ (FA Notes) เพื่อสกัดหา <b>ความกังวลแฝง (Financial Anxiety)</b> ช่วยให้ FA รู้ว่าควรคุยเน้นไปที่ Pain point ใด</p>
                         </div>
 
                         <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 relative pl-12">
                             <div class="absolute left-4 top-4 w-6 h-6 bg-teal-100 text-teal-600 rounded-full flex items-center justify-center font-bold text-xs">3</div>
                             <h5 class="font-bold text-teal-700 mb-1">Outlier & Confidence (เช็คความสมเหตุสมผล)</h5>
-                            <p class="text-xs text-gray-600">ตรวจสอบว่าข้อมูลที่กรอกมาสมเหตุสมผลหรือไม่ (เช่น รายได้สูงแต่ไม่มีเงินเก็บเลย) เพื่อป้องกันไม่ให้ FA นำผลลัพธ์ที่เกิดจากการกรอกข้อมูลผิดพลาดไปนำเสนอลูกค้า</p>
+                            <p class="text-xs text-gray-600">ตรวจสอบความขัดแย้งของข้อมูล (เช่น รายได้สูงแต่ทรัพย์สินต่ำ ชี้เป้าหนี้แฝง) เพื่อป้องกันไม่ให้ FA นำผลลัพธ์ที่ผิดพลาดไปนำเสนอลูกค้า</p>
                         </div>
 
                         <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 relative pl-12">
-                            <div class="absolute left-4 top-4 w-6 h-6 bg-cyan-100 text-cyan-600 rounded-full flex items-center justify-center font-bold text-xs">4</div>
+                            <div class="absolute left-4 top-4 w-6 h-6 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center font-bold text-xs">4</div>
+                            <h5 class="font-bold text-purple-700 mb-1">Deep Learning Core (วิเคราะห์ศักยภาพ & ความเสี่ยงรายได้)</h5>
+                            <p class="text-xs text-gray-600">คำนวณคะแนนดิบ (Raw Score) จากสินทรัพย์และหนี้สิน <b>พร้อมวิเคราะห์ความเสี่ยงฝั่งรายได้ (Income Stability)</b> เช่น อาชีพข้าราชการจะมีความมั่นคงสูงกว่าอาชีพอิสระที่ผันผวน</p>
+                        </div>
+
+                        <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 relative pl-12">
+                            <div class="absolute left-4 top-4 w-6 h-6 bg-cyan-100 text-cyan-600 rounded-full flex items-center justify-center font-bold text-xs">5</div>
                             <h5 class="font-bold text-cyan-700 mb-1">XAI Feature Drivers (แกะกล่องดำ AI)</h5>
-                            <p class="text-xs text-gray-600">ระบบจะแกว่งค่าตัวแปร (Perturbation) เพื่อหาว่าปัจจัยใดเป็น <b>"จุดแข็ง (ดึงคะแนนขึ้น)"</b> และ ปัจจัยใดเป็น <b>"จุดอ่อน (ฉุดคะแนนลง)"</b> พร้อมสร้างคำอธิบายภาษาไทย (NLG) ให้อัตโนมัติ</p>
+                            <p class="text-xs text-gray-600">ระบบจะแกว่งค่าตัวแปร (Perturbation) เพื่อหาว่าปัจจัยใดเป็น <b>"จุดแข็ง"</b> และ <b>"จุดอ่อน"</b> พร้อมอธิบายเป็นภาษาไทย (NLG) เพื่อชี้เป้าให้ FA นำไปคุยต่อได้ทันที</p>
                         </div>
 
                         <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 relative pl-12">
-                            <div class="absolute left-4 top-4 w-6 h-6 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center font-bold text-xs">5</div>
-                            <h5 class="font-bold text-amber-700 mb-1">Counterfactual Path (สร้างทางลัดสู่ความสำเร็จ)</h5>
-                            <p class="text-xs text-gray-600">AI จะจำลองทางเลือก (What-If) เสนอวิธีที่ใช้ความพยายามน้อยที่สุด (Minimum Effort) เพื่อดันคะแนนให้ผ่านเกณฑ์ เช่น "ลดหนี้ก้อนนี้ 15,000 บาท คะแนนจะพุ่งทันที"</p>
+                            <div class="absolute left-4 top-4 w-6 h-6 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center font-bold text-xs">6</div>
+                            <h5 class="font-bold text-amber-700 mb-1">Counterfactual Path (จำลองทางเลือก 3 มิติ)</h5>
+                            <p class="text-xs text-gray-600">AI จำลองทางเลือกให้ลูกค้าเห็นภาพ: <b>ทางรุก (Positive)</b> เช่น การรวบหนี้, <b>ทางสายกลาง (Neutral)</b> เช่น เลื่อนเวลาเกษียณออกไป และ <b>ทางเสี่ยง (Negative)</b> หากก่อหนี้เพิ่ม</p>
                         </div>
 
                         <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 relative pl-12">
-                            <div class="absolute left-4 top-4 w-6 h-6 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center font-bold text-xs">6</div>
-                            <h5 class="font-bold text-orange-700 mb-1">3D Risk Gap & AIA Product Matrix (จัดพอร์ตสินค้า)</h5>
-                            <p class="text-xs text-gray-600"><b>จุดพีคของระบบ:</b> คำนวณส่วนขาด 3 มิติ (ฉุกเฉิน, ทุนชีวิต, สุขภาพ) และไปดึงผลิตภัณฑ์จริงจาก <b>AIA Product Matrix</b> มาจับคู่ให้ (Item-Feature Match) พร้อมคำนวณเบี้ยประกันจริงตามเพศและอายุ!</p>
+                            <div class="absolute left-4 top-4 w-6 h-6 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center font-bold text-xs">7</div>
+                            <h5 class="font-bold text-orange-700 mb-1">3D Risk Gap & Product Mapping (จัดพอร์ตสินค้าเชิงลึก)</h5>
+                            <p class="text-xs text-gray-600">คำนวณส่วนขาด 3 มิติ และจับคู่โปรดักส์จาก <b>AIA Product Matrix</b> โดยแยกระบุชัดเจนว่าแผนใดคือ <b>สัญญาหลัก (Base Plan)</b> และ <b>สัญญาเพิ่มเติม (Rider)</b> พร้อมระบุเบี้ยที่เหมาะสม</p>
                         </div>
 
                         <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 relative pl-12">
-                            <div class="absolute left-4 top-4 w-6 h-6 bg-red-100 text-red-600 rounded-full flex items-center justify-center font-bold text-xs">7</div>
-                            <h5 class="font-bold text-red-700 mb-1">Predictive Lapse Risk (ป้องกันการทิ้งกรมธรรม์)</h5>
-                            <p class="text-xs text-gray-600">แจ้งเตือน FA ทันทีหากพอร์ตที่นำเสนอ "ตึงตัวเกินไป" (เช่น เบี้ยประกันกินกระแสเงินสดมากเกินไป) ช่วยลดอัตรา Churn Rate หรือการทิ้งกรมธรรม์ในปีถัดๆ ไป</p>
+                            <div class="absolute left-4 top-4 w-6 h-6 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center font-bold text-xs">8</div>
+                            <h5 class="font-bold text-emerald-700 mb-1">8D Clustering (จัดอัตลักษณ์ลูกค้า)</h5>
+                            <p class="text-xs text-gray-600">วิเคราะห์พฤติกรรมลูกค้าผ่าน 8 มิติ เพื่อจัดกลุ่ม Persona (เช่น วัยทำงานสร้างตัว, มหาเศรษฐี) ให้ FA ทราบว่ากำลังเจรจากับลูกค้ากลุ่มไหน</p>
                         </div>
 
                         <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 relative pl-12">
-                            <div class="absolute left-4 top-4 w-6 h-6 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center font-bold text-xs">8</div>
-                            <h5 class="font-bold text-indigo-700 mb-1">Hybrid Consensus (ปรับจูนคะแนนขั้นสุดท้าย)</h5>
-                            <p class="text-xs text-gray-600">เปรียบเทียบคะแนนดิบจาก CRM นำมาหักลบด้วย "กฎเหล็กทางการเงิน (Business Rule)" เช่น DTI เกิน 60% เพื่อดรอปคะแนนลงมาให้อยู่ในโลกความเป็นจริง พร้อมออก Audit Trail ยืนยันกระบวนการ</p>
+                            <div class="absolute left-4 top-4 w-6 h-6 bg-red-100 text-red-600 rounded-full flex items-center justify-center font-bold text-xs">9</div>
+                            <h5 class="font-bold text-red-700 mb-1">Predictive Lapse Risk (วิเคราะห์หนี้ดี/หนี้เสีย)</h5>
+                            <p class="text-xs text-gray-600">ประเมินความเสี่ยงทิ้งกรมธรรม์ โดยเจาะลึกถึง <b>คุณภาพหนี้สิน</b> (แยกหนี้บ้านที่เป็น Good Debt ออกจากหนี้บัตรที่เป็น Bad Debt) เพื่อเตือน FA ให้ระวังการเก็บเบี้ยที่หนักเกินไป</p>
+                        </div>
+
+                        <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 relative pl-12">
+                            <div class="absolute left-4 top-4 w-6 h-6 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center font-bold text-xs">10</div>
+                            <h5 class="font-bold text-indigo-700 mb-1">Hybrid Consensus (ปรับจูนคะแนนโลกความจริง)</h5>
+                            <p class="text-xs text-gray-600">เปรียบเทียบคะแนนดิบจาก CRM แล้วนำมาหักลบด้วยกฎผู้เชี่ยวชาญ (เช่น กระแสเงินสดติดลบ) ออกมาเป็น <b>Final Adjusted Score</b> เพื่อเป็นเครื่องเตือนสติ (Reality Check) ให้ลูกค้า</p>
+                        </div>
+
+                        <div class="bg-white p-4 rounded-xl shadow-sm border border-fuchsia-200 relative pl-12">
+                            <div class="absolute left-4 top-4 w-6 h-6 bg-fuchsia-100 text-fuchsia-600 rounded-full flex items-center justify-center font-bold text-xs">11</div>
+                            <h5 class="font-bold text-fuchsia-700 mb-1">Executive AI Synthesis (บทสรุปกลยุทธ์ FA)</h5>
+                            <p class="text-xs text-gray-600">รวบรวมข้อมูลจากทั้ง 10 โมดูล มาเขียนสรุปเป็นภาษาพูด (NLG) เพื่อแนะนำ FA แบบชี้เป้าว่า "เคสนี้ต้องเข้าเปิดใจด้วยประเด็นไหน และปิดการขายด้วยโปรดักส์อะไร"</p>
                         </div>
 
                     </div>
@@ -1894,9 +1912,9 @@ window.systemDictionary = {
                 <div class="bg-emerald-50 border border-emerald-200 p-5 rounded-xl mt-6">
                     <h4 class="font-bold text-emerald-800 mb-2 flex items-center gap-2"><span class="text-xl">📊</span> ผลลัพธ์ที่ได้จาก AiDAPC</h4>
                     <ul class="list-disc pl-5 text-sm text-emerald-700 space-y-2">
-                        <li><b>Data-Driven Recommendation:</b> การเสนอแบบประกันไม่ได้เกิดจากความรู้สึก แต่เกิดจากการคำนวณ 3D Risk Gap ที่อิงจากภาระหนี้ รายจ่าย และกรมธรรม์เดิมของลูกค้า 100%</li>
-                        <li><b>Time Saving:</b> FA ไม่ต้องเปิดตารางเบี้ยประกันเพื่อคำนวณเอง ระบบจะวิ่งเข้า AIA Matrix เพื่อดึงเรทเบี้ยและจำลอง Unit-Linked ให้อัตโนมัติ</li>
-                        <li><b>Traceability:</b> สามารถอธิบายลูกค้าได้ทุกจุดว่า "ทำไม AI ถึงแนะนำแบบนี้" ช่วยลดข้อโต้แย้ง (Objection) ได้อย่างมีประสิทธิภาพ</li>
+                        <li><b>Data-Driven Recommendation:</b> การเสนอแบบประกันไม่ได้เกิดจากความรู้สึก แต่เกิดจากการแยกส่วน Base/Rider เพื่ออุด 3D Risk Gap แบบเป๊ะๆ</li>
+                        <li><b>Quality Analysis:</b> การแยกวิเคราะห์ "ความเสี่ยงอาชีพ" และ "คุณภาพหนี้สิน" ทำให้ได้แผนการเงินที่จับต้องได้และปลอดภัยที่สุดสำหรับลูกค้าแต่ละคน</li>
+                        <li><b>Executive Readiness:</b> โมดูลที่ 11 ทำให้ FA สามารถอ่านสรุปแค่ 1 นาที ก็พร้อมเดินเข้าห้องประชุมเพื่อปิดการขายลูกค้าระดับสูงได้อย่างมั่นใจ</li>
                     </ul>
                 </div>
 
@@ -1908,34 +1926,34 @@ window.systemDictionary = {
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         
                         <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                            <h5 class="font-bold text-cyan-600 text-sm mb-2">เมื่อใช้ XAI Feature Drivers</h5>
-                            <p class="text-xs text-gray-600 mb-3"><b>เป้าหมาย:</b> ชี้ให้ลูกค้าเห็น "รูรั่ว" โดยใช้ AI เป็นบุคคลที่ 3 (ลดการเผชิญหน้า)</p>
+                            <h5 class="font-bold text-cyan-600 text-sm mb-2">เมื่อใช้ XAI & Deep Learning Core</h5>
+                            <p class="text-xs text-gray-600 mb-3"><b>เป้าหมาย:</b> ชี้แจงที่มาของคะแนนอย่างมีตรรกะ และวิเคราะห์ฝั่งรายได้</p>
                             <div class="bg-white p-3 rounded border border-gray-100 text-xs italic text-gray-700">
-                                "พี่ครับ จากข้อมูลที่ AI ประมวลผลออกมา จุดแข็งที่ยอดเยี่ยมของพี่คือ <b>ฐานรายได้ (Income)</b> ที่ดึงคะแนนบวกได้ดีมาก... <br><br>แต่ระบบ XAI แจ้งเตือนตัวแปรสีแดงตรงนี้ครับ คือ <b>สัดส่วนหนี้สิน (DTI)</b> ที่กำลังทำหน้าที่เป็น 'ตัวถ่วงความมั่งคั่ง' ฉุดรั้งคะแนนของพี่ลง ถ้าเราไม่อุดรอยรั่วตรงนี้ พลังดอกเบี้ยทบต้นจะทำงานได้ไม่เต็มที่ครับ"
+                                "พี่ครับ คะแนนที่เห็นนี้ไม่ได้มาจากการสุ่มนะครับ AI ประเมินจาก <b>'ความมั่นคงของอาชีพและรายได้'</b> ซึ่งเป็นจุดแข็งของพี่ ผนวกเข้ากับสินทรัพย์... แต่ระบบแจ้งเตือนสีแดงตรง <b>สัดส่วนหนี้สิน (DTI)</b> ที่กำลังฉุดรั้งคะแนนลง ถ้าเราไม่อุดรอยรั่วนี้ พลังดอกเบี้ยทบต้นจะทำงานไม่ได้เลยครับ"
                             </div>
                         </div>
 
                         <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                            <h5 class="font-bold text-amber-600 text-sm mb-2">เมื่อใช้ Counterfactual Path</h5>
-                            <p class="text-xs text-gray-600 mb-3"><b>เป้าหมาย:</b> สร้างความหวัง เสนอ "ทางลัด" ที่ทำได้จริง</p>
+                            <h5 class="font-bold text-amber-600 text-sm mb-2">เมื่อใช้ Counterfactual Path (ทางสายกลาง)</h5>
+                            <p class="text-xs text-gray-600 mb-3"><b>เป้าหมาย:</b> ให้ทางออกที่ยืดหยุ่น ไม่บังคับให้ลูกค้าตึงเครียดจนเกินไป</p>
                             <div class="bg-white p-3 rounded border border-gray-100 text-xs italic text-gray-700">
-                                "แต่ข่าวดีคือ AI ได้คำนวณ 'ทางลัด' มาให้แล้วครับ ตรงกรอบ Action 1 AI บอกว่าเพียงแค่พี่ <b>จัดสรรรายจ่ายฟุ่มเฟือยมาออมเพิ่มแค่เดือนละ 5,000 บาท</b> (โดยไม่ต้องเปลี่ยนไลฟ์สไตล์มาก) คะแนนความมั่นคงของพี่จะพลิกกลับมาอยู่ในโซนปลอดภัยสีเขียวทันทีเลย พี่คิดว่า 5,000 บาทนี้พอไหวมั้ยครับ?"
+                                "ผมเข้าใจครับว่าตอนนี้อาจจะยังไม่สะดวกเพิ่มเงินออม... งั้น AI มีเสนอ <b>'ทางสายกลาง'</b> ครับ คือเราปรับแผนโดย 'ยืดเวลาเป้าหมายเกษียณออกไปอีก 2-3 ปี' หรือขยับเงินบางส่วนไปลงทุนที่รับความเสี่ยงได้มากขึ้นนิดนึง วิธีนี้พี่ไม่ต้องควักเงินเพิ่ม แต่พอร์ตก็ยังมีโอกาสรอดครับ ดีมั้ยครับ?"
                             </div>
                         </div>
 
                         <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
                             <h5 class="font-bold text-orange-600 text-sm mb-2">เมื่อเสนอ AIA Product Matrix</h5>
-                            <p class="text-xs text-gray-600 mb-3"><b>เป้าหมาย:</b> ปิดการขายโดยใช้ Gap เป็นตัวชูโรง</p>
+                            <p class="text-xs text-gray-600 mb-3"><b>เป้าหมาย:</b> อธิบายโครงสร้าง Base + Rider ให้ดูโปร่งใสที่สุด</p>
                             <div class="bg-white p-3 rounded border border-gray-100 text-xs italic text-gray-700">
-                                "เมื่อหักลบสินทรัพย์ที่พี่มี ระบบคำนวณพบ <b>Life Gap (ความเสี่ยงก้อนหนี้และครอบครัว) อยู่ที่ 3 ล้านบาท</b><br><br>AI จึงสแกน Product Matrix ทั้งหมดและแนะนำ <b>AIA 20 Pay Life</b> ที่ความแม่นยำ 95% ครับ เพราะนอกจากจะปิดความเสี่ยง 3 ล้านได้เป๊ะๆ แล้ว เบี้ยยังจัดสรรมาให้อยู่ในงบที่ไม่กระทบสภาพคล่องของพี่ด้วยครับ (อ้างอิงจาก Lapse Risk ที่อยู่ในโซนสีเขียว)"
+                                "เพื่อให้ตอบโจทย์ <b>Health Gap</b> ของพี่ได้ตรงจุดที่สุด AI จึงออกแบบโครงสร้างโดยใช้ <b>AIA 20 Pay Life เป็นสัญญาหลัก (Base)</b> เพื่อความคุ้มครองชีวิตระยะยาว แล้วค่อยแนบ <b>สัญญาเพิ่มเติม (Rider) เป็น Health Happy</b> เข้าไปครับ โครงสร้างนี้จะให้ความคุ้มครองที่สมบูรณ์ที่สุดในงบเบี้ยประกันที่เหมาะสมครับ"
                             </div>
                         </div>
 
                         <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                            <h5 class="font-bold text-red-600 text-sm mb-2">เมื่อเจอ Lapse Risk (ความเสี่ยงทิ้งกรมธรรม์)</h5>
-                            <p class="text-xs text-gray-600 mb-3"><b>เป้าหมาย:</b> แสดงความจริงใจ (Sincerity) ว่าเราเน้นวางแผน ไม่ได้เน้นแค่จะเอาเบี้ยสูงๆ</p>
+                            <h5 class="font-bold text-red-600 text-sm mb-2">เมื่อเจอ Lapse Risk (หนี้เสีย vs หนี้ดี)</h5>
+                            <p class="text-xs text-gray-600 mb-3"><b>เป้าหมาย:</b> สวมบทบาทเป็น Wealth Protector</p>
                             <div class="bg-white p-3 rounded border border-gray-100 text-xs italic text-gray-700">
-                                "พี่ครับ ใจจริงผมอยากเสนอแผนที่คุ้มครองเต็มแม็กซ์เลย แต่ระบบตรวจสอบความเสี่ยง (Lapse Risk) แจ้งเตือนว่าถ้าส่งเบี้ยระดับนั้น กระแสเงินสดพี่จะติดลบทันที (Negative Cashflow) <br><br>ในฐานะที่ปรึกษา ผมอยากให้พี่ถือกรมธรรม์นี้ได้ตลอดรอดฝั่ง ผมจึงขอปรับลดเบี้ยลงมาให้อยู่ในระดับ <b>Premium Allocation</b> ที่ AI แนะนำ เพื่อความปลอดภัยของพี่ดีกว่าครับ"
+                                "พี่ครับ AI ตรวจพบว่าภาระของพี่ส่วนใหญ่เป็น 'หนี้บัตรเครดิตดอกเบี้ยสูง (Bad Debt)' ซึ่งดึงสภาพคล่องรายเดือนมาก... ใจจริงผมอยากเสนอแผนใหญ่เลย แต่ในฐานะที่ปรึกษา ผมอยากให้พี่ถือกรมธรรม์ได้รอดฝั่ง เรามาเริ่มจากการทำ <b>Debt Consolidation</b> รวบหนี้เพื่อลดดอกเบี้ยก่อน แล้วจัดแผนประกันขนาดพอดีตัว เพื่อปกป้องครอบครัวพี่ดีกว่าครับ"
                             </div>
                         </div>
 
@@ -1946,277 +1964,847 @@ window.systemDictionary = {
         `
     },
     // ==========================================
-    // 👑 ส่วนที่ 6: กรณีศึกษาและบทสนทนาจริง (Real-World Case Studies) -> category: "c5"
+    // 👑 กรณีศึกษาเชิงกลยุทธ์: คุณนนท์ (UHNW Legacy & Preservation) -> category: "c5"
     // ==========================================
     "c5_case_non_uhnw": {
         category: "c5",
-        icon: "👑",
+        icon: "🏰",
         iconClass: "bg-amber-100 text-amber-700",
-        title: "Case Study: คุณนนท์ (วัย 68 ปี) - เศรษฐีที่ดิน UHNW",
+        title: "บทเรียนการนำเสนอ: คุณนนท์ (VVIP Wealth Architect)",
         content: `
-        <div class="antialiased touch-manipulation pb-safe">
-            <div class="bg-gradient-to-r from-amber-700 to-yellow-900 text-white p-6 rounded-2xl shadow-lg relative overflow-hidden mb-6">
-                <div class="absolute -right-4 -top-4 text-7xl opacity-10 select-none pointer-events-none">🏰</div>
-                <h3 class="text-xl font-bold mb-2 relative z-10 text-amber-200">การวิเคราะห์กลุ่ม VVIP: ปกป้องความมั่งคั่ง (Wealth Preservation)</h3>
-                <p class="text-gray-200 text-sm relative z-10 leading-relaxed">
-                    <b>วิเคราะห์โปรไฟล์:</b> คุณนนท์ อายุ 68 ปี อาชีพเศรษฐีที่ดิน ไม่มีภาระหนี้สิน (Debt-Free) มีสวัสดิการระดับผู้บริหาร และรับความเสี่ยงได้ปานกลางค่อนข้างต่ำ (Moderate Conservative)<br>
-                    <b>โจทย์ของ FA:</b> ลูกค้ากลุ่มนี้ "ไม่กลัวไม่มีกิน" แต่ลึกๆ แล้ว "กลัวความมั่งคั่งลดลงจากปัจจัยที่ควบคุมไม่ได้" (เช่น ภาษี, เงินเฟ้อ, ค่ารักษาพยาบาล) การคุยจึงต้องเน้นเรื่อง <b>การอุดรอยรั่ว</b> และ <b>การส่งต่อ</b>
+        <div class="antialiased touch-manipulation pb-safe space-y-8 text-sm text-gray-700 leading-relaxed">
+            
+            <section>
+                <div class="bg-gradient-to-r from-amber-700 to-yellow-900 text-white p-6 rounded-2xl shadow-lg relative overflow-hidden mb-6">
+                    <div class="absolute -right-4 -top-4 text-7xl opacity-10 select-none pointer-events-none">🏰</div>
+                    <h3 class="text-xl font-bold mb-2 relative z-10 text-amber-200">การวิเคราะห์กลุ่ม VVIP: ปกป้องความมั่งคั่ง (Wealth Preservation)</h3>
+                    <p class="text-gray-200 text-sm relative z-10 leading-relaxed">
+                        <b>วิเคราะห์โปรไฟล์:</b> คุณนนท์ อายุ 68 ปี อาชีพเศรษฐีที่ดิน สถานะเกษียณตอนต้น (Active Retiree) กลุ่ม UHNW_Elite ไม่มีผู้อุปการะ <b>ไร้หนี้สิน (Debt-Free)</b> มีสวัสดิการระดับผู้บริหาร และมีพฤติกรรมวางแผนเก็บเงินจนครบเป้าหมายแล้วใช้ชีวิต<br>
+                        <b>โจทย์ของ FA:</b> ลูกค้ากลุ่มนี้ "ไม่กลัวไม่มีกิน" มีทรัพย์สินกว่า 1 พันล้านบาท แต่ลึกๆ แล้วมีความเสี่ยงซ่อนอยู่จาก "ค่ารักษาพยาบาลที่โตเร็วกว่าพอร์ต" และ "กับดักไลฟ์สไตล์" การพูดคุยจึงต้องเน้นเรื่อง <b>การอุดรอยรั่ว</b> และ <b>การส่งต่อมรดกอย่างสมบูรณ์</b> ไม่ใช่การขายเพื่อหวังผลตอบแทนสูง
+                    </p>
+                </div>
+
+                <h4 class="font-bold text-lg text-amber-800 border-b-2 border-amber-100 pb-2 mb-4 flex items-center gap-2">
+                    <span class="text-2xl">📝</span> 1. การสรุปข้อมูลภาพรวม (Client Profile Recap)
+                </h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
+                        <b class="text-amber-700 block mb-2 underline">ข้อมูลเชิงปริมาณ (Quantitative)</b>
+                        <ul class="space-y-2 text-xs mt-2">
+                            <li>• <b>งบดุล (Balance Sheet):</b> ทรัพย์สินรวม 1,023,850,000.00 บาท (ที่ดิน 800M, บ้าน 120M) | หนี้สิน 0.00 บาท <br><span class="text-emerald-600 font-bold">(ความมั่งคั่งสุทธิ: 1,023,850,000.00 บาท)</span></li>
+                            <li>• <b>งบกระแสเงินสด (Cash Flow):</b> รายรับจากสินทรัพย์ 3,366,000.00 บ./เดือน | รายจ่ายรวม 1,402,000.00 บ./เดือน <br><span class="text-emerald-600 font-bold">(กระแสเงินสดคงเหลือ: +1,964,000.00 บ./เดือน)</span></li>
+                            <li>• <b>พอร์ตการลงทุนปัจจุบัน (100 ลบ.):</b> เงินฝาก/ตลาดเงิน 15M, ตราสารหนี้ 25M, กองทุนผสม 15M, หุ้นไทย 10M, หุ้นโลก 20M, คริปโต 15M</li>
+                            <li>• <b>พอร์ตกรมธรรม์ปัจจุบัน:</b> ไม่มีข้อมูล (Underinsured)</li>
+                            <li>• <b>เป้าหมายการเงิน (SMART Goals):</b> <br>
+                                - ส่งมอบมรดก 100,000,000 บ. (อีก 17 ปี)<br>
+                                - ใช้ชีวิตหลังเกษียณ 1,386,000 บ./เดือน
+                            </li>
+                            <li>• <b>อัตราส่วนสำคัญ:</b> ภาระหนี้ 0.0% | สภาพคล่อง 71.3 เดือน</li>
+                            <li>• <b>คะแนนความสำเร็จ AI:</b> ปัจจุบัน 77.5% ➡️ Proposed 86.8% <span class="text-emerald-500 font-bold">(เพิ่มขึ้น +9.3%)</span></li>
+                        </ul>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
+                        <b class="text-amber-700 block mb-2 underline">ข้อมูลเชิงคุณภาพ (Qualitative)</b>
+                        <ul class="space-y-2 text-xs mt-2">
+                            <li>• <b>สถานะ:</b> วัยเกษียณสำราญ (Active Retiree) อายุ 68 ปี</li>
+                            <li>• <b>อาชีพ:</b> เศรษฐีที่ดิน (UHNW_Elite) ไม่มีภาระผู้อุปการะ</li>
+                            <li>• <b>สวัสดิการ:</b> มีสวัสดิการระดับผู้บริหาร</li>
+                            <li>• <b>พฤติกรรม:</b> วางแผนเป้าหมายสำเร็จแล้วใช้ชีวิต ไม่มีหนี้สินเลย แต่ใช้จ่ายระดับ VVIP (Lifestyle Creep)</li>
+                            <li>• <b>ระดับความเสี่ยง:</b> ยอมรับความเสี่ยงได้ปานกลางค่อนข้างต่ำ (Moderate Conservative) คาดหวังผลตอบแทนพอร์ตที่ 7.65%</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h4 class="font-bold text-lg text-slate-800 border-b-2 border-slate-200 pb-2 mb-4 flex items-center gap-2 mt-6">
+                    <span class="text-2xl">🔍</span> 2. การวิเคราะห์จุดแข็งและจุดเปราะบาง (Fact Finding & Pain Point)
+                </h4>
+                <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 space-y-4">
+                    <div class="flex gap-4">
+                        <div class="shrink-0 w-10 h-10 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center font-bold">✓</div>
+                        <div>
+                            <b class="text-emerald-800">จุดแข็ง (AI Reality Check):</b> 
+                            <p class="mt-1">สภาพคล่องมหาศาล (เงินฝากกว่า 100 ล้านบาท) และไร้หนี้สิน (Debt-Free) อัตราความอยู่รอดและความมั่งคั่งสูงกว่าเกณฑ์มาตรฐานมาก ทำให้มีอำนาจในการเลือก Solution ที่ดีที่สุดในตลาดได้ทันทีโดยไม่ต้องกังวลเรื่องงบประมาณ</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 border-t border-slate-200 pt-4">
+                        <div class="shrink-0 w-10 h-10 bg-rose-100 text-rose-600 rounded-full flex items-center justify-center font-bold">!</div>
+                        <div>
+                            <b class="text-rose-800">Pain Point (จุดเปราะบางแบบซ่อนเร้น):</b> 
+                            <p class="mt-1">1. <b>Lifestyle Creep:</b> รายจ่ายไลฟ์สไตล์ต่อเดือนสูงเกือบ 1.4 ล้านบาท (หรือปีละ 16.6 ล้านบาท) หากพอร์ตลงทุนเจอมรสุมตลาดขาลง จะเกิดภาวะเงินต้นยุบตัวเร็วเกินคาด</p>
+                            <p class="mt-1">2. <b>Medical Inflation Trap (เงินเฟ้อค่ารักษา):</b> อัตราเงินเฟ้อทางการแพทย์สูงถึง 8.85% ในขณะที่ผลตอบแทนพอร์ตที่ลูกค้าคาดหวังคือ 7.65% แปลว่าพอร์ตกำลัง "แพ้ค่ารักษาพยาบาล" และระบบตรวจพบ Health Gap สูงถึง 18.97 ล้านบาท</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h4 class="font-bold text-lg text-indigo-800 border-b-2 border-indigo-100 pb-2 mb-4 flex items-center gap-2 mt-6">
+                    <span class="text-2xl">💡</span> 3. การนำเสนอทางออก (Strategic Solution)
+                </h4>
+                <div class="space-y-4">
+                    <p class="italic text-gray-600">"การขายลูกค้าระดับพันล้าน ไม่ใช่การขายเพื่อความมั่งคั่ง แต่คือการขาย **System** เพื่อปกป้องกงสี"</p>
+                    <div class="bg-indigo-900 text-indigo-50 p-5 rounded-2xl shadow-xl">
+                        <b class="text-amber-400 block mb-3">💬 สคริปต์การนำเสนอเชิงกลยุทธ์:</b>
+                        <p class="text-sm leading-relaxed">
+                            "พี่นนท์ครับ จากคะแนน AI 77.49% ระบบตรวจพบว่าพอร์ตพันล้านของพี่แข็งแกร่งมาก มีกระแสเงินสดบวกถึงเกือบ 2 ล้านต่อเดือน... แต่มีรอยรั่วเดียวที่ AI เตือนไว้คือ <b>'เงินเฟ้อค่ารักษาพยาบาล (8.85%)'</b> ที่โตเร็วกว่ากำไรของพอร์ต (7.65%) ครับ<br><br>
+                            ผมไม่ได้มาเสนอให้พี่จ่ายเบี้ยประกันเพิ่มเพื่อความคุ้มครองทั่วไป แต่ผมขอเสนอ <b>'Wealth Transfer System'</b> ครับ เราจะโยกกระแสเงินสดส่วนเกินเพียงเสี้ยวเดียวของพอร์ต มาจัดสรรเข้าแผน <b>AIA Infinite Care (วงเงิน 60 ล้านบาท)</b> หรือ <b>AIA Health Happy (25 ล้านบาท)</b> ซึ่งเบี้ยเฉลี่ยเพียงแสนปลายๆ ต่อปีเท่านั้น...<br><br>
+                            วิธีนี้คือการสร้าง 'กำแพง' กั้นพอร์ตหลักไว้ครับ ไม่ว่าในอนาคตค่าหมอจะพุ่งไปเท่าไหร่ พี่จะไม่ต้องแตะเงินต้น 100 ล้านในพอร์ตเลยแม้แต่บาทเดียว เงินก้อนนี้จะยังสามารถทำงานเพื่อส่งมอบเป็นมรดก 100 ล้านให้ลูกหลานได้ครบถ้วน 100% ตามเป้าหมายครับ"
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h4 class="font-bold text-lg text-emerald-800 border-b-2 border-emerald-100 pb-2 mb-4 flex items-center gap-2 mt-6">
+                    <span class="text-2xl">⚖️</span> 4. การประเมินความคุ้มค่า (Trade-off vs Risk)
+                </h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-emerald-50 p-5 rounded-2xl border border-emerald-200">
+                        <b class="text-emerald-800 block mb-2">➕ ผลกระทบเชิงบวก (The Leap)</b>
+                        <p class="text-xs">โอกาสสำเร็จพุ่งขึ้น <b>+9.3%</b> (สู่ระดับ 86.8%) ทันทีที่ทำสัญญา เพราะความเสี่ยงก้อนใหญ่ที่สุด (Health Risk กว่า 18.9 ล้านบาท) ถูกโอนย้าย (Transfer) ไปยังบริษัทประกันเรียบร้อยแล้ว พอร์ตเกษียณจะกลับมามีเสถียรภาพสูงสุด</p>
+                    </div>
+                    <div class="bg-rose-50 p-5 rounded-2xl border border-rose-200">
+                        <b class="text-rose-800 block mb-2">➖ ผลกระทบเชิงลบ & ความเสี่ยง (The Cost)</b>
+                        <p class="text-xs"><b>Opportunity Cost:</b> เงินค่าเบี้ยประกันจะสูญเสียโอกาสในการนำไปลงทุนสร้างผลตอบแทนในตลาดหุ้น (แต่สำหรับกลุ่ม UHNW ต้นทุนนี้แทบไม่มีผลกระทบต่อ Cash Flow)<br>
+                        <b>Risk Scenario:</b> หากพี่นนท์เลือก 'เสี่ยงเอง' (Self-Insured) โดยไม่ทำแผนนี้ ความเสี่ยงคือหากป่วยด้วยโรคร้ายแรง อาจจะต้องบังคับขาย (Forced Sale) สินทรัพย์หรือที่ดินในจังหวะ 'ตลาดขาลง' ซึ่งจะทำให้มูลค่าพอร์ตเสียหายรุนแรงกว่าค่าเบี้ยหลายสิบเท่า</p>
+                    </div>
+                </div>
+            </section>
+
+            <div class="bg-slate-800 text-white p-6 rounded-2xl shadow-2xl relative overflow-hidden mt-6">
+                <div class="absolute right-0 bottom-0 opacity-10 text-9xl">🎯</div>
+                <h5 class="text-amber-400 font-bold mb-2">5. Final Conclusion for FA:</h5>
+                <p class="text-xs text-slate-300 leading-relaxed">
+                    เป้าหมายของเคสลูกค้าระดับพันล้าน (UHNW) คือ <b>"Certainty (ความแน่นอน)"</b> ไม่ใช่ "High Return"<br>
+                    ด้วยตัวเลขความเสี่ยงทิ้งกรมธรรม์ (Lapse Risk) ที่ต่ำเพียง 1.1% ลูกค้ามีกำลังจ่ายสบายๆ จงเน้นย้ำให้ลูกค้าเห็นภาพว่า <b>"การจ่ายเบี้ยประกัน คือการซื้อความสงบทางใจและปกป้องกงสี"</b> เพื่อให้เขาสามารถใช้ชีวิตแบบ Active Retiree (เดือนละ 1.38 ล้าน) ได้อย่างสง่างาม โดยไม่ต้องกังวลว่าค่ารักษาพยาบาลจะมากัดกินความมั่งคั่งที่จะส่งต่อให้ทายาทครับ
                 </p>
-            </div>
-
-            <h4 class="font-bold text-lg text-slate-800 border-b-2 border-slate-200 pb-2 mb-4 flex items-center gap-2">
-                <span class="text-2xl">📊</span> วิธีอ่านผลลัพธ์จาก AI (FA Perspective)
-            </h4>
-            
-            <div class="space-y-4 mb-8">
-                <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-200 flex flex-col md:flex-row gap-4">
-                    <div class="shrink-0 text-center md:w-1/4">
-                        <p class="text-[10px] text-gray-500 font-bold uppercase mb-1">AI Success Score</p>
-                        <p class="text-3xl font-black text-indigo-600">77.49%</p>
-                    </div>
-                    <div class="flex-1 border-l-0 md:border-l border-gray-100 md:pl-4">
-                        <b class="text-sm text-indigo-800">ทำไมมหาเศรษฐีถึงได้คะแนนไม่ถึง 100%?</b>
-                        <p class="text-xs text-gray-600 mt-1 leading-relaxed">แม้ทรัพย์สินจะเยอะ แต่ AI ตรวจพบพฤติกรรม <b>"Lifestyle Creep (กับดักไลฟ์สไตล์)"</b> คือการใช้จ่ายสูงตามฐานะ ประกอบกับอายุ 68 ปีที่ผลตอบแทนคาดหวังต่ำ (7.65%) แต่ต้องสู้กับ <b>เงินเฟ้อทางการแพทย์ (8.85%)</b> AI จึงหักคะแนนเผื่อกรณีเกิดวิกฤตเศรษฐกิจ (Stress Test) แล้วต้องดึงเงินก้อนโตมารักษาตัว</p>
-                    </div>
-                </div>
-
-                <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-200 flex flex-col md:flex-row gap-4">
-                    <div class="shrink-0 text-center md:w-1/4">
-                        <p class="text-[10px] text-gray-500 font-bold uppercase mb-1">Optimization Leap</p>
-                        <p class="text-2xl font-black text-emerald-500">+9.3%</p>
-                    </div>
-                    <div class="flex-1 border-l-0 md:border-l border-gray-100 md:pl-4">
-                        <b class="text-sm text-emerald-800">ทางลัดสู่ความสมบูรณ์แบบ (86.79%)</b>
-                        <p class="text-xs text-gray-600 mt-1 leading-relaxed">คะแนนบวกเพิ่ม 9.3% ไม่ได้มาจากการไล่ให้ลูกค้าไปลดรายจ่าย (เพราะเศรษฐีไม่ชอบถูกสั่งให้ประหยัด) แต่มาจากการ <b>"ย้ายกระเป๋าเงิน (Asset Allocation)"</b> เพื่อปกป้องกงสี และโยกความเสี่ยงด้านสุขภาพระดับ VVIP ไปให้บริษัทประกันรับผิดชอบแทน</p>
-                    </div>
-                </div>
-            </div>
-
-            <h4 class="font-bold text-lg text-amber-800 border-b-2 border-amber-200 pb-2 mb-4 flex items-center gap-2">
-                <span class="text-2xl">🗣️</span> ไกด์บทสนทนา (How to Talk with VVIP)
-            </h4>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                
-                <div class="bg-amber-50 p-5 rounded-xl border border-amber-200 shadow-sm relative">
-                    <div class="absolute right-2 top-2 text-3xl opacity-20">📈</div>
-                    <h5 class="font-bold text-amber-900 text-sm mb-2">1. การเปิดใจด้วยคะแนน 77.49%</h5>
-                    <p class="text-[10px] text-gray-600 mb-3"><b>หลักจิตวิทยา:</b> ชื่นชมในความสำเร็จ แต่ชี้ให้เห็นจุดเสี่ยงเล็กๆ ที่อาจลุกลาม</p>
-                    <div class="bg-white p-3 rounded-lg border border-amber-100 text-[11px] italic text-gray-800 leading-relaxed shadow-inner">
-                        "พี่นนท์ครับ ระบบ AI วิเคราะห์โครงสร้างการเงินของพี่ออกมาแล้ว แข็งแกร่งมากครับ สภาพคล่องยอดเยี่ยมและไม่มีหนี้สินกวนใจเลย คะแนนตั้งต้นอยู่ที่ 77.49% ซึ่งถือว่าปลอดภัยมากสำหรับคนทั่วไป... <br><br>แต่สำหรับฐานะระดับพี่นนท์ ผมมองว่าเราทำให้มันแตะ 100% ได้ครับ AI ตรวจพบรอยรั่วเล็กๆ คือ <b>'เงินเฟ้อค่ารักษาพยาบาล'</b> ที่วิ่งเร็วกว่าผลตอบแทนในตลาดตอนนี้ (8.85% vs 7.65%) วันนี้ผมเลยเตรียมแผนมานำเสนอว่าเราจะอุดรอยรั่วนี้ยังไง ไม่ให้มากระทบไลฟ์สไตล์ของพี่ครับ"
-                    </div>
-                </div>
-
-                <div class="bg-amber-50 p-5 rounded-xl border border-amber-200 shadow-sm relative">
-                    <div class="absolute right-2 top-2 text-3xl opacity-20">🏥</div>
-                    <h5 class="font-bold text-amber-900 text-sm mb-2">2. คุยเรื่องสวัสดิการผู้บริหาร & สุขภาพ</h5>
-                    <p class="text-[10px] text-gray-600 mb-3"><b>หลักจิตวิทยา:</b> คนรวยมีสวัสดิการอยู่แล้ว ต้องชี้ให้เห็น "ข้อจำกัด" ของสวัสดิการนั้น</p>
-                    <div class="bg-white p-3 rounded-lg border border-amber-100 text-[11px] italic text-gray-800 leading-relaxed shadow-inner">
-                        "ผมทราบครับว่าพี่นนท์มีสวัสดิการระดับผู้บริหารดูแลอยู่แล้ว ซึ่งดีมากๆ ครับ แต่ AI ประเมินจุดอ่อน (Stress Test) ไว้ข้อหนึ่งคือ สวัสดิการนี้อาจมีลิมิต หรืออาจหยุดลงเมื่อเราตัดสินใจพักผ่อนเต็มตัว... <br><br>ด้วยไลฟ์สไตล์แบบพี่นนท์ ถ้าต้องเข้าโรงพยาบาลก็ต้องเป็นระดับพรีเมียมที่สุด การมีแผน <b>AIA Infinite Care หรือ Health Happy (25 ล้าน)</b> ติดพอร์ตไว้ จะเป็นการโอนความเสี่ยงก้อนใหญ่ให้บริษัทประกันดูแล เพื่อให้พี่นนท์สบายใจว่าเงินสดในพอร์ตจะไม่ถูกแตะต้องเลยครับ"
-                    </div>
-                </div>
-
-                <div class="bg-amber-50 p-5 rounded-xl border border-amber-200 shadow-sm relative md:col-span-2">
-                    <div class="absolute right-2 top-2 text-3xl opacity-20">💎</div>
-                    <h5 class="font-bold text-amber-900 text-sm mb-2">3. สรุปผล +9.3% และการส่งต่อความมั่งคั่ง (Legacy)</h5>
-                    <p class="text-[10px] text-gray-600 mb-3"><b>หลักจิตวิทยา:</b> ขายความคุ้มค่าของการ "จัดพอร์ต" (Optimization) และคุณค่าเพื่อส่งต่อมรดก</p>
-                    <div class="bg-white p-3 rounded-lg border border-amber-100 text-[11px] italic text-gray-800 leading-relaxed shadow-inner">
-                        "และนี่คือเวทมนตร์ของระบบครับพี่นนท์ ตรง <b>Optimization Insight</b> แจ้งว่าถ้าเราขยับเงินทุนเพียงเล็กน้อยมาจัดสรรเข้าแผนที่ผมแนะนำ โอกาสสำเร็จจะพุ่งทะยานบวกเพิ่มขึ้นอีก <b>9.3%</b> ทันที <br><br>นั่นหมายความว่า นอกจากไลฟ์สไตล์ของพี่จะไม่สะดุดแล้ว เรายังสร้าง <b>'กองทุนมรดกเงินสด'</b> ที่มีมูลค่าการันตีแน่นอน ปลอดภาษี เพื่อส่งต่อให้ลูกหลานได้อย่างภาคภูมิใจ พี่นนท์คิดว่าแผนการโยกเงินมาสร้างฐานที่มั่นคงแบบนี้ เป็นไอเดียที่น่าสนใจไหมครับ?"
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="mt-6 p-4 bg-slate-800 rounded-xl flex items-center gap-3 shadow-md">
-                <span class="text-3xl select-none">📌</span>
-                <div>
-                    <b class="text-amber-400 text-sm">Key Takeaway สำหรับ FA:</b>
-                    <p class="text-xs text-gray-300 mt-1">เวลาคุยกับลูกค้า UHNW <b>ห้ามใช้คำว่า "ลดค่าใช้จ่าย"</b> แต่ให้ใช้คำว่า <b>"บริหารกระแสเงินสด"</b> และ <b>ห้ามบอกว่า "เดี๋ยวเงินหมด"</b> แต่ให้บอกว่า <b>"ปกป้องความมั่งคั่งไม่ให้รั่วไหล"</b> การใช้รายงาน AI ฉบับนี้ยื่นให้ลูกค้าดู จะช่วยยกระดับภาพลักษณ์ของคุณให้เป็น Wealth Architect ระดับท็อปทันทีครับ</p>
-                </div>
             </div>
         </div>
         `
     },
     // ==========================================
-    // 💍 กรณีศึกษาที่ 2: วัยทำงานสร้างตัว / ข้าราชการ -> category: "c5"
+    // 💍 กรณีศึกษาเชิงกลยุทธ์: คุณภัทร (Young Gen & Goal Protection) -> category: "c5"
     // ==========================================
     "c5_case_pat_civil": {
         category: "c5",
         icon: "🏠",
         iconClass: "bg-blue-100 text-blue-700",
-        title: "Case Study: คุณภัทร (วัย 29 ปี) - ข้าราชการ เพิ่งแต่งงาน/เตรียมซื้อบ้าน",
+        title: "Case Study: คุณภัทร (วัย 29 ปี) - ข้าราชการ/เพิ่งแต่งงาน (Wealth Optimization & Protection)",
         content: `
-        <div class="antialiased touch-manipulation pb-safe">
-            <div class="bg-gradient-to-r from-blue-700 to-indigo-900 text-white p-6 rounded-2xl shadow-lg relative overflow-hidden mb-6">
-                <div class="absolute -right-4 -top-4 text-7xl opacity-10 select-none pointer-events-none">💍</div>
-                <h3 class="text-xl font-bold mb-2 relative z-10 text-blue-200">การวิเคราะห์กลุ่ม Young Gen: ต่อยอดและปกป้องเป้าหมาย (Wealth Optimization)</h3>
-                <p class="text-gray-200 text-sm relative z-10 leading-relaxed">
-                    <b>วิเคราะห์โปรไฟล์:</b> คุณภัทร อายุ 29 ปี อาชีพข้าราชการ มีสวัสดิการรัฐครอบคลุม มีวินัยการเงินดีเยี่ยม (จ่ายบัตรเครดิตเต็มจำนวน) และถูกจัดอยู่ในกลุ่มพฤติกรรมมาตรฐาน (Balanced Profile)<br>
-                    <b>โจทย์ของ FA:</b> ลูกค้าได้คะแนน AI สูงถึง 87.83% และมีสวัสดิการรักษาพยาบาลฟรี การขายด้วย "ความกลัว (Fear)" จะไม่ทำงาน FA ต้องเปลี่ยนมาใช้ "ความรักและความก้าวหน้า (Love & Growth)" โดยโฟกัสไปที่ <b>การเตรียมซื้อบ้าน</b> และ <b>การสร้างครอบครัว</b>
+        <div class="antialiased touch-manipulation pb-safe space-y-8 text-sm text-gray-700 leading-relaxed">
+            
+            <section>
+                <div class="bg-gradient-to-r from-blue-700 to-indigo-900 text-white p-6 rounded-2xl shadow-lg relative overflow-hidden mb-6">
+                    <div class="absolute -right-4 -top-4 text-7xl opacity-10 select-none pointer-events-none">💍</div>
+                    <h3 class="text-xl font-bold mb-2 relative z-10 text-blue-200">การวิเคราะห์กลุ่ม Young Gen (Civil Servant): ต่อยอดและปกป้องเป้าหมาย (Wealth Optimization)</h3>
+                    <p class="text-gray-200 text-sm relative z-10 leading-relaxed">
+                        <b>วิเคราะห์โปรไฟล์:</b> คุณภัทร อายุ 29 ปี อาชีพข้าราชการ มีสวัสดิการรัฐครอบคลุมค่ารักษาพยาบาล <b>ไม่มีภาระหนี้สิน (Debt-Free)</b> มีวินัยการเงินดีเยี่ยม (รูดบัตรจ่ายเต็มจำนวนและหักออมสม่ำเสมอ)<br>
+                        <b>โจทย์ของ FA:</b> ลูกค้าได้คะแนน AI สูงถึง 87.83% และมีสวัสดิการรักษาพยาบาลฟรี รวมถึงมีประกันโรคร้ายแรงเดิมอยู่แล้ว การขายด้วย "ความกลัว (Fear)" จะไม่ทำงาน FA ต้องเปลี่ยนมาใช้ "ความรักและความก้าวหน้า (Love & Growth)" โดยโฟกัสไปที่ <b>การเตรียมความพร้อมซื้อบ้าน</b> และ <b>การปิดความเสี่ยงมรดกหนี้</b>
+                    </p>
+                </div>
+
+                <h4 class="font-bold text-lg text-blue-800 border-b-2 border-blue-100 pb-2 mb-4 flex items-center gap-2">
+                    <span class="text-2xl">📝</span> 1. การสรุปข้อมูลภาพรวม (Client Profile Recap)
+                </h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
+                        <b class="text-blue-700 block mb-2 underline">ข้อมูลเชิงปริมาณ (Quantitative)</b>
+                        <ul class="space-y-2 text-xs mt-2">
+                            <li>• <b>งบดุล (Balance Sheet):</b> ทรัพย์สินรวม 521,000.00 บาท | หนี้สินรวม 0.00 บาท <br><span class="text-emerald-600 font-bold">(ความมั่งคั่งสุทธิ: 521,000.00 บาท)</span></li>
+                            <li>• <b>งบกระแสเงินสด (Cash Flow):</b> รายรับ 28,000.00 บ./เดือน | รายจ่ายรวม 22,812.50 บ./เดือน <br><span class="text-emerald-600 font-bold">(กระแสเงินสดคงเหลือ: +5,187.50 บ./เดือน)</span></li>
+                            <li>• <b>พอร์ตการลงทุนปัจจุบัน:</b> กบข./กองทุนสำรองเลี้ยงชีพ 200,000 บาท | เงินฝากออมทรัพย์ 321,000 บาท</li>
+                            <li>• <b>พอร์ตกรมธรรม์ปัจจุบัน:</b> AIA 20 Pay Life (ทุน 300,000 บ.) | AIA CI Plus (ทุน 1,000,000 บ.)</li>
+                            <li>• <b>เป้าหมายการเงิน (SMART Goals):</b> <br>
+                                - ดาวน์บ้าน / ซื้อที่อยู่อาศัย 500,000 บ. (อีก 2 ปี)<br>
+                                - ทุนเกษียณอายุ 60 ปี ต้องการใช้เงิน 20,000 บ./เดือน
+                            </li>
+                            <li>• <b>อัตราส่วนสำคัญ:</b> ภาระหนี้ 0.0% | อัตราการออม 27.90% | สภาพคล่อง 14.1 เดือน</li>
+                            <li>• <b>คะแนนความสำเร็จ AI:</b> ปัจจุบัน 87.83% ➡️ Proposed 87.95%</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
+                        <b class="text-blue-700 block mb-2 underline">ข้อมูลเชิงคุณภาพ (Qualitative)</b>
+                        <ul class="space-y-2 text-xs mt-2">
+                            <li>• <b>สถานะ:</b> เพิ่งแต่งงาน / เตรียมซื้อบ้าน</li>
+                            <li>• <b>อาชีพ:</b> ข้าราชการ/พนักงานราชการ ระดับต้น (รายได้มั่นคงสูง) วัย 29 ปี</li>
+                            <li>• <b>สวัสดิการ:</b> สิทธิข้าราชการ/รัฐวิสาหกิจ (ครอบคลุมค่ารักษาพยาบาล)</li>
+                            <li>• <b>พฤติกรรมหนี้:</b> พฤติกรรมมาตรฐาน ใช้บัตรเครดิตแล้วจ่ายคืนเต็มจำนวนได้ทุกครั้ง (ไม่มีหนี้เสีย) มีวินัยออมเงินปานกลาง-สูง</li>
+                            <li>• <b>ระดับความเสี่ยง:</b> เสี่ยงปานกลางค่อนข้างต่ำ (Moderate Conservative) คาดหวังผลตอบแทน 4.88%</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h4 class="font-bold text-lg text-slate-800 border-b-2 border-slate-200 pb-2 mb-4 flex items-center gap-2 mt-6">
+                    <span class="text-2xl">🔍</span> 2. การวิเคราะห์จุดแข็งและจุดเปราะบาง (Fact Finding & Pain Point)
+                </h4>
+                <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 space-y-4">
+                    <div class="flex gap-4">
+                        <div class="shrink-0 w-10 h-10 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center font-bold">✓</div>
+                        <div>
+                            <b class="text-emerald-800">จุดแข็ง (AI Reality Check):</b> 
+                            <p class="mt-1">ฐานะการเงินและพฤติกรรมแข็งแกร่งมาก มีเวลา (Time Horizon อีก 31 ปี) เป็นอาวุธหลัก ไม่มีหนี้สินเลย มีสภาพคล่องสำรองล้นเหลือถึง 14.1 เดือน และมีสิทธิข้าราชการดูแลค่ารักษา ทำให้คะแนน AI พุ่งสูงเกือบ 90%</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 border-t border-slate-200 pt-4">
+                        <div class="shrink-0 w-10 h-10 bg-rose-100 text-rose-600 rounded-full flex items-center justify-center font-bold">!</div>
+                        <div>
+                            <b class="text-rose-800">Pain Point (จุดเปราะบางแบบซ่อนเร้น):</b> 
+                            <p class="mt-1">1. <b>New Debt Creation (หนี้ก้อนใหม่ที่กำลังจะเกิด):</b> การเตรียมตัวซื้อบ้านแปลว่ากำลังจะสร้าง <b>"หนี้ระยะยาวก้อนใหญ่ที่สุดในชีวิต"</b> ในขณะที่ลูกค้าขาดทุนประกันชีวิต (Life Gap 1.76 ล้านบาท) หากคนผ่อนเป็นอะไรไป บ้านจะถูกธนาคารยึดและกลายเป็นภาระของคู่ชีวิตทันที</p>
+                            <p class="mt-1">2. <b>Asset Allocation Inefficiency:</b> เงินเก็บส่วนใหญ่ไปกระจุกตัวอยู่ในสินทรัพย์สภาพคล่อง (เงินฝาก 321,000 บาท) มากเกินไป ทำให้ผลตอบแทนรวมอาจเติบโตช้าและแพ้เงินเฟ้อในระยะยาว</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h4 class="font-bold text-lg text-indigo-800 border-b-2 border-indigo-100 pb-2 mb-4 flex items-center gap-2 mt-6">
+                    <span class="text-2xl">💡</span> 3. การนำเสนอทางออก (Strategic Solution)
+                </h4>
+                <div class="space-y-4">
+                    <p class="italic text-gray-600">"เมื่อลูกค้ามีคะแนน 87% แล้ว FA ห้ามขายความกลัวเรื่องเกษียณ หรือยัดเยียดประกันสุขภาพซ้ำซ้อน แต่ต้องขาย <b>การปกป้องความฝันและจัดพอร์ตลงทุน</b>"</p>
+                    <div class="bg-indigo-900 text-indigo-50 p-5 rounded-2xl shadow-xl">
+                        <b class="text-blue-300 block mb-3">💬 สคริปต์การนำเสนอ (Mortgage Protection & Asset Allocation):</b>
+                        <p class="text-sm leading-relaxed">
+                            "คุณภัทรครับ จากรายงาน AI เราพบว่าคะแนนความสำเร็จของคุณภัทรสูงถึง <b>87.83%</b> ซึ่งยอดเยี่ยมมากครับ สภาพคล่องเยี่ยม หนี้สินเป็นศูนย์ แผนเกษียณเราเดินมาถูกทางแล้ว... <br><br>
+                            แต่ใน <b>Optimization Insight</b> AI แนะนำให้ปรับแผนเพื่อบวกคะแนนเพิ่มอีก 0.12% ซึ่งมันไม่ได้มาจากเรื่องเกษียณครับ แต่มันคือการ <b>'อุดรอยรั่วจากการซื้อบ้านใหม่'</b><br><br>
+                            สวัสดิการข้าราชการดูแลค่าหมอให้เราได้เต็มที่ และคุณภัทรมีประกันโรคร้ายแรง CI Plus 1 ล้านเตรียมไว้แล้วถือว่าสมบูรณ์มากครับ... แต่สำหรับการกู้ซื้อบ้าน ผมอยากเสนอให้ใช้กระแสเงินสดที่เหลือเดือนละ 5 พันกว่าบาท แบ่งมาทำ <b>ประกันชีวิตคุ้มครองหนี้สิน (AIA 20 Pay Life หรือ AIA Issara Plus)</b> ทุนประกันสัก 1-2 ล้านบาท เพื่อให้มั่นใจว่า ไม่ว่าจะเกิดอะไรขึ้น 'บ้านหลังนี้' จะตกเป็นของคู่ชีวิต 100% โดยไม่ต้องรับภาระผ่อนต่อครับ และเงินส่วนที่เหลือเราจะนำมาจัดพอร์ตลงทุนให้เงินฝากที่นอนนิ่งอยู่เติบโตชนะเงินเฟ้อครับ"
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h4 class="font-bold text-lg text-emerald-800 border-b-2 border-emerald-100 pb-2 mb-4 flex items-center gap-2 mt-6">
+                    <span class="text-2xl">⚖️</span> 4. การประเมินความคุ้มค่า (Trade-off vs Risk)
+                </h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-emerald-50 p-5 rounded-2xl border border-emerald-200">
+                        <b class="text-emerald-800 block mb-2">➕ ผลกระทบเชิงบวก (The Leap)</b>
+                        <p class="text-xs">คะแนนขยับขึ้น <b>+0.12%</b> (เป็น 87.95%) แม้ตัวเลขจะดูน้อย แต่ในเชิงจิตวิทยา ลูกค้าจะปลดล็อกความกังวลเรื่องการเป็นภาระของคู่ชีวิต (Peace of mind) ทำให้กล้าตัดสินใจซื้อบ้าน สร้างครอบครัวอย่างมั่นใจ และเงินลงทุนที่ถูกจัดสรรใหม่จะทำงานได้อย่างมีประสิทธิภาพมากขึ้น</p>
+                    </div>
+                    <div class="bg-rose-50 p-5 rounded-2xl border border-rose-200">
+                        <b class="text-rose-800 block mb-2">➖ ผลกระทบเชิงลบ & ความเสี่ยง (The Cost)</b>
+                        <p class="text-xs"><b>Cashflow Reduction:</b> การซื้อประกันชีวิตเพิ่มและการทำ DCA จะดึงกระแสเงินสดอิสระที่เหลืออยู่ 5,187 บาท/เดือน ไปใช้งานจนหมด ทำให้ขาดสภาพคล่องในการใช้จ่ายฟุ่มเฟือย<br>
+                        <b>Risk Scenario:</b> หากคุณภัทรเลือกที่จะปฏิเสธแผนนี้ เท่ากับกำลังเอา "ความเสี่ยงของก้อนหนี้บ้านในอนาคต" ไปแขวนไว้บนความเปราะบาง หากเกิดเหตุไม่คาดฝัน คู่ชีวิตอาจต้องสูญเสียทั้งเสาหลักและบ้านพักอาศัยไปพร้อมๆ กัน</p>
+                    </div>
+                </div>
+            </section>
+
+            <div class="bg-slate-800 text-white p-6 rounded-2xl shadow-2xl relative overflow-hidden mt-6">
+                <div class="absolute right-0 bottom-0 opacity-10 text-9xl">🎯</div>
+                <h5 class="text-blue-400 font-bold mb-2">5. Final Conclusion for FA:</h5>
+                <p class="text-xs text-slate-300 leading-relaxed">
+                    เป้าหมายของเคสข้าราชการ/คนคะแนนสูงและมีสวัสดิการครบ คือ <b>"Wealth Optimization & Liability Protection"</b> <br>
+                    จงอย่าฝืนนำเสนอสินค้าที่เขาไม่ต้องการ (ห้ามขายประกันสุขภาพเหมาจ่ายเพราะซ้ำซ้อนสิทธิข้าราชการ) แต่ให้สแกนหา <b>เป้าหมายชีวิตในระยะสั้น-กลาง</b> (เช่น การแต่งงาน, ซื้อบ้าน, มีลูก) แล้วใช้ประกันชีวิตตลอดชีพ (Whole Life) หรือ Unit-Linked เข้าไปเป็น <b>เกราะป้องกันความฝันเหล่านั้นและจัดพอร์ตเพิ่มผลตอบแทน</b> แทนครับ
                 </p>
-            </div>
-
-            <h4 class="font-bold text-lg text-slate-800 border-b-2 border-slate-200 pb-2 mb-4 flex items-center gap-2">
-                <span class="text-2xl">📊</span> วิธีอ่านผลลัพธ์จาก AI (FA Perspective)
-            </h4>
-            
-            <div class="space-y-4 mb-8">
-                <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-200 flex flex-col md:flex-row gap-4">
-                    <div class="shrink-0 text-center md:w-1/4">
-                        <p class="text-[10px] text-gray-500 font-bold uppercase mb-1">AI Success Score</p>
-                        <p class="text-3xl font-black text-indigo-600">87.83%</p>
-                    </div>
-                    <div class="flex-1 border-l-0 md:border-l border-gray-100 md:pl-4">
-                        <b class="text-sm text-indigo-800">ทำไมเด็กจบใหม่ถึงได้คะแนนสูงเกือบ 90%?</b>
-                        <p class="text-xs text-gray-600 mt-1 leading-relaxed">เพราะ <b>"พลังของเวลา (Time Horizon)"</b> ครับ ลูกค้าอายุแค่ 29 ปี มีเวลาให้ดอกเบี้ยทบต้นทำงานอีกกว่า 30 ปี ประกอบกับมี "วินัยการเงินที่ดี (ชำระหนี้เต็ม)" AI จึงประเมินว่าโครงสร้างแบบนี้ ล้มละลายได้ยากมาก</p>
-                    </div>
-                </div>
-
-                <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-200 flex flex-col md:flex-row gap-4">
-                    <div class="shrink-0 text-center md:w-1/4">
-                        <p class="text-[10px] text-gray-500 font-bold uppercase mb-1">Optimization Leap</p>
-                        <p class="text-2xl font-black text-emerald-500">+0.1%</p>
-                    </div>
-                    <div class="flex-1 border-l-0 md:border-l border-gray-100 md:pl-4">
-                        <b class="text-sm text-emerald-800">ขยับแค่ 0.1% FA จะเสนอแผนอย่างไร?</b>
-                        <p class="text-xs text-gray-600 mt-1 leading-relaxed">AI แจ้งว่าฐานะการเงินแข็งแกร่งอยู่แล้ว การออมเพิ่มแทบไม่ส่งผลต่อวัยเกษียณ <b>สิ่งที่ FA ต้องทำไม่ใช่การสั่งให้ออมเพิ่มเพื่อเกษียณ</b> แต่คือการโยกเงินไปลงทุนเพื่อ "ดาวน์บ้าน" หรือทำประกันชีวิต (Life Insurance) เพื่อคุ้มครองหนี้บ้านเกิดใหม่ ไม่ให้เป็นภาระของคู่สมรสหากเกิดเหตุไม่คาดฝัน</p>
-                    </div>
-                </div>
-            </div>
-
-            <h4 class="font-bold text-lg text-blue-800 border-b-2 border-blue-200 pb-2 mb-4 flex items-center gap-2">
-                <span class="text-2xl">🗣️</span> ไกด์บทสนทนา (How to Talk with Young Gen)
-            </h4>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                
-                <div class="bg-blue-50 p-5 rounded-xl border border-blue-200 shadow-sm relative">
-                    <div class="absolute right-2 top-2 text-3xl opacity-20">🎯</div>
-                    <h5 class="font-bold text-blue-900 text-sm mb-2">1. การเปิดใจด้วยคำชม (Validate Success)</h5>
-                    <p class="text-[10px] text-gray-600 mb-3"><b>หลักจิตวิทยา:</b> คนรุ่นใหม่ชอบให้คนยอมรับความสำเร็จ ชื่นชมวินัยของเขาก่อนเสนอแผน</p>
-                    <div class="bg-white p-3 rounded-lg border border-blue-100 text-[11px] italic text-gray-800 leading-relaxed shadow-inner">
-                        "คุณภัทรครับ จากที่ AI ประมวลผลออกมา ผมต้องขอชื่นชมเลยครับ คะแนนความสำเร็จพุ่งไปถึง 87.83% ซึ่งหาได้ยากมากในคนวัยเดียวกัน ระบบวิเคราะห์ว่า 'วินัยการจ่ายบัตรเครดิตเต็มจำนวน' และ 'อายุที่ยังน้อย' คือจุดแข็งที่ทำให้แผนเกษียณของคุณภัทรแทบจะไร้ความเสี่ยงเลยครับ แผนเกษียณเราเดินมาถูกทางแล้วครับ"
-                    </div>
-                </div>
-
-                <div class="bg-blue-50 p-5 rounded-xl border border-blue-200 shadow-sm relative">
-                    <div class="absolute right-2 top-2 text-3xl opacity-20">🏥</div>
-                    <h5 class="font-bold text-blue-900 text-sm mb-2">2. จัดการเรื่องสวัสดิการข้าราชการ</h5>
-                    <p class="text-[10px] text-gray-600 mb-3"><b>หลักจิตวิทยา:</b> ยอมรับว่าสวัสดิการดี แต่ชี้เป้า "รอยรั่วที่รัฐไม่ได้จ่าย (CI Cash)"</p>
-                    <div class="bg-white p-3 rounded-lg border border-blue-100 text-[11px] italic text-gray-800 leading-relaxed shadow-inner">
-                        "เรื่องค่ารักษา ผมเห็นด้วยครับว่าสวัสดิการข้าราชการดูแลเราได้ดีมาก ไม่จำเป็นต้องซื้อประกันสุขภาพเหมาจ่ายซ้ำซ้อน... <br><br>แต่สิ่งหนึ่งที่สวัสดิการรัฐไม่มีให้ คือ <b>'เงินก้อนชดเชยรายได้'</b> ครับ หากโชคร้ายเจอโรคร้ายแรง (CI) รัฐจ่ายค่าหมอให้ แต่รัฐไม่ได้จ่ายค่าผ่อนรถ หรือค่ากินอยู่ให้ครอบครัวระหว่างที่เราพักฟื้น การมีประกันโรคร้ายแรงแบบรับเงินก้อน (CI Plus) ติดไว้หลักล้าน เบี้ยแค่หลักพันต้นๆ จะช่วยปิดความเสี่ยงตรงนี้ได้ 100% ครับ"
-                    </div>
-                </div>
-
-                <div class="bg-blue-50 p-5 rounded-xl border border-blue-200 shadow-sm relative md:col-span-2">
-                    <div class="absolute right-2 top-2 text-3xl opacity-20">🏠</div>
-                    <h5 class="font-bold text-blue-900 text-sm mb-2">3. สรุปผลเพื่อเป้าหมาย "สร้างครอบครัวและซื้อบ้าน"</h5>
-                    <p class="text-[10px] text-gray-600 mb-3"><b>หลักจิตวิทยา:</b> ขยับเป้าหมายจากเรื่องไกลตัว (เกษียณ) มาเป็นเรื่องใกล้ตัว (บ้าน/คู่ชีวิต)</p>
-                    <div class="bg-white p-3 rounded-lg border border-blue-100 text-[11px] italic text-gray-800 leading-relaxed shadow-inner">
-                        "ในส่วนของ <b>Optimization Insight</b> ที่ AI แนะนำว่าการปรับแผนเพิ่มคะแนนได้แค่ 0.1% เป็นเครื่องยืนยันว่าเราไม่ต้องเครียดเรื่องเกษียณแล้วครับ... <br><br>วันนี้ผมเลยอยากชวนคุณภัทรโฟกัสเป้าหมายใหม่ คือ <b>'การซื้อบ้านและการสร้างครอบครัว'</b> ครับ หากคุณภัทรกู้ซื้อบ้าน 3 ล้านบาท ผมแนะนำให้แบ่งงบเล็กน้อยมาทำประกันชีวิตคุ้มครองหนี้สินก้อนนี้ไว้ (Mortgage Protection) เพื่อความสบายใจว่า ถ้าเกิดเหตุไม่คาดฝัน บ้านหลังนี้จะเป็น 'ของขวัญ' ให้คนข้างหลัง ไม่ใช่ 'ภาระหนี้' ครับ"
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="mt-6 p-4 bg-slate-800 rounded-xl flex items-center gap-3 shadow-md">
-                <span class="text-3xl select-none">📌</span>
-                <div>
-                    <b class="text-blue-400 text-sm">Key Takeaway สำหรับ FA:</b>
-                    <p class="text-xs text-gray-300 mt-1">หาก AI Score ของลูกค้าสูงลิ่ว และส่วนต่าง (Leap) แทบไม่ขยับ ให้เปลี่ยนมุมมองการนำเสนอทันที! นี่คือสัญญาณว่าลูกค้าไม่ต้องปรับแก้นิสัยอะไรแล้ว ให้ข้ามไปขาย <b>"Protection (การปกป้องเป้าหมาย)"</b> หรือ <b>"Wealth Accumulation (Unit-Linked แบบเร่งการเติบโต)"</b> เพื่อทำความฝันใหม่ๆ ให้เป็นจริงแทนครับ</p>
-                </div>
             </div>
         </div>
         `
     },
     // ==========================================
-    // 🏪 กรณีศึกษาที่ 3: อาชีพอิสระ / กลุ่มเปราะบางหนี้สูง -> category: "c5"
+    // 🏪 กรณีศึกษาเชิงกลยุทธ์: คุณตั้ม (Crisis Management & Debt Restructuring) -> category: "c5"
     // ==========================================
     "c5_case_tum_informal": {
         category: "c5",
         icon: "🏪",
         iconClass: "bg-red-100 text-red-700",
-        title: "Case Study: คุณตั้ม (วัย 47 ปี) - อาชีพอิสระ/หนี้วิกฤต (Crisis Management)",
+        title: "บทเรียนการนำเสนอ: คุณตั้ม (Crisis Management & Debt Restructuring)",
         content: `
-        <div class="antialiased touch-manipulation pb-safe">
-            <div class="bg-gradient-to-r from-red-700 to-rose-900 text-white p-6 rounded-2xl shadow-lg relative overflow-hidden mb-6">
-                <div class="absolute -right-4 -top-4 text-7xl opacity-10 select-none pointer-events-none">🆘</div>
-                <h3 class="text-xl font-bold mb-2 relative z-10 text-red-200">การวิเคราะห์กลุ่มเปราะบาง: หยุดเลือดและกอบกู้วิกฤต (Crisis Management)</h3>
-                <p class="text-gray-200 text-sm relative z-10 leading-relaxed">
-                    <b>วิเคราะห์โปรไฟล์:</b> คุณตั้ม อายุ 47 ปี อาชีพร้านอาหารริมทาง (Informal Worker) ต้องดูแลพ่อแม่วัยชรา 1 ท่าน <b>ไม่มีสวัสดิการรัฐ/เอกชน</b> พฤติกรรมคือหมุนเงินชนเดือน (Paycheck to Paycheck) และพึ่งพาสินเชื่อ/บัตรเครดิต<br>
-                    <b>โจทย์ของ FA:</b> ลูกค้าอยู่ในโหมด "เอาชีวิตรอด" การพูดถึงเรื่องเกษียณรวยเป็นล้านๆ จะดูเพ้อฝันและกดดันลูกค้าทันที FA ต้องสวมบทบาทเป็น <b>"หมอรักษาหนี้"</b> โฟกัสที่การทำ Debt Consolidation (รวบหนี้) และปกป้องความเสี่ยงขั้นพื้นฐานที่สุดเพื่อไม่ให้พ่อแม่เดือดร้อนหากลูกค้าล้มป่วย
+        <div class="antialiased touch-manipulation pb-safe space-y-8 text-sm text-gray-700 leading-relaxed">
+            
+            <section>
+                <div class="bg-gradient-to-r from-red-700 to-rose-900 text-white p-6 rounded-2xl shadow-lg relative overflow-hidden mb-6">
+                    <div class="absolute -right-4 -top-4 text-7xl opacity-10 select-none pointer-events-none">🆘</div>
+                    <h3 class="text-xl font-bold mb-2 relative z-10 text-red-200">การวิเคราะห์กลุ่มเปราะบาง: หยุดเลือดและกอบกู้วิกฤต (Crisis Management)</h3>
+                    <p class="text-gray-200 text-sm relative z-10 leading-relaxed">
+                        <b>วิเคราะห์โปรไฟล์:</b> คุณตั้ม อายุ 47 ปี อาชีพร้านอาหารริมทาง (ธุรกิจส่วนตัว/ค้าขาย) ดูแลพ่อแม่วัยชรา 1 ท่าน <b>ไม่มีสวัสดิการรัฐ/เอกชน</b> พฤติกรรมคือหมุนเงินชนเดือน (Paycheck to Paycheck) และพึ่งพาสินเชื่อระยะสั้นจนเกิดวงจรหนี้<br>
+                        <b>โจทย์ของ FA:</b> ลูกค้าอยู่ในโหมด "เอาชีวิตรอด" กระแสเงินสดติดลบทุกเดือน การพูดถึงเรื่องลงทุนเกษียณรวยเป็นล้านๆ จะดูเพ้อฝันและกดดันลูกค้าทันที FA ต้องสวมบทบาทเป็น <b>"หมอรักษาหนี้"</b> โฟกัสที่การทำ Debt Consolidation (รวบหนี้) และปกป้องความเสี่ยงขั้นพื้นฐานที่สุดเพื่อไม่ให้พ่อแม่เดือดร้อนหากลูกค้าล้มป่วย
+                    </p>
+                </div>
+
+                <h4 class="font-bold text-lg text-red-800 border-b-2 border-red-100 pb-2 mb-4 flex items-center gap-2">
+                    <span class="text-2xl">📝</span> 1. การสรุปข้อมูลภาพรวม (Client Profile Recap)
+                </h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
+                        <b class="text-red-700 block mb-2 underline">ข้อมูลเชิงปริมาณ (Quantitative)</b>
+                        <ul class="space-y-2 text-xs mt-2">
+                            <li>• <b>งบดุล (Balance Sheet):</b> ทรัพย์สินรวม 125,000.00 บาท | หนี้สินรวม 838,500.00 บาท (บัตรเครดิตและสินเชื่อบุคคล) <br><span class="text-rose-500 font-bold">(ความมั่งคั่งสุทธิติดลบ: -713,500.00 บาท)</span></li>
+                            <li>• <b>งบกระแสเงินสด (Cash Flow):</b> รายรับ 65,000.00 บ./เดือน | รายจ่ายรวม 65,500.00 บ./เดือน (รวมจ่ายหนี้ 26,000 บ.) <br><span class="text-rose-500 font-bold">(กระแสเงินสดติดลบ: -500.00 บ./เดือน)</span></li>
+                            <li>• <b>พอร์ตการลงทุนปัจจุบัน:</b> เงินสดในมือ 25,000 บาท | เงินฝากออมทรัพย์ 100,000 บาท (ไม่มีพอร์ตลงทุน)</li>
+                            <li>• <b>พอร์ตกรมธรรม์ปัจจุบัน:</b> ไม่มีข้อมูลกรมธรรม์ปัจจุบัน (Underinsured 100%)</li>
+                            <li>• <b>เป้าหมายการเงิน (SMART Goals):</b> <br>
+                                - สำรองฉุกเฉิน 6 เดือน (393,000.00 บ.)<br>
+                                - ทุนเกษียณอายุ 60 ปี ต้องการใช้เงิน 15,000 บ./เดือน
+                            </li>
+                            <li>• <b>อัตราส่วนสำคัญ:</b> ภาระผ่อนชำระหนี้ 40.0% | สภาพคล่อง 1.91 เดือน</li>
+                            <li>• <b>คะแนนความสำเร็จ AI:</b> ปัจจุบัน 40.85% ➡️ Proposed 45.1% <span class="text-rose-500 font-bold">(ติด Hard Cap 45% จากหนี้วิกฤต)</span></li>
+                        </ul>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
+                        <b class="text-red-700 block mb-2 underline">ข้อมูลเชิงคุณภาพ (Qualitative)</b>
+                        <ul class="space-y-2 text-xs mt-2">
+                            <li>• <b>สถานะ:</b> โสดอิสระ / มีผู้ในอุปการะ 1 ท่าน (พ่อแม่วัยชรา)</li>
+                            <li>• <b>อาชีพ:</b> ร้านอาหารริมทาง (Street Food) วัย 47 ปี</li>
+                            <li>• <b>สวัสดิการ:</b> ไม่มีสวัสดิการ (พึ่งพาบัตรทอง/จ่ายเอง)</li>
+                            <li>• <b>พฤติกรรมหนี้:</b> รูดบัตรเครดิตไปก่อนแล้วผ่อนชำระขั้นต่ำ หมุนเงินชนเดือน (Paycheck to Paycheck) ขาดการปกป้องความเสี่ยง</li>
+                            <li>• <b>ระดับความเสี่ยง:</b> เสี่ยงปานกลางค่อนข้างต่ำ (Moderate Conservative) คาดหวังผลตอบแทน 4.41%</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h4 class="font-bold text-lg text-slate-800 border-b-2 border-slate-200 pb-2 mb-4 flex items-center gap-2 mt-6">
+                    <span class="text-2xl">🔍</span> 2. การวิเคราะห์จุดแข็งและจุดเปราะบาง (Fact Finding & Pain Point)
+                </h4>
+                <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 space-y-4">
+                    <div class="flex gap-4">
+                        <div class="shrink-0 w-10 h-10 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center font-bold">✓</div>
+                        <div>
+                            <b class="text-emerald-800">จุดแข็ง (AI Reality Check):</b> 
+                            <p class="mt-1">ลูกค้ามีความรับผิดชอบสูง (ดูแลพ่อแม่) และยังมีสินทรัพย์สภาพคล่อง (เงินสดและเงินฝาก 125,000 บาท) ที่สามารถนำมาใช้เป็น 'Cash Buffer' หรือเครื่องมือฉุกเฉินในการต่อรองเพื่อจัดระเบียบโครงสร้างหนี้ใหม่ได้</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 border-t border-slate-200 pt-4">
+                        <div class="shrink-0 w-10 h-10 bg-rose-100 text-rose-600 rounded-full flex items-center justify-center font-bold">!</div>
+                        <div>
+                            <b class="text-rose-800">Pain Point (จุดเปราะบางแบบซ่อนเร้น):</b> 
+                            <p class="mt-1">1. <b>Death Spiral (วงจรหนี้พอกหางหมู):</b> หนี้สะสม 8.38 แสนบาท กับการจ่ายชำระ 26,000 บ./เดือน ทำให้กระแสเงินสดติดลบทุกเดือน และเป็นดอกเบี้ยทิ้งเปล่า ความมั่งคั่งสุทธิที่ติดลบอยู่แล้วจะยิ่งจมลึกขึ้นเรื่อยๆ</p>
+                            <p class="mt-1">2. <b>Single Point of Failure (เสาหลักต้นเดียวที่ไร้เกราะ):</b> ขาดความคุ้มครองทุกมิติ โดยมี Life Gap ถึง 8.4 ล้านบาท และ Health Gap อีก 6.8 ล้านบาท อาชีพค้าขาย "หยุดทำ = รายได้ศูนย์" หากคุณตั้มล้มป่วยเพียง 1-2 สัปดาห์ กระแสเงินสดจะพังทลายทันที และพ่อแม่จะได้รับผลกระทบโดยตรง</p>
+                            <p class="mt-1">3. <b>ความเสี่ยงทิ้งกรมธรรม์ (Lapse Risk):</b> ตรวจพบระดับวิกฤตสูงถึง 96.15% หมายความว่าหาก FA เสนอแผนประกันที่เบี้ยสูงเกินไป ลูกค้ามีโอกาสเกือบ 100% ที่จะทิ้งกรมธรรม์ในปีถัดไปเพราะจ่ายไม่ไหว</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h4 class="font-bold text-lg text-red-800 border-b-2 border-red-100 pb-2 mb-4 flex items-center gap-2 mt-6">
+                    <span class="text-2xl">💡</span> 3. การนำเสนอทางออก (Strategic Solution)
+                </h4>
+                <div class="space-y-4">
+                    <div class="bg-red-900 text-red-50 p-5 rounded-2xl shadow-xl">
+                        <b class="text-amber-300 block mb-3">💬 สคริปต์การนำเสนอเชิงกลยุทธ์:</b>
+                        <p class="text-sm leading-relaxed">
+                            "พี่ตั้มครับ จากระบบ AI ประเมินออกมา สิ่งแรกที่ผมต้องชื่นชมเลยคือพี่เป็นเสาหลักที่เข้มแข็งมากครับ การดูแลร้านพร้อมกับดูแลคุณพ่อคุณแม่ไปด้วย ไม่ใช่เรื่องง่ายเลย... <br><br>
+                            แต่ AI ประเมินคะแนนความมั่นคงออกมาที่ <b>40.85%</b> ซึ่งมันฟ้องว่าตอนนี้ <b>'พี่แบกภาระหนักเกินไปตัวคนเดียว'</b> ดอกเบี้ยบัตรเครดิตและสินเชื่อกำลังดึงเงินที่พี่หามาได้ไปจนหมด ทำให้เงินพี่ติดลบ 500 บาททุกเดือน... ทางแก้แรกตามที่ AI แนะนำ (Benchmark) คือเราต้องรัดเข็มขัด ลดงบใช้ชีวิตจาก 39,500 บาท ให้เหลือสัก 33,600 บาท เพื่อดึงกระแสเงินสดกลับมาเป็นบวกให้ได้ครับ <br><br>
+                            สิ่งสำคัญที่สุดระหว่างที่พี่กำลังสู้เคลียร์หนี้ก้อนนี้ ผมอยากให้พี่ <b>'เช่าร่มกันฝนคันเล็กๆ'</b> ไว้คันนึงครับ ด้วยแผน <b>AIA Life Protector 70 พ่วง AIA CI ProCare หรือ Health Saver</b> เบี้ยไม่แพง แลกกับความสบายใจว่า... ถ้าพี่ล้มป่วย ร้านต้องปิด จะมีสวัสดิการมาจ่ายค่าหมอให้ หรือถ้าเกิดเหตุไม่คาดฝัน คุณพ่อคุณแม่จะมีเงินก้อนไว้ตั้งตัว เงิน 1 แสนที่พี่เก็บไว้จะได้ไม่ต้องละลายไปกับโรงพยาบาลครับ"
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h4 class="font-bold text-lg text-emerald-800 border-b-2 border-emerald-100 pb-2 mb-4 flex items-center gap-2 mt-6">
+                    <span class="text-2xl">⚖️</span> 4. การประเมินความคุ้มค่า (Trade-off vs Risk)
+                </h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-emerald-50 p-5 rounded-2xl border border-emerald-200">
+                        <b class="text-emerald-800 block mb-2">➕ ผลกระทบเชิงบวก (The Leap)</b>
+                        <p class="text-xs">คะแนนขยับขึ้นเล็กน้อยเป็น <b>45.1%</b> (ติด Hard Cap ของ AI เพื่อเตือนว่าลูกค้ายังมี DTI สูงถึง 40%) แต่ในโลกความเป็นจริง การลดรายจ่ายเพื่อเปลี่ยนกระแสเงินสดให้กลับมา "เป็นบวก" (มีเงินออม 5,400 บ./เดือน) และซื้อ Micro-Protection จะช่วยหยุดเลือดทางการเงิน (Stop Bleeding) และต่อลมหายใจในยามวิกฤตได้สำเร็จ</p>
+                    </div>
+                    <div class="bg-rose-50 p-5 rounded-2xl border border-rose-200">
+                        <b class="text-rose-800 block mb-2">➖ ผลกระทบเชิงลบ & ความเสี่ยง (The Cost)</b>
+                        <p class="text-xs"><b>Trade-off:</b> ลูกค้าต้องยอมตัดใจลดไลฟ์สไตล์การใช้ชีวิตลงเพื่อดึงสภาพคล่องกลับมา และจัดสรรเงินมาจ่ายเบี้ยประกันพื้นฐานแทน<br>
+                        <b>Risk Scenario:</b> หากพี่ตั้มปฏิเสธการทำประกัน (Self-Insured) หากล้มป่วยเพียง 1 ครั้ง หนี้สินจะพอกหางหมูรุนแรงขึ้น เงินเก็บ 125,000 บาทจะหมดเกลี้ยง และอาจนำไปสู่การฟ้องร้องล้มละลายหรือไม่มีคนดูแลพ่อแม่ในบั้นปลาย</p>
+                    </div>
+                </div>
+            </section>
+
+            <div class="bg-slate-800 text-white p-6 rounded-2xl shadow-2xl relative overflow-hidden mt-6">
+                <div class="absolute right-0 bottom-0 opacity-10 text-9xl">🎯</div>
+                <h5 class="text-red-400 font-bold mb-2">5. Final Conclusion for FA:</h5>
+                <p class="text-xs text-slate-300 leading-relaxed">
+                    หัวใจของการดูแลลูกค้ากลุ่มเปราะบาง (Negative Net Worth) คือ <b>"Empathy (ความเข้าอกเข้าใจ) และ Crisis Management"</b> <br>
+                    <b>"ห้ามเสนอสินค้า Unit-Linked หรือสะสมทรัพย์เบี้ยสูงเด็ดขาด"</b> (เพราะ Lapse Risk สูง 96.15%) จงทำตัวเป็น Partner ที่มาช่วยแบ่งเบาภาระ เน้นให้คำปรึกษาเรื่องการรัดเข็มขัดและเคลียร์หนี้ พร้อมปิดความเสี่ยงขั้นต่ำสุดด้วย Term Life หรือประกันสุขภาพแผนเริ่มต้น เมื่อคุณช่วยเขาลดหนี้และปกป้องพ่อแม่เขาได้ในยามวิกฤต เขาจะกลายเป็นลูกค้าที่จงรักภักดีกับคุณไปตลอดชีวิตครับ
                 </p>
             </div>
-
-            <h4 class="font-bold text-lg text-slate-800 border-b-2 border-slate-200 pb-2 mb-4 flex items-center gap-2">
-                <span class="text-2xl">📊</span> วิธีอ่านผลลัพธ์จาก AI (FA Perspective)
-            </h4>
+        </div>
+        `
+    },
+    // ==========================================
+    // 🛍️ กรณีศึกษาที่ 4: อาชีพอิสระคนรุ่นใหม่ / หนี้บริโภคสูง -> category: "c5"
+    // ==========================================
+    "c5_case_pop_informal": {
+        category: "c5",
+        icon: "🛍️",
+        iconClass: "bg-purple-100 text-purple-700",
+        title: "Case Study: คุณป๊อป (วัย 28 ปี) - พ่อค้าแม่ค้า/เพิ่งแต่งงาน (High Growth & Risk Management)",
+        content: `
+        <div class="antialiased touch-manipulation pb-safe space-y-8 text-sm text-gray-700 leading-relaxed">
             
-            <div class="space-y-4 mb-8">
-                <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-200 flex flex-col md:flex-row gap-4">
-                    <div class="shrink-0 text-center md:w-1/4">
-                        <p class="text-[10px] text-gray-500 font-bold uppercase mb-1">AI Success Score</p>
-                        <p class="text-3xl font-black text-rose-600">40.85%</p>
-                    </div>
-                    <div class="flex-1 border-l-0 md:border-l border-gray-100 md:pl-4">
-                        <b class="text-sm text-rose-800">สัญญาณเตือนภัยแดง (Red Flag)</b>
-                        <p class="text-xs text-gray-600 mt-1 leading-relaxed">คะแนน 40.85% สะท้อนสถานะ <b>"Death Spiral (วงจรหนี้พอกหางหมู)"</b> AI ตรวจพบพฤติกรรม Credit Dependent และ Underinsured การขาดสวัสดิการรองรับแปลว่า หากคุณตั้มล้มป่วยเพียง 1 สัปดาห์ กระแสเงินสดจะพังทลายทันที นี่คือช่วงเวลาที่เปราะบางที่สุดของชีวิต</p>
-                    </div>
+            <section>
+                <div class="bg-gradient-to-r from-purple-700 to-fuchsia-900 text-white p-6 rounded-2xl shadow-lg relative overflow-hidden mb-6">
+                    <div class="absolute -right-4 -top-4 text-7xl opacity-10 select-none pointer-events-none">🛍️</div>
+                    <h3 class="text-xl font-bold mb-2 relative z-10 text-purple-200">การวิเคราะห์กลุ่ม Young Freelance: เร่งการเติบโต & ปิดความเสี่ยง (High Growth)</h3>
+                    <p class="text-gray-200 text-sm relative z-10 leading-relaxed">
+                        <b>วิเคราะห์โปรไฟล์:</b> คุณป๊อป อายุ 28 ปี อาชีพพ่อค้าแม่ค้าตามตลาด ไม่มีผู้อุปการะ <b>ไม่มีสวัสดิการ</b> มีพฤติกรรมพึ่งพาสินเชื่อค่อนข้างสูง (รูดบัตรผ่อน 0%) แต่มีวินัยหักเงินออมทันทีที่ได้เงิน<br>
+                        <b>โจทย์ของ FA:</b> ลูกค้ามีวินัยการออมดี มีความมั่งคั่งสุทธิเป็นบวก แต่สภาพคล่องรายเดือนตึงตัวมาก (เหลือ 1,425 บาท/เดือน) และมีวิกฤตสภาพคล่องซ้อนทับ FA ต้องทำหน้าที่ปรับโครงสร้างกระแสเงินสด และอุดรอยรั่วสวัสดิการค่ารักษาพยาบาลหลักล้านที่ยังขาดอยู่
+                    </p>
                 </div>
 
-                <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-200 flex flex-col md:flex-row gap-4">
-                    <div class="shrink-0 text-center md:w-1/4">
-                        <p class="text-[10px] text-gray-500 font-bold uppercase mb-1">Optimization Leap</p>
-                        <p class="text-2xl font-black text-amber-500">45.1%</p>
+                <h4 class="font-bold text-lg text-purple-800 border-b-2 border-purple-100 pb-2 mb-4 flex items-center gap-2">
+                    <span class="text-2xl">📝</span> 1. การสรุปข้อมูลภาพรวม (Client Profile Recap)
+                </h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
+                        <b class="text-purple-700 block mb-2 underline">ข้อมูลเชิงปริมาณ (Quantitative)</b>
+                        <ul class="space-y-2 text-xs mt-2">
+                            <li>• <b>งบดุล (Balance Sheet):</b> ทรัพย์สินรวม 1,590,000.00 บาท | หนี้สินรวม 1,100,000.00 บาท (บ้าน 900K, รถ 200K) <br><span class="text-emerald-600 font-bold">(ความมั่งคั่งสุทธิ: 490,000.00 บาท)</span></li>
+                            <li>• <b>งบกระแสเงินสด (Cash Flow):</b> รายรับ 29,000.00 บ./เดือน | รายจ่ายรวม 27,575.00 บ./เดือน <br><span class="text-orange-500 font-bold">(กระแสเงินสดคงเหลือ: 1,425.00 บ./เดือน)</span></li>
+                            <li>• <b>พอร์ตการลงทุนปัจจุบัน:</b> ไม่มีข้อมูลการลงทุนปัจจุบัน (มีเพียงเงินฝาก 138,000 บ. และมูลค่าเวนคืน 165,000 บ.)</li>
+                            <li>• <b>พอร์ตกรมธรรม์ปัจจุบัน:</b> มีบำนาญ (AIA Annuity Fix) และกลุ่มโรคร้ายแรง (CI ProCare, CI Plus, Care for Cancer) แต่ <b>ไม่มีประกันสุขภาพ</b></li>
+                            <li>• <b>เป้าหมายการเงิน (SMART Goals):</b> <br>
+                                - ไม่ได้ระบุเป้าหมายระยะสั้นที่ชัดเจน<br>
+                                - เป้าหมายเกษียณอายุ 55 ปี ยอดใช้จ่าย 31,812 บ./เดือน
+                            </li>
+                            <li>• <b>อัตราส่วนสำคัญ:</b> ภาระหนี้ 41.38% | สภาพคล่อง 1.1 เดือน | อัตราการออม 18.53%</li>
+                            <li>• <b>คะแนนความสำเร็จ AI:</b> ปัจจุบัน 67.8% ➡️ Proposed 88.0% <span class="text-emerald-500 font-bold">(ก้าวกระโดด +20.2%)</span></li>
+                        </ul>
                     </div>
-                    <div class="flex-1 border-l-0 md:border-l border-gray-100 md:pl-4">
-                        <b class="text-sm text-amber-800">ทำไมแผนใหม่ (Proposed) ถึงขึ้นมาแค่นิดเดียว?</b>
-                        <p class="text-xs text-gray-600 mt-1 leading-relaxed">นี่คือความฉลาดของ Hybrid Consensus ครับ! แม้ AI พยายามจะดันคะแนน แต่ <b>"กฎเหล็กทางการเงิน (Hard Cap)"</b> ตรวจพบหนี้สินก้อนโต (838,500 บาท) ระบบจึง "สั่งล็อกเพดานความสำเร็จไว้ที่ 45%" เพื่อเตือน FA ว่า <i>"ตราบใดที่ยังเคลียร์หนี้ก้อนนี้ไม่ได้ ห้ามขายฝันลูกค้าเด็ดขาด"</i></p>
+                    <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
+                        <b class="text-purple-700 block mb-2 underline">ข้อมูลเชิงคุณภาพ (Qualitative)</b>
+                        <ul class="space-y-2 text-xs mt-2">
+                            <li>• <b>สถานะ:</b> เพิ่งแต่งงาน/เตรียมซื้อบ้าน (วัยทำงานสร้างตัว)</li>
+                            <li>• <b>อาชีพ:</b> พ่อค้าแม่ค้าตามตลาด (ไม่มีสวัสดิการรักษาพยาบาล)</li>
+                            <li>• <b>พฤติกรรมหนี้:</b> พึ่งพาสินเชื่อค่อนข้างสูง ชอบรูดบัตรเครดิตไปก่อนแล้วผ่อน 0%</li>
+                            <li>• <b>วินัยการออม:</b> สูงมาก (หักออมทันทีที่ได้เงิน)</li>
+                            <li>• <b>ระดับความเสี่ยง:</b> เสี่ยงปานกลางค่อนข้างสูง (Moderate Aggressive) คาดหวังผลตอบแทน 5.48%</li>
+                        </ul>
                     </div>
                 </div>
+            </section>
+
+            <section>
+                <h4 class="font-bold text-lg text-slate-800 border-b-2 border-slate-200 pb-2 mb-4 flex items-center gap-2 mt-6">
+                    <span class="text-2xl">🔍</span> 2. การวิเคราะห์จุดแข็งและจุดเปราะบาง (Fact Finding & Pain Point)
+                </h4>
+                <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 space-y-4">
+                    <div class="flex gap-4">
+                        <div class="shrink-0 w-10 h-10 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center font-bold">✓</div>
+                        <div>
+                            <b class="text-emerald-800">จุดแข็ง (AI Reality Check):</b> 
+                            <p class="mt-1">ลูกค้าอายุเพียง 28 ปี มีความมั่งคั่งสุทธิเป็นบวก (4.9 แสนบาท) และมีวินัยการออมที่ดีเยี่ยม (18.53%) หากปรับลดภาระกระแสเงินสดได้ พลังของดอกเบี้ยทบต้นและระยะเวลาที่เหลืออีก 27 ปีก่อนเกษียณ จะช่วยให้บรรลุเป้าหมายได้สบายๆ</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 border-t border-slate-200 pt-4">
+                        <div class="shrink-0 w-10 h-10 bg-rose-100 text-rose-600 rounded-full flex items-center justify-center font-bold">!</div>
+                        <div>
+                            <b class="text-rose-800">Pain Point (จุดเปราะบางแบบซ่อนเร้น):</b> 
+                            <p class="mt-1">1. <b>วิกฤตสภาพคล่องซ้อนทับ:</b> ภาระหนี้สินสูงถึง 41.4% (ผ่อนบ้านและรถรวม 12,000 บ./เดือน) ในขณะที่เงินสำรองฉุกเฉินมีเพียง 1.1 เดือน กระแสเงินสดเหลือแค่ 1,425 บ./ด. หากรายได้สะดุดจะพังทันที</p>
+                            <p class="mt-1">2. <b>รอยรั่วความเสี่ยงสุขภาพ (Risk Gap):</b> แม้จะมีประกันโรคร้ายแรงและบำนาญอยู่แล้ว แต่ขาดสวัสดิการค่ารักษาพยาบาล (Health Gap) สูงถึง 5.57 ล้านบาท หากป่วยหนักจะต้องดึงความมั่งคั่งหลัก 4.9 แสนออกมาใช้จนหมด</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h4 class="font-bold text-lg text-purple-800 border-b-2 border-purple-100 pb-2 mb-4 flex items-center gap-2 mt-6">
+                    <span class="text-2xl">💡</span> 3. การนำเสนอทางออก (Strategic Solution)
+                </h4>
+                <div class="space-y-4">
+                    <div class="bg-purple-900 text-purple-50 p-5 rounded-2xl shadow-xl">
+                        <b class="text-fuchsia-300 block mb-3">💬 สคริปต์การนำเสนอเชิงกลยุทธ์:</b>
+                        <p class="text-sm leading-relaxed">
+                            "คุณป๊อปครับ จากรายงาน AI ผมต้องขอชื่นชมวินัยการออมที่ยอดเยี่ยมมากครับ อายุแค่ 28 ปี แต่มีความมั่งคั่งสุทธิเกือบครึ่งล้าน และมีประกันโรคร้ายแรงเตรียมไว้แล้ว ถือว่าพื้นฐานแน่นมากครับ<br><br>
+                            แต่ AI ตรวจพบ <b>'วิกฤตสภาพคล่องซ้อนทับ'</b> ครับ คือเรามีภาระผ่อนบ้านผ่อนรถรวม 41.4% และเงินสำรองฉุกเฉินเรามีอยู่แค่ 1.1 เดือน (ควรมี 6 เดือน) ซึ่ง AI แนะนำให้เราชะลอการลงทุนในสินทรัพย์เสี่ยงไปก่อน และโฟกัสที่การจัดการรวบยอดหนี้เพื่อเพิ่มระยะเวลาเอาตัวรอด (Survival Ratio) ครับ<br><br>
+                            และจุดที่อันตรายที่สุดคือ คุณป๊อปไม่มีสวัสดิการค่ารักษาพยาบาลเลย เกิดรอยรั่วอยู่ 5.57 ล้านบาท ผมขอเสนอแผน <b>AIA Health Saver (แผน 3 แสน) พ่วง AIA 20 Pay Life</b> เบี้ยประหยัดแค่หมื่นกว่าบาทต่อปี เพื่อล็อกความเสี่ยงนี้ไว้ ไม่ให้ค่าหมอมาทำลายเงินเก็บและบ้านของคุณป๊อปครับ"
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h4 class="font-bold text-lg text-emerald-800 border-b-2 border-emerald-100 pb-2 mb-4 flex items-center gap-2 mt-6">
+                    <span class="text-2xl">⚖️</span> 4. การประเมินความคุ้มค่า (Trade-off vs Risk)
+                </h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-emerald-50 p-5 rounded-2xl border border-emerald-200">
+                        <b class="text-emerald-800 block mb-2">➕ ผลกระทบเชิงบวก (The Leap)</b>
+                        <p class="text-xs">คะแนนพุ่งทะยานจาก 67.8% เป็น <b>88.0%</b>! ทันทีที่อุดรอยรั่วค่ารักษา 5.57 ล้านบาทสำเร็จ และดันอัตราการออมขึ้นเป็น 20% พลังทบต้นจากอายุ 28 ปี จะทำให้เป้าหมายเกษียณ 31,812 บ./เดือน เป็นจริงได้อย่างแน่นอน</p>
+                    </div>
+                    <div class="bg-rose-50 p-5 rounded-2xl border border-rose-200">
+                        <b class="text-rose-800 block mb-2">➖ ผลกระทบเชิงลบ & ความเสี่ยง (The Cost)</b>
+                        <p class="text-xs"><b>Trade-off:</b> สภาพคล่องรายเดือนเหลือเพียง 1,425 บาท การซื้อประกันสุขภาพเพิ่มจะต้องแลกมาด้วยการเกลี่ยเงินที่กันไว้ออม (5,375 บ.) มาลงในส่วนป้องกันความเสี่ยง (Benchmark AI แนะนำให้ออมเหลือ 2,900 บ. และโปะหนี้เพิ่ม)<br>
+                        <b>Risk Scenario:</b> หากไม่ปิดรอยรั่วสุขภาพ (Self-Insured) เงินสด 1 แสนกว่าบาทในมือจะหมดไปกับการเจ็บป่วยเพียงครั้งเดียว และบ้าน/รถอาจถูกยึดเพราะขาดสภาพคล่อง</p>
+                    </div>
+                </div>
+            </section>
+
+            <div class="bg-slate-800 text-white p-6 rounded-2xl shadow-2xl relative overflow-hidden mt-6">
+                <div class="absolute right-0 bottom-0 opacity-10 text-9xl">🎯</div>
+                <h5 class="text-fuchsia-400 font-bold mb-2">5. Final Conclusion for FA:</h5>
+                <p class="text-xs text-slate-300 leading-relaxed">
+                    เป้าหมายหลักในเคสคุณป๊อปคือ <b>"Stop Bleeding & Health Protection"</b> <br>
+                    ลูกค้ากลุ่มนี้มีหนี้สิน (บ้าน/รถ) ตึงตัวอยู่แล้ว การเสนอขายประกันเบี้ยแพงจะทำให้เกิดวิกฤต Lapse Risk ทันที ให้ FA โฟกัสไปที่ <b>"การจัดระเบียบกระแสเงินสด"</b> และขายสินค้าประกันสุขภาพเบี้ยประหยัด (Health Saver) เพื่อโอนความเสี่ยงค่ารักษาพยาบาลออกไปก่อน เมื่อหนี้สินลดลง ค่อยกลับมา Upsell เพื่อต่อยอดความมั่งคั่งครับ
+                </p>
             </div>
-
-            <h4 class="font-bold text-lg text-red-800 border-b-2 border-red-200 pb-2 mb-4 flex items-center gap-2">
-                <span class="text-2xl">🗣️</span> ไกด์บทสนทนา (How to Talk with Fragile Clients)
-            </h4>
+        </div>
+        `
+    },
+    // ==========================================
+    // 💼 กรณีศึกษาที่ 5: วัยเริ่มสร้างตัว (First Jobber) / พนักงานบริษัทเอกชน -> category: "c5"
+    // ==========================================
+    "c5_case_chon_firstjobber": {
+        category: "c5",
+        icon: "💼",
+        iconClass: "bg-cyan-100 text-cyan-700",
+        title: "Case Study: คุณชล (วัย 25 ปี) - First Jobber (Foundation & Growth)",
+        content: `
+        <div class="antialiased touch-manipulation pb-safe space-y-8 text-sm text-gray-700 leading-relaxed">
             
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                
-                <div class="bg-red-50 p-5 rounded-xl border border-red-200 shadow-sm relative">
-                    <div class="absolute right-2 top-2 text-3xl opacity-20">🫂</div>
-                    <h5 class="font-bold text-red-900 text-sm mb-2">1. การเปิดใจด้วยความเข้าอกเข้าใจ (Empathy)</h5>
-                    <p class="text-[10px] text-gray-600 mb-3"><b>หลักจิตวิทยา:</b> ลูกค้ากลุ่มนี้มักจะอายและเครียดกับหนี้ของตัวเอง <b>ห้ามตำหนิเด็ดขาด</b> ให้ชื่นชมความเสียสละของเขาแทน</p>
-                    <div class="bg-white p-3 rounded-lg border border-red-100 text-[11px] italic text-gray-800 leading-relaxed shadow-inner">
-                        "พี่ตั้มครับ จากข้อมูลที่ระบบประมวลผลมา สิ่งแรกที่ผมต้องขอชื่นชมเลยคือ ความเข้มแข็งของพี่ครับ การทำร้านอาหารพร้อมกับดูแลคุณพ่อคุณแม่วัยชราไปด้วย ไม่ใช่เรื่องง่ายเลย... <br><br>AI วิเคราะห์ตัวเลขออกมาอยู่ที่ 40.85% ซึ่งไม่ได้แปลว่าพี่ล้มเหลวนะครับ แต่มันสะท้อนว่า <b>'พี่แบกภาระหนักเกินไปตัวคนเดียว'</b> ดอกเบี้ยบัตรเครดิตกำลังดึงเงินที่พี่หามาได้ด้วยความเหนื่อยยากไปหมด วันนี้เรามาดูวิธี 'ลดน้ำหนักกระเป๋า' ให้พี่ตั้มหายใจโล่งขึ้นกันดีกว่าครับ"
-                    </div>
+            <section>
+                <div class="bg-gradient-to-r from-cyan-600 to-blue-800 text-white p-6 rounded-2xl shadow-lg relative overflow-hidden mb-6">
+                    <div class="absolute -right-4 -top-4 text-7xl opacity-10 select-none pointer-events-none">🌱</div>
+                    <h3 class="text-xl font-bold mb-2 relative z-10 text-cyan-200">การวิเคราะห์กลุ่ม First Jobber: สร้างรากฐานและวินัยการเงิน (Foundation & Growth)</h3>
+                    <p class="text-gray-200 text-sm relative z-10 leading-relaxed">
+                        <b>วิเคราะห์โปรไฟล์:</b> คุณชล อายุ 25 ปี อาชีพพนักงานบริษัทเอกชน มีสวัสดิการประกันกลุ่มองค์กร พฤติกรรมเป็นแบบมาตรฐาน แต่มีพฤติกรรมหมุนเงินชนเดือน และพึ่งพาสินเชื่อระยะสั้นค่อนข้างสูง<br>
+                        <b>โจทย์ของ FA:</b> ลูกค้าได้คะแนน AI ที่ 85.92% เพราะอายุที่ยังน้อยมาก (มีเวลาลงทุน 35 ปีก่อนเกษียณ) แต่อุปสรรคใหญ่คือ "ไม่มีกระแสเงินสดเหลือ" FA จึงต้องสวมบทบาทเป็น Mentor ช่วยจัดระเบียบหนี้ และขายไอเดีย <b>"การซื้อเวลาตอนเบี้ยถูกที่สุด"</b> ควบคู่กับ <b>"การอุดรอยรั่วสวัสดิการ"</b>
+                    </p>
                 </div>
 
-                <div class="bg-red-50 p-5 rounded-xl border border-red-200 shadow-sm relative">
-                    <div class="absolute right-2 top-2 text-3xl opacity-20">✂️</div>
-                    <h5 class="font-bold text-red-900 text-sm mb-2">2. คุยเรื่องแก้หนี้ (Actionable Counterfactual)</h5>
-                    <p class="text-[10px] text-gray-600 mb-3"><b>หลักจิตวิทยา:</b> ใช้ Key Success Driver ที่ AI แนะนำมาเป็นแสงสว่างปลายอุโมงค์</p>
-                    <div class="bg-white p-3 rounded-lg border border-red-100 text-[11px] italic text-gray-800 leading-relaxed shadow-inner">
-                        "ตรงช่อง AI Insight บอกชัดเจนเลยครับว่า กุญแจสำคัญ (Key Driver) ที่จะพลิกชีวิตพี่ตั้มได้เร็วที่สุด ไม่ใช่การหาเงินเพิ่ม แต่คือ <b>'การเคลียร์หนี้ 8 แสนบาท'</b> ครับ <br><br>ผมขออนุญาตแนะนำวิธี Debt Consolidation (รวบหนี้) เราอาจจะลองเอาสินทรัพย์ที่มีไปรีไฟแนนซ์เพื่อโปะบัตรเครดิตที่ดอกเบี้ย 16% ให้เหลือดอกเบี้ยแค่ 6% ดูไหมครับ? ถ้าทำจุดนี้ได้ กระแสเงินสดรายเดือนของพี่จะกลับมาเป็นบวกทันทีครับ"
+                <h4 class="font-bold text-lg text-cyan-800 border-b-2 border-cyan-100 pb-2 mb-4 flex items-center gap-2">
+                    <span class="text-2xl">📝</span> 1. การสรุปข้อมูลภาพรวม (Client Profile Recap)
+                </h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
+                        <b class="text-cyan-700 block mb-2 underline">ข้อมูลเชิงปริมาณ (Quantitative)</b>
+                        <ul class="space-y-2 text-xs mt-2">
+                            <li>• <b>งบดุล (Balance Sheet):</b> ทรัพย์สินรวม 109,000.00 บาท | หนี้สินรวม 89,000.00 บาท <br><span class="text-emerald-600 font-bold">(ความมั่งคั่งสุทธิ: 20,000.00 บาท)</span></li>
+                            <li>• <b>งบกระแสเงินสด (Cash Flow):</b> รายรับ 35,000.00 บ./เดือน | รายจ่ายรวม 35,000.00 บ./เดือน <br><span class="text-orange-500 font-bold">(กระแสเงินสดคงเหลือ: 0.00 บ./เดือน)</span></li>
+                            <li>• <b>พอร์ตการลงทุนปัจจุบัน:</b> กองทุนสำรองเลี้ยงชีพ (PVD) 25,000 บาท</li>
+                            <li>• <b>พอร์ตกรมธรรม์ปัจจุบัน:</b> ไม่มีข้อมูลกรมธรรม์ปัจจุบัน</li>
+                            <li>• <b>เป้าหมายการเงิน (SMART Goals):</b> <br>
+                                - ซื้อรถยนต์ 500,000 บ. (อีก 5 ปี)<br>
+                                - ทุนเกษียณอายุ 60 ปี ต้องการใช้เงิน 15,000 บ./เดือน
+                            </li>
+                            <li>• <b>อัตราส่วนสำคัญ:</b> ภาระหนี้ 25.4% | สภาพคล่อง 2.4 เดือน</li>
+                            <li>• <b>คะแนนความสำเร็จ AI:</b> ปัจจุบัน 85.92% ➡️ Proposed 85.96%</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
+                        <b class="text-cyan-700 block mb-2 underline">ข้อมูลเชิงคุณภาพ (Qualitative)</b>
+                        <ul class="space-y-2 text-xs mt-2">
+                            <li>• <b>สถานะ:</b> วัยเริ่มสร้างตัว (EntryCorp) / โสด ไร้ภาระผู้อุปการะ</li>
+                            <li>• <b>อาชีพ:</b> พนักงานบริษัทเอกชน วัย 25 ปี</li>
+                            <li>• <b>สวัสดิการ:</b> ประกันกลุ่มองค์กร (OPD/IPD ขั้นพื้นฐาน)</li>
+                            <li>• <b>พฤติกรรมหนี้:</b> หมุนเงินชนเดือน (Paycheck to Paycheck) ใช้แหล่งกู้เงินระยะสั้น(บัตรเครดิต)แล้วจ่ายคืนเต็มจำนวนได้ทุกครั้ง</li>
+                            <li>• <b>ระดับความเสี่ยง:</b> เสี่ยงปานกลางค่อนข้างสูง (Moderate Aggressive)</li>
+                        </ul>
                     </div>
                 </div>
+            </section>
 
-                <div class="bg-red-50 p-5 rounded-xl border border-red-200 shadow-sm relative md:col-span-2">
-                    <div class="absolute right-2 top-2 text-3xl opacity-20">☂️</div>
-                    <h5 class="font-bold text-red-900 text-sm mb-2">3. การขายความคุ้มครองพื้นฐาน (Micro-Protection)</h5>
-                    <p class="text-[10px] text-gray-600 mb-3"><b>หลักจิตวิทยา:</b> ลูกค้าไม่มีเงินก้อนใหญ่ ให้ขายความคุ้มครองไซส์เล็ก (Term Life หรือ ชดเชยรายได้) โดยผูกกับความอยู่รอดของคนที่เขารัก</p>
-                    <div class="bg-white p-3 rounded-lg border border-red-100 text-[11px] italic text-gray-800 leading-relaxed shadow-inner">
-                        "พี่ตั้มครับ ตอนนี้พี่คือ <b>'เสาหลักต้นเดียว'</b> ของบ้าน ถ้าร้านต้องปิดเพราะพี่ตั้มป่วยเข้าโรงพยาบาล ขาดรายได้ แถมไม่มีสวัสดิการรักษาพยาบาลรองรับ คุณพ่อคุณแม่จะลำบากมากเลยครับ... <br><br>ระหว่างที่เรากำลังเคลียร์หนี้ก้อนนี้ ผมอยากแนะนำให้พี่ <b>'เช่าร่มกันฝน'</b> คันเล็กๆ ไว้ก่อน ด้วยแผน <b>AIA Life Protector 70 (ประกันชีวิตแบบจ่ายทิ้งเบี้ยถูกมาก) ร่วมกับชดเชยรายวัน (HB)</b> เบี้ยแค่หลักร้อยต่อเดือน แลกกับความสบายใจว่า ถ้าพี่ตั้มล้ม จะมีเงินก้อนมาดูแลคุณพ่อคุณแม่ และมีเงินจ่ายค่าเช่าร้านแน่นอนครับ"
+            <section>
+                <h4 class="font-bold text-lg text-slate-800 border-b-2 border-slate-200 pb-2 mb-4 flex items-center gap-2 mt-6">
+                    <span class="text-2xl">🔍</span> 2. การวิเคราะห์จุดแข็งและจุดเปราะบาง (Fact Finding & Pain Point)
+                </h4>
+                <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 space-y-4">
+                    <div class="flex gap-4">
+                        <div class="shrink-0 w-10 h-10 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center font-bold">✓</div>
+                        <div>
+                            <b class="text-emerald-800">จุดแข็ง (AI Reality Check):</b> 
+                            <p class="mt-1">อายุ 25 ปี คือแต้มต่อที่ทรงพลังที่สุด (Time Horizon) ผนวกกับสิทธิประโยชน์จาก PVD และความกล้าเสี่ยงในระดับ Moderate Aggressive ทำให้แผนเกษียณมีโอกาสสำเร็จสูงมากโดยแทบไม่ต้องออกแรงเพิ่ม</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 border-t border-slate-200 pt-4">
+                        <div class="shrink-0 w-10 h-10 bg-rose-100 text-rose-600 rounded-full flex items-center justify-center font-bold">!</div>
+                        <div>
+                            <b class="text-rose-800">Pain Point (จุดเปราะบางแบบซ่อนเร้น):</b> 
+                            <p class="mt-1">1. <b>Zero Cashflow Trap:</b> กระแสเงินสดเหลือ 0 บาท/เดือน แม้จะไม่มีหนี้เสีย แต่สภาพคล่องตึงตัวระดับนี้ทำให้ไม่สามารถจัดสรรงบไปสู่เป้าหมายซื้อรถยนต์ในอีก 5 ปีได้ (โอกาสสำเร็จเป้าหมายระยะสั้น = 0%)</p>
+                            <p class="mt-1">2. <b>Rented Welfare (สวัสดิการยืมเขามา):</b> ขาดความคุ้มครองสุขภาพ/โรคร้ายแรงส่วนตัว (Risk Gap: 6.94 ล้านบาท) หากเปลี่ยนงานหรือถูกเลิกจ้าง สวัสดิการนี้จะหายไปทันที</p>
+                            <p class="mt-1">3. <b>Lifestyle Creep Risk:</b> รายจ่ายค่าใช้ชีวิตสูงถึง 71% ของรายได้ หากปล่อยให้เติบโตตามเงินเดือน จะกลายเป็นกับดักหนี้บริโภคในอนาคต</p>
+                        </div>
                     </div>
                 </div>
+            </section>
 
+            <section>
+                <h4 class="font-bold text-lg text-cyan-800 border-b-2 border-cyan-100 pb-2 mb-4 flex items-center gap-2 mt-6">
+                    <span class="text-2xl">💡</span> 3. การนำเสนอทางออก (Strategic Solution)
+                </h4>
+                <div class="space-y-4">
+                    <div class="bg-cyan-900 text-cyan-50 p-5 rounded-2xl shadow-xl">
+                        <b class="text-blue-300 block mb-3">💬 สคริปต์การนำเสนอเชิงกลยุทธ์:</b>
+                        <p class="text-sm leading-relaxed">
+                            "คุณชลครับ จากรายงานของ AI คะแนนความสำเร็จของคุณชลสูงถึง 85.92% ซึ่งยอดเยี่ยมมากสำหรับคนวัย 25 ปี! พลังของเวลาและ PVD ทำให้เราแทบไม่ต้องกังวลเรื่องเกษียณเลยครับ... <br><br>
+                            แต่ AI เสนอ <b>Optimization Insight</b> เพื่อให้แผนสมบูรณ์ขึ้นครับ ปัญหาตอนนี้คือ <b>'กระแสเงินสดที่ตึงตัว 100%'</b> ทำให้เป้าหมายซื้อรถยนต์สะดุด ทางออกแรกคือเราต้องลดรายจ่ายไลฟ์สไตล์ลงนิดนึง ดึงงบกลับมาให้ได้สัก 5,800 บ./เดือน เพื่อแบ่งมาทำระบบออมอัตโนมัติ (DCA) เข้าพอร์ตความเสี่ยงปานกลางครับ<br><br>
+                            และอีกเรื่องสำคัญคือ ประกันกลุ่มที่บริษัทให้มาถือว่าดีมากครับ แต่มันเป็น 'สวัสดิการติดโต๊ะทำงาน' วันนี้คุณชลอายุแค่ 25 <b>'เบี้ยประกันสุขภาพและโรคร้ายแรงจะถูกที่สุดในชีวิต'</b> ผมแนะนำให้เจียดเงินที่เซฟได้ส่วนหนึ่ง มาล็อกเบี้ยราคาถูกด้วย <b>AIA 20 Pay Life + Health Saver หรือ CI Plus</b> ติดตัวไว้เป็นสวัสดิการส่วนตัว ที่จะติดตัวเราไปทุกที่ ไม่ว่าเราจะย้ายงานไปไหนก็ตามครับ"
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h4 class="font-bold text-lg text-emerald-800 border-b-2 border-emerald-100 pb-2 mb-4 flex items-center gap-2 mt-6">
+                    <span class="text-2xl">⚖️</span> 4. การประเมินความคุ้มค่า (Trade-off vs Risk)
+                </h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-emerald-50 p-5 rounded-2xl border border-emerald-200">
+                        <b class="text-emerald-800 block mb-2">➕ ผลกระทบเชิงบวก (The Leap)</b>
+                        <p class="text-xs">คะแนนขยับเพียง <b>+0.04%</b> (เพราะฐานเดิมดีอยู่แล้ว) แต่ผลลัพธ์ในโลกจริงคือ <b>"ความต่อเนื่อง (Continuity)"</b> การปรับโครงสร้างให้มีกระแสเงินสดเป็นบวก จะทำให้เป้าหมายซื้อรถ 500,000 บาท มีโอกาสเป็นจริงขึ้นมา และการทำประกันตอนนี้คือการ <b>"ซื้อออปชั่นสุขภาพในราคาดิสเคาท์"</b></p>
+                    </div>
+                    <div class="bg-rose-50 p-5 rounded-2xl border border-rose-200">
+                        <b class="text-rose-800 block mb-2">➖ ผลกระทบเชิงลบ & ความเสี่ยง (The Cost)</b>
+                        <p class="text-xs"><b>Trade-off:</b> คุณชลจะต้องแลกมาด้วยการ "ปรับลดค่าใช้จ่ายไลฟ์สไตล์ลง 16%" เพื่อปลดล็อกกระแสเงินสด<br>
+                        <b>Risk Scenario:</b> หากคุณชลไม่ทำประกันสุขภาพส่วนตัว และโชคร้ายเจอโรคร้ายแรง ประกันกลุ่มบริษัทอาจช่วยได้แค่หลักหมื่น ส่วนต่างหลักแสน/ล้าน จะมาพังเงินเก็บและ PVD ก้อนแรกของชีวิตคุณชลจนหมดสิ้น</p>
+                    </div>
+                </div>
+            </section>
+
+            <div class="bg-slate-800 text-white p-6 rounded-2xl shadow-2xl relative overflow-hidden mt-6">
+                <div class="absolute right-0 bottom-0 opacity-10 text-9xl">🎯</div>
+                <h5 class="text-cyan-400 font-bold mb-2">5. Final Conclusion for FA:</h5>
+                <p class="text-xs text-slate-300 leading-relaxed">
+                    เป้าหมายหลักในเคสคุณชลคือ <b>"Cash Flow Management & Health Lock"</b> <br>
+                    ในการดูแลลูกค้ากลุ่ม First Jobber อย่าเพิ่งยัดเยียดเบี้ยประกันหลักแสนให้เขาตึงเครียด เพราะตอนนี้กระแสเงินสดเขาตึงตัว 100% จงรับบทเป็น <b>"รุ่นพี่ที่ปรึกษา (Financial Mentor)"</b> แนะนำสินค้าราคาเข้าถึงง่าย (Entry-level) เช่น AIA Health Saver หรือ Term Life พ่วง CI เพื่อล็อคเบี้ยราคาถูกตามวัย เมื่อเงินเดือนเขาเติบโตขึ้น เขาจะกลับมาเป็นลูกค้าระยะยาว (LTV) ของคุณแน่นอนครับ
+                </p>
             </div>
-
-            <div class="mt-6 p-4 bg-slate-800 rounded-xl flex items-center gap-3 shadow-md">
-                <span class="text-3xl select-none">📌</span>
-                <div>
-                    <b class="text-red-400 text-sm">Key Takeaway สำหรับ FA:</b>
-                    <p class="text-xs text-gray-300 mt-1">ในเคสกลุ่มเปราะบาง (Struggling) <b>"อย่าเพิ่งขายสินค้าการลงทุน (Unit-Linked)"</b> เพราะ Lapse Risk (โอกาสทิ้งกรมธรรม์) จะพุ่งเกือบ 100% ให้เน้นขาย <b>"เครื่องมือปกป้องรายได้ (Income Protection)"</b> เบี้ยต่ำความคุ้มครองสูง หากคุณช่วยเขาจัดระเบียบหนี้ได้สำเร็จ เมื่อวันนึงเขาตั้งตัวได้ เขาจะกลายเป็นลูกค้าที่ภักดีกับคุณไปตลอดชีวิตครับ</p>
+        </div>
+        `
+    },
+    // ==========================================
+    // 👩‍👧‍👦 กรณีศึกษาที่ 6: พ่อแม่เลี้ยงเดี่ยว / ภาระสูง / เกษตรกร -> category: "c5"
+    // ==========================================
+    "c5_case_joy_singlemom": {
+        category: "c5",
+        icon: "👩‍👧‍👦",
+        iconClass: "bg-pink-100 text-pink-700",
+        title: "Case Study: คุณจอย (วัย 33 ปี) - พ่อแม่เลี้ยงเดี่ยว (Family Protection & Debt Trap)",
+        content: `
+        <div class="antialiased touch-manipulation pb-safe space-y-8 text-sm text-gray-700 leading-relaxed">
+            
+            <section>
+                <div class="bg-gradient-to-r from-pink-600 to-rose-800 text-white p-6 rounded-2xl shadow-lg relative overflow-hidden mb-6">
+                    <div class="absolute -right-4 -top-4 text-7xl opacity-10 select-none pointer-events-none">🛡️</div>
+                    <h3 class="text-xl font-bold mb-2 relative z-10 text-pink-200">การวิเคราะห์กลุ่ม Single Parent: ทลายกำแพงหนี้และปกป้องดวงใจ (Debt Escape & Protection)</h3>
+                    <p class="text-gray-200 text-sm relative z-10 leading-relaxed">
+                        <b>วิเคราะห์โปรไฟล์:</b> คุณจอย อายุ 33 ปี อาชีพเกษตรกร เป็นเสาหลักที่ต้องดูแลครอบครัวรวม 2 ชีวิต <b>ไม่มีสวัสดิการรองรับ</b> มีพฤติกรรมทางการเงินแบบพึ่งพาสินเชื่อและจ่ายขั้นต่ำจนติดกับดักหนี้<br>
+                        <b>โจทย์ของ FA:</b> ลูกค้ามีความมั่งคั่งสุทธิเป็นบวกแต่กระแสเงินสดติดลบ ภารกิจหลักคือการ "หยุดเลือด" จากดอกเบี้ยจ่ายและสร้างสวัสดิการพื้นฐานเพื่อไม่ให้ครอบครัวพังทลายหากเสาหลักล้ม
+                    </p>
                 </div>
+
+                <h4 class="font-bold text-lg text-pink-800 border-b-2 border-pink-100 pb-2 mb-4 flex items-center gap-2">
+                    <span class="text-2xl">📝</span> 1. การสรุปข้อมูลภาพรวม (Client Profile Recap)
+                </h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
+                        <b class="text-pink-700 block mb-2 underline">ข้อมูลเชิงปริมาณ (Quantitative)</b>
+                        <ul class="space-y-2 text-xs mt-2">
+                            <li>• <b>งบดุล (Balance Sheet):</b> ทรัพย์สินรวม 583,500.00 บาท | หนี้สินรวม 282,500.00 บาท <br><span class="text-emerald-600 font-bold">(ความมั่งคั่งสุทธิ: 301,000.00 บาท)</span></li>
+                            <li>• <b>งบกระแสเงินสด (Cash Flow):</b> รายรับ 55,000.00 บ./เดือน | รายจ่ายรวม 60,000.00 บ./เดือน <br><span class="text-rose-500 font-bold">(กระแสเงินสดติดลบ: -5,000.00 บ./เดือน)</span></li>
+                            <li>• <b>พอร์ตการลงทุนปัจจุบัน:</b> เงินฝากออมทรัพย์ 110,000 บาท | กองทุนรวมแบบผสม 15,000 บาท</li>
+                            <li>• <b>พอร์ตกรมธรรม์ปัจจุบัน:</b> ไม่มีข้อมูลกรมธรรม์ปัจจุบัน</li>
+                            <li>• <b>เป้าหมายการเงิน (SMART Goals):</b> <br>
+                                - ทุนการศึกษาบุตร 1,000,000 บ. (อีก 10 ปี)<br>
+                                - ดาวน์บ้าน / ซื้อที่อยู่อาศัย 500,000 บ. (อีก 3 ปี)
+                            </li>
+                            <li>• <b>อัตราส่วนสำคัญ:</b> ภาระผ่อนชำระหนี้ 18.2% | สภาพคล่อง 1.8 เดือน (ต่ำกว่าเกณฑ์)</li>
+                            <li>• <b>คะแนนความสำเร็จ AI:</b> ปัจจุบัน 65.9% ➡️ Proposed 85.9%</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
+                        <b class="text-pink-700 block mb-2 underline">ข้อมูลเชิงคุณภาพ (Qualitative)</b>
+                        <ul class="space-y-2 text-xs mt-2">
+                            <li>• <b>สถานะ:</b> วัยสร้างตัว เป็นแม่เลี้ยงเดี่ยวดูแลคนในอุปการะ 2 คน</li>
+                            <li>• <b>อาชีพ:</b> เกษตรกร (รายได้มีความผันผวนตามฤดูกาล/ไม่มีสวัสดิการ)</li>
+                            <li>• <b>พฤติกรรมหนี้:</b> พึ่งพาสินเชื่อและใช้บัตรเครดิตแล้วจ่ายคืนขั้นต่ำ (Minimum Payer) ทำให้ภาระหนี้ไม่ลดลง</li>
+                            <li>• <b>ระดับความเสี่ยง:</b> เสี่ยงได้ค่อนข้างสูง (Moderate Aggressive) เพื่อเร่งสร้างฐานะ</li>
+                            <li>• <b>ลักษณะทางจิตวิทยา:</b> มีความตั้งใจสูงแต่ขาดเครื่องมือปกป้องรายได้ (Underinsured)</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h4 class="font-bold text-lg text-slate-800 border-b-2 border-slate-200 pb-2 mb-4 flex items-center gap-2 mt-6">
+                    <span class="text-2xl">🔍</span> 2. การวิเคราะห์จุดแข็งและจุดเปราะบาง (Fact Finding & Pain Point)
+                </h4>
+                <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 space-y-4">
+                    <div class="flex gap-4">
+                        <div class="shrink-0 w-10 h-10 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center font-bold">✓</div>
+                        <div>
+                            <b class="text-emerald-800">จุดแข็ง (AI Reality Check):</b> 
+                            <p class="mt-1">อายุเพียง 33 ปี มีระยะเวลาลงทุนอีก 27 ปีก่อนเกษียณ และยังมีสินทรัพย์สภาพคล่อง (เงินฝาก) ที่มากพอจะนำมาเป็นต้นทุนในการปิดความเสี่ยงหรือชำระหนี้ดอกเบี้ยสูงเพื่อหยุดรอยรั่วได้ทันที</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 border-t border-slate-200 pt-4">
+                        <div class="shrink-0 w-10 h-10 bg-rose-100 text-rose-600 rounded-full flex items-center justify-center font-bold">!</div>
+                        <div>
+                            <b class="text-rose-800">Pain Point (จุดเปราะบางแบบซ่อนเร้น):</b> 
+                            <p class="mt-1">1. <b>กับดักหนี้ขั้นต่ำ (Minimum Payment Trap):</b> แม้หนี้จะไม่สูงมาก (2.8 แสน) แต่กระแสเงินสดที่ติดลบเดือนละ 5,000 บาท เกิดจากการจ่ายดอกเบี้ยบัตรเครดิตที่ไร้จุดจบ หากไม่ปรับพฤติกรรม แผนซื้อบ้านใน 3 ปีจะเป็นไปไม่ได้</p>
+                            <p class="mt-1">2. <b>ความเสี่ยงเสาหลักเดียว (Single Point of Failure):</b> ขาดความคุ้มครองทุกมิติ (Health Gap 6.8 ล้าน, Life Gap 9.2 ล้าน) หากคุณจอยทำงานไม่ได้เนื่องจากป่วยหรืออุบัติเหตุ รายได้ของครอบครัวจะกลายเป็นศูนย์ทันที</p>
+                            <p class="mt-1">3. <b>วิกฤตความต่อเนื่อง (Lapse Risk):</b> ระบบเตือนความเสี่ยงทิ้งกรมธรรม์สูงถึง 81.33% หากเสนอแผนที่เบี้ยสูงเกินไป จะทำให้ลูกค้าส่งไม่ไหวในอนาคต</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h4 class="font-bold text-lg text-pink-800 border-b-2 border-pink-100 pb-2 mb-4 flex items-center gap-2 mt-6">
+                    <span class="text-2xl">💡</span> 3. การนำเสนอทางออก (Strategic Solution)
+                </h4>
+                <div class="space-y-4">
+                    <div class="bg-pink-900 text-pink-50 p-5 rounded-2xl shadow-xl">
+                        <b class="text-rose-300 block mb-3">💬 สคริปต์การนำเสนอเชิงกลยุทธ์:</b>
+                        <p class="text-sm leading-relaxed">
+                            "คุณจอยครับ จากข้อมูลที่คุณจอยสู้เพื่อลูกทั้ง 2 คนมาตลอด ผมมองว่าจุดแข็งคือคุณจอยยังมีเงินเก็บก้อนหนึ่งที่เตรียมไว้เพื่ออนาคต... <br><br>
+                            แต่ AI พบรอยรั่วที่น่าเป็นห่วงคือ <b>'กระแสเงินสดที่ติดลบเดือนละ 5,000 บาท'</b> จากการจ่ายหนี้ขั้นต่ำครับ ซึ่งมันกำลังไปดึงเงินจากเป้าหมายซื้อบ้านและทุนการศึกษาลูกออกมาใช้ ทางออกแรกคือเราต้องนำเงินออมบางส่วนมาปิดหนี้บัตรเครดิต เพื่อให้กระแสเงินสดกลับมาเป็นบวกครับ<br><br>
+                            และในฐานะคุณแม่ที่เป็นเสาหลักเดียว ผมขอเสนอให้ทำ <b>'สวัสดิการคุ้มครองรายได้'</b> ผ่านแผน <b>AIA Pay Life Plus</b> เบี้ยเริ่มต้นเพียง 24,798 บ./ปี (ประมาณ 2,000/เดือน) เพื่ออุดช่องว่างความเสี่ยง 9.2 ล้านบาทให้ครอบครัว... วิธีนี้จะช่วยเปลี่ยนความกังวลให้เป็นความชัวร์ว่า ลูกทั้ง 2 คนจะมีทุนการศึกษา และคุณจอยจะมีเงินรักษาตัวเองโดยไม่ต้องกู้หนี้เพิ่มครับ"
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h4 class="font-bold text-lg text-emerald-800 border-b-2 border-emerald-100 pb-2 mb-4 flex items-center gap-2 mt-6">
+                    <span class="text-2xl">⚖️</span> 4. การประเมินความคุ้มค่า (Trade-off vs Risk)
+                </h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-emerald-50 p-5 rounded-2xl border border-emerald-200">
+                        <b class="text-emerald-800 block mb-2">➕ ผลกระทบเชิงบวก (The Leap)</b>
+                        <p class="text-xs">คะแนนความสำเร็จจะก้าวกระโดดขึ้น <b>+20.0%</b> (สู่ 85.9%) ทันทีที่ปรับโครงสร้างหนี้และสร้างวินัยการออม 20% ตามที่ AI แนะนำ พอร์ตลงทุนจะกลับมาเติบโตและรองรับเป้าหมายทุนการศึกษาบุตรได้ตามแผน 1 ล้านบาทในอีก 10 ปีข้างหน้า</p>
+                    </div>
+                    <div class="bg-rose-50 p-5 rounded-2xl border border-rose-200">
+                        <b class="text-rose-800 block mb-2">➖ ผลกระทบเชิงลบ & ความเสี่ยง (The Cost)</b>
+                        <p class="text-xs"><b>Trade-off:</b> คุณจอยจะต้องแลกด้วยการ <b>"ชะลอเป้าหมายดาวน์บ้าน"</b> ออกไป เพื่อนำสภาพคล่องที่มีไปจัดการหนี้สินและอุดรอยรั่วความเสี่ยงก่อน<br>
+                        <b>Risk Scenario:</b> หากเลือกที่จะออมเพื่อซื้อบ้านเพียงอย่างเดียวโดยไม่ทำประกัน หากล้มป่วยเพียงครั้งเดียว เงินดาวน์บ้านทั้งหมดจะมลายหายไปกับค่าหมอ และภาระหนี้เดิมจะกลายเป็นวิกฤตของลูกทันที</p>
+                    </div>
+                </div>
+            </section>
+
+            <div class="bg-slate-800 text-white p-6 rounded-2xl shadow-2xl relative overflow-hidden mt-6">
+                <div class="absolute right-0 bottom-0 opacity-10 text-9xl">👩‍👧‍👦</div>
+                <h5 class="text-pink-400 font-bold mb-2">5. Final Conclusion for FA:</h5>
+                <p class="text-xs text-slate-300 leading-relaxed">
+                    เป้าหมายหลักในเคสคุณจอยคือ <b>"หยุดเลือด และสร้างเกราะ"</b> <br>
+                    เกษตรกรและแม่เลี้ยงเดี่ยวต้องการความอุ่นใจ (Security) มากกว่ากำไรหวือหวา <b>"ห้ามขายสินค้าการลงทุนแบบ Aggressive"</b> จนกว่าหนี้จะหมด สิ่งที่ FA ต้องทำคือ 1. แนะนำให้ปิดหนี้บัตรด้วยเงินออมที่มีเพื่อแก้ Cash Flow 2. เสนอประกันสุขภาพและชีวิตในงบที่ลูกค้ายอมรับได้ (Low Premium, High Cover) เพื่อให้คุณจอยเดินหน้าสร้างฝันให้ลูกได้อย่างสบายใจที่สุดครับ
+                </p>
+            </div>
+        </div>
+        `
+    },
+    // ==========================================
+    // 🏋️ กรณีศึกษาที่ 7: เดอะแบก (Sandwich Generation) / ฟรีแลนซ์หนี้สูง -> category: "c5"
+    // ==========================================
+    "c5_case_jin_sandwich": {
+        category: "c5",
+        icon: "🏋️",
+        iconClass: "bg-orange-100 text-orange-700",
+        title: "Case Study: คุณจิณณ์ (วัย 40 ปี) - เดอะแบก/ฟรีแลนซ์ (Sandwich Generation)",
+        content: `
+        <div class="antialiased touch-manipulation pb-safe space-y-8 text-sm text-gray-700 leading-relaxed">
+            
+            <section>
+                <div class="bg-gradient-to-r from-orange-600 to-stone-800 text-white p-6 rounded-2xl shadow-lg relative overflow-hidden mb-6">
+                    <div class="absolute -right-4 -top-4 text-7xl opacity-10 select-none pointer-events-none">🛡️</div>
+                    <h3 class="text-xl font-bold mb-2 relative z-10 text-orange-200">การวิเคราะห์กลุ่ม Sandwich Gen: ปกป้องเสาหลักและจัดระเบียบหนี้ (Breadwinner Protection)</h3>
+                    <p class="text-gray-200 text-sm relative z-10 leading-relaxed">
+                        <b>วิเคราะห์โปรไฟล์:</b> คุณจิณณ์ อายุ 40 ปี อาชีพช่างภาพ/กราฟิกดีไซน์ เป็น "เดอะแบก" ที่ต้องดูแลครอบครัวถึง 3 ท่าน <b>ไม่มีสวัสดิการ</b> มีพฤติกรรมหมุนเงินชนเดือน และพึ่งพาสินเชื่อค่อนข้างสูง<br>
+                        <b>โจทย์ของ FA:</b> ลูกค้าแบกภาระหนี้ก้อนโตรวมกว่า 3.56 ล้านบาท กระแสเงินสดติดลบทุกเดือน หากเสาหลักล้มเพียงคนเดียวจะเกิดสภาวะล้มละลายทั้งครอบครัว FA ต้องใช้ <b>"กฎหน้ากากออกซิเจน"</b> คือต้องเร่งอุดรอยรั่วและป้องกันชีวิตคนหารายได้ก่อนการลงทุนเสี่ยง
+                    </p>
+                </div>
+
+                <h4 class="font-bold text-lg text-orange-800 border-b-2 border-orange-100 pb-2 mb-4 flex items-center gap-2">
+                    <span class="text-2xl">📝</span> 1. การสรุปข้อมูลภาพรวม (Client Profile Recap)
+                </h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
+                        <b class="text-orange-700 block mb-2 underline">ข้อมูลเชิงปริมาณ (Quantitative)</b>
+                        <ul class="space-y-2 text-xs mt-2">
+                            <li>• <b>งบดุล (Balance Sheet):</b> ทรัพย์สินรวม 8,870,000.00 บาท | หหนี้สินรวม 3,568,500.00 บาท <br><span class="text-emerald-600 font-bold">(ความมั่งคั่งสุทธิ: 5,301,500.00 บาท)</span></li>
+                            <li>• <b>งบกระแสเงินสด (Cash Flow):</b> รายรับ 94,000.00 บ./เดือน | รายจ่ายรวม 106,600.00 บ./เดือน <br><span class="text-rose-500 font-bold">(กระแสเงินสดติดลบ: -12,600.00 บ./เดือน)</span></li>
+                            <li>• <b>พอร์ตการลงทุนปัจจุบัน (4.25 ลบ.):</b> PVD 850K, RMF 490K, Thai ESG 325K, SSF 165K, กองทุนผสม 1.36M, ตราสารหนี้ 910K</li>
+                            <li>• <b>พอร์ตกรมธรรม์ปัจจุบัน:</b> ไม่มีข้อมูลกรมธรรม์ปัจจุบัน</li>
+                            <li>• <b>เป้าหมายการเงิน (SMART Goals):</b> <br>
+                                - ทุนการศึกษาบุตร 3,000,000 บ. (อีก 13 ปี)<br>
+                                - ซื้อที่อยู่อาศัย 2,400,000 บ. (อีก 6 ปี)
+                            </li>
+                            <li>• <b>อัตราส่วนสำคัญ:</b> ภาระหนี้ 53.7% | สภาพคล่อง 0.9 ด.</li>
+                            <li>• <b>คะแนนความสำเร็จ AI:</b> ปัจจุบัน 40.7% ➡️ Proposed 85.9%</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
+                        <b class="text-orange-700 block mb-2 underline">ข้อมูลเชิงคุณภาพ (Qualitative)</b>
+                        <ul class="space-y-2 text-xs mt-2">
+                            <li>• <b>สถานะ:</b> วัยทำงานสร้างตัว เป็น Sandwich Gen รับอุปการะ 3 ชีวิต</li>
+                            <li>• <b>อาชีพ:</b> ฟรีแลนซ์ (ช่างภาพ/กราฟิกดีไซน์) วัย 40 ปี</li>
+                            <li>• <b>สวัสดิการ:</b> ไม่มีสวัสดิการ (จ่ายเอง/บัตรทอง)</li>
+                            <li>• <b>พฤติกรรมหนี้:</b> แม้จะมีการกู้เงินระยะสั้นและรูดบัตรเครดิต แต่มีวินัยจ่ายคืนเต็มจำนวนได้ทุกครั้ง ทว่ายังคงหมุนเงินชนเดือน (Paycheck to Paycheck) และละเลยความคุ้มครอง</li>
+                            <li>• <b>ระดับความเสี่ยง:</b> เสี่ยงปานกลางค่อนข้างต่ำ (Moderate Conservative)</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h4 class="font-bold text-lg text-slate-800 border-b-2 border-slate-200 pb-2 mb-4 flex items-center gap-2 mt-6">
+                    <span class="text-2xl">🔍</span> 2. การวิเคราะห์จุดแข็งและจุดเปราะบาง (Fact Finding & Pain Point)
+                </h4>
+                <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 space-y-4">
+                    <div class="flex gap-4">
+                        <div class="shrink-0 w-10 h-10 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center font-bold">✓</div>
+                        <div>
+                            <b class="text-emerald-800">จุดแข็ง (AI Reality Check):</b> 
+                            <p class="mt-1">ลูกค้ามีวินัยการออมสูงมาก (หักออมทันทีที่ได้เงิน) รวมถึงความมั่งคั่งสุทธิยังเป็นบวกกว่า 5.3 ล้านบาท หากจัดพอร์ตและโอนย้ายหนี้ได้ จะฟื้นตัวเร็วมาก</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 border-t border-slate-200 pt-4">
+                        <div class="shrink-0 w-10 h-10 bg-rose-100 text-rose-600 rounded-full flex items-center justify-center font-bold">!</div>
+                        <div>
+                            <b class="text-rose-800">Pain Point (จุดเปราะบางแบบซ่อนเร้น):</b> 
+                            <p class="mt-1">1. <b>วิกฤตสภาพคล่องซ้อนทับ:</b> กระแสเงินสดติดลบ -12,600 บ./เดือน มีเงินสำรองฉุกเฉินเพียง 0.9 เดือน ต่ำกว่าเกณฑ์ที่ควรมี</p>
+                            <p class="mt-1">2. <b>รอยรั่วความเสี่ยง (Risk Gap):</b> ขาดความคุ้มครองกว่า 20.38 ล้านบาท โดยแยกเป็นค่ารักษาพยาบาลที่ต้องเตรียมเอง 7.1 ล้านบาท และทุนประกันครอบครัว 13.14 ล้านบาท</p>
+                            <p class="mt-1">3. <b>ความเสี่ยงทิ้งกรมธรรม์ (Lapse Risk):</b> ด้วยภาระหนี้เดิม 54% หากยัดเยียดให้ซื้อกรมธรรม์เบี้ยแพง ลูกค้ามีความเสี่ยงหยุดชำระเบี้ยถึง 81.46%</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h4 class="font-bold text-lg text-orange-800 border-b-2 border-orange-100 pb-2 mb-4 flex items-center gap-2 mt-6">
+                    <span class="text-2xl">💡</span> 3. การนำเสนอทางออก (Strategic Solution)
+                </h4>
+                <div class="space-y-4">
+                    <div class="bg-orange-900 text-orange-50 p-5 rounded-2xl shadow-xl">
+                        <b class="text-amber-300 block mb-3">💬 สคริปต์การนำเสนอเชิงกลยุทธ์:</b>
+                        <p class="text-sm leading-relaxed">
+                            "คุณจิณณ์ครับ จากการประมวลผลงบดุลและกระแสเงินสดของคุณ ผมขอชื่นชมวินัยการเงินที่ทำให้คุณมีความมั่งคั่งสุทธิสะสมกว่า 5.3 ล้านบาท <br><br>
+                            แต่ AI ส่งสัญญาณเตือนถึง <b>'วิกฤตสภาพคล่องซ้อนทับ'</b> ครับ ภาระหนี้สินของคุณกินพื้นที่ไป 53.7% ทำให้เงินในแต่ละเดือนติดลบอยู่ -12,600 บาท ทางแก้ขั้นแรกสุด คือเราต้องรัดเข็มขัด ลดงบใช้จ่ายรายเดือนลง 300 บาท แล้วดึงเงินไปจัดระเบียบใหม่ (Debt Snowball) ให้หนี้เหลือไม่เกิน 40%<br><br>
+                            นอกจากนี้ ในฝั่งความมั่นคง คุณจิณณ์ยังขาดสวัสดิการสุขภาพ หากล้มป่วย พอร์ตลงทุน 4.1 ล้าน จะละลายหายไปกับค่ารักษาแน่ๆ ผมจึงขอเสนอแผนอุดรอยรั่วนี้ด้วย <b>AIA Pay Life Plus</b> เบี้ยเบาๆ เริ่มต้นเพียง 24,798 บ./ปี หรือ <b>AIA Smart Select</b> เพื่อโอนความเสี่ยงสุขภาพและปกป้องครอบครัวทั้ง 3 ท่านครับ"
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h4 class="font-bold text-lg text-emerald-800 border-b-2 border-emerald-100 pb-2 mb-4 flex items-center gap-2 mt-6">
+                    <span class="text-2xl">⚖️</span> 4. การประเมินความคุ้มค่า (Trade-off vs Risk)
+                </h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-emerald-50 p-5 rounded-2xl border border-emerald-200">
+                        <b class="text-emerald-800 block mb-2">➕ ผลกระทบเชิงบวก (The Leap)</b>
+                        <p class="text-xs">โอกาสสำเร็จในการไปถึงเป้าหมายทางการเงิน ทะยานขึ้นจาก 40.7% สู่ <b>85.9%</b> อย่างชัดเจน นอกจากนี้ พอร์ตการลงทุนของคุณจะทำหน้าที่เป็น Shock Absorber รองรับวิกฤตเศรษฐกิจ ช่วยลดการขาดทุนหนักๆ ได้</p>
+                    </div>
+                    <div class="bg-rose-50 p-5 rounded-2xl border border-rose-200">
+                        <b class="text-rose-800 block mb-2">➖ ผลกระทบเชิงลบ & ความเสี่ยง (The Cost)</b>
+                        <p class="text-xs"><b>Trade-off:</b> เนื่องจากทรัพยากรกระแสเงินสดติดลบ คุณจะต้องแลกมาด้วยการ <b>"ยืดระยะเวลาเป้าหมายทุนการศึกษาและดาวน์บ้าน"</b> ออกไปอีกอย่างน้อย 1-3 ปี หรือต้องปรับลดสเปกลง<br>
+                        <b>Risk Scenario:</b> หากเลือกลงทุนอย่างก้าวร้าว (Aggressive FIRE) ในจังหวะที่โชคร้าย (CVaR Worst 5%) พอร์ตจะติดลบดิ่งลงถึง -58.8% ในปีที่ 5 ซึ่งเป็นอันตรายอย่างยิ่งสำหรับคนเป็นเสาหลัก</p>
+                    </div>
+                </div>
+            </section>
+
+            <div class="bg-slate-800 text-white p-6 rounded-2xl shadow-2xl relative overflow-hidden mt-6">
+                <div class="absolute right-0 bottom-0 opacity-10 text-9xl">🎯</div>
+                <h5 class="text-orange-400 font-bold mb-2">5. Final Conclusion for FA:</h5>
+                <p class="text-xs text-slate-300 leading-relaxed">
+                    เป้าหมายหลักในเคสคุณจิณณ์คือ <b>S-Style (Focus on Security)</b> และ <b>C-Style (ยุทธการปลดหนี้)</b> <br>
+                    <b>"ห้ามโฟกัสพอร์ตสินทรัพย์เสี่ยง (Tax & Investment)"</b> เพราะฐานภาษีแค่ 5% ไม่คุ้มค่าที่จะเสียสภาพคล่องไปลง RMF/SSF สิ่งที่ FA ต้องทำคือ 1. ชะลอการลงทุนในสินทรัพย์เสี่ยง 2. เน้นจัดการหนี้เพื่อหยุดเลือด 3. สร้างเบาะรองรับฉุกเฉิน (Oxygen Buffer) เพื่อการันตีความปลอดภัยของ 3 ชีวิตข้างหลังเป็นอันดับแรกครับ
+                </p>
             </div>
         </div>
         `

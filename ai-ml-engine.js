@@ -716,11 +716,11 @@ function runCoAdvisorConsensus(features, userBehaviors, retirementProb = null, o
     }
     else if (criticalFlags.length > 0) {
         consensusNLG = `<b>🚨 ตรวจพบรอยรั่วขั้นวิกฤต:</b> ศักยภาพตั้งต้นของคุณทำได้ดี แต่ระบบพบปัญหาที่ต้องแก้ไขด่วนคือ <i>${criticalFlags.join(", ")}</i><br>
-        <span class="text-red-600 text-sm mt-1 inline-block">💡 <b>ผลกระทบ:</b> ปัญหาเหล่านี้คือ "ต้นเหตุหลัก" ที่ฉุดรั้งโอกาสสำเร็จของแผน (ตามกราฟจำลองด้านล่าง) แนะนำให้รีบอุดรอยรั่วนี้เป็นอันดับแรกครับ</span>`;
+        <span class="text-red-600 text-sm mt-1 inline-block">💡 <b>ผลกระทบ:</b> ปัญหาเหล่านี้คือ "ต้นเหตุหลัก" ที่ฉุดรั้งโอกาสสำเร็จของแผน แนะนำให้รีบอุดรอยรั่วนี้เป็นอันดับแรกครับ</span>`;
     }
     else if (warningFlags.length > 0) {
         consensusNLG = `<b>⚠️ ข้อควรระวังด้านพฤติกรรม:</b> โดยรวมคุณมีศักยภาพที่ดี แต่อาจไปไม่ถึงเป้าหมายเนื่องจากพบจุดสะดุดบางประการคือ <i>${warningFlags.join(", ")}</i><br>
-        <span class="text-orange-600 text-sm mt-1 inline-block">💡 <b>คำแนะนำ:</b> หากปรับพฤติกรรมเหล่านี้ได้ โอกาสที่เงินจะพอใช้ตลอดชีพ (ตามกราฟจำลองด้านล่าง) จะเพิ่มขึ้นอย่างมหาศาลครับ</span>`;
+        <span class="text-orange-600 text-sm mt-1 inline-block">💡 <b>คำแนะนำ:</b> หากปรับพฤติกรรมเหล่านี้ได้ โอกาสที่เงินจะพอใช้ตลอดชีพ จะเพิ่มขึ้นอย่างมหาศาลครับ</span>`;
     }
     else {
         consensusNLG = `<b>✅ สถานะพฤติกรรมยอดเยี่ยม:</b> วินัยทางการเงินและเป้าหมายของคุณสอดคล้องกันอย่างสมบูรณ์แบบ (จัดอยู่ในกลุ่ม <span class="text-green-600 font-bold">${hybridPersona.split('[')[0].trim()}</span>)<br>
