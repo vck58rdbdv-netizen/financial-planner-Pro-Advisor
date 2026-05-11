@@ -1711,7 +1711,7 @@ const mcWorkerCode = `
                 // 🌪️ [ตรรกะที่ 2] สุ่มเงินเฟ้อแบบ Stochastic Inflation + Correlation
                 let z_inf = getGaussianRandom();
                 let currentYearInf = data.infRate + (z_inf * (data.infSd || 0.015));
-                currentYearInf = Math.max(-0.01, currentYearInf); // ป้องกันเงินเฟ้อติดลบเกินจริง
+                currentYearInf = Math.max(0.01, currentYearInf); // ค่าครองชีพขั้นต่ำโตปีละ 1%
                 stochasticBaseExpense = stochasticBaseExpense * (1 + currentYearInf);
 
                 // 🎯 1. สุ่ม Z-Score สำหรับผลตอบแทนที่ผูกกับเงินเฟ้อ (Cholesky Decomposition)

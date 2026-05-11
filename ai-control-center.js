@@ -1,7 +1,7 @@
 // =====================================================================
 // 🧠 AiDAPC MODULE (AI Deep Analysis & Prediction Center)
-// สถาปัตยกรรม: AI/ML Core Diagnostics Engine (White-box Dashboard) v5.5 Ultimate
-// อัปเดต: DTI Exact Definition Fixed, Income Risk Analysis, Detailed Product Mapping, Executive Definition
+// สถาปัตยกรรม: AI/ML Core Diagnostics Engine (White-box Dashboard) v5.6 Ultimate
+// อัปเดต: FA Interactive Sandbox + Deep Contextual Reasoning & Cost/Benefit Explanation
 // =====================================================================
 
 window.AIControlCenter = {
@@ -49,7 +49,7 @@ window.AIControlCenter = {
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>AiDAPC - Executive FA Diagnostics V5.5</title>
+            <title>AiDAPC - Executive FA Diagnostics V5.6</title>
             <script src="https://cdn.tailwindcss.com"><\/script>
             <script src="https://cdn.jsdelivr.net/npm/chart.js"><\/script>
             <style>
@@ -78,7 +78,7 @@ window.AIControlCenter = {
                     <div class="text-3xl drop-shadow-[0_0_10px_rgba(56,189,248,0.8)]">🧠</div>
                     <div>
                         <h1 class="text-lg font-bold text-white tracking-wide uppercase flex items-center gap-2">
-                            AiDAPC <span class="text-slate-400 text-sm normal-case">| Executive AI Diagnostics V5.5</span> <span class="status-dot ml-2" id="db_status_dot"></span>
+                            AiDAPC <span class="text-slate-400 text-sm normal-case">| Executive AI Diagnostics V5.6</span> <span class="status-dot ml-2" id="db_status_dot"></span>
                         </h1>
                         <div class="flex items-center gap-2 mt-1">
                             <input type="text" id="client_search" onkeyup="window.filterClientDropdown()" placeholder="🔍 ค้นหาตามตัวอักษร..." class="text-xs bg-slate-800 text-slate-200 border border-slate-600 rounded px-2 py-1 outline-none w-32 placeholder-slate-500 focus:ring-1 focus:ring-cyan-500 transition-all">
@@ -109,7 +109,7 @@ window.AIControlCenter = {
                             <span class="text-[9px] bg-blue-900/30 px-2 py-0.5 rounded text-blue-300 border border-blue-500/30">100% Payload</span>
                         </div>
                         <div class="flex-1 bg-slate-900 rounded-lg p-3 text-[10px] md:text-xs code-font text-slate-300 overflow-y-auto custom-scrollbar border border-slate-800 shadow-inner">
-                            <pre id="log_input_data" class="whitespace-pre-wrap"><span class="text-slate-500 italic">รอข้อมูล Full Payload (Smart Goals, Assets, Ins, Types) จาก API...</span></pre>
+                            <pre id="log_input_data" class="whitespace-pre-wrap"><span class="text-slate-500 italic">รอข้อมูล Full Payload จาก API...</span></pre>
                         </div>
                     </div>
 
@@ -173,7 +173,7 @@ window.AIControlCenter = {
                             <h2 class="text-sm font-bold text-cyan-400 uppercase tracking-wider">🔍 5. XAI Feature Drivers</h2>
                         </div>
                         <div class="flex-1 bg-slate-900 rounded-lg p-3 text-xs text-slate-300 overflow-y-auto custom-scrollbar border border-slate-800 space-y-2" id="log_xai_drivers">
-                            <p class="text-slate-500 italic code-font text-center mt-10">รอสกัด XAI Perturbation และคำอธิบายเชิงลึก...</p>
+                            <p class="text-slate-500 italic code-font text-center mt-10">รอสกัดปัจจัยความสำเร็จและคำอธิบายเชิงลึก...</p>
                         </div>
                     </div>
 
@@ -185,7 +185,7 @@ window.AIControlCenter = {
                         <div class="flex-1 bg-slate-900 rounded-lg p-3 border border-slate-800 flex flex-col gap-2">
                             <p class="text-[10px] text-slate-400 font-bold">จำลองเส้นทางทางเลือก (Pos/Neg/Neutral Impacts):</p>
                             <div id="log_counterfactual" class="space-y-2 mt-1 overflow-y-auto custom-scrollbar flex-1">
-                                <p class="text-slate-500 italic text-xs text-center mt-10">รอจำลองเส้นทางทางเลือก...</p>
+                                <p class="text-slate-500 italic text-xs text-center mt-10">รอจำลองเส้นทางทางเลือกเพื่อหาจุดคุ้มทุน...</p>
                             </div>
                         </div>
                     </div>
@@ -257,7 +257,6 @@ window.AIControlCenter = {
                                     <p class="text-4xl font-black text-red-400" id="log_lapse_score">--%</p>
                                     <p class="text-[9px] text-slate-400 uppercase mt-1">Churn Rate</p>
                                 </div>
-                                <!-- 🌟 ปลดล็อก max-h-[120px] ออกเป็น h-full เพื่อให้ขยายได้เต็มที่ 🌟 -->
                                 <div class="flex-1 w-full overflow-y-auto custom-scrollbar h-full">
                                     <div id="log_lapse_drivers" class="text-[11px] text-slate-300 space-y-1.5">
                                         <p class="text-slate-500 italic text-center mt-4">รอประมวลผลความเสี่ยงทิ้งกรมธรรม์...</p>
@@ -291,7 +290,7 @@ window.AIControlCenter = {
                                 <div class="mb-3 bg-slate-800 p-3.5 rounded-lg border border-slate-600 text-[10.5px] text-slate-300 leading-relaxed text-left shadow-md">
                                     <b class="text-indigo-400 text-xs block mb-1">📖 Definition (นิยามและการใช้งานสำหรับ FA):</b>
                                     <span class="text-white font-bold">"Final Adjusted Score (คะแนนความสำเร็จสุทธิ)"</span> คือตัวชี้วัดศักยภาพทางการเงินที่สะท้อน <b>"โลกความเป็นจริง"</b> มากที่สุด โดยระบบจะนำคะแนนศักยภาพตั้งต้น (Base Score) มาหักลบด้วย <b>"อคติและพฤติกรรมเสี่ยง (Behavioral Constraints)"</b> เช่น การก่อหนี้บริโภค หรือการใช้เงินเกินตัว<br><br>
-                                    <b class="text-emerald-400">💡 FA Action Plan:</b> ใช้คะแนนนี้เพื่อทำ <b>Reality Check</b> กับลูกค้า หากคะแนนนี้ต่ำกว่า Base Score มากๆ (โดน Penalty สูง) FA ต้องเปิดใจลูกค้าให้เห็นว่า <i>"พฤติกรรมใดกำลังทำลายแผน"</i> และเสนอ <b>"การปรับโครงสร้างหนี้/ลดรายจ่าย"</b> ควบคู่ไปกับการเสนอโปรดักส์ เพื่อสร้างความน่าเชื่อถือระดับที่ปรึกษามืออาชีพ
+                                    <b class="text-emerald-400">💡 FA Action Plan & Trade-off:</b> ใช้คะแนนนี้เพื่อทำ <b>Reality Check</b> กับลูกค้า หากคะแนนนี้ต่ำกว่า Base Score มากๆ (โดน Penalty สูง) FA ต้องเปิดใจลูกค้าให้เห็นว่า <i>"พฤติกรรมใดกำลังทำลายแผน"</i> และให้ลูกค้าพิจารณา <b>Trade-off</b> ระหว่าง "ความสุขระยะสั้น (ใช้เงินเกินตัว)" กับ "ความมั่นคงระยะยาว" พร้อมเสนอ <b>"การปรับโครงสร้างหนี้/ลดรายจ่าย"</b> ควบคู่ไปกับการเสนอโปรดักส์ เพื่อสร้างความน่าเชื่อถือระดับที่ปรึกษามืออาชีพ
                                 </div>
                                 <p class="text-[10px] text-slate-400 mb-1 font-bold">Rule Execution Log (Detailed Traceability):</p>
                                 <div class="bg-slate-900 rounded-lg p-3 text-[11px] text-slate-300 flex-1 overflow-y-auto border border-slate-800 custom-scrollbar space-y-3 shadow-inner" id="log_consensus_exp">
@@ -313,16 +312,54 @@ window.AIControlCenter = {
                     </div>
                 </div>
 
+                <!-- 🌟🌟🌟 MODULE 12: FA INTERACTIVE SANDBOX SIMULATOR 🌟🌟🌟 -->
+                <div class="glass-panel rounded-xl p-5 border-cyan-500/50 shadow-[0_0_20px_rgba(6,182,212,0.15)] mt-6 flex flex-col min-h-[300px]">
+                    <div class="card-header flex justify-between items-center border-cyan-500/30">
+                        <h2 class="text-sm font-bold text-cyan-400 uppercase tracking-wider flex items-center gap-2">🎛️ 12. FA Interactive Sandbox (What-If Simulator)</h2>
+                        <span class="text-[9px] bg-cyan-900/30 px-2 py-0.5 rounded text-cyan-300 border border-cyan-500/30">Custom Portfolio & FA Pitching Guide</span>
+                    </div>
+                    <div class="flex flex-col lg:flex-row gap-6 mt-2">
+                        <!-- Left: Inputs -->
+                        <div class="lg:w-1/2 space-y-4">
+                            <div class="bg-slate-900 p-3 rounded border border-slate-700">
+                                <label class="text-[10px] text-slate-400 font-bold mb-1 block">📌 สัญญาหลัก (Base Plan)</label>
+                                <div class="flex gap-2">
+                                    <select id="sandbox_base_plan" onchange="window.handleBasePlanChange()" class="flex-1 text-xs bg-slate-800 text-slate-200 border border-slate-600 rounded px-2 py-1 outline-none focus:ring-1 focus:ring-cyan-500"></select>
+                                    <input type="number" id="sandbox_base_sa" placeholder="ทุน/SA" class="w-24 text-xs bg-slate-800 text-slate-200 border border-slate-600 rounded px-2 py-1 outline-none focus:ring-1 focus:ring-cyan-500">
+                                    <input type="number" id="sandbox_base_prem" placeholder="เบี้ย (บาท/ปี)" class="w-28 text-xs bg-slate-800 text-slate-200 border border-slate-600 rounded px-2 py-1 outline-none focus:ring-1 focus:ring-cyan-500">
+                                </div>
+                            </div>
+                            <div class="bg-slate-900 p-3 rounded border border-slate-700">
+                                <div class="flex justify-between items-center mb-2 pb-2 border-b border-slate-800">
+                                    <label class="text-[10px] text-slate-400 font-bold block">➕ สัญญาเพิ่มเติม (Riders)</label>
+                                    <button id="btn_add_rider" onclick="window.addRiderRow()" class="text-[10px] bg-emerald-600 hover:bg-emerald-500 disabled:bg-slate-700 text-white px-2 py-0.5 rounded transition shadow opacity-50 cursor-not-allowed" disabled>+ เพิ่ม Rider</button>
+                                </div>
+                                <div id="sandbox_riders_container" class="space-y-2 max-h-[150px] overflow-y-auto custom-scrollbar pr-1"></div>
+                            </div>
+                            <button onclick="window.runSandboxSimulation()" class="w-full bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white px-4 py-2.5 rounded-lg text-xs font-bold transition shadow-[0_0_10px_rgba(6,182,212,0.4)] flex justify-center items-center gap-2">
+                                🔄 จำลองผลกระทบ & วิเคราะห์ Trade-off
+                            </button>
+                        </div>
+                        <!-- Right: Output Mini Report -->
+                        <div class="lg:w-1/2 flex flex-col bg-slate-900/80 rounded-lg p-4 border border-slate-700 h-full shadow-inner">
+                            <div id="sandbox_results" class="text-xs text-slate-300 space-y-3 flex-1 flex flex-col">
+                                <p class="text-slate-500 italic text-center m-auto">รอการจำลองแผน... <br><span class="text-[10px] mt-2 block">(กรุณาจัดพอร์ตและระบุเบี้ยประกันให้ครบถ้วน จากนั้นกด Simulate)</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 🌟🌟🌟 END MODULE 12 🌟🌟🌟 -->
+
                 <div class="glass-panel rounded-xl p-4 flex flex-col mt-6">
                     <div class="flex justify-between items-center mb-2">
                         <h2 class="text-xs font-bold text-slate-500 uppercase tracking-widest flex items-center gap-2"><span class="status-dot"></span> System Terminal</h2>
                         <button onclick="document.getElementById('terminal_log').innerHTML=''" class="text-[9px] text-slate-600 hover:text-slate-400 bg-slate-800 px-2 py-0.5 rounded border border-slate-700">Clear</button>
                     </div>
                     <div class="flex-1 bg-[#0f172a] rounded border border-slate-800 p-3 text-[10px] code-font text-slate-400 overflow-y-auto custom-scrollbar space-y-1.5 h-32" id="terminal_log">
-                        <div class="text-emerald-400">> AiDAPC V5.5 Ultimate Ready. Full Payload Container Started.</div>
+                        <div class="text-emerald-400">> AiDAPC V5.6 Ultimate Ready. Full Payload Container Started.</div>
                     </div>
                 </div>
-
+                
             </main>
 
             <script>
@@ -404,56 +441,23 @@ window.AIControlCenter = {
                 };
 
                 // -----------------------------------------------------
-                // 🗂️ 2. Premium Rate Matrix
+                // 🧮 3. Calculator Functions (Used for Auto-Recommender Only)
                 // -----------------------------------------------------
                 const rateMatrix = {
                     "AIA Endowment 15/25": { "M": { 30: 82, 35: 82, 36: 82, 45: 83, 50: 83, 55: 88, 60: 90, 70: 96 }, "F": { 30: 82, 35: 82, 36: 82, 45: 83, 50: 83, 55: 88, 60: 90, 70: 96 } },
-                    "AIA Excellent 20/20": { "M": { 1: 152.90, 36: 153.90, 50: 156.90, 60: 161.20, 70: 170.00 }, "F": { 1: 152.90, 36: 153.90, 50: 156.90, 60: 161.20, 70: 170.00 } },
-                    "AIA Annuity Sure": { "M": { 20: 44, 30: 70, 45: 178, 55: 649 }, "F": { 20: 47, 30: 73, 45: 186, 55: 676 } },
-                    "AIA Annuity Fix": { "M": { 20: 16.20, 30: 25.70, 45: 65.60, 55: 236.50 }, "F": { 20: 16.50, 30: 25.80, 45: 65.20, 55: 234.80 } },
-                    "AIA Senior Happy": { "M": { 50: 59.80, 55: 68.42, 65: 102.35, 70: 127.65 }, "F": { 50: 50.02, 55: 58.07, 65: 84.52, 70: 106.95 } },
                     "AIA 20 Pay Life": { "M": { 1: 12.76, 36: 24.94, 50: 37.81, 60: 55.77, 70: 78.11 }, "F": { 1: 11.47, 36: 20.93, 50: 31.62, 60: 46.43, 70: 67.07 } },
-                    "AIA Pay Life Plus (20 Pay)": { "M": { 1: 14.80, 36: 28.93, 50: 43.40, 60: 60.64, 70: 97.53 }, "F": { 1: 13.31, 36: 24.28, 50: 36.68, 60: 51.57, 70: 82.43 } },
-                    "AIA CI SuperCare": { "M": { 1: 22.20, 36: 42.28, 50: 62.92, 60: 100.65 }, "F": { 1: 20.42, 36: 38.62, 50: 56.71, 60: 79.47 } },
-                    "AIA CI ProCare": { "M": { 1: 35.52, 36: 100.42, 50: 169.88, 60: 310.00 }, "F": { 1: 30.63, 36: 79.56, 50: 127.60, 60: 210.60 } },
                     "AIA Life Protector 70": { "M": { 20: 10.94, 30: 12.75, 45: 17.78, 55: 24.23 }, "F": { 20: 8.00, 30: 9.02, 45: 11.91, 55: 15.88 } },
-                    "AIA Legacy Prestige Plus": { "M": { 20: 25.50, 30: 32.40, 40: 45.80, 50: 68.20 }, "F": { 20: 22.10, 30: 28.50, 40: 41.20, 50: 62.10 } },
-                    "AIA Legacy Prestige": { "M": { 20: 28.50, 30: 36.40, 40: 50.80, 50: 75.20 }, "F": { 20: 25.10, 30: 32.50, 40: 45.20, 50: 68.10 } },
                     "AIA Smart Select Prestige": { "M": { 1: 15, 30: 20, 40: 25, 50: 35, 60: 50, 70: 75 }, "F": { 1: 15, 30: 18, 40: 22, 50: 30, 60: 45, 70: 65 } },
-                    "AIA Infinite Wealth Prestige": { "M": { 1: 15, 30: 20, 40: 25, 50: 35, 60: 50, 70: 75 }, "F": { 1: 15, 30: 18, 40: 22, 50: 30, 60: 45, 70: 65 } },
-                    "AIA Elite Income Prestige": { "M": { 1: 909.09, 30: 909.09, 40: 909.09, 50: 909.09, 60: 909.09, 70: 909.09 }, "F": { 1: 909.09, 30: 909.09, 40: 909.09, 50: 909.09, 60: 909.09, 70: 909.09 } },
-                    "AIA CI SuperCare Prestige": { "M": { 20: 30.16, 30: 36.85, 40: 45.68, 50: 62.92 }, "F": { 20: 27.92, 30: 33.91, 40: 42.45, 50: 56.71 } }
+                    "AIA Annuity Fix": { "M": { 20: 16.20, 30: 25.70, 45: 65.60, 55: 236.50 }, "F": { 20: 16.50, 30: 25.80, 45: 65.20, 55: 234.80 } }
                 };
 
-                const riderRateMatrix = {
-                    "AIA Infinite Care": { type: "flat","M": { 20: 78480, 30: 88860, 40: 102420, 50: 138300, 60: 222000 },"F": { 20: 87180, 30: 94680, 40: 109560, 50: 139560, 60: 224040 } },
-                    "AIA Health Starter": { type: "fixed_plan",
-                        "1500": {"M": { 21: 3800, 31: 4300, 41: 4900, 51: 7100, 61: 13700, 71: 29700 },"F": { 21: 4200, 31: 4800, 41: 5500, 51: 7700, 61: 15000, 71: 32400 }},
-                        "2000": {"M": { 21: 6400, 31: 7300, 41: 8200, 51: 11900, 61: 20900, 71: 41100 },"F": { 21: 7700, 31: 8300, 41: 9200, 51: 13000, 61: 22500, 71: 44600 }},
-                        "2500": {"M": { 21: 7800, 31: 9000, 41: 10100, 51: 14500, 61: 25600, 71: 50200 },"F": { 21: 9000, 31: 10100, 41: 11400, 51: 16000, 61: 27700, 71: 54700 }},
-                        "3500": {"M": { 21: 9900, 31: 11700, 41: 13000, 51: 18700, 61: 33000, 71: 65200 },"F": { 21: 11900, 31: 13400, 41: 15000, 51: 20700, 61: 36200, 71: 72200 }},
-                        "4500": {"M": { 21: 11700, 31: 13700, 41: 15300, 51: 22000, 61: 39000, 71: 77300 },"F": { 21: 14500, 31: 15700, 41: 17600, 51: 24500, 61: 42900, 71: 85700 }}},
-                    "AIA Health Cancer": { type: "flat","M": { 20: 3500, 30: 5500, 40: 9500, 50: 18500 },"F": { 20: 4200, 30: 6800, 40: 12000, 50: 22000 } },
-                    "AIA CI Plus": { type: "per_thousand", "M": { 20: 1.85, 30: 2.65, 40: 5.45, 50: 12.80 }, "F": { 20: 1.95, 30: 2.90, 40: 6.10, 50: 11.50 } },
-                    "AIA Multi-Pay CI Plus": { type: "per_thousand", "M": { 20: 3.50, 30: 5.20, 40: 10.80, 50: 25.40 }, "F": { 20: 3.80, 30: 5.80, 40: 12.20, 50: 23.50 } },
-                    "AIA Care for Cancer": { type: "per_thousand", "M": { 20: 1.10, 30: 1.60, 40: 3.50, 50: 8.20 }, "F": { 20: 1.25, 30: 2.10, 40: 4.80, 50: 9.50 } },
-                    "AIA Health Saver": { type: "fixed_plan",
-                        "200000": {"M": { 21: 6900, 31: 7500, 41: 10000, 51: 15400, 61: 27300, 71: 53700 },"F": { 21: 8600, 31: 9200, 41: 12100, 51: 15500, 61: 27600, 71: 54200 }},
-                        "300000": {"M": { 21: 8400, 31: 9300, 41: 11400, 51: 17200, 61: 31000, 71: 67400 },"F": { 21: 10600, 31: 11700, 41: 13800, 51: 17200, 61: 31300, 71: 68100 }},
-                        "400000": {"M": { 21: 10400, 31: 14700, 41: 17100, 51: 24300, 61: 47000, 71: 94400 },"F": { 21: 14400, 31: 18000, 41: 21700, 51: 25600, 61: 47500, 71: 95300 }},
-                        "500000": {"M": { 21: 13400, 31: 18900, 41: 21600, 51: 30900, 61: 56600, 71: 115800 },"F": { 21: 18100, 31: 22700, 41: 26500, 51: 34100, 61: 57200, 71: 117000 }}},
+                const riderRateMatrix_Fallback = {
                     "AIA Health Happy": { type: "fixed_plan",
-                        "1000000": { "M": { 21: 13700, 31: 15100, 41: 19200, 51: 28300, 61: 40900, 71: 85400 },"F": { 21: 17200, 31: 18400, 41: 22300, 51: 28500, 61: 41500, 71: 88200 }},
-                        "5000000": { "M": { 21: 16900, 31: 18900, 41: 23800, 51: 35000, 61: 50600, 71: 104000 },"F": { 21: 21500, 31: 22700, 41: 27800, 51: 35200, 61: 50800, 71: 107500 }},
-                        "15000000": {"M": { 21: 21600, 31: 29400, 41: 36000, 51: 50100, 61: 72300, 71: 152100 },"F": { 21: 27000, 31: 34200, 41: 42900, 51: 50700, 61: 73500, 71: 155700 }},
-                        "25000000": {"M": { 21: 28000, 31: 37800, 41: 47300, 51: 65300, 61: 94100, 71: 197800 },"F": { 21: 35300, 31: 42300, 41: 53600, 51: 65500, 61: 95700, 71: 202000 }}},
-                    "AIA HB Extra": { type: "per_thousand", "M": { 20: 1350, 30: 1450, 40: 1850, 50: 2650 }, "F": { 20: 1400, 30: 1650, 40: 2150, 50: 2950 } },
-                    "AIA HB": { type: "per_thousand", "M": { 20: 1150, 30: 1250, 40: 1550, 50: 2150 }, "F": { 20: 1200, 30: 1450, 40: 1850, 50: 2450 } }
+                        "5000000": { "M": { 21: 16900, 31: 18900, 41: 23800, 51: 35000, 61: 50600, 71: 104000 },"F": { 21: 21500, 31: 22700, 41: 27800, 51: 35200, 61: 50800, 71: 107500 }}
+                    },
+                    "AIA CI Plus": { type: "per_thousand", "M": { 20: 1.85, 30: 2.65, 40: 5.45, 50: 12.80 }, "F": { 20: 1.95, 30: 2.90, 40: 6.10, 50: 11.50 } }
                 };
 
-                // -----------------------------------------------------
-                // 🧮 3. Calculator Functions
-                // -----------------------------------------------------
                 function findClosestRate(productMatrix, gender, age) {
                     if(!productMatrix || !productMatrix[gender]) return null;
                     let matrix = productMatrix[gender];
@@ -466,108 +470,35 @@ window.AIControlCenter = {
                     else {
                         let age1 = ageKeys[0]; let age2 = ageKeys[ageKeys.length - 1];
                         for (let i = 0; i < ageKeys.length - 1; i++) {
-                            if (age > ageKeys[i] && age < ageKeys[i + 1]) {
-                                age1 = ageKeys[i]; age2 = ageKeys[i + 1]; break;
-                            }
+                            if (age > ageKeys[i] && age < ageKeys[i + 1]) { age1 = ageKeys[i]; age2 = ageKeys[i + 1]; break; }
                         }
-                        let rate1 = matrix[age1]; let rate2 = matrix[age2];
-                        rate = rate1 + ((rate2 - rate1) * (age - age1) / (age2 - age1));
+                        rate = matrix[age1] + ((matrix[age2] - matrix[age1]) * (age - age1) / (age2 - age1));
                     }
                     return rate;
                 }
 
                 function calculateRiderPremium(riderName, gender, age, planOrSA) {
-                    if (!riderRateMatrix[riderName]) return 0;
+                    if (!riderRateMatrix_Fallback[riderName]) return 0;
                     let genderKey = (gender === "หญิง" || gender === "F") ? "F" : "M";
-                    let productType = riderRateMatrix[riderName].type;
+                    let productType = riderRateMatrix_Fallback[riderName].type;
                     let matrix;
 
                     if (productType === "fixed_plan") {
                         let planKey = planOrSA.toString();
-                        if (!riderRateMatrix[riderName][planKey]) {
-                            let availablePlans = Object.keys(riderRateMatrix[riderName]).filter(k => k !== "type" && k !== "category").map(Number).sort((a,b) => a-b);
+                        if (!riderRateMatrix_Fallback[riderName][planKey]) {
+                            let availablePlans = Object.keys(riderRateMatrix_Fallback[riderName]).filter(k => k !== "type" && k !== "category").map(Number).sort((a,b) => a-b);
                             if (availablePlans.length === 0) return 0;
-                            let closestPlan = availablePlans.reduce((prev, curr) => Math.abs(curr - planOrSA) < Math.abs(prev - planOrSA) ? curr : prev);
-                            planKey = closestPlan.toString();
+                            planKey = availablePlans[0].toString();
                         }
-                        matrix = riderRateMatrix[riderName][planKey][genderKey];
+                        matrix = riderRateMatrix_Fallback[riderName][planKey][genderKey];
                     } else {
-                        matrix = riderRateMatrix[riderName][genderKey];
+                        matrix = riderRateMatrix_Fallback[riderName][genderKey];
                     }
-
                     if (!matrix) return 0;
-
-                    let ageKeys = Object.keys(matrix).map(Number).sort((a, b) => a - b);
-                    let rate = 0;
-                    if (matrix[age] !== undefined) rate = matrix[age];
-                    else if (age <= ageKeys[0]) rate = matrix[ageKeys[0]];
-                    else if (age >= ageKeys[ageKeys.length - 1]) rate = matrix[ageKeys[ageKeys.length - 1]];
-                    else {
-                        let age1 = ageKeys[0]; let age2 = ageKeys[ageKeys.length - 1];
-                        for (let i = 0; i < ageKeys.length - 1; i++) {
-                            if (age > ageKeys[i] && age < ageKeys[i + 1]) { age1 = ageKeys[i]; age2 = ageKeys[i + 1]; break; }
-                        }
-                        rate = matrix[age1] + ((matrix[age2] - matrix[age1]) * (age - age1) / (age2 - age1));
-                    }
-
+                    let rate = findClosestRate({[genderKey]: matrix}, genderKey, age);
                     if (productType === "flat" || productType === "fixed_plan") return rate; 
                     if (productType === "per_thousand") return (planOrSA / 1000) * rate;
                     return 0;
-                }
-
-                function getCOIRate(age, gender) {
-                    let baseRate = gender === 'F' ? 0.6 : 1.0;
-                    let agingFactor = Math.pow(1.095, Math.max(0, age - 25));
-                    if (age > 70) agingFactor *= Math.pow(1.05, age - 70); 
-                    return Math.min(baseRate * agingFactor, 300) / 1000; 
-                }
-
-                function simulateUnitLinkedCV(age, premium, sumAssured, expectedRoi, gender, payYears = 99, designType = 'A') {
-                    let cv = 0; let lapseAge = 99; 
-                    const fmcMonthly = 0.012 / 12;
-                    const policyFeeMonthly = 1200 / 12; 
-                    let netMonthlyRoi = (Math.pow(1 + expectedRoi, 1/12) - 1) - fmcMonthly;
-
-                    for (let y = 1; y <= (99 - age); y++) {
-                        let currentAge = age + y - 1;
-                        let premiumChargePct = 0;
-                        if (y <= payYears) {
-                            if (y === 1) premiumChargePct = 0.50;
-                            else if (y === 2) premiumChargePct = 0.30;
-                            else if (y === 3) premiumChargePct = 0.10;
-                        }
-                        
-                        cv += (y <= payYears) ? premium * (1 - premiumChargePct) : 0;
-                        let monthlyCOIRate = getCOIRate(currentAge, gender) / 12;
-                        
-                        for (let m = 1; m <= 12; m++) {
-                            cv -= policyFeeMonthly;
-                            let nar = designType === 'A' ? Math.max(0, sumAssured - cv) : sumAssured;
-                            cv -= (nar * monthlyCOIRate);
-                            if (cv <= 0) { cv = 0; break; }
-                            cv = cv * (1 + netMonthlyRoi);
-                        }
-                        if (cv <= 0 && y > 1) { lapseAge = currentAge; break; }
-                    }
-                    return { lapseAge: lapseAge, finalCV: Math.max(0, cv) };
-                }
-
-                function optimizeUnitLinkedPremium(age, sumAssured, expectedRoi, gender, minPremium) {
-                    let targetLapseAge = Math.max(85, age + 20); 
-                    let low = minPremium;
-                    let high = sumAssured * 0.15; 
-                    let optimalPremium = high;
-                    
-                    for (let i = 0; i < 20; i++) { 
-                        let mid = (low + high) / 2;
-                        let simResult = simulateUnitLinkedCV(age, mid, sumAssured, expectedRoi, gender, 20, 'A');
-                        if (simResult.lapseAge >= targetLapseAge) {
-                            optimalPremium = mid; high = mid;
-                        } else {
-                            low = mid; 
-                        }
-                    }
-                    return Math.max(minPremium, Math.ceil(optimalPremium / 1000) * 1000);
                 }
 
                 function calculateExactPremium(productName, gender, age, sumAssured) {
@@ -583,15 +514,9 @@ window.AIControlCenter = {
                                 return { success: true, premium: exactPremium };
                             }
                         }
-                        
                         if (product && product.minPremiumRPP) {
-                            let expectedRoi = 0.05; 
-                            let calculatedPremium = optimizeUnitLinkedPremium(age, sumAssured, expectedRoi, genderKey, product.minPremiumRPP);
-                            let maxRealisticPremium = sumAssured * 0.10;
-                            if (calculatedPremium > maxRealisticPremium) calculatedPremium = Math.ceil(maxRealisticPremium / 1000) * 1000;
-                            return { success: true, premium: Math.max(product.minPremiumRPP, calculatedPremium) };
+                            return { success: true, premium: Math.max(product.minPremiumRPP, sumAssured * 0.05) };
                         }
-
                         return { success: false, error: "ไม่มีข้อมูลอัตราเบี้ย" };
                     } catch (e) {
                         return { success: false, error: "Calculation Error" };
@@ -629,6 +554,10 @@ window.AIControlCenter = {
                         spiderChartInstance.destroy();
                         spiderChartInstance = null;
                     }
+                    
+                    let sbRes = document.getElementById('sandbox_results');
+                    if(sbRes) sbRes.innerHTML = '<p class="text-slate-500 italic text-center m-auto">รอการจำลองแผน... <br><span class="text-[10px] mt-2 block">(กรุณาจัดพอร์ตและระบุเบี้ยประกันให้ครบถ้วน จากนั้นกด Simulate)</span></p>';
+                    
                     termLog("UI Cleared for new case.", "info");
                 };
 
@@ -698,75 +627,53 @@ window.AIControlCenter = {
 
                             let tInc = sumVals(dyn.c_inc);
                             
-                            // 🌟 1. ดึงข้อมูลสินทรัพย์ (Assets) และหาสภาพคล่องจาก Dropdown 🌟
-                            let tAst = 0;
-                            let liquidAssets = 0;
+                            let tAst = 0; let liquidAssets = 0;
                             (dyn.c_assets || []).forEach(item => {
                                 let cat = String(item.type || item[0] || "").trim(); 
                                 let v = Number(item.val || item[2] || item[1]) || 0; 
                                 tAst += v;
-                                if (cat === "สินทรัพย์สภาพคล่อง") {
-                                    liquidAssets += v;
-                                }
+                                if (cat === "สินทรัพย์สภาพคล่อง") liquidAssets += v;
                             });
-                            if (liquidAssets === 0 && tAst > 0) {
-                                liquidAssets = tAst * 0.3; // Fallback
-                            }
+                            if (liquidAssets === 0 && tAst > 0) liquidAssets = tAst * 0.3;
 
-                            // 🌟 2. ดึงข้อมูลรายจ่าย (Expenses) และหาภาระผ่อนหนี้จาก Dropdown 🌟
-                            let tExp = 0;
-                            let totalDebtPmt = 0;
+                            let tExp = 0; let totalDebtPmt = 0;
                             (dyn.c_exp || []).forEach(item => {
                                 let cat = String(item.type || item[0] || "").trim();
                                 let v = Number(item.val || item[2] || item[1]) || 0;
                                 tExp += v;
-                                if (cat === "เงินชำระคืนหนี้สิน") {
-                                    totalDebtPmt += v;
-                                }
+                                if (cat === "เงินชำระคืนหนี้สิน") totalDebtPmt += v;
                             });
 
-                            // 🌟 3. ดึงข้อมูลหนี้สิน (Liabilities) และหาหนี้เสียจาก Dropdown 🌟
-                            let tLiab = 0; 
-                            let badDebt = 0;
+                            let tLiab = 0; let badDebt = 0;
                             (dyn.c_liab || []).forEach(item => {
                                 let cat = String(item.type || item[0] || "").trim();
                                 let v = Number(item.val || item[2] || item[1]) || 0;
                                 tLiab += v;
-                                if (cat === "หนี้สินระยะสั้น") {
-                                    badDebt += v;
-                                }
+                                if (cat === "หนี้สินระยะสั้น") badDebt += v;
                             });
 
-                            // Fallback กรณีไม่ได้ระบุรายจ่ายชำระคืนหนี้สินใน Expense แต่มีหนี้ในฝั่ง Liabilities
                             if (totalDebtPmt === 0) {
                                 (dyn.c_liab || []).forEach(item => {
                                     let pmt = Number(item.pmt || item[2]) || 0;
                                     totalDebtPmt += pmt;
                                 });
                             }
-                            if (totalDebtPmt === 0 && tLiab > 0) {
-                                totalDebtPmt = tLiab * 0.03; 
-                            }
+                            if (totalDebtPmt === 0 && tLiab > 0) totalDebtPmt = tLiab * 0.03; 
                             
                             let currentInsurance = dyn.c_ins || [];
                             let smartGoals = dyn.c_goals || [];
 
                             let netWorth = latestVisit.netWorth || (tAst - tLiab);
                             
-                            // 🌟 1.1 Fixed Zero-Division in DTI Logic 🌟
                             let dtiRatio = 0;
-                            if (tInc > 0) {
-                                dtiRatio = totalDebtPmt / tInc;
-                            } else if (totalDebtPmt > 0) {
-                                dtiRatio = 1.0; 
-                            }
+                            if (tInc > 0) dtiRatio = totalDebtPmt / tInc;
+                            else if (totalDebtPmt > 0) dtiRatio = 1.0; 
                             dtiRatio = Math.min(1.0, Math.max(0, dtiRatio));
                             let badDebtRatio = tLiab > 0 ? (badDebt / tLiab) : 0;
 
                             let allNotes = latestVisit.activities ? latestVisit.activities.map(act => act.text).join(" | ") : "";
                             let originalScore = parseFloat(latestVisit.aiScore) || 50;
                             
-                            // 🌟 1.4 Extracted 9D Behaviors 🌟
                             let risk = parseFloat(prof.p_risk) || 0.5;
                             let recency = parseFloat(prof.p_recency) || 0.5;
                             let frequency = parseFloat(prof.p_frequency) || 0.5;
@@ -820,7 +727,6 @@ window.AIControlCenter = {
                 // 🧠 AI Engine Core
                 // ==========================================
                 window.AIEngineCore = {
-                    
                     predictSuccessProbability: function(data) {
                         let age = parseFloat(data.age) || 30;
                         let inc = parseFloat(data.inc) || 0;
@@ -829,7 +735,6 @@ window.AIControlCenter = {
                         let dti = parseFloat(data.dti) || 0;
                         let dep = parseFloat(data.dependents) || 0;
 
-                        // 🌟 วิเคราะห์ความเสี่ยงฝั่งรายได้ (Income Risk Analysis) 🌟
                         let occ = String(data.occ || "").toLowerCase();
                         let occRiskScore = 0;
                         let occType = "ทั่วไป (ปานกลาง)";
@@ -843,7 +748,7 @@ window.AIControlCenter = {
                             occRiskScore = 0;
                             occType = "ปานกลาง (Medium Volatility)";
                         }
-                        data.occType = occType; // แนบค่ากลับไปแสดงผลที่ UI
+                        data.occType = occType;
 
                         let base = 50;
                         let incScore = (inc / 100000) * 10;
@@ -852,7 +757,6 @@ window.AIControlCenter = {
                         let dtiPenalty = (dti * 100) * 0.6; 
                         let depPenalty = dep * 2;
 
-                        // 🌟 1.2 Deep Learning Core Score Bounding (Sigmoid Function) 🌟
                         let scoreRaw = base + incScore + nwScore - debtPenalty - dtiPenalty - depPenalty + occRiskScore;
                         let finalScore = 100 / (1 + Math.exp(-0.05 * (scoreRaw - 50)));
                         
@@ -896,7 +800,6 @@ window.AIControlCenter = {
                         return { conf: Math.max(0, confidence), text: warnings };
                     },
 
-                    // 🌟 2.1 & 3.1 XSS Protection & Negation Handling 🌟
                     analyzeSentiment: function(text) {
                         let safeText = escapeHTML(String(text || ""));
                         let textLower = safeText.toLowerCase();
@@ -941,7 +844,6 @@ window.AIControlCenter = {
                             if (isNaN(originalValue) || originalValue === 0) return;
                             
                             let delta = Math.abs(originalValue * PERTURBATION_RATE);
-                            // 🌟 1.3 Fix Integer features perturbation 🌟
                             if (feat === 'dependents') delta = Math.ceil(delta);
                             
                             let testDataUp = { ...data }; testDataUp[feat] += delta;
@@ -959,12 +861,12 @@ window.AIControlCenter = {
                                 const xaiNLG = {
                                     inc: {
                                         pos: [
-                                            "เปรียบเสมือน 'เครื่องยนต์หลัก' ที่มีกำลังขับเคลื่อนสูง ช่วยเร่งความเร็วในการสร้างความมั่งคั่งให้ถึงเป้าหมายได้ง่ายขึ้น", 
-                                            "กระแสเงินสดรับที่แข็งแกร่ง เปิดโอกาสให้ FA สามารถวางแผน Asset Allocation ได้หลากหลายและรับความเสี่ยงได้มากขึ้น"
+                                            "เสมือน 'เครื่องยนต์หลัก' ในการสร้างความมั่งคั่ง ยิ่งกระแสเงินสดแข็งแกร่ง ยิ่งเพิ่มความยืดหยุ่นในการจัดพอร์ตให้ทนทานต่อความผันผวน", 
+                                            "กระแสเงินสดรับที่สม่ำเสมอ เปิดโอกาสให้ FA สามารถวางแผน Asset Allocation ได้หลากหลายและรับความเสี่ยงได้มากขึ้น"
                                         ],
                                         neg: [
                                             "กระแสเงินสดเข้ามีจำกัดเมื่อเทียบกับความคาดหวัง ทำให้พอร์ตเติบโตช้าลงและต้องอาศัยวินัยที่สูงมาก", 
-                                            "รายได้ค่อนข้างตึงตัว FA ควรระมัดระวังในการเสนอผลิตภัณฑ์ที่ต้องชำระเบี้ยระยะยาวสูงๆ"
+                                            "รายได้ค่อนข้างตึงตัว FA ควรระมัดระวังในการเสนอผลิตภัณฑ์ที่ต้องชำระเบี้ยระยะยาวสูงๆ เพื่อหลีกเลี่ยงภาระระยะยาว"
                                         ]
                                     },
                                     nw: {
@@ -974,13 +876,13 @@ window.AIControlCenter = {
                                         ],
                                         neg: [
                                             "ฐานทุนสะสมยังน้อยเกินไปเมื่อเทียบกับอายุหรือภาระ อาจต้องพึ่งพาดอกเบี้ยทบต้นอีกยาวนานกว่าจะถึงเป้า", 
-                                            "ขาดกันชนทางการเงิน หากเกิดเหตุไม่คาดฝัน แผนทั้งหมดที่วางไว้อาจพังทลายลงทันที"
+                                            "ขาดกันชนทางการเงิน หากเกิดเหตุไม่คาดฝัน แผนทั้งหมดที่วางไว้อาจพังทลายลงทันที แนะนำให้รีบโอนความเสี่ยง"
                                         ]
                                     },
                                     liabilities: {
                                         neg: [
-                                            "เสมือน 'หลุมดำ' ที่ดูดกลืนเงินออม ภาระดอกเบี้ยจ่ายกำลังหักล้างผลตอบแทนที่ควรจะได้จากการลงทุน", 
-                                            "ก้อนหนี้ขนาดใหญ่นี้คือตัวฉุดรั้งสภาพคล่อง FA ควรโฟกัสที่การทำ Debt Restructuring เป็นอันดับแรก"
+                                            "เปรียบเสมือน 'รอยรั่ว' ภาระดอกเบี้ยจ่ายกำลังบั่นทอนผลตอบแทนทบต้น FA ควรแนะนำกลยุทธ์รวมหนี้ (Debt Consolidation) เพื่อเพิ่มสภาพคล่อง", 
+                                            "ก้อนหนี้ขนาดใหญ่นี้คือตัวฉุดรั้งสภาพคล่อง FA ควรโฟกัสที่การทำ Debt Restructuring ควบคู่กับการปกป้องสินทรัพย์"
                                         ]
                                     },
                                     dti: {
@@ -990,7 +892,7 @@ window.AIControlCenter = {
                                         ],
                                         neg: [
                                             "รายจ่ายชำระหนี้ต่อเดือนเบียดเบียนพื้นที่เงินออม ทำให้แผนเดินหน้ายาก และเสี่ยงต่อการสะดุดล้มกลางทาง", 
-                                            "หนี้รัดตัวจนสภาพคล่องติดขัด เป็นความเสี่ยงหลักที่ทำให้คะแนนความสำเร็จของแผนลดฮวบ"
+                                            "หนี้รัดตัวจนสภาพคล่องติดขัด เป็นความเสี่ยงหลักที่ทำให้คะแนนความสำเร็จของแผนลดฮวบ ต้องระวังการสร้างภาระเพิ่ม"
                                         ]
                                     },
                                     exp: {
@@ -1015,7 +917,7 @@ window.AIControlCenter = {
                                         reason = pickNLG(xaiNLG[feat]['neg']); 
                                     }
                                 } else {
-                                    reason = "ตัวแปรนี้ทำปฏิกิริยากับโมเดลเชิงลึก ส่งผลต่อการเปลี่ยนทิศทางของกราฟความสำเร็จ";
+                                    reason = "ปัจจัยนี้ส่งผลกระทบต่อคะแนนความสำเร็จของแผนการเงินในระดับที่มีนัยสำคัญตามหลักคณิตศาสตร์ประกันภัย";
                                 }
 
                                 explanations.push({
@@ -1032,33 +934,15 @@ window.AIControlCenter = {
 
                     generateCounterfactuals: function(data, currentScore) {
                         let plans = [];
-                        
                         if (data.dti > 0.4) {
                             let reduceDebt = (data.dti - 0.35) * data.inc;
                             if (reduceDebt > 0) {
-                                plans.push('<div class="bg-emerald-900/20 border border-emerald-500/30 p-3 rounded-lg text-xs mb-3 shadow-sm">' +
-                                    '<span class="text-emerald-400 font-bold block mb-1">🔼 ทางเลือกเชิงรุก (Positive Action):</span> ' +
-                                    'หากสามารถทำ <b>Debt Consolidation (รวบหนี้)</b> เพื่อลดภาระส่งหนี้ต่อเดือนลงได้ ' + formatB(reduceDebt) + ' บาท จะเป็นการปลดล็อกสภาพคล่องที่ถูกแช่แข็ง ดันคะแนนพุ่งทันที +12%' +
-                                '</div>');
+                                plans.push('<div class="bg-emerald-900/20 border border-emerald-500/30 p-3 rounded-lg text-xs mb-3 shadow-sm"><span class="text-emerald-400 font-bold block mb-1">🔼 ทางเลือกเชิงรุก (Positive Action):</span> หากสามารถทำ <b>Debt Consolidation (รวบหนี้)</b> ลดภาระส่งหนี้ต่อเดือนลงได้ ' + formatB(reduceDebt) + ' บาท จะเป็นการปลดล็อกสภาพคล่อง ดันคะแนนความสำเร็จให้พุ่งขึ้นทันทีและเพิ่มกระแสเงินสดส่วนเกิน (Free Cashflow) สำหรับต่อยอดการลงทุน</div>');
                             }
                         } else {
-                            plans.push('<div class="bg-emerald-900/20 border border-emerald-500/30 p-3 rounded-lg text-xs mb-3 shadow-sm">' +
-                                '<span class="text-emerald-400 font-bold block mb-1">🔼 ทางเลือกเชิงรุก (Positive Action):</span> ' +
-                                'เพียงแค่คุมรายจ่ายฟุ่มเฟือย และโยกเงิน ' + formatB(data.inc * 0.1) + '/เดือน มาทำระบบออมอัตโนมัติ (Automated Saving) พลังดอกเบี้ยทบต้นจะเร่งทวีคูณคะแนนความสำเร็จให้แตะเป้าหมายเร็วขึ้นอย่างชัดเจน' +
-                            '</div>');
+                            plans.push('<div class="bg-emerald-900/20 border border-emerald-500/30 p-3 rounded-lg text-xs mb-3 shadow-sm"><span class="text-emerald-400 font-bold block mb-1">🔼 ทางเลือกเชิงรุก (Positive Action):</span> เพียงแค่ตั้งระบบตัดเงินอัตโนมัติ โยกเงิน ' + formatB(data.inc * 0.1) + '/เดือน มาลงทุนแบบประจำ (Dollar Cost Averaging) พลังของดอกเบี้ยทบต้นจะช่วยร่นระยะเวลาบรรลุเป้าหมายทางการเงินให้เร็วขึ้นอย่างชัดเจน</div>');
                         }
-
-                        plans.push('<div class="bg-blue-900/20 border border-blue-500/30 p-3 rounded-lg text-xs mb-3 shadow-sm">' +
-                            '<span class="text-blue-400 font-bold block mb-1">⏩ ทางเลือกสายกลาง (Neutral Alternative):</span>' +
-                            'หากจังหวะชีวิตตอนนี้ยังไม่สะดวกที่จะเพิ่มเงินออม การ <b>"ยืดเวลาเป้าหมายออกไปอีก 2-3 ปี"</b> หรือ <b>"ปรับสัดส่วนพอร์ตไปลงทุนในระดับความเสี่ยงปานกลาง (Medium Risk)"</b> จะช่วยรักษาสภาพคล่องในปัจจุบันไว้ได้ โดยที่คะแนนรวมจะไม่ตกลง' +
-                        '</div>');
-
-                        let negImpact = data.inc * 0.2;
-                        plans.push('<div class="bg-rose-900/20 border border-rose-500/30 p-3 rounded-lg text-xs shadow-sm">' +
-                            '<span class="text-rose-400 font-bold block mb-1">🔽 ปัจจัยฉุดรั้ง (Negative Risk Constraint):</span> ' +
-                            'หากเกิดเหตุฉุกเฉินแล้วต้องเพิ่มการก่อหนี้อีกเพียง ' + formatB(negImpact) + '/เดือน จะทำให้โครงสร้างทางการเงินเปราะบางเกินลิมิต และฉุดคะแนนความสำเร็จให้รูดลงมากกว่า -15% ในทันที' +
-                        '</div>');
-
+                        plans.push('<div class="bg-blue-900/20 border border-blue-500/30 p-3 rounded-lg text-xs mb-3 shadow-sm"><span class="text-blue-400 font-bold block mb-1">⏩ ทางเลือกสายกลาง (Neutral Alternative):</span> การ <b>"ยืดระยะเวลาเป้าหมายออกไป"</b> หรือลดสัดส่วนการลงทุนในสินทรัพย์เสี่ยงสูง จะช่วยรักษาสภาพคล่องในปัจจุบันไว้ได้ โดยที่คะแนนความสำเร็จรวมจะไม่ตกลง เหมาะสำหรับปรับใช้ในช่วงที่เศรษฐกิจมีความผันผวนสูง</div>');
                         return plans;
                     },
 
@@ -1087,101 +971,31 @@ window.AIControlCenter = {
                         let totalPremiumRec = 0; 
 
                         if (gapEmergency > 0) {
-                            let premCalc = calculateExactPremium("AIA Smart Select", gender, age, 500000); 
-                            let prem = premCalc.success ? premCalc.premium : (data.inc * 0.05 * 12);
-                            products.push({ 
-                                name: "Emergency Fund Allocation", 
-                                match: 92, 
-                                basePlan: "AIA Smart Select (Unit Linked)",
-                                rider: "ไม่มี",
-                                gapImpact: "ปิดรอยรั่ว Emergency Gap 100% (สร้าง Cash Buffer สำรองฉุกเฉิน)",
-                                reason: "ทำหน้าที่เป็นถังพักเงินฉุกเฉิน สภาพคล่องสูง ถอนได้ไม่เจ็บตัว พร้อมโอกาสรับผลตอบแทนที่เอาชนะเงินฝากธนาคารได้",
-                                premium: prem
-                            });
+                            let prem = data.inc * 0.05 * 12;
+                            products.push({ name: "Emergency Fund Allocation", match: 92, basePlan: "AIA Smart Select (Unit Linked)", rider: "ไม่มี", gapImpact: "ปิดรอยรั่ว Emergency Gap", reason: "ทำหน้าที่เป็นถังพักเงินฉุกเฉิน สภาพคล่องสูง ถอนได้ไม่เจ็บตัว พร้อมโอกาสรับผลตอบแทนที่เอาชนะเงินฝากธนาคารได้ <br><b class='text-emerald-400'>[Trade-off Analysis]:</b> ต้นทุนเสียโอกาส (Opportunity Cost) ต่ำ แลกกับสภาพคล่องและผลตอบแทนที่ยืดหยุ่น เหมาะสำหรับพักเงินเพื่อรอจังหวะลงทุน (Investment Route) เพื่อปกป้องสภาพคล่องหลักจากการถูกดึงไปใช้ผิดประเภท", premium: prem });
                             totalPremiumRec += (prem / 12);
                         }
-
                         if (gapLife > 0) {
-                            let prodName = (gapLife > 5000000 && data.inc < 100000) ? "AIA Life Protector 70" : "AIA 20 Pay Life";
                             let sa = Math.max(100000, gapLife);
-                            let premCalc = calculateExactPremium(prodName, gender, age, sa);
-                            let prem = premCalc.success ? premCalc.premium : (data.inc * 0.05 * 12);
-                            
-                            products.push({ 
-                                name: "Life & Debt Protection", 
-                                match: 95, 
-                                basePlan: prodName,
-                                rider: "ไม่มี",
-                                gapImpact: "คุ้มครอง Life/Family Gap " + formatB(sa) + " บาท ป้องกันหนี้ตกทอด",
-                                reason: "สร้างกำแพงปกป้องความเสี่ยงหนี้สินด้วยทุนชีวิต หากเกิดเหตุไม่คาดฝัน ครอบครัวจะปลอดภัยและไม่รับภาระหนี้ต่อ",
-                                premium: prem
-                            });
+                            let prem = data.inc * 0.05 * 12;
+                            products.push({ name: "Life & Debt Protection", match: 95, basePlan: "AIA 20 Pay Life", rider: "ไม่มี", gapImpact: "คุ้มครอง Life/Family Gap " + formatB(sa) + " บาท", reason: "สร้างกำแพงปกป้องความเสี่ยงหนี้สินด้วยทุนชีวิต หากเกิดเหตุไม่คาดฝัน ครอบครัวจะปลอดภัยและไม่รับภาระหนี้ตกทอด <br><b class='text-blue-400'>[Trade-off Analysis]:</b> ยอมจ่ายเบี้ยหลักหมื่น (Fixed Cost) เพื่อปกป้องความมั่งคั่งหลักล้าน (High Leverage Benefit) เป็นการสร้างหลักประกันเพื่อป้องกันการถูกบังคับขายสินทรัพย์ (Forced Liquidation) ในภาวะฉุกเฉิน ซึ่งเป็นหายนะของการลงทุน", premium: prem });
                             totalPremiumRec += (prem / 12);
                         }
-
                         if (gapHealth) {
-                            let healthSA = 5000000;
-                            let healthPrem = calculateRiderPremium("AIA Health Happy", gender, age, healthSA);
-                            let ciSA = 1000000;
-                            let ciPrem = calculateRiderPremium("AIA CI Plus", gender, age, ciSA);
-                            let totalHealthPrem = healthPrem + ciPrem;
-                            if (totalHealthPrem <= 0) totalHealthPrem = 25000; 
-
-                            products.push({ 
-                                name: "Health & CI Protection", 
-                                match: 88, 
-                                basePlan: "AIA 20 Pay Life (ทุนขั้นต่ำ)",
-                                rider: "AIA Health Happy (5M) + CI Plus",
-                                gapImpact: "อุดช่องโหว่ค่ารักษาพยาบาลและโรคร้ายแรง (Health/CI Gap) 100%",
-                                reason: "ปิดหลุมดำค่าใช้จ่ายรักษาโรคร้าย (เฉลี่ย 1-3 ล้านบาท) การโอนความเสี่ยงก้อนนี้ให้บริษัทประกัน คือกุญแจสำคัญที่ช่วยปกป้องความมั่งคั่งไม่ให้ล้มละลาย",
-                                premium: totalHealthPrem
-                            });
+                            let totalHealthPrem = 25000; 
+                            products.push({ name: "Health & CI Protection", match: 88, basePlan: "AIA 20 Pay Life (ทุนขั้นต่ำ)", rider: "AIA Health Happy + CI Plus", gapImpact: "อุดช่องโหว่ค่ารักษาพยาบาลและโรคร้ายแรง", reason: "ปิดหลุมดำค่าใช้จ่ายรักษาโรคร้าย (เฉลี่ย 1-3 ล้านบาท) การโอนความเสี่ยงก้อนนี้ให้บริษัทประกัน คือกุญแจสำคัญที่ช่วยปกป้องความมั่งคั่งไม่ให้ล้มละลาย <br><b class='text-pink-400'>[Trade-off Analysis]:</b> จ่ายเบี้ยคงที่ แลกกับการล็อกเพดานความเสียหายทางการแพทย์แบบ 100% (Unlimited Risk to Fixed Cost) ถือเป็นการลงทุนซื้อ 'เวลาและทางเลือก' ในการรักษา โดยไม่ต้องเบียดเบียนพอร์ตเกษียณอายุ (Retirement Portfolio)", premium: totalHealthPrem });
                             totalPremiumRec += (totalHealthPrem / 12);
                         }
-
+                        
                         if (gapLife <= 0 && !gapHealth) {
-                            let ulSA = Math.max(500000, data.inc * 12);
-                            let premCalc = calculateExactPremium("AIA Issara Plus", gender, age, ulSA);
-                            let prem = premCalc.success ? premCalc.premium : (data.inc * 0.10 * 12);
-                            
-                            products.push({ 
-                                name: "Wealth Accumulation", 
-                                match: 98, 
-                                basePlan: "AIA Issara Plus (Unit Linked)",
-                                rider: "ไม่มี",
-                                gapImpact: "เร่งการเติบโตของสินทรัพย์ (Wealth Optimization)",
-                                reason: "ลูกค้ามีความพร้อมด้านสภาพคล่องระดับสูง เหมาะสมอย่างยิ่งกับการหาผลตอบแทนชนะเงินเฟ้อด้วยพอร์ตลงทุนที่ปรับสัดส่วนได้อย่างอิสระ",
-                                premium: prem
-                            });
+                            let prem = data.inc * 0.10 * 12;
+                            products.push({ name: "Wealth Accumulation", match: 98, basePlan: "AIA Issara Plus (Unit Linked)", rider: "ไม่มี", gapImpact: "เร่งการเติบโตของสินทรัพย์ (Wealth Optimization)", reason: "ลูกค้ามีความพร้อมด้านสภาพคล่องระดับสูง เหมาะสมอย่างยิ่งกับการหาผลตอบแทนชนะเงินเฟ้อด้วยพอร์ตลงทุนที่ปรับสัดส่วนได้อย่างอิสระ <br><b class='text-cyan-400'>[Trade-off Analysis]:</b> ล็อกเงินสดไว้ระยะยาว (Liquidity Lock) แลกกับโอกาสเติบโตของเงินทุน (Capital Gain) ชนะอัตราเงินเฟ้อ ถือเป็นการ Shift จาก Risk Protection สู่ Wealth Generation อย่างเต็มตัว", premium: prem });
                             totalPremiumRec += (prem / 12);
                         }
-
-                        if (data.reqInc > 0 && data.age < 55) {
-                            let annSA = data.reqInc * 12 * 10;
-                            let premCalc = calculateExactPremium("AIA Annuity Fix", gender, age, annSA);
-                            let prem = premCalc.success ? premCalc.premium : (data.reqInc * 2 * 12);
-                            
-                            products.push({ 
-                                name: "Retirement Floor Income", 
-                                match: 85, 
-                                basePlan: "AIA Annuity Fix (บำนาญ)",
-                                rider: "ไม่มี",
-                                gapImpact: "การันตีกระแสเงินสดหลังเกษียณ " + formatB(data.reqInc) + "/เดือน",
-                                reason: "เป็นเสาหลักค้ำยันกระแสเงินสดหลังเกษียณ การันตีรายได้เพื่อปิดความเสี่ยงกรณีที่อายุยืนยาวเกินคาด (Longevity Risk)",
-                                premium: prem
-                            });
-                            totalPremiumRec += (prem / 12);
-                        }
-
-                        products = products.slice(0, 3); 
 
                         return { 
-                            gaps: { 
-                                emergency: gapEmergency, 
-                                life: gapLife, 
-                                health: gapHealth ? "พบช่องโหว่ความคุ้มครอง" : "คุ้มครองครอบคลุมแล้ว" 
-                            }, 
-                            products: products,
+                            gaps: { emergency: gapEmergency, life: gapLife, health: gapHealth ? "พบช่องโหว่ความคุ้มครอง" : "คุ้มครองครอบคลุมแล้ว" }, 
+                            products: products.slice(0, 3),
                             suggestedPremium: totalPremiumRec
                         };
                     },
@@ -1190,53 +1004,23 @@ window.AIControlCenter = {
                         let score = 5;
                         let drivers = [];
                         
-                        const lapseNLG = {
-                            highDti: [
-                                "🚨 <b>ระดับ DTI วิกฤต:</b> ภาระผ่อนชำระหนี้รัดตัวทำให้ความอดทนในการส่งเบี้ยประกันต่ำมาก หากเศรษฐกิจสะดุดเล็กน้อย ลูกค้ามีโอกาสทิ้งกรมธรรม์สูง", 
-                                "🚨 <b>ภาระหนี้ล้นพ้น:</b> ตามหลักจิตวิทยา ลูกค้าจะเลือก 'จ่ายหนี้แบงก์' เพื่อหนีทวงถาม ก่อน 'จ่ายค่าประกัน' เสมอ"
-                            ],
-                            lowInc: [
-                                "⚠️ <b>สภาพคล่องเปราะบาง:</b> รายได้ยังไม่สูงพอ โอกาสที่กรมธรรม์จะสะดุดจากรายจ่ายฉุกเฉินหรือช็อตเงินมีสูงมาก", 
-                                "⚠️ <b>Income Shock Risk:</b> ปราการเงินสดบางตากรอบ การเก็บเบี้ยระยะยาวเป็นความท้าทายอย่างยิ่งสำหรับเคสนี้"
-                            ],
-                            negCf: [
-                                "🔥 <b>กระแสเงินสดติดลบ:</b> รายจ่ายแซงรายได้ไปแล้ว ถือเป็นสัญญาณเตือนภัยแดง (Red Flag) เรื่องความสามารถในการชำระเบี้ย", 
-                                "🔥 <b>Deficit Alert:</b> เงินไม่พอใช้ในแต่ละเดือน หาก FA ยัดเยียดเบี้ยประกันเข้าไป โอกาส Lapse ภายในปีแรกมีเกือบ 100%"
-                            ],
-                            badDebt: [
-                                "🧨 <b>หนี้พิษ (Toxic Debt):</b> โครงสร้างหนี้ส่วนใหญ่เป็น 'หนี้บริโภคดอกเบี้ยสูง' (Bad Debt) โอกาสผิดนัดชำระเบี้ยประกันสูงมากหากลูกค้าเสียศูนย์ทางสภาพคล่อง",
-                                "🧨 <b>พฤติกรรมเสี่ยงสูง:</b> มีการพึ่งพาบัตรเครดิตหรือหนี้นอกระบบ การจ่ายเบี้ยประกันจะเป็นสิ่งแรกที่ลูกค้าตัดทิ้งเพื่อความอยู่รอด"
-                            ],
-                            goodDebt: [
-                                "✅ <b>หนี้มีคุณภาพ:</b> โครงสร้างหนี้ส่วนใหญ่เป็น 'หนี้ดี' (สินเชื่อบ้าน/กู้ลงทุนธุรกิจ) สะท้อนถึงวินัยทางการเงินที่ลูกค้าจัดการและวางแผนไว้แล้ว",
-                                "✅ <b>Healthy Leverage:</b> แม้จะมีหนี้ แต่เป็นหนี้เพื่อสร้างทรัพย์สิน (Asset Building) ความตื่นตระหนกทางการเงินต่ำ"
-                            ],
-                            good: [
-                                "🌟 <b>พฤติกรรมมั่นคง:</b> โครงสร้าง Cashflow หนาแน่น ถือกรมธรรม์ได้ยาวนาน ลูกค้าชั้นดี!", 
-                                "🌟 <b>Low Churn Probability:</b> ทุนหนา หนี้ต่ำ เป็นเป้าหมายที่เพอร์เฟกต์สำหรับการวางแผนระยะยาว (Persistency Rating สูง)"
-                            ]
-                        };
+                        if(data.dti > SYS_CONFIG.WARNING_DTI) { score += 40; drivers.push("🚨 <b>ระดับ DTI วิกฤต:</b> ภาระผ่อนชำระหนี้รัดตัวทำให้ความทนทานในการส่งเบี้ยประกันต่ำมาก หากเศรษฐกิจสะดุดเล็กน้อย ลูกค้ามีโอกาสทิ้งกรมธรรม์สูง"); }
+                        else if(data.dti > SYS_CONFIG.SAFE_DTI) { score += 15; drivers.push("⚠️ <b>หนี้เริ่มตึงตัว:</b> ต้องระวังการเสนอเบี้ยประกันที่หนักหรือตึงมือเกินไป อาจกระทบเป้าหมายการเงินอื่นๆ ของลูกค้า"); }
 
-                        if(data.dti > SYS_CONFIG.WARNING_DTI) { score += 40; drivers.push(pickNLG(lapseNLG.highDti)); }
-                        else if(data.dti > SYS_CONFIG.SAFE_DTI) { score += 15; drivers.push("⚠️ <b>หนี้เริ่มตึงตัว:</b> ต้องระวังการวางเบี้ยประกันที่หนักหรือตึงมือเกินไป"); }
-
-                        if(data.inc < 30000) { score += 20; drivers.push(pickNLG(lapseNLG.lowInc)); }
-                        if(data.exp > data.inc && data.inc > 0) { score += 30; drivers.push(pickNLG(lapseNLG.negCf)); }
+                        if(data.inc < 30000) { score += 20; drivers.push("⚠️ <b>สภาพคล่องเปราะบาง:</b> รายได้ยังไม่สูงพอ โอกาสที่กรมธรรม์จะสะดุดจากรายจ่ายฉุกเฉินมีค่อนข้างสูง"); }
+                        if(data.exp > data.inc && data.inc > 0) { score += 30; drivers.push("🔥 <b>กระแสเงินสดตึงตัว:</b> หากเพิ่มภาระเบี้ยประกันในเวลานี้ มีความเสี่ยงสูงที่ลูกค้าจะทิ้งกรมธรรม์กลางทาง ควรเน้นแก้ปัญหาสภาพคล่องก่อน"); }
 
                         if(data.badDebtRatio > 0.5 && data.liabilities > 0) {
-                            score += 25; 
-                            drivers.push(pickNLG(lapseNLG.badDebt));
+                            score += 25; drivers.push("🧨 <b>หนี้พิษ (Toxic Debt):</b> โครงสร้างหนี้ส่วนใหญ่เป็น 'หนี้บริโภคดอกเบี้ยสูง' (Bad Debt) โอกาสผิดนัดชำระเบี้ยประกันสูงมาก ควรโฟกัส Debt Management ก่อน");
                         } else if (data.liabilities > 0 && data.badDebtRatio <= 0.2) {
-                            score -= 10; 
-                            drivers.push(pickNLG(lapseNLG.goodDebt));
+                            score -= 10; drivers.push("✅ <b>หนี้มีคุณภาพ:</b> โครงสร้างหนี้ส่วนใหญ่เป็น 'หนี้ดี' (สินเชื่อบ้าน/ธุรกิจเพื่อการเติบโต) สะท้อนถึงวินัยทางการเงินที่ดีเยี่ยม");
                         }
 
-                        if(score <= 15) drivers.push(pickNLG(lapseNLG.good));
+                        if(score <= 15) drivers.push("🌟 <b>พฤติกรรมมั่นคง:</b> โครงสร้าง Cashflow หนาแน่น การรักษาอัตราความคงอยู่ของกรมธรรม์ (Persistency) มีความแน่นอนสูง เหมาะสมกับการวางแผน Wealth ทุกรูปแบบ");
 
                         return { score: Math.min(99, Math.max(1, score)), drivers: drivers };
                     },
 
-                    // 🌟 1.4 9D Persona Clustering 🌟
                     KMeans: {
                         Centroids: { 
                             "กลุ่มเปราะบาง/หนี้วิกฤต": { age: 0.3, inc: 0.1, nw: 0.05, risk: 0.2, dti: 0.9, recency: 0.2, frequency: 0.2, discipline: 0.1, dep: 0.8 }, 
@@ -1271,95 +1055,233 @@ window.AIControlCenter = {
                         let auditTrail = [];
                         let discount = 0; let cap = 100;
 
-                        const auditNLG = {
-                            cap: [
-                                "ตรวจพบหนี้สินวิกฤต (DTI > 60%) ระบบทำการล็อกเพดานความสำเร็จ (Hard Cap) ไว้ที่ 45% เพื่อสะท้อนความจริง", 
-                                "ระบบสั่งเบรกฉุกเฉิน! ภาระหนี้ทำลายโครงสร้างสภาพคล่อง บังคับเพดานคะแนนให้ต่ำลงเพื่อเตือนภัย"
-                            ],
-                            pen_dti: [
-                                "หักคะแนนชดเชยความเสี่ยง (Discount Penalty) จากภาระหนี้สินที่อยู่ในระดับเตือนภัย", 
-                                "ภาระส่งหนี้เริ่มเบียดเบียนเงินออม ระบบปรับลบคะแนนเพื่อเผื่อเหลือเผื่อขาดสำหรับความผันผวน"
-                            ],
-                            pen_neg: [
-                                "ทำโทษขั้นรุนแรง (Critical Penalty) เนื่องจากกระแสเงินสดติดลบ ขัดหลักเกณฑ์การออมที่ถูกต้อง", 
-                                "รายจ่ายสูงกว่ารายได้ โมเดลหั่นคะแนนทิ้งเพราะโอกาสเงินหมดกลางทางสูงมาก"
-                            ],
-                            pass: [
-                                "สอบผ่านเกณฑ์หนี้สิน (DTI Safe Zone) ไม่มีการหักคะแนนในส่วนนี้", 
-                                "โครงสร้าง Cashflow อยู่ในโซนสุขภาพดีเยี่ยม ระบบให้ผ่านโดยปราศจากบทลงโทษ"
-                            ]
-                        };
-
                         if (features.exp > features.inc && features.inc > 0) {
-                            cap = 30;
-                            auditTrail.push('<div class="flex justify-between text-rose-500 border-b border-slate-800 pb-2 mb-2"><span><b>[CRITICAL CAP]</b> ' + pickNLG(auditNLG.pen_neg) + '</span><span class="font-bold whitespace-nowrap ml-2">Max 30%</span></div>');
+                            cap = 30; auditTrail.push('<div class="flex justify-between text-rose-500 border-b border-slate-800 pb-2 mb-2"><span><b>[CRITICAL CAP]</b> กระแสเงินสดติดลบ (รายจ่ายสูงกว่ารายได้) ซึ่งตามหลักการเงินถือเป็นภาวะล้มละลายทางสภาพคล่อง</span><span class="font-bold whitespace-nowrap ml-2">Max 30%</span></div>');
                         }
                         else if (features.dti >= SYS_CONFIG.WARNING_DTI) {
-                            cap = 45;
-                            auditTrail.push('<div class="flex justify-between text-rose-400 border-b border-slate-800 pb-2 mb-2"><span><b>[HARD CAP]</b> ' + pickNLG(auditNLG.cap) + '</span><span class="font-bold whitespace-nowrap ml-2">Max 45%</span></div>');
+                            cap = 45; auditTrail.push('<div class="flex justify-between text-rose-400 border-b border-slate-800 pb-2 mb-2"><span><b>[HARD CAP]</b> หนี้สินวิกฤต (DTI > 60%) โครงสร้างการเงินเปราะบาง เสี่ยงต่อการล้มละลายหากเกิดเหตุฉุกเฉิน</span><span class="font-bold whitespace-nowrap ml-2">Max 45%</span></div>');
                         } else if (features.dti >= SYS_CONFIG.SAFE_DTI) {
-                            discount += 15;
-                            auditTrail.push('<div class="flex justify-between text-orange-400 border-b border-slate-800 pb-2 mb-2"><span><b>[PENALTY]</b> ' + pickNLG(auditNLG.pen_dti) + '</span><span class="font-bold whitespace-nowrap ml-2">-15%</span></div>');
+                            discount += 15; auditTrail.push('<div class="flex justify-between text-orange-400 border-b border-slate-800 pb-2 mb-2"><span><b>[PENALTY]</b> ภาระหนี้สินอยู่ในระดับเตือนภัย ระบบได้หักลบคะแนนเผื่อความผันผวนของดอกเบี้ยและรายจ่ายแล้ว</span><span class="font-bold whitespace-nowrap ml-2">-15%</span></div>');
                         } else {
-                            auditTrail.push('<div class="flex justify-between text-emerald-400 border-b border-slate-800 pb-2 mb-2"><span><b>[PASS]</b> ' + pickNLG(auditNLG.pass) + '</span><span class="font-bold whitespace-nowrap ml-2">0%</span></div>');
+                            auditTrail.push('<div class="flex justify-between text-emerald-400 border-b border-slate-800 pb-2 mb-2"><span><b>[PASS]</b> เกณฑ์หนี้สินสุขภาพดี (DTI Safe) โครงสร้าง Cashflow แข็งแกร่ง</span><span class="font-bold whitespace-nowrap ml-2">0%</span></div>');
                         }
 
                         if (features.dependents > 2) {
-                            discount += 5;
-                            auditTrail.push('<div class="flex justify-between text-orange-400 border-b border-slate-800 pb-2 mb-2"><span><b>[PENALTY]</b> ภาระดูแลครอบครัวใหญ่ ทำให้เงินออมสะดุดง่าย</span><span class="font-bold whitespace-nowrap ml-2">-5%</span></div>');
+                            discount += 5; auditTrail.push('<div class="flex justify-between text-orange-400 border-b border-slate-800 pb-2 mb-2"><span><b>[PENALTY]</b> มีภาระดูแลครอบครัวใหญ่ ทำให้สภาพคล่องส่วนเกินลดลงและแผนการเงินมีโอกาสสะดุดง่ายขึ้น</span><span class="font-bold whitespace-nowrap ml-2">-5%</span></div>');
                         }
 
                         let finalScore = mlScore - discount;
                         finalScore = Math.max(1.0, Math.min(finalScore, cap));
 
-                        auditTrail.push('<div class="mt-3 text-indigo-300 text-center italic text-xs leading-relaxed bg-indigo-900/20 p-2 rounded">"การปรับจูนเสร็จสิ้น! ระบบได้หักลบจุดบอดของแบบจำลอง Neural Network ด้วย Financial Expert Rules แล้ว ทำให้คะแนนมีความเป็นมนุษย์และสะท้อนโลกความจริงได้แม่นยำที่สุด"</div>');
+                        auditTrail.push('<div class="mt-3 text-indigo-300 text-center italic text-xs leading-relaxed bg-indigo-900/20 p-2 rounded">"การปรับจูนเสร็จสิ้น! ระบบได้หักลบจุดบอดของแบบจำลอง Neural Network ด้วย Financial Expert Rules เพื่อสะท้อนหลักเศรษฐศาสตร์พฤติกรรม (Behavioral Economics) ทำให้การวิเคราะห์มีความแม่นยำและอิงตามโลกความเป็นจริงได้สมบูรณ์แบบที่สุด"</div>');
 
                         return { finalScore: finalScore, discount: discount, auditTrail: auditTrail };
                     },
                     
-                    // 🌟 2.2 Re-Tone Executive Summary 🌟
                     generateExecutiveSummary: function(data, results) {
                         let p = results.persona;
                         let finalScore = results.con.finalScore;
-                        let gapHealth = results.rec.gaps.health !== "คุ้มครองครอบคลุมแล้ว";
-                        let gapLife = results.rec.gaps.life > 0;
-                        let topXai = results.xai.length > 0 ? results.xai[0] : null;
-
                         let tone = finalScore > 80 ? "positive" : (finalScore < 50 ? "critical" : "warning");
 
                         let p1 = '<div class="border-b border-fuchsia-500/30 pb-2 mb-2">' +
                                  '<b class="text-fuchsia-300 text-sm">📊 1. บทสรุปสถานะลูกค้า (Client Status):</b><br>' +
                                  '<span class="text-slate-300">จัดอยู่ในกลุ่ม <b>"' + p + '"</b> มีโอกาสสำเร็จภาพรวมที่ <b>' + finalScore.toFixed(1) + '%</b></span><br>';
                                  
-                        if (tone === "critical") {
-                            p1 += '<span class="text-rose-400 font-bold mt-1 block">🚨 โอกาสในการเข้าพบ: ลูกค้ามีโครงสร้างสภาพคล่องที่ท้าทาย แนะนำให้ชวนพูดคุยเรื่องการปรับโครงสร้างหนี้ (Debt Consolidation) เพื่อผ่อนแรงก่อนเริ่มแผนออม</span>';
-                        } else if (tone === "positive") {
-                            p1 += '<span class="text-emerald-400 font-bold mt-1 block">🌟 โอกาสในการเข้าพบ: ฐานะการเงินแข็งแกร่ง พร้อมสำหรับการแนะนำพอร์ตเพื่อปกป้องและต่อยอดความมั่งคั่งให้เต็มศักยภาพสูงสุด</span>';
-                        } else {
-                            p1 += '<span class="text-orange-400 font-bold mt-1 block">⚠️ โอกาสในการเข้าพบ: สถานะโดยรวมอยู่ในเกณฑ์ดี แต่อาจมีรอยรั่วที่ต้องช่วยลูกค้าอุดเพื่อป้องกันแผนสะดุดในระยะยาว (Risk Mitigation)</span>';
-                        }
+                        if (tone === "critical") p1 += '<span class="text-rose-400 font-bold mt-1 block">🚨 โอกาสในการเข้าพบ (Strategic Approach): ลูกค้ามีโครงสร้างสภาพคล่องที่เปราะบางและท้าทาย แนะนำให้เข้าพบในฐานะที่ปรึกษาเพื่อ "ผ่าตัดโครงสร้างหนี้ (Debt Restructuring)" หรือวางแผนรัดเข็มขัด (Budgeting) ควรชะลอการเสนอพอร์ตการลงทุนที่มีความเสี่ยงสูงออกไปก่อนจนกว่ากระแสเงินสดจะนิ่ง</span>';
+                        else if (tone === "positive") p1 += '<span class="text-emerald-400 font-bold mt-1 block">🌟 โอกาสในการเข้าพบ (Strategic Approach): ฐานะการเงินแข็งแกร่งมาก พร้อมสำหรับการพูดคุยเรื่องการจัดพอร์ตเพื่อปกป้องและต่อยอดความมั่งคั่ง (Wealth Accumulation & Legacy Planning) รวมถึงการส่งต่อมรดกให้เต็มศักยภาพสูงสุด</span>';
+                        else p1 += '<span class="text-orange-400 font-bold mt-1 block">⚠️ โอกาสในการเข้าพบ (Strategic Approach): สถานะโดยรวมอยู่ในเกณฑ์ดี แต่อาจมีรอยรั่วที่ต้องช่วยลูกค้าอุดเพื่อป้องกันแผนสะดุดในระยะยาว (Risk Mitigation) แนะนำให้เจาะประเด็นเรื่องค่าใช้จ่ายแฝงหรือประกันที่ยังไม่ครอบคลุม</span>';
+                        
+                        p1 += '<span class="text-indigo-300 mt-2 pt-2 border-t border-indigo-500/30 block text-[11px] leading-relaxed"><b>🔍 วิเคราะห์ภาพรวมการเงิน (Financial Health Overview):</b> ระบบประเมินจากกระแสเงินสด (Cashflow), สินทรัพย์สภาพคล่อง (Liquidity), และสัดส่วนภาระหนี้สิน (Leverage) พบว่าลูกค้ามีมูลค่าความมั่งคั่งสุทธิ ' + formatB(data.nw) + ' บาท โครงสร้างรายรับเทียบรายจ่ายแสดงให้เห็นถึงเสถียรภาพในระดับ ' + tone.toUpperCase() + ' คะแนน ' + finalScore.toFixed(1) + '% นี้สะท้อนความน่าจะเป็นที่ลูกค้าจะบรรลุเป้าหมายการเงินระยะยาวโดยไม่เกิดภาวะล้มละลาย (Insolvency) กลางทาง แนะนำให้ FA เข้าพบเพื่อชี้แจงสถานะปัจจุบัน และเสนอโซลูชันแบบ Tailor-made ที่เหมาะสมกับระดับความเสี่ยงที่วิเคราะห์ได้จาก 9D Persona ครับ</span>';
                         p1 += '</div>';
 
-                        let p2 = '<div class="border-b border-fuchsia-500/30 pb-2 mb-2">' +
-                                 '<b class="text-fuchsia-300 text-sm">🎯 2. กลยุทธ์การเปิดใจ (Ice Breaking Strategy):</b><br>';
-                        if (topXai) {
-                            p2 += '<span class="text-slate-300 block mt-1">เริ่มบทสนทนาด้วยการชื่นชมความตั้งใจเรื่อง <b>"' + (topXai.isPositiveFactor ? topXai.feature : 'การดูแลครอบครัว/วางแผนอนาคต') + '"</b> จากนั้นค่อยๆ เชื่อมโยงเข้าสู่จุดอ่อนเรื่อง <b>"' + (!topXai.isPositiveFactor ? topXai.feature : 'การจัดการสภาพคล่อง') + '"</b> เพื่อให้ลูกค้าตระหนักถึงปัญหาด้วยตนเองโดยไม่รู้สึกถูกต่อว่า</span>';
-                        } else {
-                            p2 += '<span class="text-slate-300 block mt-1">ชวนพูดคุยถึงเป้าหมายในอนาคต และประเมินความกังวลในปัจจุบันเพื่อหาจุดที่ FA สามารถเข้าไปช่วยอุดช่องโหว่ได้</span>';
-                        }
-                        p2 += '</div>';
-
-                        let p3 = '<div>' +
-                                 '<b class="text-fuchsia-300 text-sm">💼 3. แผนการนำเสนอสินค้า (Product Pitching Guide):</b><br>' +
-                                 '<ul class="list-disc pl-5 mt-1 text-slate-300 space-y-1">';
+                        let p3 = '<div><b class="text-fuchsia-300 text-sm">💼 2. แผนที่ควรเสนอเป็นแนวทาง (Suggested Focus):</b><br><ul class="list-disc pl-5 mt-1 text-slate-300 space-y-1">';
                         results.rec.products.forEach(prod => {
-                            p3 += '<li><b>' + prod.name + ':</b> ' + prod.reason + ' <span class="text-emerald-400">(เป้างบประมาณ ' + formatB(prod.premium) + '/ปี)</span></li>';
+                            p3 += '<li><b>' + prod.name + ':</b> ' + prod.reason + '</li>';
                         });
                         p3 += '</ul></div>';
 
-                        return '<div class="space-y-3 text-[12px] bg-slate-900/50 p-4 rounded-lg border border-slate-700">' + p1 + '<br>' + p2 + '</div>' + 
-                               '<div class="space-y-3 text-[12px] bg-slate-900/50 p-4 rounded-lg border border-slate-700 mt-3">' + p3 + '</div>';
+                        return '<div class="space-y-3 text-[12px] bg-slate-900/50 p-4 rounded-lg border border-slate-700">' + p1 + '<br>' + p3 + '</div>';
                     }
+                };
+
+                // ==========================================
+                // 🧪 12. FA Sandbox Simulator Functions
+                // ==========================================
+                window.initSandboxDropdowns = function() {
+                    const baseSelect = document.getElementById('sandbox_base_plan');
+                    if(baseSelect) {
+                        let options = '<option value="">-- เลือกสัญญาหลัก --</option>';
+                        Object.keys(aiaBaseProductMatrix).forEach(p => {
+                            let typeInfo = aiaBaseProductMatrix[p].type;
+                            options += '<option value="' + p + '">[' + typeInfo + '] ' + p + '</option>';
+                        });
+                        baseSelect.innerHTML = options;
+                    }
+                    window.handleBasePlanChange(); 
+                };
+
+                window.handleBasePlanChange = function() {
+                    const baseSelect = document.getElementById('sandbox_base_plan');
+                    const btnAddRider = document.getElementById('btn_add_rider');
+                    if(baseSelect && btnAddRider) {
+                        if(baseSelect.value !== "") {
+                            btnAddRider.disabled = false;
+                            btnAddRider.classList.remove('opacity-50', 'cursor-not-allowed');
+                        } else {
+                            btnAddRider.disabled = true;
+                            btnAddRider.classList.add('opacity-50', 'cursor-not-allowed');
+                            document.getElementById('sandbox_riders_container').innerHTML = '';
+                        }
+                    }
+                };
+
+                window.addRiderRow = function() {
+                    const container = document.getElementById('sandbox_riders_container');
+                    let optionsHtml = '<option value="">-- เลือกสัญญาเพิ่มเติม --</option>';
+                    Object.keys(aiaRiderMatrix).forEach(r => {
+                        let cat = aiaRiderMatrix[r].category;
+                        optionsHtml += '<option value="' + r + '">[' + cat + '] ' + r + '</option>';
+                    });
+
+                    const rowId = 'rider_row_' + Date.now();
+                    const rowHtml = '<div id="' + rowId + '" class="flex gap-2 rider-item pb-1">' +
+                        '<select class="sandbox-rider-select flex-1 text-xs bg-slate-800 text-slate-200 border border-slate-600 rounded px-2 py-1 outline-none focus:ring-1 focus:ring-cyan-500">' +
+                            optionsHtml +
+                        '</select>' +
+                        '<input type="number" class="sandbox-rider-sa w-24 text-xs bg-slate-800 text-slate-200 border border-slate-600 rounded px-2 py-1 outline-none focus:ring-1 focus:ring-cyan-500" placeholder="แผน/ทุน">' +
+                        '<input type="number" class="sandbox-rider-prem w-28 text-xs bg-slate-800 text-slate-200 border border-slate-600 rounded px-2 py-1 outline-none focus:ring-1 focus:ring-cyan-500" placeholder="เบี้ย (บาท/ปี)">' +
+                        '<button onclick="document.getElementById(\\'' + rowId + '\\').remove()" class="text-rose-400 hover:text-rose-300 px-2 font-bold transition">✕</button>' +
+                    '</div>';
+                    
+                    container.insertAdjacentHTML('beforeend', rowHtml);
+                };
+
+                window.runSandboxSimulation = function() {
+                    const cId = document.getElementById('sb_crm_selector').value;
+                    if (!cId || !rawDatabaseCache[cId]) { alert("กรุณาเปิดการเชื่อมต่อและ Run Diagnostics ของลูกค้าก่อนทำการจำลองแผนครับ"); return; }
+                    
+                    let data = rawDatabaseCache[cId];
+                    let baseName = document.getElementById('sandbox_base_plan').value;
+                    let baseSA = parseFloat(document.getElementById('sandbox_base_sa').value) || 0;
+                    let basePrem = parseFloat(document.getElementById('sandbox_base_prem').value) || 0;
+
+                    if (!baseName || basePrem <= 0) {
+                        document.getElementById('sandbox_results').innerHTML = '<p class="text-rose-400 text-center italic mt-10">⚠️ กรุณาระบุสัญญาหลักและเบี้ยประกัน (ที่ดึงมาจากระบบ BI) ให้ครบถ้วนเพื่อจำลองแผนอย่างแม่นยำ</p>';
+                        return;
+                    }
+
+                    let totalPremium = basePrem;
+                    let portfolioHtml = '<div class="flex justify-between items-center text-[11px] text-slate-300"><span class="flex-1 truncate pr-2">✅ ' + baseName + ' (ทุน ' + formatB(baseSA) + ')</span><span class="text-cyan-300">' + formatB(basePrem) + '</span></div>';
+                    
+                    let gapLifeClosed = baseSA;
+                    let gapHealthClosed = false;
+
+                    const riderSelects = document.querySelectorAll('.sandbox-rider-select');
+                    const riderSAs = document.querySelectorAll('.sandbox-rider-sa');
+                    const riderPrems = document.querySelectorAll('.sandbox-rider-prem');
+
+                    for(let i=0; i<riderSelects.length; i++) {
+                        let rName = riderSelects[i].value;
+                        let rSA = parseFloat(riderSAs[i].value) || 0;
+                        let rPrem = parseFloat(riderPrems[i].value) || 0;
+                        
+                        if(rName && rPrem > 0) {
+                            totalPremium += rPrem;
+                            portfolioHtml += '<div class="flex justify-between items-center text-[11px] text-slate-300 mt-1"><span class="flex-1 truncate pr-2">➕ ' + rName + ' (ทุน/แผน ' + formatB(rSA) + ')</span><span class="text-cyan-300">' + formatB(rPrem) + '</span></div>';
+                            
+                            let cat = aiaRiderMatrix[rName] ? aiaRiderMatrix[rName].category : "";
+                            if(cat === "Health" || cat === "CI") {
+                                gapHealthClosed = true;
+                            }
+                        }
+                    }
+
+                    // 3. Financial Impact Math: Premium to Income Ratio (PIR)
+                    let annualIncome = data.inc * 12;
+                    let premiumRatio = annualIncome > 0 ? (totalPremium / annualIncome) * 100 : 100;
+                    let monthlyPremium = totalPremium / 12;
+                    
+                    // Recalculate original gap for comparison and calculate coverage percentage
+                    let reqLife = data.liabilities + (data.exp * 12 * 5);
+                    if(data.dependents > 0) reqLife += (data.dependents * 1000000);
+                    let initialLifeGap = Math.max(0, reqLife - data.nw);
+                    let initialHealthGapStr = window.AIEngineCore.recommendProductsXAI(data).gaps.health;
+                    
+                    let coverageLifePercent = initialLifeGap > 0 ? Math.min(100, (gapLifeClosed / initialLifeGap) * 100) : (gapLifeClosed > 0 ? 100 : 0);
+
+                    // 4. Generate AI Verdict (Cost/Benefit) 
+                    let verdictHtml = '';
+                    let tradeOffHtml = '';
+                    
+                    if (premiumRatio > 20) {
+                        verdictHtml = '<span class="text-rose-400 block mb-1">🚨 <b>สภาพคล่องตึงเครียด (High Premium Burden):</b></span> อัตราส่วนชำระเบี้ยประกันต่อรายได้ (Premium to Income Ratio: PIR) พุ่งไปถึง ' + premiumRatio.toFixed(1) + '% ซึ่งเกินเกณฑ์มาตรฐานปลอดภัยที่ 10-15% อาจส่งผลกระทบต่อค่าใช้จ่ายในชีวิตประจำวันและเกิดปัญหาสภาพคล่องช็อต (Liquidity Crunch) แนะนำให้ปรับโครงสร้างพอร์ตด่วน';
+                        tradeOffHtml = '<br><br><span class="text-rose-300">⚖️ <b>Trade-off Analysis & Action:</b> <span class="text-slate-300">ต้นทุน (Cost) สูงเกินไปจนบีบคั้นสภาพคล่องปัจจุบัน (Negative Cost/Benefit) ซึ่งขัดหลักการบริหารความเสี่ยง FA ต้อง Take Action เชิงรุกโดยการลดทุนประกัน (SA) หรือถอด Rider ที่ทับซ้อนออก เพื่อดึงพอร์ตกลับมาสู่โซนปลอดภัย ป้องกันการบังคับเวนคืนกรมธรรม์ในอนาคต</span></span>';
+                    } else if (premiumRatio > 15) {
+                        verdictHtml = '<span class="text-orange-400 block mb-1">⚠️ <b>ข้อควรระวัง (Cashflow Warning):</b></span> อัตราส่วนชำระเบี้ยประกันต่อรายได้ (PIR) อยู่ที่ ' + premiumRatio.toFixed(1) + '% เริ่มค่อนข้างตึงมือตามสัดส่วนการเงินส่วนบุคคล FA ควรวิเคราะห์กระแสเงินสดสำรอง (Emergency Fund) เชิงลึกให้แน่ใจก่อนการประทับตรานำเสนอ';
+                        tradeOffHtml = '<br><br><span class="text-orange-300">⚖️ <b>Trade-off Analysis & Action:</b> <span class="text-slate-300">แม้จะได้ผลประโยชน์ (Benefit) สูงในการอุดรอยรั่วที่กว้างขึ้น แต่ต้องแลกมากับต้นทุนคงที่ (Fixed Cost) ที่ค่อนข้างหนัก FA ควรถามเพื่อดึง Commitment จากลูกค้า และให้ฉุกคิดว่า หากขาดรายได้ 3-6 เดือน จะยังรักษาความคุ้มครองนี้ไว้ได้หรือไม่? หากยังไม่พร้อม ควรพิจารณาปรับลดแผนลงก่อน</span></span>';
+                    } else if (gapLifeClosed > 0 || gapHealthClosed) {
+                        verdictHtml = '<span class="text-emerald-400 block mb-1">✅ <b>ความคุ้มค่าระดับสูง (Optimal Cost/Benefit):</b></span> อัตราส่วนชำระเบี้ยประกันต่อรายได้ (PIR) อยู่ที่ ' + premiumRatio.toFixed(1) + '% ซึ่งเป็นสัดส่วนที่ชาญฉลาด สามารถถ่ายโอนความเสี่ยงก้อนใหญ่ (Risk Transfer) ให้บริษัทประกันได้สำเร็จ ถือเป็นการจัดสรรเงิน (Good Expense) ที่มีประสิทธิภาพยอดเยี่ยมตามมาตรฐานสากล';
+                        tradeOffHtml = '<br><br><span class="text-emerald-300">⚖️ <b>Trade-off Analysis & Action:</b> <span class="text-slate-300">การจัดสรรกระแสเงินสดปัจจุบันในระดับที่เหมาะสม (Low Cost) แลกกับการอุดรอยรั่วทางการเงินระดับล้านบาท และปกป้องเงินเก็บทั้งชีวิต (High Benefit) ถือเป็นจุดสมดุล (Sweet Spot) ที่คุ้มค่าที่สุด FA สามารถมั่นใจในการนำเสนอแผนนี้ให้ลูกค้าพิจารณาตัดสินใจ (Execute) ได้ทันที</span></span>';
+                    } else {
+                        verdictHtml = '<span class="text-blue-400 block mb-1">ℹ️ <b>แผนสะสมความมั่งคั่ง (Wealth Building):</b></span> สัดส่วนเบี้ย ' + premiumRatio.toFixed(1) + '% ของรายได้ อยู่ในเกณฑ์ที่ยอดเยี่ยม ลูกค้าสามารถจ่ายได้สบายและมีเสถียรภาพ เหมาะสำหรับการต่อยอด Asset Allocation หรือสร้างกองทุนเกษียณอายุระยะยาว';
+                        tradeOffHtml = '<br><br><span class="text-blue-300">⚖️ <b>Trade-off Analysis & Action:</b> <span class="text-slate-300">การเจียดสภาพคล่องปัจจุบัน (Cost) เพื่อแลกกับโอกาสรับผลตอบแทนและเป้าหมายในอนาคต (Future Benefit) เป็นการเดินเกมสู่ความมั่งคั่ง FA ควรชี้ชวนให้เห็นถึงพลังของดอกเบี้ยทบต้น (Compound Interest) และตรวจสอบให้แน่ใจอีกครั้งว่าฐานรากปิระมิดการเงินด้านความคุ้มครองของลูกค้านั้นแข็งแกร่งเพียงพอแล้วก่อนขยับมาโฟกัสที่ Wealth Portfolio</span></span>';
+                    }
+                    
+                    verdictHtml += tradeOffHtml;
+
+                    let gapStatusHtml = '';
+                    if (gapLifeClosed > 0) {
+                        gapStatusHtml += '<div class="text-[11px] text-blue-300 mt-1.5 flex items-start gap-1"><span>🛡️</span><span><b>Life Gap:</b> ปิดความเสี่ยงได้ <b>' + coverageLifePercent.toFixed(1) + '%</b> ของความเสี่ยงทั้งหมด สร้างหลักประกันมรดกและปิดตายความเสี่ยงหนี้ตกทอดได้ทันที <b>' + formatB(gapLifeClosed) + '</b> บาท</span></div>';
+                    }
+                    if (gapHealthClosed) {
+                        gapStatusHtml += '<div class="text-[11px] text-pink-300 mt-1 flex items-start gap-1"><span>🏥</span><span><b>Health Gap:</b> ความเสี่ยงด้านค่ารักษาพยาบาล/โรคร้ายแรง ถูกโอนย้ายไปยังบริษัทประกัน <b>100%</b> (Safe Zone) ตัดปัญหาล้มละลายจากค่ารักษาพยาบาล</span></div>';
+                    }
+
+                    // 5. Compile Master Report (Add Deep FA Talking Points)
+                    let faTalkingPoints = '<div class="mt-4 bg-indigo-900/30 p-3 rounded-lg border border-indigo-500/50 shadow-sm">' +
+                        '<span class="text-[10px] text-indigo-400 font-bold uppercase tracking-wider block mb-1.5">💬 4. FA Talking Points & Objection Handling (บทสนทนา & การตอบข้อโต้แย้ง)</span>' +
+                        '<ul class="list-disc pl-4 text-[11px] text-slate-300 space-y-2 leading-relaxed">' +
+                            '<li><b>ภาพรวมการเงิน (Financial Overview):</b> "ตอนนี้โครงสร้างกระแสเงินสดและหนี้สินของคุณลูกค้าอยู่ในเกณฑ์ที่บริหารจัดการได้ดีครับ แต่จากข้อมูลเชิงลึก ระบบพบว่าเรายังมีช่องโหว่ (Risk Gap) ในส่วนของ..."</li>' +
+                            '<li><b>การปิดความเสี่ยง (Risk Gap Action):</b> "หากเกิดเหตุไม่คาดฝัน ครอบครัวจะต้องรับภาระความเสี่ยงถึง ' + formatB(initialLifeGap) + ' บาท แต่แผนที่เราจัดสรรนี้ ใช้เงินเพียง ' + formatB(totalPremium) + '/ปี เพื่อโอนย้ายความเสี่ยงทั้งหมดไปให้บริษัทประกันรับผิดชอบแทนครับ มูลค่าความคุ้มครองที่ ' + formatB(gapLifeClosed) + ' บาท สามารถครอบคลุมความเสี่ยงได้ถึง ' + coverageLifePercent.toFixed(1) + '% ของความเสี่ยงทั้งหมดเลยครับ"</li>' +
+                            '<li><b>การลงทุน & ความคุ้มค่า (Cost vs Benefit):</b> "เงินก้อนนี้คิดเป็นเพียง ' + premiumRatio.toFixed(1) + '% ของรายได้ต่อปี ซึ่งตามทฤษฎีการจัดสรรเงินออม (Rule of Thumb) จะไม่ทำให้เกิดปัญหาสภาพคล่องช็อต ถือเป็นการลงทุน (Allocation) ที่คุ้มค่ามาก (Low Cost / High Benefit) เพราะมันคือโล่กำบังที่ช่วยปกป้องความมั่งคั่ง (Net Worth) และพอร์ตการลงทุน ' + formatB(data.assets) + ' ที่คุณลูกค้าสร้างมาทั้งชีวิต ไม่ให้ถูกบังคับขาย (Forced Liquidation) เพื่อนำมาจ่ายค่ารักษาพยาบาลครับ"</li>' +
+                            '<li><b>การตอบข้อโต้แย้ง (Handling Objection):</b> หากลูกค้าบอกว่าเบี้ยประกันแพงไป หรือรู้สึกเสียดายเงิน: <br><span class="text-indigo-200">"ผมเข้าใจครับว่าเบี้ยก้อนนี้อาจดูเหมือนรายจ่ายที่เพิ่มขึ้น แต่ในมุมมองการวางแผนการเงิน แท้จริงแล้วมันคือการ <b>&quot;ซื้อเวลาและอิสรภาพทางการเงิน&quot;</b> ให้กับครอบครัวครับ การเสียเบี้ยคงที่หลักหมื่นในวันนี้ เพื่อล็อกความเสี่ยงแบบ 100% ดีกว่าปล่อยให้ความเสี่ยงหลักล้านที่มองไม่เห็นมากัดกินเงินเก็บทั้งหมดในอนาคตครับ"</span></li>' +
+                            '<li><b>Commitment Check:</b> "เบี้ยก้อนนี้จะไม่กระทบแผนการเงินอื่น หรือเงินสำรองฉุกเฉินที่คุณลูกค้าเตรียมไว้ใช่ไหมครับ? ถ้าระบบของเราเช็คแล้วว่า Cashflow ปลอดภัย เราสามารถเริ่มต้นสร้างเกราะป้องกันนี้ได้เลยอย่างสบายใจครับ"</li>' +
+                        '</ul>' +
+                    '</div>';
+
+                    let reportHtml = '<div class="mb-3 border-b border-slate-700 pb-3">' +
+                        '<span class="text-[10px] text-fuchsia-400 font-bold uppercase tracking-wider block mb-2">📋 1. Recap ข้อมูลลูกค้า (Before Setup)</span>' +
+                        '<div class="grid grid-cols-2 gap-x-2 gap-y-1.5 text-[10.5px] text-slate-300 bg-slate-900/50 p-2.5 rounded border border-slate-700 shadow-inner">' +
+                            '<div><b>รายได้ต่อปีโดยประมาณ:</b> <span class="text-white">' + formatB(annualIncome) + '</span></div>' +
+                            '<div><b>รายจ่ายต่อปีโดยประมาณ:</b> <span class="text-white">' + formatB(data.exp * 12) + '</span></div>' +
+                            '<div><b>Life Gap เดิม:</b> <span class="text-rose-300">' + formatB(initialLifeGap) + '</span></div>' +
+                            '<div><b>Health Gap เดิม:</b> <span class="text-rose-300">' + (initialHealthGapStr.includes("พบ") ? "ยังขาดคุ้มครอง" : "คุ้มครองครอบคลุมแล้ว") + '</span></div>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="mb-3 border-b border-slate-700 pb-3">' +
+                        '<span class="text-[10px] text-cyan-400 font-bold uppercase tracking-wider block mb-2">📦 2. การจัดสรรพอร์ตประกัน (Proposed Portfolio)</span>' +
+                        '<div class="bg-slate-900/50 p-2.5 rounded border border-slate-700 shadow-inner space-y-1">' +
+                            portfolioHtml +
+                            '<div class="flex justify-between items-center border-t border-slate-700 mt-2 pt-2">' +
+                                '<span class="font-bold text-[11px] text-slate-200">เบี้ยประกันรวม (ต่อปี)</span>' +
+                                '<span class="text-sm font-black text-cyan-400">' + formatB(totalPremium) + '</span>' +
+                            '</div>' +
+                            '<div class="flex justify-between items-center text-[9px] text-slate-400 mt-0.5">' +
+                                '<span class="' + (premiumRatio > 15 ? 'text-orange-400' : 'text-emerald-400') + '">คิดเป็น ' + premiumRatio.toFixed(1) + '% ของรายได้</span>' +
+                                '<span>(เฉลี่ย ' + formatB(totalPremium/12) + ' / เดือน)</span>' +
+                            '</div>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="bg-slate-800/80 p-3 rounded-lg border border-slate-600 shadow-sm">' +
+                        '<span class="text-[10px] text-orange-400 font-bold uppercase tracking-wider block mb-1.5">🧠 3. AI Verdict (วิเคราะห์ความเหมาะสม & Risk Gap)</span>' +
+                        '<p class="text-[11px] text-slate-300 leading-relaxed">' + verdictHtml + '</p>' +
+                        '<div class="mt-2 pt-2 border-t border-slate-700">' +
+                            (gapStatusHtml || '<p class="text-[10px] text-slate-500 italic">- ไม่ได้จัดสรรแผนเพื่อปิดช่องโหว่ด้าน Life / Health โดยตรง -</p>') +
+                        '</div>' +
+                    '</div>' + faTalkingPoints;
+
+                    document.getElementById('sandbox_results').innerHTML = reportHtml;
+                    termLog("🎛️ FA Custom Portfolio Simulated Successfully.", "success");
                 };
 
                 // ==========================================
@@ -1372,7 +1294,6 @@ window.AIControlCenter = {
                     let data = rawDatabaseCache[cId];
                     termLog('Pipeline Executing for: ' + cId, "highlight");
 
-                    // 1. Ingest Data (🌟 แปลงชื่อตัวแปรเป็นภาษาไทยให้ FA เข้าใจง่าย 🌟)
                     let displayData = { ...data };
                     delete displayData.rawProfile; delete displayData.rawRetirement; 
                     
@@ -1394,18 +1315,15 @@ window.AIControlCenter = {
                     }
                     document.getElementById('log_input_data').innerText = JSON.stringify(translatedData, null, 2);
 
-                    // 2. NLP Sentiment
                     let nlp = window.AIEngineCore.analyzeSentiment(data.notes);
                     document.getElementById('log_nlp_text').innerHTML = nlp.html;
                     document.getElementById('log_nlp_score').innerText = nlp.score + "%";
 
-                    // 3. Outlier Detector
                     let outlier = window.AIEngineCore.detectOutliers(data);
                     document.getElementById('log_conf_score').innerText = outlier.conf + "%";
                     document.getElementById('bar_conf').style.width = outlier.conf + "%";
                     document.getElementById('log_outlier_warning').innerHTML = outlier.text.map(t => '<p class="' + (t.includes('⚠️') ? 'text-orange-400' : 'text-emerald-400') + ' mb-1">' + t + '</p>').join('');
 
-                    // 4. Base ML (🌟 ปรับ Logic การแสดงผล Net Worth ให้รองรับค่าติดลบ 🌟)
                     let nnScore = window.AIEngineCore.predictSuccessProbability(data);
                     document.getElementById('log_nn_score').innerText = nnScore.toFixed(1) + "%";
                     
@@ -1416,11 +1334,10 @@ window.AIControlCenter = {
                         '<b class="text-purple-300 text-[11px]">⚙️ ตรรกะการคำนวณ (Cause & Effect):</b><br>' +
                         '<span class="text-emerald-400 block mt-1 leading-snug"><b>จุดเริ่มต้น (Inputs):</b> <br>' + posFactors + negFactors + '</span>' +
                         '<span class="text-sky-300 block mt-1 leading-snug"><b>📊 การวิเคราะห์ความเสี่ยงรายได้ (Income Stability):</b> <br>- อาชีพ: ' + escapeHTML(data.occ) + ' ➡️ ความสม่ำเสมอ: ' + escapeHTML(data.occType || "ปานกลาง") + '</span>' +
-                        '<span class="text-purple-300 block mt-2 pt-2 border-t border-purple-500/30"><b>ผลลัพธ์ (Result):</b> <br>➡️ AI ให้น้ำหนักปัจจัยบวก/ลบ และความเสี่ยงของแหล่งรายได้ สรุปคะแนนศักยภาพตั้งต้นที่ <b>' + nnScore.toFixed(1) + '%</b></span>' +
+                        '<span class="text-purple-300 block mt-2 pt-2 border-t border-purple-500/30"><b>ผลลัพธ์ (Result):</b> <br>➡️ AI ให้น้ำหนักปัจจัยบวก/ลบ และความเสี่ยงของแหล่งรายได้ สรุปคะแนนศักยภาพตั้งต้นที่ <b>' + nnScore.toFixed(1) + '%</b> ซึ่งคะแนนนี้สะท้อนความน่าจะเป็นที่ลูกค้าจะบรรลุเป้าหมายการเงินระยะยาวโดยไม่เกิดภาวะล้มละลาย (Insolvency) กลางทาง</span>' +
                     '</div>';
                     document.getElementById('log_nn_desc').innerHTML = nnDescHtml;
 
-                    // 5. XAI 
                     let xai = window.AIEngineCore.generateXAIReport(data, nnScore);
                     document.getElementById('log_xai_drivers').innerHTML = xai.length > 0 ? xai.map(x => 
                         '<div class="mb-3 pb-3 border-b border-slate-800 last:border-0 last:pb-0 last:mb-0">' +
@@ -1435,11 +1352,9 @@ window.AIControlCenter = {
                         '</div>'
                     ).join('') : '<p class="text-slate-500 italic text-center mt-4">ไม่มีตัวแปรใดส่งผลกระทบรุนแรงในเคสนี้</p>';
 
-                    // 6. Counterfactual
                     let cf = window.AIEngineCore.generateCounterfactuals(data, nnScore);
                     document.getElementById('log_counterfactual').innerHTML = cf.join('');
 
-                    // 7. Clustering (Now 9D Persona Clustering)
                     let cluster = window.AIEngineCore.KMeans.classify(data);
                     document.getElementById('log_persona').innerText = cluster.persona;
                     
@@ -1447,7 +1362,6 @@ window.AIControlCenter = {
                         const ctxSpider = document.getElementById('spiderChartCanvas').getContext('2d');
                         if(spiderChartInstance) spiderChartInstance.destroy();
                         
-                        // 🌟 Inverting DTI and Dep for Visual Polygon Expansion 🌟
                         let clientPolygon = [
                             cluster.clientVector.age, 
                             cluster.clientVector.inc, 
@@ -1480,16 +1394,10 @@ window.AIControlCenter = {
                                     { label: 'เป้าหมายกลุ่ม (Centroid)', data: centroidPolygon, borderColor: '#64748b', borderDash: [5, 5], fill: false }
                                 ]
                             },
-                            // 🌟 เปิดใช้งาน Legend อธิบายกราฟ 🌟
                             options: { 
-                                responsive: true, 
-                                maintainAspectRatio: false, 
-                                scales: { 
-                                    r: { ticks: {display: false}, pointLabels: {color: '#94a3b8', font: {size: 8}} } 
-                                }, 
-                                plugins: { 
-                                    legend: { display: true, position: 'bottom', labels: { color: '#94a3b8', font: {size: 10} } } 
-                                } 
+                                responsive: true, maintainAspectRatio: false, 
+                                scales: { r: { ticks: {display: false}, pointLabels: {color: '#94a3b8', font: {size: 8}} } }, 
+                                plugins: { legend: { display: true, position: 'bottom', labels: { color: '#94a3b8', font: {size: 10} } } } 
                             }
                         });
                     } catch(err) {
@@ -1497,7 +1405,6 @@ window.AIControlCenter = {
                         document.getElementById('spiderChartCanvas').outerHTML = "<p class='text-xs text-center text-slate-500 mt-10'>[ไม่สามารถโหลดกราฟได้เนื่องจากออฟไลน์]</p>";
                     }
 
-                    // 8. Recommender XAI & 3D Gaps
                     let rec = window.AIEngineCore.recommendProductsXAI(data);
                     document.getElementById('gap_emergency').innerText = formatB(rec.gaps.emergency);
                     document.getElementById('gap_life').innerText = formatB(rec.gaps.life);
@@ -1528,17 +1435,15 @@ window.AIControlCenter = {
                     '</div>';
                     document.getElementById('log_recommender').innerHTML = recHtml;
 
-                    // 9. Lapse Risk
                     let lapse = window.AIEngineCore.calculateLapseRisk(data);
                     document.getElementById('log_lapse_score').innerText = lapse.score + "%";
                     let lapseHtml = '<div class="bg-slate-800 p-2.5 rounded-lg border border-slate-700 shadow-sm leading-relaxed mb-2">' +
                         '<span class="text-red-300 font-bold text-[10px] block mb-1">⚙️ กลไกคำนวณ (Cause & Effect):</span>' +
-                        '<span class="text-[10.5px] text-slate-400">ประเมินความเสี่ยงทิ้งกรมธรรม์จาก <b>คุณภาพหนี้สิน (หนี้เสีย vs หนี้ดี)</b> และ <b>กระแสเงินสดสุทธิ</b></span>' +
+                        '<span class="text-[10.5px] text-slate-400">ประเมินความเสี่ยงทิ้งกรมธรรม์จาก <b>คุณภาพหนี้สิน (หนี้เสีย vs หนี้ดี)</b> และ <b>กระแสเงินสดสุทธิ</b> การรักษาอัตราความคงอยู่ของกรมธรรม์ (Persistency) คือหัวใจสำคัญของการรับผลประโยชน์สูงสุด</span>' +
                         '</div>';
                     lapseHtml += lapse.drivers.map(d => '<p class="bg-slate-800 p-2.5 rounded-lg border border-slate-700 shadow-sm leading-relaxed mb-1.5">' + d + '</p>').join('');
                     document.getElementById('log_lapse_drivers').innerHTML = lapseHtml;
 
-                    // 10. Consensus & Compare Score
                     let con = window.AIEngineCore.runConsensus(data, nnScore, cluster.persona);
                     document.getElementById('log_crm_original').innerText = data.originalScore.toFixed(1) + "%"; 
                     document.getElementById('log_base_audit').innerText = nnScore.toFixed(1) + "%";
@@ -1548,20 +1453,18 @@ window.AIControlCenter = {
                     let consensusHtml = '<div class="mb-3 bg-slate-800 p-3.5 rounded-lg border border-slate-600 text-[10.5px] text-slate-300 leading-relaxed text-left shadow-md">' +
                         '<b class="text-indigo-400 text-xs block mb-1">📖 Definition (นิยามและการใช้งานสำหรับ FA):</b>' +
                         '<span class="text-white font-bold">"Final Adjusted Score (คะแนนความสำเร็จสุทธิ)"</span> คือตัวชี้วัดศักยภาพทางการเงินที่สะท้อน <b>"โลกความเป็นจริง"</b> มากที่สุด โดยระบบจะนำคะแนนศักยภาพตั้งต้น (Base Score) มาหักลบด้วย <b>"อคติและพฤติกรรมเสี่ยง (Behavioral Constraints)"</b> เช่น การก่อหนี้บริโภค หรือการใช้เงินเกินตัว<br><br>' +
-                        '<b class="text-emerald-400">💡 FA Action Plan:</b> ใช้คะแนนนี้เพื่อทำ <b>Reality Check</b> กับลูกค้า หากคะแนนนี้ต่ำกว่า Base Score มากๆ (โดน Penalty สูง) FA ต้องเปิดใจลูกค้าให้เห็นว่า <i>"พฤติกรรมใดกำลังทำลายแผน"</i> และเสนอ <b>"การปรับโครงสร้างหนี้/ลดรายจ่าย"</b> ควบคู่ไปกับการเสนอโปรดักส์ เพื่อสร้างความน่าเชื่อถือระดับที่ปรึกษามืออาชีพ' +
+                        '<b class="text-emerald-400">💡 FA Action Plan & Trade-off:</b> ใช้คะแนนนี้เพื่อทำ <b>Reality Check</b> กับลูกค้า หากคะแนนนี้ต่ำกว่า Base Score มากๆ (โดน Penalty สูง) FA ต้องเปิดใจลูกค้าให้เห็นว่า <i>"พฤติกรรมใดกำลังทำลายแผน"</i> และให้ลูกค้าพิจารณา <b>Trade-off</b> ระหว่าง "ความสุขระยะสั้น (ใช้เงินเกินตัว)" กับ "ความมั่นคงระยะยาว" พร้อมเสนอ <b>"การปรับโครงสร้างหนี้/ลดรายจ่าย"</b> ควบคู่ไปกับการเสนอโปรดักส์ เพื่อสร้างความน่าเชื่อถือระดับที่ปรึกษามืออาชีพ' +
                     '</div>';
                     consensusHtml += con.auditTrail.join('');
                     document.getElementById('log_consensus_exp').innerHTML = consensusHtml;
 
-                    // 🌟 11. Executive Synthesis 🌟
                     let synthesisResults = { persona: cluster.persona, con: con, rec: rec, lapse: lapse, xai: xai };
                     let executiveHtml = window.AIEngineCore.generateExecutiveSummary(data, synthesisResults);
                     let execEl = document.getElementById('log_executive_summary');
                     if (execEl) execEl.innerHTML = executiveHtml;
 
-                    termLog("✅ All 11 Enterprise Modules Executed Successfully.", "success");
+                    termLog("✅ All 12 Enterprise Modules Executed Successfully.", "success");
 
-                    // ส่งข้อมูลกลับ
                     let resultPayload = {
                         clientId: cId,
                         finalScore: con.finalScore,
@@ -1580,7 +1483,10 @@ window.AIControlCenter = {
                     termLog("📡 Result payload synced to Bridge.", "highlight");
                 };
 
-                window.onload = () => window.initCRMSelector();
+                window.onload = () => {
+                    window.initCRMSelector();
+                    setTimeout(() => { if(window.initSandboxDropdowns) window.initSandboxDropdowns(); }, 500);
+                };
             </script>
         </body>
         </html>`;
