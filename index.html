@@ -1179,7 +1179,18 @@
     </div>
 
     <div id="inputSection" class="animate-fade-in">
+        <!-- 🌟 แถบ Navigation สลับหน้า (Step Progress) 🌟 -->
+        <div id="stepNavigation" class="flex gap-2 mb-6 bg-white rounded-xl shadow-sm p-2 no-print border border-gray-100 relative overflow-hidden">
+            <button type="button" onclick="switchInputStep(1)" id="btn_step1" class="relative z-10 flex-1 py-3 rounded-lg font-bold text-blue-700 bg-blue-50 border-2 border-blue-200 transition-all shadow-sm flex items-center justify-center gap-2">
+                <span class="text-xl">👤</span> 1. ข้อมูลเชิงคุณภาพ (Profile & Goals)
+            </button>
+            <button type="button" onclick="switchInputStep(2)" id="btn_step2" class="relative z-10 flex-1 py-3 rounded-lg font-bold text-gray-500 bg-transparent border-2 border-transparent hover:bg-gray-50 transition-all flex items-center justify-center gap-2">
+                <span class="text-xl">💰</span> 2. ข้อมูลเชิงปริมาณ (Financial Data)
+            </button>
+        </div>
+
         <form id="mainForm">
+            <!-- Data Lists สำหรับ Auto Complete -->
             <datalist id="occ_list"><option value="พนักงานบริษัทเอกชน"><option value="ข้าราชการ/รัฐวิสาหกิจ"><option value="เจ้าของธุรกิจ/นายจ้าง"><option value="ฟรีแลนซ์/อาชีพอิสระ"><option value="แพทย์/บุคลากรการแพทย์"><option value="วิศวกร/สถาปนิก"><option value="ผู้บริหารระดับสูง (C-Level)"><option value="พนักงานโรงงาน/รับจ้างทั่วไป"><option value="พ่อค้าแม่ค้า/ธุรกิจส่วนตัวขนาดเล็ก"><option value="เทรดเดอร์/นักลงทุนอิสระ"><option value="Content Creator/Influencer"></datalist>
             <datalist id="prov_list"><option value="กรุงเทพมหานคร"><option value="เชียงใหม่"><option value="ชลบุรี"><option value="ภูเก็ต"><option value="ขอนแก่น"><option value="นนทบุรี"><option value="สมุทรปราการ"></datalist>
             <datalist id="ast_list"><option value="เงินฝากออมทรัพย์/เผื่อเรียก"><option value="เงินฝากประจำ"><option value="กองทุนรวม SSF/RMF"><option value="กองทุนรวมทั่วไป"><option value="หุ้นสามัญ/พอร์ตลงทุน"><option value="กองทุนสำรองเลี้ยงชีพ (PVD)"><option value="กองทุนบำเหน็จบำนาญข้าราชการ (กบข.)"><option value="บ้าน/ที่อยู่อาศัย"><option value="ที่ดินเปล่า/อสังหาริมทรัพย์"><option value="ทองคำแท่ง/รูปพรรณ"></datalist>
@@ -1191,293 +1202,328 @@
             <datalist id="saved_base_library"></datalist>
             <datalist id="saved_rider_library"></datalist>
             
-            <div class="card bg-red-50/30 border-l-4 border-red-500 hover-scale">
-                <h2 class="section-header theme-red">ส่วนที่ 1: ข้อมูลทั่วไป</h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div><label class="block text-sm font-medium">ชื่อ-สกุล</label><input type="text" id="p_name" class="input-field w-full mt-1" required></div>
-                    <div><label class="block text-sm font-medium">อายุ (ปี)</label><input type="number" id="p_age" class="input-field w-full mt-1" oninput="syncAgeToRisk()" required></div>
-                    <div><label class="block text-sm font-medium">อาชีพ</label><input type="text" id="p_occ" list="occ_list" class="input-field w-full mt-1" placeholder="ระบุอาชีพเพื่อคำนวณความเสี่ยงรายได้"></div>
-                    
-                    <div><label class="block text-sm font-medium">จังหวัดที่พักอาศัย</label><input type="text" id="p_province" list="prov_list" class="input-field w-full mt-1" placeholder="เช่น เชียงใหม่, กรุงเทพฯ"></div>
-                    <div>
-                        <label class="block text-sm font-medium">สวัสดิการค่ารักษาพยาบาล</label>
-                        <select id="p_welfare" class="input-field w-full mt-1 bg-gray-50 focus:ring focus:ring-blue-200" onchange="handleWelfareChange()">
-                            <option value="ไม่มีสวัสดิการ (จ่ายเอง/บัตรทอง)">ไม่มีสวัสดิการ (จ่ายเอง/บัตรทอง)</option>
-                            <option value="สิทธิประกันสังคม">สิทธิประกันสังคม</option>
-                            <option value="ประกันกลุ่มองค์กร">ประกันกลุ่มบริษัท/องค์กร</option>
-                            <option value="สิทธิข้าราชการ/รัฐวิสาหกิจ">สิทธิข้าราชการ/รัฐวิสาหกิจ</option>
-                            <option value="สวัสดิการระดับผู้บริหาร">สวัสดิการระดับผู้บริหาร (Executive Benefits)</option>
-                            <option value="ประกันชีวิต (ส่วนตัว)">ประกันชีวิต (ส่วนตัว)</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium">ประวัติสุขภาพ (Health Status)</label>
-                        <select id="p_health" class="input-field w-full mt-1 bg-gray-50 focus:ring focus:ring-blue-200">
-                            <option value="แข็งแรงดี / ไม่มีโรคประจำตัวร้ายแรง">แข็งแรงดี / ไม่มีโรคประจำตัวร้ายแรง</option>
-                            <option value="มีโรคประจำตัว (ความดัน, ไขมัน, เบาหวาน)">มีโรคประจำตัว (ความดัน, ไขมัน, เบาหวาน)</option>
-                            <option value="มีประวัติโรคร้ายแรง / เคยผ่าตัดใหญ่">มีประวัติโรคร้ายแรง / เคยผ่าตัดใหญ่</option>
-                        </select>
-                    </div>
-
-                    <div><label class="block text-sm font-medium">ผู้อยู่ในความอุปการะ</label><input type="text" id="p_dep" class="input-field w-full mt-1" placeholder="เช่น 2 คน"></div>
-                    <div><label class="block text-sm font-medium">ช่องทางติดต่อกลับ</label><input type="text" id="p_contact" class="input-field w-full mt-1"></div>
-                    <div>
-                        <label class="block text-sm font-medium text-blue-800">ความสนใจประกัน Unit Linked</label>
-                        <select id="p_unitlinked" class="input-field w-full mt-1 bg-blue-50 focus:ring focus:ring-blue-200">
-                            <option value="ไม่สนใจ">ไม่สนใจ (ประกันทั่วไป)</option>
-                            <option value="สนใจ">สนใจ (Unit Linked)</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="card bg-blue-50/30 border-l-4 border-blue-500 shadow-md mb-6 hover-scale">
-                <div class="flex items-center gap-2 mb-4 border-b border-blue-200 pb-3">
-                    <span class="text-2xl">🧠</span>
-                    <h2 class="text-xl font-bold text-blue-900">ส่วนที่ 1.2: แบบประเมินพฤติกรรมและการลงทุน (AI Behavioral Profiling)</h2>
-                </div>
-                <p class="text-sm text-gray-600 mb-6 px-2">ข้อมูลส่วนนี้ช่วยให้ AI วิเคราะห์ <b>8D K-Means</b> เพื่อเข้าใจสไตล์การใช้ชีวิตและข้อจำกัดของคุณ สำหรับออกแบบยุทธศาสตร์การเงินที่ไม่ตึงหรือหย่อนเกินไป</p>
-
-                <div class="bg-blue-50/60 rounded-xl p-5 mb-6 border border-blue-200">
-                    <h3 class="font-bold text-blue-800 mb-4 flex items-center gap-2"><span class="text-lg">📊</span> หมวดที่ 1: พฤติกรรมและวินัยทางการเงิน</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="form-group">
-                            <label class="block text-sm font-semibold text-gray-700 mb-1">1. สไตล์การออมเงินในแต่ละเดือน?</label>
-                            <select id="bq_1" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-sm">
-                                <option value="3">หักเงินออมทันทีที่เงินเดือนออก (วินัยสูง)</option>
-                                <option value="2">พยายามออมให้ได้เท่าๆ กันทุกเดือน</option>
-                                <option value="1">ใช้จ่ายก่อน เหลือเท่าไหร่ค่อยออม</option>
-                                <option value="0">แทบไม่มีเหลือออม / หมุนเงินเดือนชนเดือน</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="block text-sm font-semibold text-gray-700 mb-1">2. เมื่อต้องการซื้อของชิ้นใหญ่ (เช่น มือถือ, เที่ยว)?</label>
-                            <select id="bq_2" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-sm">
-                                <option value="3">วางแผนเก็บเงินจนครบแล้วค่อยซื้อด้วยเงินสด</option>
-                                <option value="2">ใช้แหล่งกู้เงินระยะสั้น(บัตรเครดิต)แล้วจ่ายคืนเต็มจำนวนได้ทุกครั้ง</option>
-                                <option value="1">รูดบัตรเครดิตไปก่อน แล้วผ่อน 0%</option>
-                                <option value="0">รูดไปก่อนแล้วจ่ายขั้นต่ำ หรือกู้สินเชื่อมาซื้อ</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="block text-sm font-semibold text-gray-700 mb-1">3. หากเกิดเหตุฉุกเฉินต้องใช้เงินก้อนด่วน?</label>
-                            <select id="bq_3" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-sm">
-                                <option value="3">ใช้เงินสำรองฉุกเฉิน / เบิกเคลมจากประกันที่ทำไว้</option>
-                                <option value="2">ขายกองทุน/หุ้น หรือสินทรัพย์ที่ลงทุนไว้</option>
-                                <option value="1">ขายจำนอง/จำนำ ทรัพย์สินส่วนตัวที่มี</option>
-                                <option value="0">รูดบัตรกดเงินสด / หยิบยืมครอบครัว</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="block text-sm font-semibold text-gray-700 mb-1">4. ทัศนคติที่มีต่อ "ภาระหนี้สิน"?</label>
-                            <select id="bq_4" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-sm">
-                                <option value="3">หนี้คือศัตรู พยายามโปะให้หมดไวที่สุด</option>
-                                <option value="2">หนี้บ้าน/รถ ถือเป็นเรื่องปกติ ผ่อนไหวก็พอ</option>
-                                <option value="1">การกู้หนี้เพื่อมาลงทุนตามกระแส เป็นเรื่องปกติ</option>
-                                <option value="0">การมีหนี้บัตรเพื่อซื้อของ/ใช้ชีวิต เป็นเรื่องปกติ</option>
-                            </select>
-                        </div>
-                        <div class="form-group md:col-span-2">
-                            <label class="block text-sm font-semibold text-gray-700 mb-1">5. เมื่อนึกถึง "อนาคตทางการเงิน" เรื่องใดทำให้คุณกังวลมากที่สุด?</label>
-                            <select id="bq_5" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-sm">
-                                <option value="self">กลัวไม่มีเงินใช้หลังเกษียณ (กังวลเรื่องตัวเอง)</option>
-                                <option value="family">กลัวเกิดเหตุไม่คาดฝันแล้วเป็นภาระให้ครอบครัว/ลูก (เดอะแบก)</option>
-                                <option value="invest">กลัวเงินเฟ้อทำให้เงินเก็บด้อยค่า (กังวลเรื่องการเติบโต)</option>
-                                <option value="survive">กลัวหมุนเงินจ่ายหนี้เดือนหน้าไม่ทัน (กังวลสภาพคล่องปัจจุบัน)</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-orange-50/60 rounded-xl p-5 mb-6 border border-orange-200">
-                    <h3 class="font-bold text-orange-800 mb-4 flex items-center gap-2"><span class="text-lg">📈</span> หมวดที่ 2: ความทนทานต่อความเสี่ยงการลงทุน</h3>
+            <!-- ================================================== -->
+            <!-- STEP 1: ข้อมูลเชิงคุณภาพ (Profile, Mindset, Goals) -->
+            <!-- ================================================== -->
+            <div id="step1_content" class="animate-fade-in block space-y-6">
+                
+                <div class="card bg-red-50/30 border-l-4 border-red-500 hover-scale m-0">
+                    <h2 class="section-header theme-red">ส่วนที่ 1.1: ข้อมูลทั่วไป</h2>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div class="form-group">
-                            <label class="block text-sm font-semibold text-gray-700 mb-1">6. หากพอร์ตลงทุนติดลบ 20% ใน 1 เดือน?</label>
-                            <select id="bq_6" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white text-sm">
-                                <option value="1">ตกใจมาก ขายทิ้งทั้งหมดเพื่อรักษาเงินต้น</option>
-                                <option value="2">กังวล แต่จะรอดูสถานการณ์ไปก่อน</option>
-                                <option value="3">มองเป็นโอกาส หาเงินมาถัวเฉลี่ยซื้อเพิ่ม</option>
+                        <div><label class="block text-sm font-medium">ชื่อ-สกุล</label><input type="text" id="p_name" class="input-field w-full mt-1" required></div>
+                        <div><label class="block text-sm font-medium">อายุ (ปี)</label><input type="number" id="p_age" class="input-field w-full mt-1" oninput="syncAgeToRisk()" required></div>
+                        <div><label class="block text-sm font-medium">อาชีพ</label><input type="text" id="p_occ" list="occ_list" class="input-field w-full mt-1" placeholder="ระบุอาชีพเพื่อคำนวณความเสี่ยงรายได้"></div>
+                        
+                        <div><label class="block text-sm font-medium">จังหวัดที่พักอาศัย</label><input type="text" id="p_province" list="prov_list" class="input-field w-full mt-1" placeholder="เช่น เชียงใหม่, กรุงเทพฯ"></div>
+                        <div>
+                            <label class="block text-sm font-medium">สวัสดิการค่ารักษาพยาบาล</label>
+                            <select id="p_welfare" class="input-field w-full mt-1 bg-gray-50 focus:ring focus:ring-blue-200" onchange="handleWelfareChange()">
+                                <option value="ไม่มีสวัสดิการ (จ่ายเอง/บัตรทอง)">ไม่มีสวัสดิการ (จ่ายเอง/บัตรทอง)</option>
+                                <option value="สิทธิประกันสังคม">สิทธิประกันสังคม</option>
+                                <option value="ประกันกลุ่มองค์กร">ประกันกลุ่มบริษัท/องค์กร</option>
+                                <option value="สิทธิข้าราชการ/รัฐวิสาหกิจ">สิทธิข้าราชการ/รัฐวิสาหกิจ</option>
+                                <option value="สวัสดิการระดับผู้บริหาร">สวัสดิการระดับผู้บริหาร (Executive Benefits)</option>
+                                <option value="ประกันชีวิต (ส่วนตัว)">ประกันชีวิต (ส่วนตัว)</option>
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label class="block text-sm font-semibold text-gray-700 mb-1">7. เป้าหมายผลตอบแทนที่ต้องการ?</label>
-                            <select id="bq_7" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white text-sm">
-                                <option value="1">ชนะเงินเฟ้อ (2-3%) เงินต้นต้องปลอดภัย</option>
-                                <option value="2">กำไร 5-7% ยอมรับเงินต้นแกว่งลงได้บ้าง</option>
-                                <option value="3">กำไร 8-12%+ ยอมรับความเสี่ยงได้</option>
+                        <div>
+                            <label class="block text-sm font-medium">ประวัติสุขภาพ (Health Status)</label>
+                            <select id="p_health" class="input-field w-full mt-1 bg-gray-50 focus:ring focus:ring-blue-200">
+                                <option value="แข็งแรงดี / ไม่มีโรคประจำตัวร้ายแรง">แข็งแรงดี / ไม่มีโรคประจำตัวร้ายแรง</option>
+                                <option value="มีโรคประจำตัว (ความดัน, ไขมัน, เบาหวาน)">มีโรคประจำตัว (ความดัน, ไขมัน, เบาหวาน)</option>
+                                <option value="มีประวัติโรคร้ายแรง / เคยผ่าตัดใหญ่">มีประวัติโรคร้ายแรง / เคยผ่าตัดใหญ่</option>
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label class="block text-sm font-semibold text-gray-700 mb-1">8. ระยะเวลาที่ลงทุนได้โดยไม่ถอน?</label>
-                            <select id="bq_8" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white text-sm">
-                                <option value="1">น้อยกว่า 3 ปี (เน้นสภาพคล่อง)</option>
-                                <option value="2">3 - 7 ปี (ระยะกลาง)</option>
-                                <option value="3">มากกว่า 7 ปีขึ้นไป (ระยะยาว)</option>
+
+                        <div><label class="block text-sm font-medium">ผู้อยู่ในความอุปการะ</label><input type="text" id="p_dep" class="input-field w-full mt-1" placeholder="เช่น 2 คน"></div>
+                        <div><label class="block text-sm font-medium">ช่องทางติดต่อกลับ</label><input type="text" id="p_contact" class="input-field w-full mt-1"></div>
+                        <div>
+                            <label class="block text-sm font-medium text-blue-800">ความสนใจประกัน Unit Linked</label>
+                            <select id="p_unitlinked" class="input-field w-full mt-1 bg-blue-50 focus:ring focus:ring-blue-200">
+                                <option value="ไม่สนใจ">ไม่สนใจ (ประกันทั่วไป)</option>
+                                <option value="สนใจ">สนใจ (Unit Linked)</option>
                             </select>
                         </div>
                     </div>
                 </div>
 
-                <div class="bg-purple-50/60 rounded-xl p-5 border border-purple-200">
-                    <h3 class="font-bold text-purple-800 mb-4 flex items-center gap-2"><span class="text-lg">📱</span> หมวดที่ 3: สไตล์การจัดการและความรู้</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="form-group">
-                            <label class="block text-sm font-semibold text-gray-700 mb-1">9. ระดับความรู้ด้านการลงทุนของคุณ?</label>
-                            <select id="bq_9" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-white text-sm">
-                                <option value="1">มือใหม่ - เพิ่งเริ่มศึกษา / รู้จักแค่เงินฝาก</option>
-                                <option value="2">ระดับกลาง - ซื้อกองทุน SSF/RMF/ประกัน เป็น</option>
-                                <option value="3">มีประสบการณ์ - เทรดหุ้น/คริปโต จัดพอร์ตเองได้</option>
-                            </select>
+                <div class="card bg-blue-50/30 border-l-4 border-blue-500 shadow-md hover-scale m-0">
+                    <div class="flex items-center gap-2 mb-4 border-b border-blue-200 pb-3">
+                        <span class="text-2xl">🧠</span>
+                        <h2 class="text-xl font-bold text-blue-900">ส่วนที่ 1.2: แบบประเมินพฤติกรรมและการลงทุน (AI Behavioral Profiling)</h2>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-6 px-2">ข้อมูลส่วนนี้ช่วยให้ AI วิเคราะห์ <b>8D K-Means</b> เพื่อเข้าใจสไตล์การใช้ชีวิตและข้อจำกัดของคุณ สำหรับออกแบบยุทธศาสตร์การเงินที่ไม่ตึงหรือหย่อนเกินไป</p>
+
+                    <div class="bg-blue-50/60 rounded-xl p-5 mb-6 border border-blue-200">
+                        <h3 class="font-bold text-blue-800 mb-4 flex items-center gap-2"><span class="text-lg">📊</span> หมวดที่ 1: พฤติกรรมและวินัยทางการเงิน</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="form-group">
+                                <label class="block text-sm font-semibold text-gray-700 mb-1">1. สไตล์การออมเงินในแต่ละเดือน?</label>
+                                <select id="bq_1" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-sm">
+                                    <option value="3">หักเงินออมทันทีที่เงินเดือนออก (วินัยสูง)</option>
+                                    <option value="2">พยายามออมให้ได้เท่าๆ กันทุกเดือน</option>
+                                    <option value="1">ใช้จ่ายก่อน เหลือเท่าไหร่ค่อยออม</option>
+                                    <option value="0">แทบไม่มีเหลือออม / หมุนเงินเดือนชนเดือน</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="block text-sm font-semibold text-gray-700 mb-1">2. เมื่อต้องการซื้อของชิ้นใหญ่ (เช่น มือถือ, เที่ยว)?</label>
+                                <select id="bq_2" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-sm">
+                                    <option value="3">วางแผนเก็บเงินจนครบแล้วค่อยซื้อด้วยเงินสด</option>
+                                    <option value="2">ใช้แหล่งกู้เงินระยะสั้น(บัตรเครดิต)แล้วจ่ายคืนเต็มจำนวนได้ทุกครั้ง</option>
+                                    <option value="1">รูดบัตรเครดิตไปก่อน แล้วผ่อน 0%</option>
+                                    <option value="0">รูดไปก่อนแล้วจ่ายขั้นต่ำ หรือกู้สินเชื่อมาซื้อ</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="block text-sm font-semibold text-gray-700 mb-1">3. หากเกิดเหตุฉุกเฉินต้องใช้เงินก้อนด่วน?</label>
+                                <select id="bq_3" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-sm">
+                                    <option value="3">ใช้เงินสำรองฉุกเฉิน / เบิกเคลมจากประกันที่ทำไว้</option>
+                                    <option value="2">ขายกองทุน/หุ้น หรือสินทรัพย์ที่ลงทุนไว้</option>
+                                    <option value="1">ขายจำนอง/จำนำ ทรัพย์สินส่วนตัวที่มี</option>
+                                    <option value="0">รูดบัตรกดเงินสด / หยิบยืมครอบครัว</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="block text-sm font-semibold text-gray-700 mb-1">4. ทัศนคติที่มีต่อ "ภาระหนี้สิน"?</label>
+                                <select id="bq_4" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-sm">
+                                    <option value="3">หนี้คือศัตรู พยายามโปะให้หมดไวที่สุด</option>
+                                    <option value="2">หนี้บ้าน/รถ ถือเป็นเรื่องปกติ ผ่อนไหวก็พอ</option>
+                                    <option value="1">การกู้หนี้เพื่อมาลงทุนตามกระแส เป็นเรื่องปกติ</option>
+                                    <option value="0">การมีหนี้บัตรเพื่อซื้อของ/ใช้ชีวิต เป็นเรื่องปกติ</option>
+                                </select>
+                            </div>
+                            <div class="form-group md:col-span-2">
+                                <label class="block text-sm font-semibold text-gray-700 mb-1">5. เมื่อนึกถึง "อนาคตทางการเงิน" เรื่องใดทำให้คุณกังวลมากที่สุด?</label>
+                                <select id="bq_5" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-sm">
+                                    <option value="self">กลัวไม่มีเงินใช้หลังเกษียณ (กังวลเรื่องตัวเอง)</option>
+                                    <option value="family">กลัวเกิดเหตุไม่คาดฝันแล้วเป็นภาระให้ครอบครัว/ลูก (เดอะแบก)</option>
+                                    <option value="invest">กลัวเงินเฟ้อทำให้เงินเก็บด้อยค่า (กังวลเรื่องการเติบโต)</option>
+                                    <option value="survive">กลัวหมุนเงินจ่ายหนี้เดือนหน้าไม่ทัน (กังวลสภาพคล่องปัจจุบัน)</option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label class="block text-sm font-semibold text-gray-700 mb-1">10. สไตล์การให้ผู้เชี่ยวชาญดูแล (Advisory Fit)?</label>
-                            <select id="bq_10" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-white text-sm">
-                                <option value="diy">ทำเอง - ศึกษาและทำธุรกรรมผ่านแอปด้วยตัวเอง</option>
-                                <option value="hybrid">ไฮบริด - ตัดสินใจเอง แต่มีคนสรุปข้อมูลให้</option>
-                                <option value="delegator">ให้ดูแล - ให้ผู้เชี่ยวชาญ/AI จัดการให้เลย</option>
-                            </select>
+                    </div>
+
+                    <div class="bg-orange-50/60 rounded-xl p-5 mb-6 border border-orange-200">
+                        <h3 class="font-bold text-orange-800 mb-4 flex items-center gap-2"><span class="text-lg">📈</span> หมวดที่ 2: ความทนทานต่อความเสี่ยงการลงทุน</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="form-group">
+                                <label class="block text-sm font-semibold text-gray-700 mb-1">6. หากพอร์ตลงทุนติดลบ 20% ใน 1 เดือน?</label>
+                                <select id="bq_6" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white text-sm">
+                                    <option value="1">ตกใจมาก ขายทิ้งทั้งหมดเพื่อรักษาเงินต้น</option>
+                                    <option value="2">กังวล แต่จะรอดูสถานการณ์ไปก่อน</option>
+                                    <option value="3">มองเป็นโอกาส หาเงินมาถัวเฉลี่ยซื้อเพิ่ม</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="block text-sm font-semibold text-gray-700 mb-1">7. เป้าหมายผลตอบแทนที่ต้องการ?</label>
+                                <select id="bq_7" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white text-sm">
+                                    <option value="1">ชนะเงินเฟ้อ (2-3%) เงินต้นต้องปลอดภัย</option>
+                                    <option value="2">กำไร 5-7% ยอมรับเงินต้นแกว่งลงได้บ้าง</option>
+                                    <option value="3">กำไร 8-12%+ ยอมรับความเสี่ยงได้</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="block text-sm font-semibold text-gray-700 mb-1">8. ระยะเวลาที่ลงทุนได้โดยไม่ถอน?</label>
+                                <select id="bq_8" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white text-sm">
+                                    <option value="1">น้อยกว่า 3 ปี (เน้นสภาพคล่อง)</option>
+                                    <option value="2">3 - 7 ปี (ระยะกลาง)</option>
+                                    <option value="3">มากกว่า 7 ปีขึ้นไป (ระยะยาว)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-purple-50/60 rounded-xl p-5 border border-purple-200">
+                        <h3 class="font-bold text-purple-800 mb-4 flex items-center gap-2"><span class="text-lg">📱</span> หมวดที่ 3: สไตล์การจัดการและความรู้</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="form-group">
+                                <label class="block text-sm font-semibold text-gray-700 mb-1">9. ระดับความรู้ด้านการลงทุนของคุณ?</label>
+                                <select id="bq_9" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-white text-sm">
+                                    <option value="1">มือใหม่ - เพิ่งเริ่มศึกษา / รู้จักแค่เงินฝาก</option>
+                                    <option value="2">ระดับกลาง - ซื้อกองทุน SSF/RMF/ประกัน เป็น</option>
+                                    <option value="3">มีประสบการณ์ - เทรดหุ้น/คริปโต จัดพอร์ตเองได้</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="block text-sm font-semibold text-gray-700 mb-1">10. สไตล์การให้ผู้เชี่ยวชาญดูแล (Advisory Fit)?</label>
+                                <select id="bq_10" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-white text-sm">
+                                    <option value="diy">ทำเอง - ศึกษาและทำธุรกรรมผ่านแอปด้วยตัวเอง</option>
+                                    <option value="hybrid">ไฮบริด - ตัดสินใจเอง แต่มีคนสรุปข้อมูลให้</option>
+                                    <option value="delegator">ให้ดูแล - ให้ผู้เชี่ยวชาญ/AI จัดการให้เลย</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
 
+                <div class="card bg-purple-50/30 border-l-4 border-purple-500 hover-scale m-0">
+                    <h2 class="section-header theme-purple">ส่วนที่ 1.3: เป้าหมายความฝัน (Dreams & Goals)</h2>
+                    
+                    <div class="mb-6">
+                        <h3 class="font-bold mb-2">เป้าหมายทางการเงินตามระยะเวลา (SMART Goals / Legacy)</h3>
+                        <p class="text-xs text-gray-600 mb-2">ระบุเป้าหมายระยะสั้น-กลาง และเป้าหมายการส่งมอบมรดก (เช่น ซื้อรถ, ทุนการศึกษา, เตรียมเงินสดจ่ายภาษีมรดก)</p>
+                        <div id="c_goals"></div>
+                        <button type="button" onclick="addCustomRow('c_goals', ['ชื่อเป้าหมาย (Specific)', 'จำนวนเงินที่ต้องการ (Measurable)', 'ระยะเวลา/ปี (Time-bound)', 'ระดับความสำคัญ (1=สูงสุด)'], [], ['goal_list', '', '', ''])" class="btn-add">+ เพิ่มเป้าหมาย</button>
+                    </div>
+
+                    <div class="border-t border-purple-200 pt-4">
+                        <div class="flex justify-between items-center cursor-pointer group" onclick="toggleAdvancedEcon()">
+                            <div>
+                                <h3 class="font-bold text-gray-800 group-hover:text-indigo-600 transition">ภาพฝันหลังเกษียณ (Retirement Plan)</h3>
+                                <p class="text-[10px] text-indigo-600">* ข้อมูลเศรษฐกิจจะถูก Auto-Tuned ด้วย ML Model (คลิกเพื่อปรับแต่ง)</p>
+                            </div>
+                            <span id="econ_toggle_icon" class="text-gray-400 transform transition-transform text-xl group-hover:text-indigo-600">▼</span>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-3">
+                            <div><label class="text-xs font-semibold text-gray-700">อายุเกษียณ (ปี)</label><input type="number" id="r_retAge" class="input-field w-full" value="60"></div>
+                            <div><label class="text-xs font-semibold text-gray-700">อายุขัยคาดการณ์ (ปี)</label><input type="number" id="r_lifeExp" class="input-field w-full" value="85"></div>
+                            <div class="relative">
+                                <label class="text-xs font-semibold text-gray-700">เป้าหมายใช้จ่ายหลังเกษียณ/เดือน (บาท)</label>
+                                <input type="text" id="r_reqInc" class="input-field w-full money-input transition-all" value="30,000.00" onblur="formatInput(this); checkRetirementGoalLogic();" onfocus="unformatInput(this)">
+                                <div id="r_reqInc_warning" class="hidden absolute z-10 w-full mt-1 bg-yellow-50 border border-yellow-300 text-yellow-700 text-[10px] leading-tight p-2 rounded shadow-md animate-fade-in">
+                                    ⚠️ <b class="font-bold">ข้อสังเกต:</b> เป้าหมายสูงกว่ารายได้ปัจจุบัน อาจต้องใช้เงินออมที่สูงมากหรือพอร์ตลงทุนเชิงรุกเป็นพิเศษ
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="advanced_econ_section" class="hidden grid grid-cols-1 md:grid-cols-3 gap-4 mt-4 pt-4 border-t border-dashed border-purple-100 animate-fade-in">
+                            <div><label class="text-xs font-semibold text-indigo-700">ผลตอบแทนคาดหวังพอร์ต (%)</label><input type="number" id="r_preRet" class="input-field w-full bg-indigo-50/30" value="6"></div>
+                            <div><label class="text-xs font-semibold text-indigo-700">เงินเฟ้อทั่วไป (%)</label><input type="number" id="r_inf" step="0.1" class="input-field w-full bg-indigo-50/30" value="3"></div>
+                            <div><label class="text-xs font-semibold text-indigo-700">เงินเฟ้อค่ารักษา (%)</label><input type="number" id="r_med_inf" step="0.1" class="input-field w-full bg-indigo-50/30" value="6"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ปุ่มเปลี่ยนหน้า Step 1 -> 2 -->
+                <div class="flex justify-end mt-6 no-print">
+                    <button type="button" onclick="switchInputStep(2)" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl shadow-lg font-bold transition transform hover:scale-105 text-lg flex items-center gap-2">
+                        ถัดไป: ข้อมูลเชิงปริมาณ (Financial Data) <span class="text-2xl">➡️</span>
+                    </button>
+                </div>
             </div>
 
-            <div class="card bg-green-50/30 border-l-4 border-green-500 hover-scale">
-                <h2 class="section-header theme-green">ส่วนที่ 2: งบดุลและกระแสเงินสด</h2>
-                <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
-                    <div class="border p-4 rounded bg-white shadow-sm transition hover:shadow-md">
-                        <h3 class="font-bold text-green-700 mb-2">สินทรัพย์ (Assets)</h3>
-                        <div id="c_assets"></div>
-                        <select id="sel_asset" class="border p-2 text-sm rounded w-full mt-2 mb-1 bg-gray-50 focus:ring focus:ring-green-200">
-                            <option value="สินทรัพย์สภาพคล่อง">สินทรัพย์สภาพคล่อง (เงินสด, เงินฝาก)</option>
-                            <option value="สินทรัพย์ลงทุน">สินทรัพย์ลงทุน (หุ้น, กองทุน, คริปโต)</option>
-                            <option value="สินทรัพย์ส่วนตัว">สินทรัพย์ส่วนตัว (บ้าน, รถ, มูลค่าเวนคืนประกัน)</option>
-                            <option value="อสังหาริมทรัพย์และที่ดิน">อสังหาริมทรัพย์และที่ดิน</option>
-                            <option value="ธุรกิจและสินทรัพย์ทางเลือก">ธุรกิจและสินทรัพย์ทางเลือก (Private Equity/Art)</option>
-                            <option value="สินทรัพย์ต่างประเทศ">สินทรัพย์ต่างประเทศ (Offshore Assets)</option>
-                        </select>
-                        <button type="button" onclick="addRow('c_assets', 'sel_asset', ['ชื่อรายการ', 'มูลค่า (บาท)'], '', '', 'ast_list')" class="btn-add">+ เพิ่มรายการสินทรัพย์</button>
-                    </div>
-                    <div class="border p-4 rounded bg-white shadow-sm transition hover:shadow-md">
-                        <h3 class="font-bold text-red-700 mb-2">หนี้สิน (Liabilities)</h3>
-                        <div id="c_liab"></div>
-                        <select id="sel_liab" class="border p-2 text-sm rounded w-full mt-2 mb-1 bg-gray-50 focus:ring focus:ring-red-200">
-                            <option value="หนี้สินระยะสั้น">หนี้สินระยะสั้น (< 1 ปี)</option>
-                            <option value="หนี้สินระยะยาว">หนี้สินระยะยาว (> 1 ปี)</option>
-                            <option value="หนี้สินเพื่อบริหารความมั่งคั่ง">หนี้สินเพื่อบริหารความมั่งคั่ง (Lombard/Margin)</option>
-                        </select>
-                        <button type="button" onclick="addRow('c_liab', 'sel_liab', ['ชื่อรายการ', 'ยอดคงเหลือ (บาท)'], '', '', 'liab_list')" class="btn-add">+ เพิ่มรายการหนี้สิน</button>
-                    </div>
-                    <div class="border p-4 rounded bg-white shadow-sm transition hover:shadow-md">
-                        <h3 class="font-bold text-blue-700 mb-2">รายรับ (Income)</h3>
-                        <div id="c_inc"></div>
-                        <select id="sel_inc" class="border p-2 text-sm rounded w-full mt-2 mb-1 bg-gray-50 focus:ring focus:ring-blue-200">
-                            <option value="รายได้จากการทำงาน">รายได้จากการทำงาน (Active)</option>
-                            <option value="รายได้จากสินทรัพย์">รายได้จากสินทรัพย์ (Passive)</option>
-                            <option value="รายได้จากธุรกิจ/เงินปันผล">รายได้จากธุรกิจ/เงินปันผลขนาดใหญ่</option>
-                            <option value="รายได้อื่นๆ">รายได้อื่นๆ (เงินบำนาญ/ลูกหลาน/สวัสดิการ)</option>
-                        </select>
-                        <button type="button" onclick="addRow('c_inc', 'sel_inc', ['ชื่อรายการ', 'จำนวน (บาท/เดือน หรือเฉลี่ย)'], '', '', 'inc_list')" class="btn-add">+ เพิ่มรายการรายรับ</button>
-                    </div>
-                    <div class="border p-4 rounded bg-white shadow-sm transition hover:shadow-md">
-                        <h3 class="font-bold text-orange-700 mb-2">รายจ่ายต่อเดือน (Monthly Expenses)</h3>
-                        <p class="text-xs text-gray-500 mb-2">* เบี้ยประกันจากส่วนที่ 3 จะถูกรวมเป็นรายเดือนลงใน "รายจ่ายเพื่อออม/ลงทุน" อัตโนมัติเมื่อกดประมวลผล</p>
-                        <div id="c_exp"></div>
-                        <select id="sel_exp" class="border p-2 text-sm rounded w-full mt-2 mb-1 bg-gray-50 focus:ring focus:ring-orange-200">
-                            <option value="รายจ่ายเพื่อออม/ลงทุน">รายจ่ายเพื่อออม/ลงทุน</option>
-                            <option value="เงินชำระคืนหนี้สิน">เงินชำระคืนหนี้สิน</option>
-                            <option value="รายจ่ายประจำ/ใช้ชีวิต">รายจ่ายใช้ชีวิต/สาธารณูปโภค</option>
-                            <option value="ภาษี">ภาษีหัก ณ ที่จ่าย / ภาษีรายเดือน</option>
-                            <option value="รายจ่ายอื่น">รายจ่ายอื่นๆ</option>
-                        </select>
-                        <button type="button" onclick="addRow('c_exp', 'sel_exp', ['ชื่อรายการ', 'จำนวน (บาท/เดือน)'], '', '', 'exp_list')" class="btn-add">+ เพิ่มรายการรายจ่าย</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card bg-purple-50/30 border-l-4 border-purple-500 hover-scale">
-                <h2 class="section-header theme-purple">ส่วนที่ 3: เป้าหมายและการวางแผน</h2>
+            <!-- ================================================== -->
+            <!-- STEP 2: ข้อมูลเชิงปริมาณ (งบการเงิน, พอร์ตโฟลิโอ, ภาษี) -->
+            <!-- ================================================== -->
+            <div id="step2_content" class="animate-fade-in hidden space-y-6">
                 
-                <div class="mb-6">
-                    <h3 class="font-bold mb-2">3.1 เป้าหมายทางการเงิน (SMART Goals / Legacy)</h3>
-                    <p class="text-xs text-gray-600 mb-2">ระบุเป้าหมายระยะสั้น-กลาง และเป้าหมายการส่งมอบมรดก (เช่น ซื้อรถ, ทุนการศึกษา, เตรียมเงินสดจ่ายภาษีมรดก, จัดตั้งทรัสต์/กงสี)</p>
-                    <div id="c_goals"></div>
-                    <button type="button" onclick="addCustomRow('c_goals', ['ชื่อเป้าหมาย (Specific)', 'จำนวนเงินที่ต้องการ (Measurable)', 'ระยะเวลา/ปี (Time-bound)', 'ระดับความสำคัญ (1=สูงสุด)'], [], ['goal_list', '', '', ''])" class="btn-add">+ เพิ่มเป้าหมาย</button>
+                <!-- 2.1 งบดุลและกระแสเงินสด -->
+                <div class="card bg-green-50/30 border-l-4 border-green-500 hover-scale m-0">
+                    <h2 class="section-header theme-green">ส่วนที่ 2.1: งบดุลและกระแสเงินสด (Balance Sheet & Cash Flow)</h2>
+                    <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+                        
+                        <div class="border p-4 rounded bg-white shadow-sm transition hover:shadow-md">
+                            <h3 class="font-bold text-green-700 mb-2">สินทรัพย์ (Assets)</h3>
+                            <div id="c_assets"></div>
+                            <select id="sel_asset" class="border p-2 text-sm rounded w-full mt-2 mb-1 bg-gray-50 focus:ring focus:ring-green-200">
+                                <option value="สินทรัพย์สภาพคล่อง">สินทรัพย์สภาพคล่อง (เงินสด, เงินฝาก)</option>
+                                <option value="สินทรัพย์ลงทุน">สินทรัพย์ลงทุน (หุ้น, กองทุน, คริปโต)</option>
+                                <option value="สินทรัพย์ส่วนตัว">สินทรัพย์ส่วนตัว (บ้าน, รถ, มูลค่าเวนคืนประกัน)</option>
+                                <option value="อสังหาริมทรัพย์และที่ดิน">อสังหาริมทรัพย์และที่ดิน</option>
+                                <option value="ธุรกิจและสินทรัพย์ทางเลือก">ธุรกิจและสินทรัพย์ทางเลือก (Private Equity/Art)</option>
+                                <option value="สินทรัพย์ต่างประเทศ">สินทรัพย์ต่างประเทศ (Offshore Assets)</option>
+                            </select>
+                            <button type="button" onclick="addRow('c_assets', 'sel_asset', ['ชื่อรายการ', 'มูลค่า (บาท)'], '', '', 'ast_list')" class="btn-add">+ เพิ่มรายการสินทรัพย์</button>
+                        </div>
+                        
+                        <div class="border p-4 rounded bg-white shadow-sm transition hover:shadow-md">
+                            <h3 class="font-bold text-red-700 mb-2">หนี้สิน (Liabilities)</h3>
+                            <div id="c_liab"></div>
+                            <select id="sel_liab" class="border p-2 text-sm rounded w-full mt-2 mb-1 bg-gray-50 focus:ring focus:ring-red-200">
+                                <option value="หนี้สินระยะสั้น">หนี้สินระยะสั้น (< 1 ปี)</option>
+                                <option value="หนี้สินระยะยาว">หนี้สินระยะยาว (> 1 ปี)</option>
+                                <option value="หนี้สินเพื่อบริหารความมั่งคั่ง">หนี้สินเพื่อบริหารความมั่งคั่ง (Lombard/Margin)</option>
+                            </select>
+                            <button type="button" onclick="addRow('c_liab', 'sel_liab', ['ชื่อรายการ', 'ยอดคงเหลือ (บาท)'], '', '', 'liab_list')" class="btn-add">+ เพิ่มรายการหนี้สิน</button>
+                        </div>
+                        
+                        <div class="border p-4 rounded bg-white shadow-sm transition hover:shadow-md">
+                            <h3 class="font-bold text-blue-700 mb-2">รายรับ (Income)</h3>
+                            <div id="c_inc"></div>
+                            <select id="sel_inc" class="border p-2 text-sm rounded w-full mt-2 mb-1 bg-gray-50 focus:ring focus:ring-blue-200">
+                                <option value="รายได้จากการทำงาน">รายได้จากการทำงาน (Active)</option>
+                                <option value="รายได้จากสินทรัพย์">รายได้จากสินทรัพย์ (Passive)</option>
+                                <option value="รายได้จากธุรกิจ/เงินปันผล">รายได้จากธุรกิจ/เงินปันผลขนาดใหญ่</option>
+                                <option value="รายได้อื่นๆ">รายได้อื่นๆ (เงินบำนาญ/ลูกหลาน/สวัสดิการ)</option>
+                            </select>
+                            <button type="button" onclick="addRow('c_inc', 'sel_inc', ['ชื่อรายการ', 'จำนวน (บาท/เดือน หรือเฉลี่ย)'], '', '', 'inc_list')" class="btn-add">+ เพิ่มรายการรายรับ</button>
+                        </div>
+                        
+                        <div class="border p-4 rounded bg-white shadow-sm transition hover:shadow-md">
+                            <h3 class="font-bold text-orange-700 mb-2">รายจ่ายต่อเดือน (Monthly Expenses)</h3>
+                            <p class="text-xs text-gray-500 mb-2">* เบี้ยประกันจะถูกรวมเป็นรายเดือนลงใน "รายจ่ายเพื่อออม/ลงทุน" อัตโนมัติเมื่อกดประมวลผล</p>
+                            <div id="c_exp"></div>
+                            <select id="sel_exp" class="border p-2 text-sm rounded w-full mt-2 mb-1 bg-gray-50 focus:ring focus:ring-orange-200">
+                                <option value="รายจ่ายเพื่อออม/ลงทุน">รายจ่ายเพื่อออม/ลงทุน</option>
+                                <option value="เงินชำระคืนหนี้สิน">เงินชำระคืนหนี้สิน</option>
+                                <option value="รายจ่ายประจำ/ใช้ชีวิต">รายจ่ายใช้ชีวิต/สาธารณูปโภค</option>
+                                <option value="ภาษี">ภาษีหัก ณ ที่จ่าย / ภาษีรายเดือน</option>
+                                <option value="รายจ่ายอื่น">รายจ่ายอื่นๆ</option>
+                            </select>
+                            <button type="button" onclick="addRow('c_exp', 'sel_exp', ['ชื่อรายการ', 'จำนวน (บาท/เดือน)'], '', '', 'exp_list')" class="btn-add">+ เพิ่มรายการรายจ่าย</button>
+                        </div>
+                    </div>
                 </div>
-                
-                <div class="mb-6 border-t border-purple-200 pt-4">
-                    <h3 class="font-bold mb-2 flex justify-between items-center">
-                        <span>3.2 กรมธรรม์ประกันชีวิตปัจจุบัน (Protection & Liquidity)</span>
-                        <button type="button" onclick="syncInsuranceData()" class="text-xs bg-teal-100 text-teal-800 px-3 py-1.5 rounded-full hover:bg-teal-200 transition border border-teal-300 shadow-sm flex items-center gap-1">
-                            <span class="text-sm">🔄</span> ซิงค์เข้าสู่งบการเงิน
-                        </button>
-                    </h3>
-    
-                    <p class="text-xs text-gray-600 mb-2">เพิ่ม "สัญญาหลัก" ก่อน จากนั้นระบบจะให้คุณเพิ่ม "สัญญาเพิ่มเติม" (เบี้ยทิ้ง) ภายใต้กรมธรรม์ฉบับนั้นๆ ได้</p>
-                    <div id="c_ins" class="space-y-4"></div>
-                    <button type="button" onclick="addBasePolicy()" class="btn-add bg-purple-50 hover:bg-purple-100 border-purple-300 text-purple-700 font-bold">+ เพิ่มกรมธรรม์ (สัญญาหลัก)</button>
+
+                <!-- 2.2 ข้อมูลพอร์ตโฟลิโอและภาษี (ย้ายมาจากส่วนที่ 1) -->
+                <div class="card bg-purple-50/30 border-l-4 border-purple-500 hover-scale m-0">
+                    <h2 class="section-header theme-purple">ส่วนที่ 2.2: พอร์ตโฟลิโอและข้อมูลภาษี (Portfolio & Tax Data)</h2>
+
+                    <div class="mb-6">
+                        <h3 class="font-bold mb-2 flex justify-between items-center">
+                            <span>กรมธรรม์ประกันชีวิตปัจจุบัน (Protection & Liquidity)</span>
+                            <button type="button" onclick="syncInsuranceData()" class="text-xs bg-teal-100 text-teal-800 px-3 py-1.5 rounded-full hover:bg-teal-200 transition border border-teal-300 shadow-sm flex items-center gap-1">
+                                <span class="text-sm">🔄</span> ซิงค์เข้าสู่งบการเงิน
+                            </button>
+                        </h3>
+                        <p class="text-xs text-gray-600 mb-2">เพิ่ม "สัญญาหลัก" ก่อน จากนั้นระบบจะให้คุณเพิ่ม "สัญญาเพิ่มเติม" (เบี้ยทิ้ง) ภายใต้กรมธรรม์ฉบับนั้นๆ ได้</p>
+                        <div id="c_ins" class="space-y-4"></div>
+                        <button type="button" onclick="addBasePolicy()" class="btn-add bg-purple-50 hover:bg-purple-100 border-purple-300 text-purple-700 font-bold">+ เพิ่มกรมธรรม์ (สัญญาหลัก)</button>
+                    </div>
+
+                    <div class="mb-6 border-t border-purple-200 pt-4">
+                        <h3 class="font-bold mb-2 flex justify-between items-center">
+                            <span>การลงทุนตราสารการเงินปัจจุบัน (Investments)</span>
+                            <button type="button" onclick="pullInvestments()" class="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded hover:bg-purple-200 transition">🔄 ดึงข้อมูลจากงบดุล</button>
+                        </h3>
+                        <p class="text-xs text-gray-600 mb-2">เลือกประเภทจากกล่องด้านล่างแล้วกด "+ เพิ่มการลงทุน" (คุณสามารถแก้ไขชื่อเฉพาะของกองทุนได้ในช่องข้อความ)</p>
+                        <div id="c_invest_current"></div>
+                        <select id="sel_invest" class="border p-2 text-sm rounded w-full mt-2 mb-1 bg-gray-50 focus:ring focus:ring-purple-200">
+                            <option value="เงินฝากออมทรัพย์" data-roi="0.5">เงินฝากออมทรัพย์/เผื่อเรียก (ผลตอบแทนอ้างอิง 0.5%)</option>
+                            <option value="เงินฝากประจำ" data-roi="1.5">เงินฝากประจำ (ผลตอบแทนอ้างอิง 1.5%)</option>
+                            <option value="พันธบัตร/ตราสารหนี้" data-roi="3.0">พันธบัตร/หุ้นกู้/กองทุนตราสารหนี้ (ผลตอบแทนอ้างอิง 3.0%)</option>
+                            <option value="หุ้นไทย" data-roi="7.0">หุ้นไทย/กองทุนรวมหุ้นไทย (ผลตอบแทนอ้างอิง 7.0%)</option>
+                            <option value="หุ้นต่างประเทศ" data-roi="9.0">หุ้นต่างประเทศ/กองทุนรวมหุ้นโลก (ผลตอบแทนอ้างอิง 9.0%)</option>
+                            <option value="สินทรัพย์ทางเลือก" data-roi="12.0">สินทรัพย์ทางเลือก/คริปโต (ผลตอบแทนอ้างอิง 12.0%)</option>
+                            <option value="การลงทุนอื่นๆ" data-roi="5.0">ระบุเอง (Custom)</option>
+                        </select>
+                        <button type="button" onclick="addInvestRow()" class="btn-add">+ เพิ่มการลงทุน</button>
+                    </div>
+
+                    <div class="border-t border-purple-200 pt-4">
+                        <h3 class="font-bold mb-2 flex justify-between">
+                            <span>การวางแผนภาษีปัจจุบัน (รายการลดหย่อน) อิงเกณฑ์ปี 2568</span>
+                            <button type="button" onclick="pullTaxDeductions()" class="text-xs bg-orange-100 text-orange-700 px-2 py-1 rounded hover:bg-orange-200 transition">🔄 ดึงข้อมูลจากงบการเงิน</button>
+                        </h3>
+                        <p class="text-xs text-gray-500 mb-2">* ระบบอ้างอิงหัวข้อรายการตามแบบแสดงรายการ ภ.ง.ด.90/91 (อัปเดต Easy E-Receipt 2.0, เที่ยวเมืองรอง, ค่าสร้างบ้าน) </p>
+                        <div id="c_tax_current"></div>
+                        <button type="button" onclick="addCustomRow('c_tax_current', ['รายการลดหย่อน (อ้างอิง ภ.ง.ด.90/91)', 'จำนวนเงิน (บาท)'], [], ['tax_list', ''])" class="btn-add">+ เพิ่มรายการลดหย่อน</button>
+                    </div>
                 </div>
 
-                <div class="mb-6 border-t border-purple-200 pt-4">
-                    <h3 class="font-bold mb-2 flex justify-between items-center">
-                        <span>3.3 การลงทุนตราสารการเงินปัจจุบัน</span>
-                        <button type="button" onclick="pullInvestments()" class="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded hover:bg-purple-200 transition">🔄 ดึงข้อมูลจากสินทรัพย์ลงทุน</button>
-                    </h3>
-                    <p class="text-xs text-gray-600 mb-2">เลือกประเภทจากกล่องด้านล่างแล้วกด "+ เพิ่มการลงทุน" (คุณสามารถแก้ไขชื่อเฉพาะของกองทุนได้ในช่องข้อความ)</p>
-                    <div id="c_invest_current"></div>
-                    <select id="sel_invest" class="border p-2 text-sm rounded w-full mt-2 mb-1 bg-gray-50 focus:ring focus:ring-purple-200">
-                        <option value="เงินฝากออมทรัพย์" data-roi="0.5">เงินฝากออมทรัพย์/เผื่อเรียก (ผลตอบแทนอ้างอิง 0.5%)</option>
-                        <option value="เงินฝากประจำ" data-roi="1.5">เงินฝากประจำ (ผลตอบแทนอ้างอิง 1.5%)</option>
-                        <option value="พันธบัตร/ตราสารหนี้" data-roi="3.0">พันธบัตร/หุ้นกู้/กองทุนตราสารหนี้ (ผลตอบแทนอ้างอิง 3.0%)</option>
-                        <option value="หุ้นไทย" data-roi="7.0">หุ้นไทย/กองทุนรวมหุ้นไทย (ผลตอบแทนอ้างอิง 7.0%)</option>
-                        <option value="หุ้นต่างประเทศ" data-roi="9.0">หุ้นต่างประเทศ/กองทุนรวมหุ้นโลก (ผลตอบแทนอ้างอิง 9.0%)</option>
-                        <option value="สินทรัพย์ทางเลือก" data-roi="12.0">สินทรัพย์ทางเลือก/คริปโต (ผลตอบแทนอ้างอิง 12.0%)</option>
-                        <option value="การลงทุนอื่นๆ" data-roi="5.0">ระบุเอง (Custom)</option>
-                    </select>
-                    <button type="button" onclick="addInvestRow()" class="btn-add">+ เพิ่มการลงทุน</button>
+                <!-- ปุ่ม Navigation ท้าย Step 2 -->
+                <div class="flex flex-col md:flex-row justify-between mt-8 no-print gap-4">
+                    <button type="button" onclick="switchInputStep(1)" class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-6 py-4 rounded-xl shadow font-bold transition text-lg flex items-center justify-center gap-2 order-2 md:order-1">
+                        <span class="text-xl">⬅️</span> ย้อนกลับไปหน้า Profile
+                    </button>
+                    <button type="button" onclick="processReportInit()" class="bg-red-600 hover:bg-red-700 text-white px-10 py-4 rounded-xl shadow-lg font-bold transition transform hover:scale-105 animate-pulse-soft text-lg flex items-center justify-center gap-2 order-1 md:order-2">
+                        ⚙️ ประมวลผลแผนการเงิน
+                    </button>
                 </div>
 
-                <div class="mb-6 border-t border-purple-200 pt-4">
-                    <h3 class="font-bold mb-2 flex justify-between">
-                        <span>3.4 การวางแผนภาษีปัจจุบัน (รายการลดหย่อน) อิงเกณฑ์ปี 2568</span>
-                        <button type="button" onclick="pullTaxDeductions()" class="text-xs bg-orange-100 text-orange-700 px-2 py-1 rounded hover:bg-orange-200 transition">🔄 ดึงข้อมูลจากระบบ</button>
-                    </h3>
-                    <p class="text-xs text-gray-500 mb-2">* ระบบอ้างอิงหัวข้อรายการตามแบบแสดงรายการ ภ.ง.ด.90/91 (อัปเดต Easy E-Receipt 2.0, เที่ยวเมืองรอง, ค่าสร้างบ้าน) </p>
-                    <div id="c_tax_current"></div>
-                    <button type="button" onclick="addCustomRow('c_tax_current', ['รายการลดหย่อน (อ้างอิง ภ.ง.ด.90/91)', 'จำนวนเงิน (บาท)'], [], ['tax_list', ''])" class="btn-add">+ เพิ่มรายการลดหย่อน</button>
-                </div>
-
-                <div class="border-t border-purple-200 pt-4">
-    <div class="flex justify-between items-center cursor-pointer group" onclick="toggleAdvancedEcon()">
-        <div>
-            <h3 class="font-bold text-gray-800 group-hover:text-indigo-600 transition">3.5 เป้าหมายการเกษียณ (Retirement Plan)</h3>
-            <p class="text-[10px] text-indigo-600">* ข้อมูลเศรษฐกิจจะถูก Auto-Tuned ด้วย ML Model (คลิกเพื่อปรับแต่ง)</p>
-        </div>
-        <span id="econ_toggle_icon" class="text-gray-400 transform transition-transform text-xl group-hover:text-indigo-600">▼</span>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-3">
-        <div><label class="text-xs font-semibold text-gray-700">อายุเกษียณ (ปี)</label><input type="number" id="r_retAge" class="input-field w-full" value="60"></div>
-        <div><label class="text-xs font-semibold text-gray-700">อายุขัยคาดการณ์ (ปี)</label><input type="number" id="r_lifeExp" class="input-field w-full" value="85"></div>
-        <div class="relative">
-            <label class="text-xs font-semibold text-gray-700">เป้าหมายค่าใช้จ่ายหลังเกษียณ/เดือน (บาท)</label>
-            <input type="text" id="r_reqInc" class="input-field w-full money-input transition-all" value="30,000.00" onblur="formatInput(this); checkRetirementGoalLogic();" onfocus="unformatInput(this)">
-            <div id="r_reqInc_warning" class="hidden absolute z-10 w-full mt-1 bg-yellow-50 border border-yellow-300 text-yellow-700 text-[10px] leading-tight p-2 rounded shadow-md animate-fade-in">
-                ⚠️ <b class="font-bold">ข้อสังเกต:</b> เป้าหมายสูงกว่ารายได้ปัจจุบัน อาจต้องใช้เงินออมที่สูงมากหรือพอร์ตลงทุนเชิงรุกเป็นพิเศษ
-            </div>
-        </div>
-    </div>
-
-    <div id="advanced_econ_section" class="hidden grid grid-cols-1 md:grid-cols-3 gap-4 mt-4 pt-4 border-t border-dashed border-purple-100 animate-fade-in">
-        <div><label class="text-xs font-semibold text-indigo-700">ผลตอบแทนคาดหวังพอร์ต (%)</label><input type="number" id="r_preRet" class="input-field w-full bg-indigo-50/30" value="6"></div>
-        <div><label class="text-xs font-semibold text-indigo-700">เงินเฟ้อทั่วไป (%)</label><input type="number" id="r_inf" step="0.1" class="input-field w-full bg-indigo-50/30" value="3"></div>
-        <div><label class="text-xs font-semibold text-indigo-700">เงินเฟ้อค่ารักษา (%)</label><input type="number" id="r_med_inf" step="0.1" class="input-field w-full bg-indigo-50/30" value="6"></div>
-    </div>
-</div>
-            </div>
-            
-            <div class="mt-8 flex justify-end no-print print:hidden">
-                <button type="button" onclick="processReportInit()" class="bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-lg shadow-lg font-bold transition transform hover:scale-105 animate-pulse-soft text-lg">⚙️ ประมวลผล</button>
             </div>
         </form>
     </div>
@@ -3820,6 +3866,78 @@ window.switchFromHomeToAppUI = function() {
     window.scrollTo({top: 0, behavior: 'smooth'});
     document.body.style.overflow = 'auto';
 };
+
+// ==========================================
+// 🧭 ฟังก์ชันสลับหน้า UI (Step 1 / Step 2) พร้อมระบบ Validation ต้นทาง
+// ==========================================
+window.switchInputStep = function(step) {
+    const step1Content = document.getElementById('step1_content');
+    const step2Content = document.getElementById('step2_content');
+    const btnStep1 = document.getElementById('btn_step1');
+    const btnStep2 = document.getElementById('btn_step2');
+
+    // 🛑 ดักจับตั้งแต่ต้นทาง: ถ้าจะพยายามไป Step 2 ต้องเช็คข้อมูลบังคับใน Step 1 ก่อน
+    if (step === 2) {
+        const pName = document.getElementById('p_name');
+        const pAge = document.getElementById('p_age');
+        
+        // ถ้าช่องชื่อ หรือ ช่องอายุ ว่างเปล่า
+        if (!pName.value.trim() || !pAge.value.trim()) {
+            alert('⚠️ กรุณากรอก "ชื่อ-สกุล" และ "อายุ" ในส่วนที่ 1 ให้ครบถ้วนก่อนไปหน้าถัดไปครับ');
+            
+            // ทำให้เคอร์เซอร์กะพริบที่ช่องที่ลืมกรอกทันที (UX ที่ดี)
+            if (!pName.value.trim()) {
+                pName.focus();
+            } else {
+                pAge.focus();
+            }
+            return; // ⛔ สั่งหยุดการทำงานทันที ไม่ให้สลับไป Step 2
+        }
+    }
+
+    if(step === 1) {
+        // แสดง Step 1
+        step1Content.classList.remove('hidden');
+        step1Content.classList.add('block');
+        step2Content.classList.remove('block');
+        step2Content.classList.add('hidden');
+
+        // จัดการสีปุ่ม Navigation ให้ปุ่ม 1 Active
+        btnStep1.classList.add('text-blue-700', 'bg-blue-50', 'border-blue-200', 'shadow-sm');
+        btnStep1.classList.remove('text-gray-500', 'bg-transparent', 'border-transparent');
+
+        btnStep2.classList.remove('text-blue-700', 'bg-blue-50', 'border-blue-200', 'shadow-sm');
+        btnStep2.classList.add('text-gray-500', 'bg-transparent', 'border-transparent');
+        
+    } else if (step === 2) {
+        // แสดง Step 2
+        step1Content.classList.remove('block');
+        step1Content.classList.add('hidden');
+        step2Content.classList.remove('hidden');
+        step2Content.classList.add('block');
+
+        // จัดการสีปุ่ม Navigation ให้ปุ่ม 2 Active
+        btnStep2.classList.add('text-blue-700', 'bg-blue-50', 'border-blue-200', 'shadow-sm');
+        btnStep2.classList.remove('text-gray-500', 'bg-transparent', 'border-transparent');
+
+        btnStep1.classList.remove('text-blue-700', 'bg-blue-50', 'border-blue-200', 'shadow-sm');
+        btnStep1.classList.add('text-gray-500', 'bg-transparent', 'border-transparent');
+    }
+    
+    // เลื่อนหน้าจอกลับขึ้นไปด้านบนอย่างนุ่มนวลทุกครั้งที่เปลี่ยนหน้า
+    window.scrollTo({top: 0, behavior: 'smooth'});
+};
+
+// Override ฟังก์ชัน toggleMode เพื่อให้แสดง Step 1 เป็นค่าเริ่มต้นเสมอเวลากด "กลับไปแก้ไขข้อมูล"
+const originalToggleMode = window.toggleMode;
+if (typeof originalToggleMode === 'function') {
+    window.toggleMode = function(mode) {
+        originalToggleMode(mode);
+        if (mode === 'edit') {
+            switchInputStep(1); // บังคับให้กลับมาหน้าเชิงคุณภาพเสมอ
+        }
+    };
+}
 
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {

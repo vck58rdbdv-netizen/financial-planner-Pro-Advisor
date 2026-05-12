@@ -225,6 +225,9 @@ window.systemDictionary = {
             </div>
         `
     },
+    // ==========================================
+    // 🧠 ส่วนที่ X: คู่มือฟังก์ชันการใช้งานระบบ (System Operations)
+    // ==========================================
     "c2_operations": {
         category: "c2",
         icon: "🖥️",
@@ -232,7 +235,7 @@ window.systemDictionary = {
         title: "คู่มือฟังก์ชันการใช้งานระบบ (System Operations)",
         content: `
             <div class="antialiased touch-manipulation">
-                <p class="leading-relaxed text-sm text-gray-700 mb-6">Financial Planner Pro Advisor ไม่ใช่แค่เครื่องมือคำนวณ แต่คือระบบปฏิบัติการทางการเงิน (Financial Operating System) คู่มือฉบับนี้จะเจาะลึกทุกฟังก์ชันแบบ Step-by-Step</p>
+                <p class="leading-relaxed text-sm text-gray-700 mb-6">Financial Planner Pro Advisor ไม่ใช่แค่เครื่องมือคำนวณ แต่คือระบบปฏิบัติการทางการเงิน (Financial Operating System) คู่มือฉบับนี้จะเจาะลึกทุกฟังก์ชันแบบ Step-by-Step เพื่อให้คุณดึงศักยภาพสูงสุดของระบบออกมาใช้</p>
                 <div class="space-y-6">
                     <!-- MODULE 1: Home Screen -->
                     <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm">
@@ -241,26 +244,30 @@ window.systemDictionary = {
                             <h3 class="font-bold text-white text-lg">ศูนย์บัญชาการหลัก (Home Screen & Navigation)</h3>
                         </div>
                         <div class="p-5 text-sm text-gray-700 space-y-4">
-                            <p class="leading-relaxed">เมื่อเข้าสู่ระบบสำเร็จ คุณจะพบกับ <b>หน้าจอ Home Screen</b> ซึ่งออกแบบมาให้เป็นจุดศูนย์กลาง (Hub) ในการเข้าถึงโมดูลต่างๆ ของระบบอย่างรวดเร็ว ประกอบด้วย 3 เมนูหลัก:</p>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-200 shadow-sm">
+                            <p class="leading-relaxed">เมื่อเข้าสู่ระบบสำเร็จ คุณจะพบกับ <b>หน้าจอ Home Screen</b> ซึ่งออกแบบมาให้เป็นจุดศูนย์กลาง (Hub) ในการเข้าถึงโมดูลต่างๆ ของระบบอย่างรวดเร็ว ปัจจุบันอัปเกรดเป็น 4 เมนูหลัก:</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                                <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-200 shadow-sm flex flex-col h-full">
                                     <b class="text-emerald-800 flex items-center gap-2 mb-2"><span class="text-lg select-none">📖</span> คู่มือ / แนะนำระบบ</b>
-                                    <p class="text-xs text-gray-600 leading-relaxed">เปิดหน้าต่าง Knowledge Base (หน้าต่างนี้) เพื่อศึกษาสถาปัตยกรรม เจาะลึกการทำงานของโมเดล AI และทฤษฎีการวางแผนการเงิน</p>
+                                    <p class="text-[11px] text-gray-600 leading-relaxed flex-1">ศูนย์รวมความรู้ ศึกษาการทำงานของ AI และเทคนิคการนำเสนอ (FA Pitching)</p>
                                 </div>
-                                <div class="bg-blue-50 p-4 rounded-xl border border-blue-200 shadow-sm">
+                                <div class="bg-blue-50 p-4 rounded-xl border border-blue-200 shadow-sm flex flex-col h-full">
                                     <b class="text-blue-800 flex items-center gap-2 mb-2"><span class="text-lg select-none">📝</span> ระบบประเมินการเงิน</b>
-                                    <p class="text-xs text-gray-600 leading-relaxed">เข้าสู่ระบบการทำงานหลัก (Main App) เพื่อเริ่มกรอกข้อมูลลูกค้า สร้างเคสประเมินสถานะทางการเงิน และออกรายงานรูปเล่ม (PDF)</p>
+                                    <p class="text-[11px] text-gray-600 leading-relaxed flex-1">เครื่องมือหลักสร้างเคสประเมินสุขภาพการเงิน และเปิดระบบ AI Diagnostics</p>
                                 </div>
-                                <div class="bg-purple-50 p-4 rounded-xl border border-purple-200 shadow-sm">
+                                <div class="bg-teal-50 p-4 rounded-xl border border-teal-200 shadow-sm flex flex-col h-full">
+                                    <b class="text-teal-800 flex items-center gap-2 mb-2"><span class="text-lg select-none">🗂️</span> วางแผนลูกค้า</b>
+                                    <p class="text-[11px] text-gray-600 leading-relaxed flex-1">พื้นที่ทำงาน (Workspace/CRM) จัดการฐานข้อมูลและประวัติการเข้าพบ (ต้อง Login)</p>
+                                </div>
+                                <div class="bg-purple-50 p-4 rounded-xl border border-purple-200 shadow-sm flex flex-col h-full">
                                     <b class="text-purple-800 flex items-center gap-2 mb-2"><span class="text-lg select-none">⚙️</span> ตั้งค่าระบบ</b>
-                                    <p class="text-xs text-gray-600 leading-relaxed">เข้าสู่โหมดจัดการข้อมูลผู้จัดทำ และฐานข้อมูลลูกค้า (CRM) <br><span class="text-red-600 font-bold">*ระบบจะบังคับให้ใส่รหัส PIN อีกครั้งก่อนเข้าถึง เพื่อป้องกันข้อมูลลูกค้ารั่วไหล</span></p>
+                                    <p class="text-[11px] text-gray-600 leading-relaxed flex-1">จัดการโปรไฟล์ผู้จัดทำ และพารามิเตอร์ระบบ <br><span class="text-red-600 font-bold">*ต้อง Login</span></p>
                                 </div>
                             </div>
                             <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 mt-2 flex items-start gap-3 shadow-sm">
                                 <span class="text-xl mt-0.5 select-none pointer-events-none">💡</span>
                                 <div>
                                     <b class="text-gray-800 text-sm block mb-1">การนำทาง (Navigation)</b>
-                                    <p class="text-xs text-gray-700 leading-relaxed">ขณะที่คุณทำงานอยู่ในหน้า "ระบบประเมินการเงิน" คุณสามารถกดปุ่ม <span class="bg-blue-600 text-white px-2 py-1 rounded font-bold text-[10px]">🏠 หน้าแรก (Home)</span> ที่แถบเมนูด้านบนซ้าย เพื่อย้อนกลับมาพักที่หน้า Home Screen ได้ตลอดเวลา (ข้อมูลที่คุณกรอกค้างไว้ในระบบประเมินจะไม่หายไปไหน)</p>
+                                    <p class="text-xs text-gray-700 leading-relaxed">ขณะที่คุณทำงานอยู่ในหน้า "ระบบประเมินการเงิน" หรือหน้าอื่นๆ คุณสามารถกดปุ่ม <span class="bg-blue-600 text-white px-2 py-1 rounded font-bold text-[10px]">🏠 หน้าแรก (Home)</span> ที่แถบเมนูด้านบนซ้าย เพื่อย้อนกลับมาพักที่หน้า Home Screen ได้ตลอดเวลา (ข้อมูลที่คุณกรอกค้างไว้ในฟอร์มประเมินจะไม่หายไป)</p>
                                 </div>
                             </div>
                         </div>
@@ -273,7 +280,7 @@ window.systemDictionary = {
                             <h3 class="font-bold text-white text-lg">เครื่องมือคำนวณอิสระ (Pro Financial Calculators)</h3>
                         </div>
                         <div class="p-5 text-sm text-gray-700 space-y-4">
-                            <p class="leading-relaxed">ปุ่ม <b>"🧮 เครื่องคิดเลขการเงิน"</b> เป็นโมดูลที่ทำงานแยกส่วนจากระบบหลัก (Sandbox) คุณสามารถกดเปิดขึ้นมาเพื่อตอบคำถามลูกค้าแบบรวดเร็ว (Ad-hoc Calculation) โดยไม่ต้องเริ่มสร้างเคสใหม่ ประกอบด้วย 4 เครื่องยนต์หลัก:</p>
+                            <p class="leading-relaxed">ปุ่ม <b>"🧮 เครื่องคิดเลขการเงิน"</b> เป็นโมดูลที่ทำงานแยกส่วนจากระบบหลัก คุณสามารถกดเปิดขึ้นมาเพื่อตอบคำถามลูกค้าแบบรวดเร็ว (Ad-hoc Calculation) โดยไม่ต้องเริ่มสร้างเคสใหม่ ประกอบด้วย 4 เครื่องยนต์หลัก:</p>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div class="bg-purple-50 p-4 rounded-xl border border-purple-100">
                                     <b class="text-purple-800 block mb-1 text-base">🏖️ จำลองเป้าหมายเกษียณ (Retirement)</b>
@@ -322,7 +329,7 @@ window.systemDictionary = {
                                     <div class="bg-white border border-red-200 p-2 rounded shadow-sm text-2xl leading-none flex items-center justify-center select-none">⚙️</div>
                                     <div>
                                         <b class="text-red-700 text-sm">ประมวลผล (Process Report)</b>
-                                        <p class="text-[11px] text-gray-700 mt-1">หลังจากป้อนข้อมูลลูกค้าใน Section 1 ถึง 3 ครบแล้ว ให้กดปุ่ม <span class="bg-red-600 text-white px-2 py-1 rounded text-[10px] font-bold">⚙️ ประมวลผล</span> หน้าจอจะแสดง <b>Loading Overlay ของ AI Predictive Engine</b> เพื่อคำนวณสมการ Monte Carlo กว่า 20,000 รอบ ก่อนจะสลับหน้าจอเข้าสู่ Report View อย่างไร้รอยต่อ</p>
+                                        <p class="text-[11px] text-gray-700 mt-1">หลังจากป้อนข้อมูลลูกค้าครบถ้วน ให้กดปุ่ม <span class="bg-red-600 text-white px-2 py-1 rounded text-[10px] font-bold">⚙️ ประมวลผล</span> หน้าจอจะแสดง <b>Loading Overlay ของ AI Predictive Engine</b> เพื่อคำนวณสมการ Monte Carlo กว่า 20,000 รอบ ก่อนจะสลับหน้าจอเข้าสู่ Report View อย่างไร้รอยต่อ</p>
                                     </div>
                                 </div>
                             </div>
@@ -331,23 +338,30 @@ window.systemDictionary = {
 
                     <!-- MODULE 6: Playground & Simulation -->
                     <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm">
-                        <div class="bg-gradient-to-r from-emerald-600 to-emerald-800 p-4 border-b border-emerald-500 flex items-center gap-3">
+                        <div class="bg-gradient-to-r from-emerald-600 to-cyan-700 p-4 border-b border-emerald-500 flex items-center gap-3">
                             <div class="bg-white/20 text-white w-8 h-8 rounded-lg flex items-center justify-center font-bold shadow-inner select-none">4</div> 
-                            <h3 class="font-bold text-white text-lg">ห้องทดลองทางเลือก (Interactive Playground)</h3>
+                            <h3 class="font-bold text-white text-lg">ห้องทดลองทางเลือก & จำลองพอร์ต (Simulation Playgrounds)</h3>
                         </div>
                         <div class="p-5 text-sm text-gray-700 space-y-4 relative overflow-hidden">
                             <div class="absolute -right-6 -bottom-6 text-8xl opacity-10 select-none pointer-events-none">🎛️</div>
-                            <p class="leading-relaxed relative z-10">ใน <b>ส่วนที่ 7: แบบจำลองเกษียณเชิงสมจริง</b> ของหน้ารายงาน คุณจะพบกับอาวุธที่ทรงพลังที่สุดในการตอบข้อโต้แย้งลูกค้า นั่นคือ <b>"ห้องทดลองทางเลือก (Trade-off Playground)"</b>:</p>
-                            <ul class="list-disc list-inside text-xs space-y-2 text-gray-700 ml-1 relative z-10">
-                                <li>ในกล่อง <b>Real-time Simulation</b> จะมี <b>แถบสไลเดอร์ (Slider)</b> ให้ปรับ 3 ค่าได้แก่: <span class="font-bold text-indigo-600">อายุเกษียณ</span>, <span class="font-bold text-orange-600">เป้าหมายค่าใช้จ่าย</span>, และ <span class="font-bold text-blue-600">ผลตอบแทนคาดหวัง</span></li>
-                                <li><b>Interactive Feedback ⚡:</b> ทันทีที่คุณใช้นิ้วหรือเมาส์ลากสไลเดอร์ กราฟเส้นสีม่วง (พอร์ตจัดเอง) บนหน้าจอจะขยับขึ้นลงตอบสนองตามสมการจำลองทันที (Visual Impact)</li>
-                                <li><b>Background Recalculation 🧠:</b> ทันทีที่คุณ "ปล่อยเมาส์" ระบบจะแอบสั่งให้ Web Worker รันสมการ Monte Carlo ใหม่ในฉากหลัง และอัปเดต <b>% โอกาสสำเร็จ (AI Success Probability)</b> ในตารางด้านล่างให้ใหม่ทันที</li>
-                            </ul>
+                            <p class="leading-relaxed relative z-10">ระบบมีเครื่องมือระดับ Advance 2 จุด เพื่อใช้ตอบข้อโต้แย้งและหาระดับความสบายใจ (Sweet Spot) ร่วมกับลูกค้า:</p>
                             
-                            <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-200 mt-5 relative z-10 shadow-inner">
-                                <b class="text-emerald-800 text-sm block mb-2 flex items-center gap-2">💎 เทคนิคปิดการขาย (Expert Tactic):</b>
-                                <p class="text-xs text-gray-700 leading-relaxed border-l-2 border-emerald-400 pl-3">ใช้สไลเดอร์นี้ทำ <i>Trade-off (การได้อย่างเสียอย่าง)</i> เชิงจิตวิทยากับลูกค้า เช่น <br>
-                                <span class="text-emerald-700 italic font-medium">"คุณลูกค้าครับ ถ้าไม่อยากเพิ่มเงินออม งั้นผมขอลองลดเป้าหมายค่าใช้จ่ายลงนิดนึง หรือขยับอายุเกษียณออกไปอีก 2 ปีนะครับ... อ๊ะ! เห็นไหมครับว่ากราฟขยับพุ่งขึ้นมาในโซนปลอดภัยแล้ว โอกาสสำเร็จพุ่งขึ้นเป็น 85% ทันทีเลยครับ"</span></p>
+                            <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-200 relative z-10 shadow-sm">
+                                <b class="text-emerald-800 text-sm block mb-2 flex items-center gap-2">🎯 1. Retirement Slider (แบบจำลองเกษียณ)</b>
+                                <ul class="list-disc list-inside text-xs space-y-1.5 text-gray-700 pl-2">
+                                    <li>ลากปรับ <span class="font-bold text-indigo-600">อายุเกษียณ</span>, <span class="font-bold text-orange-600">เป้าหมายค่าใช้จ่าย</span>, และ <span class="font-bold text-blue-600">ผลตอบแทน</span></li>
+                                    <li><b>Interactive Feedback:</b> กราฟเส้นขยับตามทันที พร้อมคำนวณ % Success Probability ให้ใหม่</li>
+                                    <li><b class="text-emerald-600">💡 FA Tactic:</b> ใช้แสดงให้ลูกค้าเห็นว่า "หากไม่เพิ่มเงินออม การยืดอายุเกษียณออกไปอีกนิด ก็ช่วยให้แผนรอดพ้นวิกฤตได้เช่นกัน"</li>
+                                </ul>
+                            </div>
+
+                            <div class="bg-cyan-50 p-4 rounded-xl border border-cyan-200 relative z-10 shadow-sm">
+                                <b class="text-cyan-800 text-sm block mb-2 flex items-center gap-2">🛡️ 2. FA Interactive Sandbox (จำลองพอร์ตประกัน)</b>
+                                <ul class="list-disc list-inside text-xs space-y-1.5 text-gray-700 pl-2">
+                                    <li>อยู่ใน <span class="font-bold">Module 12 ของหน้าต่าง AiDAPC</span> อนุญาตให้ FA เป็นผู้เลือก <b>สัญญาหลัก + สัญญาเพิ่มเติม</b> พร้อมระบุเบี้ยด้วยตนเอง</li>
+                                    <li><b>Trade-off Analysis:</b> AI จะไม่คำนวณเบี้ยให้ แต่จะวิเคราะห์ความคุ้มค่า (Cost/Benefit) ของแผนที่คุณจัด ว่ากระทบต่อ <b>Premium to Income Ratio (PIR)</b> มากน้อยเพียงใด</li>
+                                    <li><b class="text-cyan-600">💡 FA Tactic:</b> ใช้ Report ที่ระบบ Generate ให้ เพื่อโชว์ให้ลูกค้าเห็นว่า "การจ่ายเบี้ยหลักหมื่น สามารถอุดรอยรั่วความเสี่ยงระดับหลักล้านได้ถึง 100%"</li>
+                                </ul>
                             </div>
                         </div>
                     </div>
