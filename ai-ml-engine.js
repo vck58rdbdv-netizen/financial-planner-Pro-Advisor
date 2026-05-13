@@ -720,7 +720,7 @@ function runCoAdvisorConsensus(features, userBehaviors, retirementProb = null, o
     }
     else if (warningFlags.length > 0) {
         consensusNLG = `<b>⚠️ ข้อควรระวังด้านพฤติกรรม:</b> โดยรวมคุณมีศักยภาพที่ดี แต่อาจไปไม่ถึงเป้าหมายเนื่องจากพบจุดสะดุดบางประการคือ <i>${warningFlags.join(", ")}</i><br>
-        <span class="text-orange-600 text-sm mt-1 inline-block">💡 <b>คำแนะนำ:</b> หากปรับพฤติกรรมเหล่านี้ได้ โอกาสที่เงินจะพอใช้ตลอดชีพ จะเพิ่มขึ้นอย่างมหาศาลครับ</span>`;
+        <span class="text-orange-600 text-sm mt-1 inline-block">💡 <b>คำแนะนำ:</b> หากปรับพฤติกรรมเหล่านี้ได้ โอกาสที่เงินจะพอใช้ตลอดชีพ จะเพิ่มขึ้นครับ</span>`;
     }
     else {
         consensusNLG = `<b>✅ สถานะพฤติกรรมยอดเยี่ยม:</b> วินัยทางการเงินและเป้าหมายของคุณสอดคล้องกันอย่างสมบูรณ์แบบ (จัดอยู่ในกลุ่ม <span class="text-green-600 font-bold">${hybridPersona.split('[')[0].trim()}</span>)<br>

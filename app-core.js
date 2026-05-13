@@ -3096,7 +3096,9 @@ function calcThaiTax(yearlyNet) {
         if (clusterBox) {
             clusterBox.innerHTML = `
                 <div class="text-white text-[11px] leading-tight font-bold">${hybridResult.hybridPersona.split('(')[0].trim()}</div>
-                ${hybridResult.hasConflict ? '<div class="text-red-300 text-[9px] mt-1 animate-pulse">⚠️ Rule Conflict Detected</div>' : '<div class="text-green-300 text-[9px] mt-1">✅ ML & Rule Synced</div>'}
+                ${hybridResult.hasConflict ? 
+                    '<div class="text-yellow-300 text-[9px] mt-1 font-medium">✨ AI ปรับแต่งแผนเฉพาะบุคคล (Deep Customization)</div>' : 
+                    '<div class="text-cyan-300 text-[9px] mt-1 font-medium">✅ AI วิเคราะห์โครงสร้างมาตรฐาน (Optimized)</div>'}
             `;
         }
 
@@ -4263,7 +4265,7 @@ function calcThaiTax(yearlyNet) {
         let taxHtml = `
             <tr class="hover:bg-gray-50"><td class="py-2 px-3 font-semibold text-gray-800">1. รายได้พึงประเมินรวมตลอดปี</td><td class="text-right">${fmt(yearlyTotalInc)}</td><td class="text-right">${fmt(yearlyTotalInc)}</td></tr>
             <tr class="hover:bg-gray-50"><td class="py-2 px-3 font-semibold text-gray-800">2. หัก ค่าใช้จ่าย</td><td class="text-right text-red-600">-${fmt(deductExpense)}</td><td class="text-right text-red-600">-${fmt(deductExpense)}</td></tr>
-            <tr class="bg-gray-100"><td colspan="3" class="py-2 px-3 font-semibold text-gray-800">3. หัก รายการลดหย่อนและยกเว้น (อ้างอิงเกณฑ์ปี 2568)</td></tr>
+            <tr class="bg-gray-100"><td colspan="3" class="py-2 px-3 font-semibold text-gray-800">3. หัก รายการลดหย่อนและยกเว้น (เบื้องต้น)</td></tr>
             <tr class="hover:bg-gray-50 text-sm"><td class="py-1 px-3 pl-6 text-gray-700">- ผู้มีเงินได้ (60,000.00 บาท)</td><td class="text-right text-red-600">-${fmt(deductPersonal)}</td><td class="text-right text-red-600">-${fmt(deductPersonal)}</td></tr>
             ${elderlyRowHtml}
             ${customTaxRowsHtml_C}
@@ -4290,7 +4292,7 @@ function calcThaiTax(yearlyNet) {
         // 🧠 [NLG] Tax Optimization Analysis
         let taxAnalysisText = '';
         if (isHNW) {
-            document.getElementById('tax_desc').innerHTML = `การประเมินภาษีเงินได้บุคคลธรรมดา ปี 2568 และโอกาสในการทำ <b>Tax Optimization</b> ผ่านนิติบุคคล (Holding Company) หรือ Offshore Investment`;
+            document.getElementById('tax_desc').innerHTML = `การประเมินภาษีเงินได้บุคคลธรรมดาและโอกาสในการทำ <b>Tax Optimization</b> ผ่านนิติบุคคล (Holding Company) หรือ Offshore Investment`;
             taxAnalysisText = `<h4 class="font-bold text-orange-800 text-lg mb-1">ผลประเมินการวางแผนภาษีระดับ HNW</h4>
                                <p class="text-sm text-orange-900">${pickStr([
                                    `รายได้ของคุณอยู่ในฐานภาษีขั้นสูง (${taxCurrent.bracket}) ขอแนะนำให้พิจารณาการโอนสินทรัพย์เข้าสู่ <b>นิติบุคคล (Holding Company)</b> เพื่อจัดการฐานภาษี หรือลงทุนผ่าน <b>AIA Unit Linked</b> ที่ให้สิทธิประโยชน์ปกป้องภาษีมรดก`,
