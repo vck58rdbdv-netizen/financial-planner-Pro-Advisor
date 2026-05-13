@@ -3609,7 +3609,11 @@ function calcThaiTax(yearlyNet) {
         }
 
         const retAge = Number(document.getElementById('r_retAge').value) || 60;
-        let targetEmg = pureExp * liqBenchmarkMin;
+
+        // ✅ นำตรรกะเช็คอาชีพมาคำนวณเป้าหมายให้จบตรงนี้เลย ก่อนที่ระบบจะเอาไปหาส่วนต่าง
+        let isSeasonalIncome = (typeof occString !== 'undefined' && (occString.includes('เกษตรกร') || occString.includes('รับเหมา') || occString.includes('ค้าขาย'))) || isFreelance || isGigWorker || isBusinessOwner;
+        let safeEmgMonths = isSeasonalIncome ? Math.max(12, liqBenchmarkMin) : Math.max(6, liqBenchmarkMin);
+        let targetEmg = pureExp * safeEmgMonths; // ได้เป้าหมายที่แท้จริง (เช่น 144,000)
         
         // 🌟 [FIX: ล้างบางบั๊กตัวแปรล่องหน]
         // ดึงค่าอายุและภาระอุปการะจากตัวแปรหลักที่ประกาศไว้ถูกต้องแล้วด้านบน
@@ -3863,12 +3867,12 @@ function calcThaiTax(yearlyNet) {
         return `<div class="text-green-600 font-bold p-2 bg-green-50 rounded border border-green-200 text-center shadow-inner">เพียงพอ/เกินเป้า<br>+${fmt(diff)}</div>`;
     };
 
-    // ✅ เปลี่ยนเป้าหมายเป็น "ระยะสั้น" และแสดงเป้าเกษียณในวงเล็บเตือนใจ
+    /* ✅ เปลี่ยนเป้าหมายเป็น "ระยะสั้น" และแสดงเป้าเกษียณในวงเล็บเตือนใจ
     // 🚨 ปรับเป้าหมายเงินสำรองให้เข้ากับอาชีพ (Seasonal Income / Freelance / เกษตรกร)
         let isSeasonalIncome = (typeof occString !== 'undefined' && (occString.includes('เกษตรกร') || occString.includes('รับเหมา') || occString.includes('ค้าขาย'))) || isFreelance || isGigWorker || isBusinessOwner;
         // ถ้าเป็นกลุ่มรายได้ผันผวน บังคับสำรอง 12 เดือน (แต่ถ้าของเดิมลูกค้าตั้งไว้สูงกว่า 12 ให้ยึดค่าที่สูงกว่า)
         let safeEmgMonths = isSeasonalIncome ? Math.max(12, liqBenchmarkMin) : Math.max(6, liqBenchmarkMin);
-        targetEmg = pureExp * safeEmgMonths; // อัปเดตเป้าหมายเงินสำรองใหม่ให้ AI รับรู้
+        targetEmg = pureExp * safeEmgMonths; // อัปเดตเป้าหมายเงินสำรองใหม่ให้ AI รับรู้ */
 
         let liqTargetText = `เป้าหมาย: สำรองเงินสด ${safeEmgMonths} เดือน<br><span class="text-xs text-blue-600 font-medium mt-1 block"><b>ข้อมูลเชิงคุณภาพ:</b> ความเสี่ยงรายได้ ${isSeasonalIncome ? 'สูง (รายได้ผันผวน/ฤดูกาล)' : 'ปานกลาง (รายได้ประจำ)'}</span>`;
     
