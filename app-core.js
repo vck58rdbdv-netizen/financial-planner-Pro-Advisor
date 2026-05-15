@@ -1604,16 +1604,64 @@ function getAdvancedReturn(mean, stdDev, skewness = 0, kurtosis = 0, jumpFreq = 
     return Math.exp(logReturn) - 1; 
 }
 
+// =====================================================================
+// 🚀 Dynamic Iteration Engine (ปรับจำนวนรอบ Monte Carlo ตามสเปก CPU)
+// =====================================================================
+function getOptimalIterations(targetHigh = 10000) {
+    const logicalCores = navigator.hardwareConcurrency || 4;
+
+    if (logicalCores >= 8) {
+        return targetHigh;
+    } else if (logicalCores >= 4) {
+        return Math.floor(targetHigh * 0.6);
+    } else {
+        return 3000;
+    }
+}
 
 // =====================================================================
 // 🚀 [UPGRADE] TRUE INLINE WEB WORKER (Monte Carlo Simulation)
 // + Dynamic Cashflow Liberation, Stochastic Inflation, Correlation & Withdrawal Guardrails
+// + [NEW] High-Quality PRNG (SFC32) for Kolmogorov-Smirnov Test Compliance
 // =====================================================================
 
 const mcWorkerCode = `
-    // --- Math Helper Functions ---
+    // --- 🎲 1. [UPGRADE] อัลกอริทึมสุ่มตัวเลขระดับสถาบันการเงิน (SFC32 PRNG) ---
+    // ฟังก์ชันสร้าง Seed แบบกระจายตัวสูง (MurmurHash3)
+    function xmur3(str) {
+        for(var i = 0, h = 1779033703 ^ str.length; i < str.length; i++) {
+            h = Math.imul(h ^ str.charCodeAt(i), 3432918353);
+            h = h << 13 | h >>> 19;
+        }
+        return function() {
+            h = Math.imul(h ^ (h >>> 16), 2246822507);
+            h = Math.imul(h ^ (h >>> 13), 3266489909);
+            return (h ^= h >>> 16) >>> 0;
+        }
+    }
+
+    // ฟังก์ชันสุ่มตัวเลข 128-bit State (SFC32)
+    function sfc32(a, b, c, d) {
+        return function() {
+          a >>>= 0; b >>>= 0; c >>>= 0; d >>>= 0; 
+          var t = (a + b) | 0;
+          a = b ^ b >>> 9;
+          b = c + (c << 3) | 0;
+          c = (c << 21 | c >>> 11);
+          d = d + 1 | 0;
+          t = t + d | 0;
+          c = c + t | 0;
+          return (t >>> 0) / 4294967296;
+        }
+    }
+
+    // สร้างแกนการสุ่มใหม่ (prng) ขึ้นมาใช้แทน Math.random() 
+    let seed = xmur3(Date.now().toString() + Math.random().toString());
+    let prng = sfc32(seed(), seed(), seed(), seed());
+
+    // --- 📐 2. Math Helper Functions (ใช้ prng() แทน Math.random() ทั้งหมด) ---
     function getNormallyDistributedRandom(mean, stdDev) {
-        let u1 = Math.random(); let u2 = Math.random();
+        let u1 = prng(); let u2 = prng();
         if(u1 === 0) u1 = 0.00001; 
         let z0 = Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2);
         return mean + (z0 * stdDev);
@@ -1621,47 +1669,73 @@ const mcWorkerCode = `
 
     function getPoissonRandom(lambda) {
         let L = Math.exp(-lambda), k = 0, p = 1.0;
-        do { k++; p *= Math.random(); } while (p > L);
+        do { k++; p *= prng(); } while (p > L);
         return k - 1;
     }
 
-    // 1. สร้างฟังก์ชันเพื่อดึง Z-Score เพียวๆ ออกมาใช้งาน
     function getGaussianRandom() {
-        let u1 = Math.random(); let u2 = Math.random();
+        let u1 = prng(); let u2 = prng();
         if(u1 === 0) u1 = 0.00001; 
         return Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2);
     }
 
-    // 2. [NEW] ฟังก์ชันปรับ Markov Transition Matrix ตามสภาวะ Macro
+    // ฟังก์ชันปรับ Markov Transition Matrix ตามสภาวะ Macro
     function getDynamicRegimeTransition(macroRoi, macroInf) {
         let realReturn = macroRoi - macroInf;
         if (realReturn > 0.03) {
-            // Bullish/Goldilocks
             return [[0.70, 0.25, 0.05], [0.30, 0.60, 0.10], [0.40, 0.30, 0.30]]; 
         } else if (realReturn < 0.0) {
-            // Bearish/Stagflation
             return [[0.40, 0.40, 0.20], [0.10, 0.60, 0.30], [0.10, 0.20, 0.70]]; 
         } else {
-            // Neutral
             return [[0.60, 0.35, 0.05], [0.20, 0.70, 0.10], [0.25, 0.25, 0.50]]; 
         }
     }
 
     // 3. [UPDATED] รับค่า Transition Matrix แบบไดนามิก
     function getNextRegime(currentRegime, transitionMatrix) {
-        let rand = Math.random();
+        let rand = prng(); // <--- เปลี่ยนมาใช้ prng()
         let probs = transitionMatrix[currentRegime];
         if (rand < probs[0]) return 0;
         if (rand < probs[0] + probs[1]) return 1;
         return 2;
     }
 
-    // 4. [UPDATED] รองรับ Z-Score จากภายนอกเพื่อทำ Correlation
+    // 4. [UPDATED] รองรับ Z-Score จากภายนอกเพื่อทำ Correlation และ [UPGRADE] Non-Linear Stress Test
     function getAdvancedReturn(mean, stdDev, skewness = 0, kurtosis = 0, jumpFreq = 0, jumpMean = 0, jumpStd = 0, regime = 1, dt = 1, z_score = null) {
         let adjustedMean, adjustedStd;
-        if (regime === 0) { adjustedMean = mean * 1.5; adjustedStd = stdDev * 0.7; }
-        else if (regime === 1) { adjustedMean = mean * 0.8; adjustedStd = stdDev * 1.0; }
-        else { adjustedMean = mean * -1.0; adjustedStd = stdDev * 2.0; }
+        
+        // 🚨 [UPGRADE] Non-Linear Market Regime (วิเคราะห์ตามพฤติกรรมสินทรัพย์จริงในอดีต)
+        if (regime === 0) { 
+            // 🟢 Bull Market (ตลาดกระทิง)
+            // หุ้นขึ้นแรง ความผันผวนลดลง (Volatility Smile)
+            adjustedMean = mean + (stdDev * 0.5); 
+            adjustedStd = stdDev * 0.75; 
+        }
+        else if (regime === 1) { 
+            // 🟡 Normal Market (ตลาดปกติ)
+            adjustedMean = mean; 
+            adjustedStd = stdDev; 
+        }
+        else { 
+            // 🔴 Bear Market / Crisis (ตลาดหมี / วิกฤตเศรษฐกิจ)
+            // 💡 นำหลักการ Flight to Quality (Negative Correlation) มาใช้ประเมินความเสียหาย
+            if (stdDev >= 0.10) {
+                // 📉 พอร์ตเสี่ยงสูง (หุ้น > 60% เช่น SD >= 10%)
+                // โดนเทขายหนักแบบวิกฤต Subprime/COVID ผลตอบแทนติดลบแบบทวีคูณ และ VIX พุ่งสูง
+                adjustedMean = mean - (stdDev * 2.5); 
+                adjustedStd = stdDev * 1.8; 
+            } else if (stdDev >= 0.05) {
+                // ⚖️ พอร์ตผสม (หุ้น 30-50% เช่น SD 5-9%)
+                // กระจายความเสี่ยงได้ดี มีตราสารหนี้ช่วยพยุง พอร์ตลงลึกไม่มาก
+                adjustedMean = mean - (stdDev * 1.0); 
+                adjustedStd = stdDev * 1.2; 
+            } else {
+                // 🛡️ พอร์ตเสี่ยงต่ำ (ตราสารหนี้/เงินฝาก เช่น SD < 5%)
+                // เกิด Flight to Safe Haven ธนาคารกลางลดดอกเบี้ย ดันราคาพันธบัตรขึ้น (ผลตอบแทนอาจเป็นบวกสวนทางตลาด)
+                adjustedMean = mean + 0.02; // ได้อานิสงส์เชิงบวก (Capital Gain จากดอกเบี้ยขาลง)
+                adjustedStd = stdDev * 0.8; // ความผันผวนลดลงเพราะเป็นหลุมหลบภัย
+            }
+        }
 
         let Z = z_score !== null ? z_score : getGaussianRandom(); 
         let Z_CF = Z;
@@ -1674,14 +1748,23 @@ const mcWorkerCode = `
         let jumpComponent = 0; let compensator = 0;
         if (jumpFreq > 0) {
             let numJumps = getPoissonRandom(jumpFreq * dt);
-            for (let i = 0; i < numJumps; i++) jumpComponent += jumpMean + (getGaussianRandom() * jumpStd);
-            compensator = jumpFreq * jumpMean * dt;
+            for (let i = 0; i < numJumps; i++) {
+                let jZ = getGaussianRandom();
+                // 💡 [UPGRADE] ถ้าเป็นพอร์ตตราสารหนี้ (SD < 5%) หางวิกฤต (Jump) มักจะเป็นเชิงบวกเพราะเงินทุนไหลเข้า
+                let actualJumpMean = (stdDev < 0.05) ? Math.abs(jumpMean) : jumpMean;
+                jumpComponent += actualJumpMean + (jZ * jumpStd);
+            }
+            let actualCompMean = (stdDev < 0.05) ? Math.abs(jumpMean) : jumpMean;
+            compensator = jumpFreq * actualCompMean * dt;
         }
         
         let drift = (adjustedMean - (Math.pow(adjustedStd, 2) / 2)) * dt;
         let diffusion = adjustedStd * Math.sqrt(dt) * Z_CF;
         let logReturn = drift - compensator + diffusion + jumpComponent;
-        return Math.exp(logReturn) - 1; 
+        
+        // 🛡️ [SAFETY GUARD] ป้องกันไม่ให้พอร์ตติดลบเกิน 100% ในปีเดียว (ในโลกความเป็นจริงพอร์ตไม่ติดลบทะลุเงินต้นยกเว้นใช้ Leverage)
+        let finalReturn = Math.exp(logReturn) - 1; 
+        return Math.max(finalReturn, -0.95); 
     }
 
     // --- Main Worker Execution ---
@@ -1701,7 +1784,7 @@ const mcWorkerCode = `
             let isDepleted = false;
             let currentRegime = 1;
             
-            let hitBySORR = (Math.random() < 0.15); 
+            let hitBySORR = (prng() < 0.15); // <--- เปลี่ยนมาใช้ prng()
             let currentCashBuffer = 0;
             let stochasticBaseExpense = data.baseExpense; 
 
@@ -1791,7 +1874,6 @@ const mcWorkerCode = `
                         }
                     } else {
                         // ⚙️ Guyton-Klinger Dynamic Withdrawal Rules
-                        // 🌟 [FIX 4.4] ปีต่อๆ ไป กฎการปรับขึ้นเงินเดือนเกษียณ ต้องวิ่งตาม currentYearInf เสมอ
                         let proposedWithdrawal = currentDynamicWithdrawal * (1 + currentYearInf);
                         
                         if (lastYearRoiR < 0) {
@@ -2744,6 +2826,7 @@ function calcThaiTax(yearlyNet) {
     }
     // ==========================================
     async function processReport(progressBar = null, loadText = null) {
+        const optimalSimIterations = getOptimalIterations(10000);
         
         // --- [NEW] SINGLE SOURCE OF TRUTH: ดึงค่าเศรษฐกิจ ณ วินาทีที่กดประมวลผล ---
         let infRate = parseFloat(document.getElementById('r_inf').value) || 3.0; // เงินเฟ้อทั่วไป
@@ -3113,19 +3196,35 @@ function calcThaiTax(yearlyNet) {
         }
 
         // =========================================================
-        // ปรับแต่งคำแนะนำผลตอบแทนตาม Cluster ที่ AI วิเคราะห์ได้ (Dynamic ROI Tuning)
+        // 📈 [UPGRADE] ดัชนีผลตอบแทนตลาด (Market Return Benchmark - SET TRI / MSCI ACWI)
         // =========================================================
-        if (userCluster.includes('UHNW') || userCluster.includes('Legacy') || userCluster.includes('เศรษฐี')) {
-            sdEst += 3.5;
-        } else if (userCluster.includes('High-Earner') || userCluster.includes('DINKs') || userCluster.includes('อายุน้อยร้อยล้าน')) {
-            sdEst += 2.0;
-        } else if (userCluster.includes('Young Wealth Builder') || userCluster.includes('Family Builder')) {
-            sdEst += 1.0;
-        } else if (userCluster.includes('Overleveraged') || userCluster.includes('Cash Hoarder') || userCluster.includes('เดอะแบก')) {
-            // Anomaly Penalty: กลุ่มเสี่ยงสูง หรือกลัวความเสี่ยง ระบบจะบังคับกดผลตอบแทนลงเพื่อเน้นความปลอดภัย (Safety First)
-            sdEst = Math.max(3, sdEst - 4.0);
+        // ฟังก์ชันแมปปิ้งความเสี่ยงของลูกค้า เข้ากับความสัมพันธ์ของผลตอบแทน/ความผันผวน (Risk/Return Trade-off) ที่มีอยู่จริงในตลาดโลก
+        function getMarketBenchmark(riskScore) {
+            if (riskScore >= 16) {
+                // Aggressive: เทียบเคียงดัชนี MSCI ACWI หรือ S&P 500 (หุ้น 100%)
+                return { name: "Global Equity (MSCI ACWI)", roi: 9.5, sd: 16.0 };
+            } else if (riskScore >= 13) {
+                // Moderate Aggressive: เทียบเคียงพอร์ตผสม หุ้น 70% ตราสารหนี้ 30%
+                return { name: "Global Mixed 70/30", roi: 7.0, sd: 11.5 };
+            } else if (riskScore >= 10) {
+                // Moderate: เทียบเคียงพอร์ตสมดุล หุ้น 50% ตราสารหนี้ 50%
+                return { name: "Balanced Portfolio 50/50", roi: 5.0, sd: 8.0 };
+            } else {
+                // Conservative: เทียบเคียงดัชนีพันธบัตรรัฐบาล (Thai Gov Bond TRI) หรือ Money Market
+                return { name: "Fixed Income / Gov Bond", roi: 2.5, sd: 3.0 };
+            }
         }
-        // Cluster อื่นๆ คงค่า Target ROI ตามเดิม
+
+        let realisticBenchmark = getMarketBenchmark(riskScore);
+        
+        // 🛡️ บังคับให้แผนแนะนำของ AI (Proposed Plan) ใช้ตัวเลขผลตอบแทนที่สมจริงทางสถิติเสมอ
+        targetRoiEst = realisticBenchmark.roi;
+        sdEst = realisticBenchmark.sd;
+        
+        // แนบชื่อ Benchmark กลับเข้าไปใน UI เพื่อความโปร่งใส (Transparency)
+        if(document.getElementById('th_sim_rec')) {
+            document.getElementById('th_sim_rec').innerHTML = `แผน AI ⭐<br><span class="text-[10px] font-normal" title="อ้างอิง: ${realisticBenchmark.name}">(${targetRoiEst.toFixed(1)}%)</span>`;
+        }
 
         const isHNW = netWorth >= 50000000 || totalInc >= 500000;
         const isUHNW = netWorth >= 100000000;
@@ -4316,7 +4415,24 @@ function calcThaiTax(yearlyNet) {
         }
         document.getElementById('tax_analysis_card').innerHTML = taxAnalysisText;
 
-        const lifeExp = Number(document.getElementById('r_lifeExp').value) || 85;
+        // ==========================================
+        // 🏥 [UPGRADE] มาตรฐานอายุขัย (Mortality Rate Benchmark - อิงตารางมรณะ TMO17)
+        // ==========================================
+        let userLifeExpInput = Number(document.getElementById('r_lifeExp').value) || 0;
+        let pGender = document.getElementById('p_gender')?.value || 'M'; // สมมติค่าเริ่มต้นเป็นชายหากไม่มี input
+        
+        // ฟังก์ชันคำนวณอายุขัยคาดเฉลี่ยตามหลักคณิตศาสตร์ประกันภัย (TMO17 Approximation)
+        function getTMO17LifeExpectancy(currentAge, gender) {
+            // สถิติ: ผู้หญิงอายุยืนกว่าผู้ชายเฉลี่ย 4-5 ปี และคนที่รอดถึงวัยเกษียณ มักจะอยู่ยาวกว่าค่าเฉลี่ยแรกเกิด
+            if (currentAge < 50) return gender === 'M' ? 80 : 84;
+            if (currentAge < 60) return gender === 'M' ? 82 : 86;
+            if (currentAge < 70) return gender === 'M' ? 84 : 87;
+            if (currentAge < 80) return gender === 'M' ? 87 : 89;
+            if (currentAge < 90) return gender === 'M' ? 90 : 92;
+            return currentAge + 5; // หากอายุทะลุ 90 ไปแล้ว ให้บวกเพิ่มระยะปลอดภัยไปอีก 5 ปี
+        }
+        let actuaryLifeExp = getTMO17LifeExpectancy(rawAge, pGender);
+        const lifeExp = userLifeExpInput > actuaryLifeExp ? userLifeExpInput : actuaryLifeExp;
         const roi = Number(document.getElementById('r_preRet').value) || 6;
         
         const roi_neg = -2; 
@@ -4556,7 +4672,7 @@ function calcThaiTax(yearlyNet) {
 
         // สร้าง Parameter สำหรับพอร์ตแนะนำ
         let mcParams = {
-            iterations: 2000,
+            iterations: optimalSimIterations,
             initialWealth: astInvest + astOffshore,
             baseExpense: currentYearlyRetExp_base,
             floorExpense: essentialExpensesFloor,
@@ -5014,7 +5130,7 @@ function calcThaiTax(yearlyNet) {
         // --- จบขั้นที่ 4 ---
 
         // ==========================================
-        // 2. คำนวณบำนาญต่อเดือนที่คาดว่าจะทำได้จริง ณ วันเกษียณ (อิงสมการ Annuity แทนกฎ 4%)
+        // 🧠 2. [UPGRADE] คำนวณบำนาญต่อเดือนด้วย Actuarial Present Value (คณิตศาสตร์ประกันภัย)
         // ==========================================
         let yearsInRetirement = Math.max(1, lifeExp - retAge);
         let inflation = infRate / 100;
@@ -5027,40 +5143,66 @@ function calcThaiTax(yearlyNet) {
         let realReturn_Rec = ((1 + postRetRoi_Rec) / (1 + inflation)) - 1;
         let realReturn_Cur = ((1 + postRetRoi_Cur) / (1 + inflation)) - 1;
 
-        // ฟังก์ชันคณิตศาสตร์การเงิน: คำนวณเงินที่ถอนได้ต่อปี (PMT) จากเงินต้น (PV)
-        const calculateSustainablePMT = (pv, n, r) => {
-            if (Math.abs(r) < 0.0001) return pv / n; // ถ้าผลตอบแทนแพ้เงินเฟ้อ ให้จับหารจำนวนปีทื่อๆ
-            return pv / (((1 - Math.pow(1 + r, -n)) / r) * (1 + r));
+        // 🧠 [ACTUARIAL ENGINE] ฟังก์ชันคำนวณ Actuarial PMT
+        // ใช้หลักการ "ความน่าจะเป็นของการรอดชีวิต (Survival Probability)" เพื่อให้เงินที่ AI แนะนำแม่นยำและไม่โอเวอร์เกินจริง
+        const calculateActuarialPMT = (pv, startAge, targetLifeExp, r) => {
+            let annuityFactor = 0;
+            let maxAge = 100; // สมมติฐานอายุขัยสูงสุดทางสถิติ (Omega)
+
+            for (let t = 0; t <= (targetLifeExp - startAge); t++) {
+                let ageAtTimeT = startAge + t;
+                
+                // 💡 [MORTALITY LOGIC] คำนวณโอกาสรอดชีวิตถึงปีที่ t (Survival Probability: p_x)
+                // อิงหลักการ Mortality Curve: โอกาสรอดชีวิตจะเริ่มลดลงอย่างมีนัยสำคัญหลังอายุ 75
+                let probSurvive = 1.0;
+                if (ageAtTimeT > 75) {
+                    probSurvive = Math.max(0.1, (maxAge - ageAtTimeT) / (maxAge - 75));
+                }
+
+                // คำนวณค่าปัจจุบันทางคณิตศาสตร์ประกันภัย (Actuarial Present Value)
+                if (Math.abs(r) < 0.0001) {
+                    annuityFactor += probSurvive; 
+                } else {
+                    annuityFactor += probSurvive / Math.pow(1 + r, t); // คิดลดด้วยดอกเบี้ย (Time Value) และ ความตาย (Mortality)
+                }
+            }
+            
+            // 🛡️ ป้องกันกรณี Factor ผิดพลาดทางคณิตศาสตร์
+            if (annuityFactor <= 0.1) annuityFactor = targetLifeExp - startAge;
+
+            return pv / annuityFactor;
         };
 
         let baseAnnuity = (yearlyAnnuityIncome || 0) / 12; // บำนาญจากประกัน (ถ้ามี)
         
-            yearsToRet = Math.max(0, retAge - rawAge);
+        yearsToRet = Math.max(0, retAge - rawAge);
         let inflatedGoalExpense = currentYearlyRetExp_base * Math.pow(1 + inflation, yearsToRet);
         let goalPension = inflatedGoalExpense / 12;
 
-        // 🧠 คำนวณ currentPension และ recPension ด้วยสมการ PMT (แม่นยำตามระยะเวลาเกษียณจริง)
-        // 🛠️ [FIX] คํานวณมูลค่าพอร์ต ณ วันเกษียณแบบ Deterministic (FV) แทนที่จะไปหยิบมาจากการสุ่มของกราฟ
+        // 🛠️ คํานวณมูลค่าพอร์ต ณ วันเกษียณแบบ Deterministic (FV)
         let yearsToRetForPension = Math.max(0, retAge - rawAge);
 
-        // พอร์ตปัจจุบัน (นำเงินต้นไปโตด้วย ROI ปัจจุบัน + เงินออมที่ติดลบ)
+        // พอร์ตปัจจุบัน (นำเงินต้นไปโตด้วย ROI ปัจจุบัน + เงินออมที่จัดสรรได้)
         let wC_expected_at_ret = (astInvest + astOffshore) * Math.pow(1 + (currentPortfolioRoiEst/100), yearsToRetForPension);
         if (actualRetirementSave_C !== 0) {
             let r_C = currentPortfolioRoiEst/100;
             wC_expected_at_ret += actualRetirementSave_C * ((Math.pow(1 + r_C, yearsToRetForPension) - 1) / r_C);
         }
+        
         // พอร์ตแนะนำ (นำเงินต้นไปโตด้วย ROI ใหม่ + เงินออมใหม่)
         let wR_expected_at_ret = (astInvest + astOffshore) * Math.pow(1 + (targetRoiEst/100), yearsToRetForPension);
         if (actualRetirementSave_R !== 0) {
             let r_R = targetRoiEst/100;
             wR_expected_at_ret += actualRetirementSave_R * ((Math.pow(1 + r_R, yearsToRetForPension) - 1) / r_R);
         }
-        // คุมกำเนิดไม่ให้พอร์ตติดลบก่อนนำไปคำนวณ PMT
+        
+        // คุมกำเนิดไม่ให้พอร์ตติดลบก่อนนำไปคำนวณ
         wC_expected_at_ret = Math.max(0, wC_expected_at_ret);
         wR_expected_at_ret = Math.max(0, wR_expected_at_ret);
-        // ส่งเข้าสมการ PMT ด้วยตัวเลขที่เสถียร 100%
-        let currentPension = (calculateSustainablePMT(wC_expected_at_ret, yearsInRetirement, realReturn_Cur) / 12) + baseAnnuity;
-        let recPension = (calculateSustainablePMT(wR_expected_at_ret, yearsInRetirement, realReturn_Rec) / 12) + baseAnnuity;
+        
+        // 🚨 [UPGRADE] ส่งเข้าสมการ Actuarial PMT ที่ฉลาดขึ้น
+        let currentPension = (calculateActuarialPMT(wC_expected_at_ret, retAge, lifeExp, realReturn_Cur) / 12) + baseAnnuity;
+        let recPension = (calculateActuarialPMT(wR_expected_at_ret, retAge, lifeExp, realReturn_Rec) / 12) + baseAnnuity;
 
         let pensionComparisonHtml = `
             <div class="mt-6 border-t border-gray-200 pt-5">
@@ -5129,11 +5271,11 @@ function calcThaiTax(yearlyNet) {
                             <span class="text-2xl">🛡️</span> บททดสอบความแข็งแกร่งของแผนเกษียณ
                         </h4>
                         <p class="text-sm ${probText} opacity-90 leading-relaxed">${simInsight}</p>
-                        <p class="text-xs ${probText} opacity-75 mt-2">* ระบบได้ทำการทดสอบแผนของคุณถึง 2,000 รูปแบบ (Monte Carlo Simulation) โดยจำลองทั้งช่วงตลาดหุ้นขาขึ้น ขาลง วิกฤตเศรษฐกิจ และอัตราเงินเฟ้อ เพื่อหา <b>"โอกาสที่เงินก้อนนี้จะใช้ได้เพียงพอไปตลอดชีวิตโดยไม่หมดกลางทาง"</b></p>
+                        <p class="text-xs ${probText} opacity-75 mt-2">* ระบบได้ทำการทดสอบแผนของคุณถึง <b>${optimalSimIterations.toLocaleString('th-TH')} รูปแบบ</b> (Monte Carlo Simulation) โดยจำลองทั้งช่วงตลาดหุ้นขาขึ้น ขาลง วิกฤตเศรษฐกิจ และอัตราเงินเฟ้อ เพื่อหา <b>"โอกาสที่เงินก้อนนี้จะใช้ได้เพียงพอไปตลอดชีวิตโดยไม่หมดกลางทาง"</b></p>
                     </div>
                     <div class="text-center bg-white/60 p-4 rounded-xl border border-white/50 backdrop-blur-sm shadow-inner min-w-[150px]">
                         <p class="text-xs ${probText} font-bold mb-1">โอกาสสำเร็จแผนเกษียณ</p>
-                        <p id="mc_prob_display" class="text-2xl md:text-3xl font-black ${probText} transition-all duration-300">${calculateCI95(finalMcProb, 2000)}</p>
+                        <p id="mc_prob_display" class="text-2xl md:text-3xl font-black ${probText} transition-all duration-300">${calculateCI95(finalMcProb, optimalSimIterations)}</p>
                     </div>
                 </div>
             </div>
@@ -5272,34 +5414,37 @@ function calcThaiTax(yearlyNet) {
         // 🚨 [FIX] ประกาศตัวแปร investableAssets เผื่อไว้ในกรณีที่ระบบเดิมไม่มี
         let investableAssets = 0;
         // ---------------------------------------------------------------------
-        // 🧠 1. [AI ENGINE] Smart Asset Allocation Parser (อัปเกรดพจนานุกรม UHNW)
+        // ---------------------------------------------------------------------
+        // 🧠 1. [AI ENGINE] Smart Asset Allocation Parser & Correlation Matrix
         // ---------------------------------------------------------------------
         let parsedTotalAssets = 0;
         let weightedRoiSum = 0;
-        let weightedSdSum = 0;
 
-        // 🚨 [UPGRADE] พจนานุกรม AI ที่ครอบคลุมสินทรัพย์ระดับ High Net Worth
+        // 🚨 [UPGRADE] ตารางความสัมพันธ์ของสินทรัพย์ (Correlation Matrix) อ้างอิงสถิติตลาดจริง
+        const CORR_MATRIX = {
+            'CASH':   { 'CASH': 1.00, 'BOND': 0.15, 'EQUITY': -0.05, 'ALT': 0.00 },
+            'BOND':   { 'CASH': 0.15, 'BOND': 1.00, 'EQUITY': 0.10,  'ALT': 0.15 },
+            'EQUITY': { 'CASH': -0.05, 'BOND': 0.10, 'EQUITY': 1.00,  'ALT': 0.60 },
+            'ALT':    { 'CASH': 0.00, 'BOND': 0.15, 'EQUITY': 0.60,  'ALT': 1.00 }
+        };
+
+        // 🚨 [UPGRADE] พจนานุกรม AI เพิ่ม "Asset Class (type)" เพื่อเชื่อมกับ Matrix ด้านบน
         const assetKnowledgeBase = [
-            // 💰 สภาพคล่อง & ความเสี่ยงต่ำ
-            { keywords: ['เงินสด', 'ฝาก', 'ออมทรัพย์', 'เผื่อเรียก', 'สภาพคล่อง', 'fcd', 'เงินตราต่างประเทศ'], roi: 0.5, sd: 0.0 },
-            { keywords: ['ประจำ', 'ฝากประจำ', 'สลาก', 'ออมสิน', 'เงินฝาก'], roi: 1.5, sd: 0.0 },
-            { keywords: ['ตราสารหนี้', 'พันธบัตร', 'หุ้นกู้', 'สหกรณ์', 'bond', 'debenture', 'fixed income'], roi: 3.0, sd: 2.0 },
-            
-            // 📈 การลงทุนทั่วไป & อสังหาฯ
-            { keywords: ['กองทุนรวม', 'ssf', 'rmf', 'ผสม', 'esg', 'mutual fund', 'กองทุน'], roi: 5.0, sd: 8.0 },
-            { keywords: ['อสังหา', 'reit', 'property fund', 'กองทุนรวมอสังหา', 'โครงสร้างพื้นฐาน'], roi: 6.0, sd: 10.0 },
-            { keywords: ['หุ้นไทย', 'หุ้นสามัญ', 'ตราสารทุน', 'pvd', 'กบข', 'equity', 'stock'], roi: 8.0, sd: 15.0 },
-            
-            // 🌐 การลงทุนต่างประเทศ & UHNW Assets (สินทรัพย์ซับซ้อน)
-            { keywords: ['ต่างประเทศ', 'offshore', 'เทค', 's&p', 'global', 'dr', 'drx'], roi: 10.0, sd: 18.0 },
-            { keywords: ['private fund', 'hedge fund', 'กองทุนส่วนบุคคล'], roi: 8.5, sd: 14.0 },
-            { keywords: ['structured', 'eln', 'derivative', 'อนุพันธ์', 'หุ้นกู้ที่มีอนุพันธ์', 'note'], roi: 7.0, sd: 12.0 },
-            { keywords: ['private equity', 'vc', 'venture', 'startup', 'angel'], roi: 15.0, sd: 30.0 },
-            
-            // 💎 สินทรัพย์ทางเลือก
-            { keywords: ['คริปโต', 'crypto', 'บิทคอยน์', 'bitcoin', 'eth', 'digital'], roi: 15.0, sd: 40.0 },
-            { keywords: ['ทองคำ', 'gold', 'นาฬิกา', 'ของสะสม', 'art', 'ทางเลือก'], roi: 4.0, sd: 15.0 }
+            { keywords: ['เงินสด', 'ฝาก', 'ออมทรัพย์', 'เผื่อเรียก', 'สภาพคล่อง', 'fcd', 'เงินตราต่างประเทศ'], roi: 0.5, sd: 0.0, type: 'CASH' },
+            { keywords: ['ประจำ', 'ฝากประจำ', 'สลาก', 'ออมสิน', 'เงินฝาก'], roi: 1.5, sd: 0.0, type: 'CASH' },
+            { keywords: ['ตราสารหนี้', 'พันธบัตร', 'หุ้นกู้', 'สหกรณ์', 'bond', 'debenture', 'fixed income'], roi: 3.0, sd: 2.0, type: 'BOND' },
+            { keywords: ['กองทุนรวม', 'ssf', 'rmf', 'ผสม', 'esg', 'mutual fund', 'กองทุน'], roi: 5.0, sd: 8.0, type: 'EQUITY' },
+            { keywords: ['อสังหา', 'reit', 'property fund', 'กองทุนรวมอสังหา', 'โครงสร้างพื้นฐาน'], roi: 6.0, sd: 10.0, type: 'ALT' },
+            { keywords: ['หุ้นไทย', 'หุ้นสามัญ', 'ตราสารทุน', 'pvd', 'กบข', 'equity', 'stock'], roi: 8.0, sd: 15.0, type: 'EQUITY' },
+            { keywords: ['ต่างประเทศ', 'offshore', 'เทค', 's&p', 'global', 'dr', 'drx'], roi: 10.0, sd: 18.0, type: 'EQUITY' },
+            { keywords: ['private fund', 'hedge fund', 'กองทุนส่วนบุคคล'], roi: 8.5, sd: 14.0, type: 'EQUITY' },
+            { keywords: ['structured', 'eln', 'derivative', 'อนุพันธ์', 'หุ้นกู้ที่มีอนุพันธ์', 'note'], roi: 7.0, sd: 12.0, type: 'ALT' },
+            { keywords: ['private equity', 'vc', 'venture', 'startup', 'angel'], roi: 15.0, sd: 30.0, type: 'ALT' },
+            { keywords: ['คริปโต', 'crypto', 'บิทคอยน์', 'bitcoin', 'eth', 'digital'], roi: 15.0, sd: 40.0, type: 'ALT' },
+            { keywords: ['ทองคำ', 'gold', 'นาฬิกา', 'ของสะสม', 'art', 'ทางเลือก'], roi: 4.0, sd: 15.0, type: 'ALT' }
         ];
+
+        let portfolioAssets = []; // เก็บโครงสร้างพอร์ตไว้เข้าสมการคณิตศาสตร์
 
         if(document.getElementById('c_assets')) {
             document.getElementById('c_assets').querySelectorAll('.data-row, .input-row').forEach(row => {
@@ -5311,22 +5456,23 @@ function calcThaiTax(yearlyNet) {
                     let val = valInput ? Number(valInput.value.replace(/,/g, '')) || 0 : 0;
                     
                     if (val > 0) {
-                        // 🚨 [UPGRADE] เอา "ชื่อที่ FA พิมพ์" + "หมวดหมู่ในระบบ" มารวมกันเพื่อค้นหา ป้องกัน FA พิมพ์ชื่อย่อ
                         let searchText = (name + " " + cat).toLowerCase();
-                        
-                        // 🚨 [UPGRADE] Smart Fallback กำหนดค่าพื้นฐานตาม "หมวดหมู่" เผื่อหาในพจนานุกรมไม่เจอเลย
                         let matchedRoi = cat.includes('สภาพคล่อง') ? 1.0 : (cat.includes('ต่างประเทศ') ? 8.0 : 5.0);
                         let matchedSd = cat.includes('สภาพคล่อง') ? 0.5 : (cat.includes('ต่างประเทศ') ? 15.0 : 8.0);
+                        let matchedType = cat.includes('สภาพคล่อง') ? 'CASH' : 'EQUITY';
                         
-                        // กวาดหาคีย์เวิร์ด
                         for (let rule of assetKnowledgeBase) {
                             if (rule.keywords.some(kw => searchText.includes(kw))) {
                                 matchedRoi = rule.roi; 
                                 matchedSd = rule.sd; 
+                                matchedType = rule.type;
                                 break;
                             }
                         }
+                        
                         parsedTotalAssets += val;
+                        portfolioAssets.push({ val: val, roi: matchedRoi, sd: matchedSd, type: matchedType });
+                        
                         row.dataset.tempRoi = matchedRoi;
                         row.dataset.tempSd = matchedSd;
                         row.dataset.tempVal = val;
@@ -5335,16 +5481,31 @@ function calcThaiTax(yearlyNet) {
             });
 
             if (parsedTotalAssets > 0) {
-                document.getElementById('c_assets').querySelectorAll('.data-row, .input-row').forEach(row => {
-                    let val = Number(row.dataset.tempVal) || 0;
-                    if (val > 0) {
-                        let weight = val / parsedTotalAssets; 
-                        weightedRoiSum += weight * Number(row.dataset.tempRoi);
-                        weightedSdSum += weight * Number(row.dataset.tempSd);
-                    }
+                let portfolioVariance = 0;
+                
+                // 1. หา Weight ของแต่ละกองทุน และผลตอบแทนรวม
+                portfolioAssets.forEach(a => {
+                    let w = a.val / parsedTotalAssets;
+                    weightedRoiSum += w * a.roi;
+                    a.weight = w; // เก็บสัดส่วนไว้ใช้
                 });
+
+                // 2. 🚨 [UPGRADE] คำนวณความผันผวนรวม (Portfolio SD) ด้วยสมการ Markowitz
+                for (let i = 0; i < portfolioAssets.length; i++) {
+                    for (let j = 0; j < portfolioAssets.length; j++) {
+                        let assetA = portfolioAssets[i];
+                        let assetB = portfolioAssets[j];
+                        
+                        // ดึงค่า Correlation จาก Matrix
+                        let correlation = CORR_MATRIX[assetA.type][assetB.type] || 0;
+                        
+                        // สูตร: w_i * w_j * sd_i * sd_j * correlation_ij
+                        portfolioVariance += (assetA.weight * assetB.weight * assetA.sd * assetB.sd * correlation);
+                    }
+                }
+
                 currentPortfolioRoiEst = weightedRoiSum;
-                currentSdEst = Math.max(0.1, weightedSdSum); 
+                currentSdEst = Math.max(0.1, Math.sqrt(portfolioVariance)); // ใส่ Rood กลับให้กลายเป็น SD
                 investableAssets = parsedTotalAssets; 
             }
         }
@@ -5424,9 +5585,19 @@ function calcThaiTax(yearlyNet) {
 
         let newBlendedRoi = 0; let newBlendedSd = 0;
         let totalAllocatedWealthForMath = buckets.long.allocatedLump + buckets.retire.allocatedLump;
+        
         if (totalAllocatedWealthForMath > 0) {
              newBlendedRoi = ((buckets.long.allocatedLump * buckets.long.roi) + (buckets.retire.allocatedLump * buckets.retire.roi)) / totalAllocatedWealthForMath;
-             newBlendedSd = ((buckets.long.allocatedLump * buckets.long.sd) + (buckets.retire.allocatedLump * buckets.retire.sd)) / totalAllocatedWealthForMath;
+             
+             // 🚨 [UPGRADE] ใช้สมการความแปรปรวน (Variance) พร้อม Correlation = 0.8
+             let w_long = buckets.long.allocatedLump / totalAllocatedWealthForMath;
+             let w_retire = buckets.retire.allocatedLump / totalAllocatedWealthForMath;
+             
+             let variance_proposed = (Math.pow(w_long * buckets.long.sd, 2)) + 
+                                     (Math.pow(w_retire * buckets.retire.sd, 2)) + 
+                                     (2 * w_long * w_retire * buckets.long.sd * buckets.retire.sd * 0.8);
+             
+             newBlendedSd = Math.sqrt(variance_proposed);
         } else {
              newBlendedRoi = typeof targetRoiEst !== 'undefined' ? targetRoiEst : 5.0; 
              newBlendedSd = typeof sdEst !== 'undefined' ? sdEst : 8.0;

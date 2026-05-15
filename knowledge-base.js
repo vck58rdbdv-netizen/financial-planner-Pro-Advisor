@@ -631,7 +631,7 @@ window.systemDictionary = {
                         <div class="w-14 h-14 bg-purple-50 text-purple-600 rounded-full flex items-center justify-center font-black text-xl flex-shrink-0 border-2 border-purple-100 select-none">2</div>
                         <div>
                             <h4 class="font-bold text-gray-800 text-base mb-2">Behavioral K-Means Clustering (AI จัดกลุ่มพฤติกรรม)</h4>
-                            <p class="text-xs text-gray-600 leading-relaxed mb-2">ป้อนข้อมูลเข้าสู่โมเดล Machine Learning (8D K-Means) วิเคราะห์พฤติกรรม 8 แกน (อายุ, รายได้, ความมั่งคั่ง, ภาระหนี้, ความเสี่ยง, ความสม่ำเสมอ, วินัย, ภาระอุปการะ) เพื่อหา Persona ที่ซ่อนอยู่</p>
+                            <p class="text-xs text-gray-600 leading-relaxed mb-2">ป้อนข้อมูลเข้าสู่โมเดล Machine Learning (9D K-Means) วิเคราะห์พฤติกรรม 9 แกน (อายุ, รายได้, ความมั่งคั่ง, ภาระหนี้, ความเสี่ยง, ความสม่ำเสมอ, วินัย, ภาระอุปการะ, และ ความถี่ในการรีวิว) เพื่อหา Persona ที่ซ่อนอยู่</p>
                             <div class="bg-gray-50 p-2 rounded text-[11px] text-gray-500 border border-gray-100">
                                 <b>Output:</b> ระบบจะจัดลูกค้าเข้าสู่กลุ่มเฉพาะ (เช่น UHNW, Cash Hoarder, Overleveraged) และปรับโครงสร้าง "สามเหลี่ยมการเงิน" ให้ดิ้นได้ตามความเสี่ยงนั้นๆ
                             </div>
@@ -641,9 +641,9 @@ window.systemDictionary = {
                         <div class="w-14 h-14 bg-orange-50 text-orange-600 rounded-full flex items-center justify-center font-black text-xl flex-shrink-0 border-2 border-orange-100 select-none">3</div>
                         <div>
                             <h4 class="font-bold text-gray-800 text-base mb-2">Optimization & DP Knapsack (อัลกอริทึมจัดสรรและแก้ปัญหา)</h4>
-                            <p class="text-xs text-gray-600 leading-relaxed mb-2">AI จะคำนวณงบประมาณส่วนเกินที่แท้จริง (Elastic Budget) และใช้คณิตศาสตร์ <b class="text-orange-600">Dynamic Programming</b> เลือกแบบประกัน "Base + Rider" ที่ให้ความคุ้มครองสูงสุดโดยไม่เกินงบ (Knapsack Problem) พร้อมคำนวณการโยกเงินเพื่อ <b class="text-blue-600">Tax Alpha</b> (ลดหย่อนภาษี) และ <b class="text-red-600">Debt Snowball</b> (ปลดหนี้)</p>
+                            <p class="text-xs text-gray-600 leading-relaxed mb-2">AI จะคำนวณงบประมาณส่วนเกินที่แท้จริง (Elastic Budget) และใช้คณิตศาสตร์ <b class="text-orange-600">Dynamic Programming</b> เลือกแบบประกัน "Base + Rider" ที่ให้ความคุ้มครองสูงสุดโดยไม่เกินงบ (Knapsack Problem) พร้อมคำนวณการโยกเงินเพื่อ <b class="text-blue-600">Tax Alpha</b> และ <b class="text-red-600">Debt Snowball</b></p>
                             <div class="bg-gray-50 p-2 rounded text-[11px] text-gray-500 border border-gray-100">
-                                <b>Output:</b> จัดตะกร้าสินค้า (Product Assembly) ออกมาเป็น 3 ทางเลือก พร้อมแผนกระแสเงินสด Benchmark ใหม่
+                                <b>Output:</b> จัดตะกร้าสินค้าออกมาเป็น 3 ระดับ (Ultimate Shield, Smart Core, Tactical Essential) พร้อมแผนกระแสเงินสด Benchmark ใหม่
                             </div>
                         </div>
                     </div>
@@ -651,7 +651,7 @@ window.systemDictionary = {
                         <div class="w-14 h-14 bg-red-50 text-red-600 rounded-full flex items-center justify-center font-black text-xl flex-shrink-0 border-2 border-red-100 select-none">4</div>
                         <div>
                             <h4 class="font-bold text-gray-800 text-base mb-2">Stochastic Simulation (แบบจำลอง Monte Carlo & Stress Test)</h4>
-                            <p class="text-xs text-gray-600 leading-relaxed mb-2">ระบบจะรันโลกคู่ขนาน 2,000 รูปแบบ สุ่มสภาวะตลาด (กระทิง/หมี) ผสานทฤษฎี <b class="text-red-600">Merton's Jump Diffusion</b> จำลองวิกฤตเศรษฐกิจเฉียบพลัน และควบคุมการถอนเงินหลังเกษียณด้วย <b class="text-emerald-600">Guyton-Klinger Rules</b> ป้องกันพอร์ตแตก</p>
+                            <p class="text-xs text-gray-600 leading-relaxed mb-2">ระบบจะรันโลกคู่ขนาน 10,000 รูปแบบ สุ่มสภาวะตลาด (กระทิง/หมี) ผสานทฤษฎี <b class="text-red-600">Merton's Jump Diffusion</b> จำลองวิกฤตเศรษฐกิจเฉียบพลัน และควบคุมการถอนเงินหลังเกษียณด้วย <b class="text-emerald-600">Guyton-Klinger Rules</b> ป้องกันพอร์ตแตก</p>
                             <div class="bg-gray-50 p-2 rounded text-[11px] text-gray-500 border border-gray-100">
                                 <b>Output:</b> โอกาสความสำเร็จ (Probability of Success) พร้อมช่วงความเชื่อมั่น 95% และกราฟจำลองการลงทุน 5 ปีล่วงหน้า (CVaR)
                             </div>
@@ -760,7 +760,7 @@ window.systemDictionary = {
 
             <!-- กล่องที่ 1: Features -->
             <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-100 shadow-sm">
-                <b class="text-indigo-800 mb-2 block select-none">📊 8 มิติพฤติกรรมที่ AI ใช้จับอัตลักษณ์ (8D Features)</b>
+                <b class="text-indigo-800 mb-2 block select-none">📊 9 มิติพฤติกรรมที่ AI ใช้จับอัตลักษณ์ (9D Features)</b>
                 <div class="grid grid-cols-2 gap-x-4 gap-y-2 text-xs text-indigo-900 mt-2">
                     <div><b>1. Age:</b> อายุและวงจรชีวิต</div>
                     <div><b>2. Inc:</b> ฐานรายได้ต่อเดือน</div>
@@ -769,16 +769,17 @@ window.systemDictionary = {
                     <div><b>5. Risk:</b> ระดับการรับความเสี่ยง</div>
                     <div><b>6. Dep:</b> ภาระผู้อุปการะ</div>
                     <div title="ระยะเวลาห่างจากการลงทุนครั้งล่าสุด"><b>7. Recency:</b> ความใหม่ของพอร์ต</div>
-                    <div title="วินัยในการออมและการเข้าพบ FA"><b>8. Discipline:</b> วินัยและความถี่</div>
+                    <div title="ความถี่ในการรีวิวและปรับพอร์ต"><b>8. Frequency:</b> ความถี่อัปเดตพอร์ต</div>
+                    <div title="วินัยในการออม"><b>9. Discipline:</b> วินัยความสม่ำเสมอ</div>
                 </div>
             </div>
 
             <!-- กล่องที่ 2: Euclidean Distance -->
             <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex flex-col">
-                <b class="text-purple-800 mb-2 select-none">📐 สมการหาระยะห่าง (Euclidean Distance in 8D Space)</b>
-                <span class="text-xs text-gray-700 mb-3">เมื่อปรับสเกลข้อมูลลูกค้า (0.0 ถึง 1.0) แล้ว ระบบจะใช้สมการเรขาคณิตขั้นสูง เพื่อวัดระยะห่างระหว่างจุดของลูกค้า (P) กับจุดศูนย์กลางของแต่ละกลุ่ม (Centroids - C<sub>k</sub>) กลุ่มไหนได้ค่า Distance <b>"น้อยที่สุด"</b> ลูกค้าจะถูกจับไปอยู่กลุ่มนั้นทันที</span>
+                <b class="text-purple-800 mb-2 select-none">📐 สมการหาระยะห่าง (Euclidean Distance in 9D Space)</b>
+                <span class="text-xs text-gray-700 mb-3">เมื่อปรับสเกลข้อมูลลูกค้า (0.0 ถึง 1.0) แล้ว ระบบจะใช้สมการเรขาคณิตขั้นสูง เพื่อวัดระยะห่างระหว่างจุดของลูกค้า (P) กับจุดศูนย์กลางของแต่ละกลุ่ม (Centroids - C<sub>k</sub>)</span>
                 <div class="mb-2 bg-purple-50 p-3 rounded-lg font-mono text-[11px] border border-purple-100 text-center text-purple-900 shadow-inner overflow-x-auto touch-pan-x overscroll-x-contain">
-                    <span class="whitespace-nowrap">d(P, C<sub>k</sub>) = &radic;<span class="border-t border-purple-900 ml-1">&Sigma;(P<sub>norm,i</sub> - C<sub>k,i</sub>)<sup>2</sup></span></span>
+                    <span class="whitespace-nowrap">d(P, C<sub>k</sub>) = &radic;<span class="border-t border-purple-900 ml-1">&Sigma;(P<sub>norm,i</sub> - C<sub>k,i</sub>)<sup>2</sup></span> &nbsp; สำหรับ i = 1 ถึง 9</span>
                 </div>
             </div>
 
@@ -1506,18 +1507,19 @@ window.systemDictionary = {
         title: "อัลกอริทึมประเมินภาษีเชิงรุก (Tax Alpha Engine)",
         content: `
         <div class="antialiased touch-manipulation pb-safe">
-        <p class="mb-3 text-sm text-gray-700">ระบบคำนวณประหยัดภาษี (Tax Optimization) อิงตามกฎหมาย ภ.ง.ด. 90/91 (เกณฑ์ล่าสุด)</p>
+        <p class="mb-3 text-sm text-gray-700">ระบบคำนวณประหยัดภาษี (Tax Optimization) อิงตามกฎหมาย ภ.ง.ด. 90/91 (เกณฑ์ล่าสุดปี 2568)</p>
         <div class="space-y-4">
             <div class="bg-white p-4 rounded-xl border shadow-sm flex flex-col">
                 <b class="text-orange-800 mb-1">Greedy Tax Alpha Optimization</b>
-                <span class="text-xs text-gray-700 mb-2">อัลกอริทึมจะสแกนช่องว่างลดหย่อนและเลือกลงทุนในช่องทางที่คุ้มค่าที่สุดก่อน <b>โดย AI มีกฎเหล็กคือ จะแนะนำลงทุนพื่อลดหย่อนก็ต่อเมื่อฐานภาษีส่วนเพิ่ม (Marginal Tax Rate) > 10% ขึ้นไปเท่านั้น</b> (เพราะหากฐานภาษีต่ำกว่านี้ การเสียสภาพคล่องไปกับการล็อคเงินลงทุนระยะยาวจะไม่คุ้มค่า)</span>
+                <span class="text-xs text-gray-700 mb-2">อัลกอริทึมจะสแกนช่องว่างลดหย่อนและเลือกลงทุนในช่องทางที่คุ้มค่าที่สุด <b>โดยมีเงื่อนไขและสิทธิพิเศษเพิ่มเติมดังนี้:</b></span>
                 <div class="bg-orange-50 p-3 rounded-lg border border-orange-100 mb-3">
                     <ul class="text-[11px] list-decimal list-inside space-y-2 text-orange-900">
-                        <li><b>Priority 1: กองทุน Thai ESG</b> (สภาพคล่องดีกว่า เงื่อนไขล็อคแค่ 5 ปี นับจากวันที่ซื้อ)</li>
-                        <li><b>Priority 2: RMF / SSF / ประกันบำนาญ</b> (เหมาะสำหรับวางแผนลดหย่อนบวกเกษียณระยะยาว)</li>
+                        <li><b>สิทธิผู้สูงอายุ (Elderly Exemption):</b> หากลูกค้าระบุอายุ 65 ปีขึ้นไป ระบบจะให้สิทธิ <u>ยกเว้นเงินได้ 190,000 บาท อัตโนมัติ</u> ก่อนนำไปคำนวณฐานภาษี</li>
+                        <li><b>Priority 1: กองทุน Thai ESG</b> (ดึงงบส่วนเกินมาเติมสูงสุด 300,000 บาท เพราะสภาพคล่องดีกว่า ล็อคแค่ 5 ปี นับจากวันที่ซื้อ)</li>
+                        <li><b>Priority 2: RMF / SSF / ประกันบำนาญ</b> (เติมโควตากลุ่มเกษียณให้เต็มเพดานสูงสุด 500,000 บาท)</li>
                     </ul>
                 </div>
-                <i class="text-xs text-gray-500 mt-auto pt-2 border-t border-gray-100"><b>FA ควรทำ:</b> แนะนำให้ลูกค้านำ "เงินคืนภาษี" (Tax Refund) ที่ได้กลับมา Re-invest เสมอ เพื่อสร้างพลังดอกเบี้ยทบต้น (Compound Effect) แบบก้าวกระโดด</i>
+                <i class="text-xs text-gray-500 mt-auto pt-2 border-t border-gray-100"><b>FA ควรทำ:</b> AI ถูกล็อกเงื่อนไขไว้ว่า จะแนะนำลงทุนเพื่อลดหย่อน <b>ก็ต่อเมื่อฐานภาษีส่วนเพิ่ม > 10% ขึ้นไปเท่านั้น</b> หากฐานต่ำกว่า 5% การเสียสภาพคล่องไปล็อคระยะยาวถือว่าไม่คุ้มค่าทางคณิตศาสตร์</i>
             </div>
         </div>
         </div>`
@@ -1905,7 +1907,7 @@ window.systemDictionary = {
                         <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 relative pl-12">
                             <div class="absolute left-4 top-4 w-6 h-6 bg-red-100 text-red-600 rounded-full flex items-center justify-center font-bold text-xs">9</div>
                             <h5 class="font-bold text-red-700 mb-1">Predictive Lapse Risk (วิเคราะห์อัตราความคงอยู่)</h5>
-                            <p class="text-xs text-gray-600">ประเมินความเสี่ยงทิ้งกรมธรรม์ (Churn Rate) เจาะลึกคุณภาพหนี้สิน (Good Debt vs Toxic Debt) เพื่อเตือน FA ให้ระวังการจัดเบี้ยประกันที่หนักเกินไปจนลูกค้าส่งไม่ไหว</p>
+                            <p class="text-xs text-gray-600">ประเมินความเสี่ยงทิ้งกรมธรรม์ (Churn Rate) เจาะลึกคุณภาพหนี้และวินัย <br><b class="text-red-500">⚙️ Auto Safety Guard:</b> หากพบความเสี่ยงทิ้งกรมธรรม์ระดับ Medium/High ระบบจะสั่งใช้ <b>Safety Multiplier หั่นงบประมาณ AI ทิ้งเหลือ 85% หรือ 60% อัตโนมัติ</b> เพื่อป้องกันการจัดเบี้ยประกันที่หนักเกินไปจนลูกค้าส่งไม่ไหว</p>
                         </div>
 
                         <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 relative pl-12">

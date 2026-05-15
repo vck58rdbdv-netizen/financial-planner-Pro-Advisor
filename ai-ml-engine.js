@@ -430,154 +430,180 @@ function classifyUserKMeans(age, inc, nw, risk, dti, recency, frequency, discipl
 // 🧠 ส่วนที่ 4: DECISION TREE & BEHAVIORAL RULES
 // ==========================================
 
-// 4.1 Decision Tree สำหรับจัดกลุ่มจากสถิติ (Generated Model)
-function predictPersonaAI(features) {
-  if (features['dep'] <= 0.50000) {
-    if (features['age'] <= 45.50000) {
-      if (features['age'] <= 25.50000) {
-        if (features['inc'] <= 149500.00000) {
-          if (features['dti'] <= 0.59997) return 'นักศึกษาจบใหม่ / First-Jobber (Gen Z Starter)';
-          else return 'วัยทำงานหนี้ล้นพ้นตัว (Debt-Trapped Worker)';
-        } else return 'อายุน้อยร้อยล้าน (Young Executive / Success)';
-      } else {
-        if (features['nw'] <= 50000.04688) {
-          if (features['inc'] <= 20500.00000) {
-            if (features['frequency'] <= 2.50000) {
-              if (features['dti'] <= 0.60004) return 'กลุ่มเปราะบางทางการเงิน (Vulnerable / Grassroots)';
-              else return 'วัยทำงานหนี้ล้นพ้นตัว (Debt-Trapped Worker)';
-            } else {
-              if (features['dti'] <= 0.60022) return 'วัยทำงาน / DINKs (Independent Pro)';
-              else return 'วัยทำงานหนี้ล้นพ้นตัว (Debt-Trapped Worker)';
-            }
-          } else {
-            if (features['dti'] <= 0.60082) return 'วัยทำงาน / DINKs (Independent Pro)';
-            else return 'วัยทำงานหนี้ล้นพ้นตัว (Debt-Trapped Worker)';
-          }
-        } else {
-          if (features['inc'] <= 149500.00000) {
-            if (features['dti'] <= 0.60003) return 'วัยทำงาน / DINKs (Independent Pro)';
-            else return 'วัยทำงานหนี้ล้นพ้นตัว (Debt-Trapped Worker)';
-          } else {
-            if (features['age'] <= 40.50000) return 'อายุน้อยร้อยล้าน (Young Executive / Success)';
-            else return 'วัยทำงาน / DINKs (Independent Pro)';
-          }
-        }
-      }
-    } else {
-      if (features['age'] <= 54.50000) {
-        if (features['nw'] <= 49998.70703) {
-          if (features['inc'] <= 20500.00000) {
-            if (features['frequency'] <= 2.50000) {
-              if (features['dti'] <= 0.60001) return 'กลุ่มเปราะบางทางการเงิน (Vulnerable / Grassroots)';
-              else return 'วัยทำงานหนี้ล้นพ้นตัว (Debt-Trapped Worker)';
-            } else {
-              if (features['dti'] <= 0.60002) return 'วัยกลางคนภาระน้อย (Mid-Life Independent)';
-              else return 'วัยทำงานหนี้ล้นพ้นตัว (Debt-Trapped Worker)';
-            }
-          } else return 'วัยกลางคนภาระน้อย (Mid-Life Independent)';
-        } else {
-          if (features['dti'] <= 0.60004) return 'วัยกลางคนภาระน้อย (Mid-Life Independent)';
-          else return 'วัยทำงานหนี้ล้นพ้นตัว (Debt-Trapped Worker)';
-        }
-      } else {
-        if (features['nw'] <= 15000160.00000) {
-          if (features['age'] <= 60.50000) {
-            if (features['nw'] <= 50000.79297) {
-              if (features['inc'] <= 20500.00000) {
-                if (features['frequency'] <= 2.50000) {
-                  if (features['dti'] <= 0.59993) return 'กลุ่มเปราะบางทางการเงิน (Vulnerable / Grassroots)';
-                  else return 'วัยทำงานหนี้ล้นพ้นตัว (Debt-Trapped Worker)';
-                } else {
-                  if (features['dti'] <= 0.60001) return 'วัยทำงานวัยเตรียมเกษียณ (Pre-Retiree)';
-                  else return 'วัยทำงานหนี้ล้นพ้นตัว (Debt-Trapped Worker)';
+// 4.1.1 โครงสร้างสมอง JSON Rule Engine (อ่านง่าย แก้ไขง่าย)
+const PERSONA_DECISION_TREE = {
+    feature: 'dep', threshold: 0.5,
+    left: { // dep <= 0.5
+        feature: 'age', threshold: 45.5,
+        left: { // age <= 45.5
+            feature: 'age', threshold: 25.5,
+            left: { // age <= 25.5
+                feature: 'inc', threshold: 149500.0,
+                left: { feature: 'dti', threshold: 0.59997, left: 'นักศึกษาจบใหม่ / First-Jobber (Gen Z Starter)', right: 'วัยทำงานหนี้ล้นพ้นตัว (Debt-Trapped Worker)' },
+                right: 'อายุน้อยร้อยล้าน (Young Executive / Success)'
+            },
+            right: { // age > 25.5
+                feature: 'nw', threshold: 50000.04688,
+                left: {
+                    feature: 'inc', threshold: 20500.0,
+                    left: {
+                        feature: 'frequency', threshold: 2.5,
+                        left: { feature: 'dti', threshold: 0.60004, left: 'กลุ่มเปราะบางทางการเงิน (Vulnerable / Grassroots)', right: 'วัยทำงานหนี้ล้นพ้นตัว (Debt-Trapped Worker)' },
+                        right: { feature: 'dti', threshold: 0.60022, left: 'วัยทำงาน / DINKs (Independent Pro)', right: 'วัยทำงานหนี้ล้นพ้นตัว (Debt-Trapped Worker)' }
+                    },
+                    right: { feature: 'dti', threshold: 0.60082, left: 'วัยทำงาน / DINKs (Independent Pro)', right: 'วัยทำงานหนี้ล้นพ้นตัว (Debt-Trapped Worker)' }
+                },
+                right: {
+                    feature: 'inc', threshold: 149500.0,
+                    left: { feature: 'dti', threshold: 0.60003, left: 'วัยทำงาน / DINKs (Independent Pro)', right: 'วัยทำงานหนี้ล้นพ้นตัว (Debt-Trapped Worker)' },
+                    right: { feature: 'age', threshold: 40.5, left: 'อายุน้อยร้อยล้าน (Young Executive / Success)', right: 'วัยทำงาน / DINKs (Independent Pro)' }
                 }
-              } else return 'วัยทำงานวัยเตรียมเกษียณ (Pre-Retiree)';
-            } else {
-              if (features['dti'] <= 0.60011) return 'วัยทำงานวัยเตรียมเกษียณ (Pre-Retiree)';
-              else return 'วัยทำงานหนี้ล้นพ้นตัว (Debt-Trapped Worker)';
             }
-          } else return 'ผู้สูงอายุรายได้พื้นฐาน (Basic Retiree)';
-        } else return 'เศรษฐีวัยเกษียณ (HNW Retiree)';
-      }
-    }
-  } else {
-    if (features['dep'] <= 2.50000) {
-      if (features['dti'] <= 0.40000) {
-        if (features['age'] <= 35.50000) {
-          if (features['nw'] <= 49994.01562) {
-            if (features['frequency'] <= 2.50000) {
-              if (features['inc'] <= 20500.00000) return 'กลุ่มเปราะบางทางการเงิน (Vulnerable / Grassroots)';
-              else return 'วัยเริ่มต้นครอบครัวภาระน้อย (Early Family)';
-            } else return 'วัยเริ่มต้นครอบครัวภาระน้อย (Early Family)';
-          } else {
-            if (features['inc'] <= 149500.00000) return 'วัยเริ่มต้นครอบครัวภาระน้อย (Early Family)';
-            else return 'อายุน้อยร้อยล้าน (Young Executive / Success)';
-          }
-        } else {
-          if (features['inc'] <= 99500.00000) {
-            if (features['nw'] <= 49998.73633) {
-              if (features['frequency'] <= 2.50000) {
-                if (features['inc'] <= 20500.00000) return 'กลุ่มเปราะบางทางการเงิน (Vulnerable / Grassroots)';
-                else return 'ครอบครัววัยทำงานภาระปานกลาง (Standard Family)';
-              } else return 'ครอบครัววัยทำงานภาระปานกลาง (Standard Family)';
-            } else return 'ครอบครัววัยทำงานภาระปานกลาง (Standard Family)';
-          } else {
-            if (features['age'] <= 40.50000) {
-              if (features['inc'] <= 149500.00000) return 'ครอบครัววัยทำงานภาระปานกลาง (Standard Family)';
-              else return 'อายุน้อยร้อยล้าน (Young Executive / Success)';
-            } else {
-              if (features['age'] <= 54.50000) return 'ผู้บริหาร/เจ้าของธุรกิจสร้างครอบครัว (Wealthy Family Builder)';
-              else {
-                if (features['nw'] <= 14999856.00000) {
-                  if (features['age'] <= 55.50000) return 'ผู้บริหาร/เจ้าของธุรกิจสร้างครอบครัว (Wealthy Family Builder)';
-                  else return 'ครอบครัววัยทำงานภาระปานกลาง (Standard Family)';
-                } else return 'เศรษฐีวัยเกษียณ (HNW Retiree)';
-              }
+        },
+        right: { // age > 45.5
+            feature: 'age', threshold: 54.5,
+            left: {
+                feature: 'nw', threshold: 49998.70703,
+                left: {
+                    feature: 'inc', threshold: 20500.0,
+                    left: {
+                        feature: 'frequency', threshold: 2.5,
+                        left: { feature: 'dti', threshold: 0.60001, left: 'กลุ่มเปราะบางทางการเงิน (Vulnerable / Grassroots)', right: 'วัยทำงานหนี้ล้นพ้นตัว (Debt-Trapped Worker)' },
+                        right: { feature: 'dti', threshold: 0.60002, left: 'วัยกลางคนภาระน้อย (Mid-Life Independent)', right: 'วัยทำงานหนี้ล้นพ้นตัว (Debt-Trapped Worker)' }
+                    },
+                    right: 'วัยกลางคนภาระน้อย (Mid-Life Independent)'
+                },
+                right: { feature: 'dti', threshold: 0.60004, left: 'วัยกลางคนภาระน้อย (Mid-Life Independent)', right: 'วัยทำงานหนี้ล้นพ้นตัว (Debt-Trapped Worker)' }
+            },
+            right: {
+                feature: 'nw', threshold: 15000160.0,
+                left: {
+                    feature: 'age', threshold: 60.5,
+                    left: {
+                        feature: 'nw', threshold: 50000.79297,
+                        left: {
+                            feature: 'inc', threshold: 20500.0,
+                            left: {
+                                feature: 'frequency', threshold: 2.5,
+                                left: { feature: 'dti', threshold: 0.59993, left: 'กลุ่มเปราะบางทางการเงิน (Vulnerable / Grassroots)', right: 'วัยทำงานหนี้ล้นพ้นตัว (Debt-Trapped Worker)' },
+                                right: { feature: 'dti', threshold: 0.60001, left: 'วัยทำงานวัยเตรียมเกษียณ (Pre-Retiree)', right: 'วัยทำงานหนี้ล้นพ้นตัว (Debt-Trapped Worker)' }
+                            },
+                            right: 'วัยทำงานวัยเตรียมเกษียณ (Pre-Retiree)'
+                        },
+                        right: { feature: 'dti', threshold: 0.60011, left: 'วัยทำงานวัยเตรียมเกษียณ (Pre-Retiree)', right: 'วัยทำงานหนี้ล้นพ้นตัว (Debt-Trapped Worker)' }
+                    },
+                    right: 'ผู้สูงอายุรายได้พื้นฐาน (Basic Retiree)'
+                },
+                right: 'เศรษฐีวัยเกษียณ (HNW Retiree)'
             }
-          }
         }
-      } else {
-        if (features['dti'] <= 0.60002) {
-          if (features['nw'] <= 49992.51367) {
-            if (features['inc'] <= 20500.00000) {
-              if (features['frequency'] <= 2.50000) return 'กลุ่มเปราะบางทางการเงิน (Vulnerable / Grassroots)';
-              else return 'ครอบครัววัยทำงานภาระสูง (High-Burden Family)';
-            } else return 'ครอบครัววัยทำงานภาระสูง (High-Burden Family)';
-          } else {
-            if (features['inc'] <= 99500.00000) return 'ครอบครัววัยทำงานภาระสูง (High-Burden Family)';
-            else {
-              if (features['age'] <= 40.50000) {
-                if (features['inc'] <= 149500.00000) return 'ครอบครัววัยทำงานภาระสูง (High-Burden Family)';
-                else return 'อายุน้อยร้อยล้าน (Young Executive / Success)';
-              } else {
-                if (features['dti'] <= 0.50001) {
-                  if (features['age'] <= 55.50000) {
-                    if (features['age'] <= 54.50000) return 'ผู้บริหาร/เจ้าของธุรกิจสร้างครอบครัว (Wealthy Family Builder)';
-                    else {
-                      if (features['nw'] <= 14898607.50000) return 'ผู้บริหาร/เจ้าของธุรกิจสร้างครอบครัว (Wealthy Family Builder)';
-                      else return 'เศรษฐีวัยเกษียณ (HNW Retiree)';
+    },
+    right: { // dep > 0.5
+        feature: 'dep', threshold: 2.5,
+        left: {
+            feature: 'dti', threshold: 0.4,
+            left: { // dti <= 0.4
+                feature: 'age', threshold: 35.5,
+                left: {
+                    feature: 'nw', threshold: 49994.01562,
+                    left: {
+                        feature: 'frequency', threshold: 2.5,
+                        left: { feature: 'inc', threshold: 20500.0, left: 'กลุ่มเปราะบางทางการเงิน (Vulnerable / Grassroots)', right: 'วัยเริ่มต้นครอบครัวภาระน้อย (Early Family)' },
+                        right: 'วัยเริ่มต้นครอบครัวภาระน้อย (Early Family)'
+                    },
+                    right: { feature: 'inc', threshold: 149500.0, left: 'วัยเริ่มต้นครอบครัวภาระน้อย (Early Family)', right: 'อายุน้อยร้อยล้าน (Young Executive / Success)' }
+                },
+                right: {
+                    feature: 'inc', threshold: 99500.0,
+                    left: {
+                        feature: 'nw', threshold: 49998.73633,
+                        left: {
+                            feature: 'frequency', threshold: 2.5,
+                            left: { feature: 'inc', threshold: 20500.0, left: 'กลุ่มเปราะบางทางการเงิน (Vulnerable / Grassroots)', right: 'ครอบครัววัยทำงานภาระปานกลาง (Standard Family)' },
+                            right: 'ครอบครัววัยทำงานภาระปานกลาง (Standard Family)'
+                        },
+                        right: 'ครอบครัววัยทำงานภาระปานกลาง (Standard Family)'
+                    },
+                    right: {
+                        feature: 'age', threshold: 40.5,
+                        left: { feature: 'inc', threshold: 149500.0, left: 'ครอบครัววัยทำงานภาระปานกลาง (Standard Family)', right: 'อายุน้อยร้อยล้าน (Young Executive / Success)' },
+                        right: {
+                            feature: 'age', threshold: 54.5,
+                            left: 'ผู้บริหาร/เจ้าของธุรกิจสร้างครอบครัว (Wealthy Family Builder)',
+                            right: {
+                                feature: 'nw', threshold: 14999856.0,
+                                left: { feature: 'age', threshold: 55.5, left: 'ผู้บริหาร/เจ้าของธุรกิจสร้างครอบครัว (Wealthy Family Builder)', right: 'ครอบครัววัยทำงานภาระปานกลาง (Standard Family)' },
+                                right: 'เศรษฐีวัยเกษียณ (HNW Retiree)'
+                            }
+                        }
                     }
-                  } else {
-                    if (features['nw'] <= 14927013.00000) return 'ครอบครัววัยทำงานภาระสูง (High-Burden Family)';
-                    else return 'เศรษฐีวัยเกษียณ (HNW Retiree)';
-                  }
-                } else {
-                  if (features['age'] <= 54.50000) return 'ครอบครัววัยทำงานภาระสูง (High-Burden Family)';
-                  else {
-                    if (features['nw'] <= 14977684.50000) return 'ครอบครัววัยทำงานภาระสูง (High-Burden Family)';
-                    else return 'เศรษฐีวัยเกษียณ (HNW Retiree)';
-                  }
                 }
-              }
+            },
+            right: { // dti > 0.4
+                feature: 'dti', threshold: 0.60002,
+                left: {
+                    feature: 'nw', threshold: 49992.51367,
+                    left: {
+                        feature: 'inc', threshold: 20500.0,
+                        left: { feature: 'frequency', threshold: 2.5, left: 'กลุ่มเปราะบางทางการเงิน (Vulnerable / Grassroots)', right: 'ครอบครัววัยทำงานภาระสูง (High-Burden Family)' },
+                        right: 'ครอบครัววัยทำงานภาระสูง (High-Burden Family)'
+                    },
+                    right: {
+                        feature: 'inc', threshold: 99500.0,
+                        left: 'ครอบครัววัยทำงานภาระสูง (High-Burden Family)',
+                        right: {
+                            feature: 'age', threshold: 40.5,
+                            left: { feature: 'inc', threshold: 149500.0, left: 'ครอบครัววัยทำงานภาระสูง (High-Burden Family)', right: 'อายุน้อยร้อยล้าน (Young Executive / Success)' },
+                            right: {
+                                feature: 'dti', threshold: 0.50001,
+                                left: {
+                                    feature: 'age', threshold: 55.5,
+                                    left: {
+                                        feature: 'age', threshold: 54.5,
+                                        left: 'ผู้บริหาร/เจ้าของธุรกิจสร้างครอบครัว (Wealthy Family Builder)',
+                                        right: { feature: 'nw', threshold: 14898607.5, left: 'ผู้บริหาร/เจ้าของธุรกิจสร้างครอบครัว (Wealthy Family Builder)', right: 'เศรษฐีวัยเกษียณ (HNW Retiree)' }
+                                    },
+                                    right: { feature: 'nw', threshold: 14927013.0, left: 'ครอบครัววัยทำงานภาระสูง (High-Burden Family)', right: 'เศรษฐีวัยเกษียณ (HNW Retiree)' }
+                                },
+                                right: {
+                                    feature: 'age', threshold: 54.5,
+                                    left: 'ครอบครัววัยทำงานภาระสูง (High-Burden Family)',
+                                    right: { feature: 'nw', threshold: 14977684.5, left: 'ครอบครัววัยทำงานภาระสูง (High-Burden Family)', right: 'เศรษฐีวัยเกษียณ (HNW Retiree)' }
+                                }
+                            }
+                        }
+                    }
+                },
+                right: 'วัยทำงานหนี้ล้นพ้นตัว (Debt-Trapped Worker)'
             }
-          }
-        } else return 'วัยทำงานหนี้ล้นพ้นตัว (Debt-Trapped Worker)';
-      }
-    } else {
-      if (features['dti'] <= 0.60000) return 'เดอะแบกวัยทำงาน (The Sandwich Generation)';
-      else return 'วัยทำงานหนี้ล้นพ้นตัว (Debt-Trapped Worker)';
+        },
+        right: { // dep > 2.5
+            feature: 'dti', threshold: 0.6,
+            left: 'เดอะแบกวัยทำงาน (The Sandwich Generation)',
+            right: 'วัยทำงานหนี้ล้นพ้นตัว (Debt-Trapped Worker)'
+        }
     }
-  }
+};
+
+// 4.1.2 ฟังก์ชัน Decision Tree สำหรับจัดกลุ่มจากสถิติ (Engine Walker)
+function predictPersonaAI(features) {
+    let currentNode = PERSONA_DECISION_TREE;
+
+    // ระบบจะวิ่งไปตามกิ่งเรื่อยๆ จนกว่าจะเจอข้อความ (Leaf Node)
+    while (typeof currentNode === 'object' && currentNode !== null) {
+        // ดึงค่าตัวแปรจาก features ถ้าไม่มีให้ใช้ 0 ป้องกันการค้าง
+        let featureValue = features[currentNode.feature] !== undefined ? features[currentNode.feature] : 0;
+        
+        // เปรียบเทียบเงื่อนไข
+        if (featureValue <= currentNode.threshold) {
+            currentNode = currentNode.left;
+        } else {
+            currentNode = currentNode.right;
+        }
+    }
+
+    // เมื่อ currentNode เป็น string (ข้อความ Persona) ก็คืนค่ากลับไป
+    return currentNode || "ไม่สามารถระบุกลุ่มได้";
 }
 
 // 4.2 วิเคราะห์พฤติกรรมความเสี่ยง (Rule-based)
@@ -987,3 +1013,4 @@ function generateXAIText(feature, impact, triggerDirection) {
     }
     return `💡 ประสิทธิภาพของ <b>${thName}</b> ส่งผลต่อแผนของคุณ${magnitude} (${impact > 0 ? '+' : ''}${impactAbs}%)`;
 }
+

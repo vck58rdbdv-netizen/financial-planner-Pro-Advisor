@@ -1,7 +1,8 @@
 // =====================================================================
 // 🧠 AiDAPC MODULE (AI Deep Analysis & Prediction Center)
 // สถาปัตยกรรม: AI/ML Core Diagnostics Engine (White-box Dashboard) v5.6 Ultimate
-// อัปเดต: FA Interactive Sandbox + Deep Contextual Reasoning & Cost/Benefit Explanation
+// อัปเดต: Explicit AI Thinking Process (FA White-box Communication) & Empathetic Tone
+// อัปเกรด: CFP (Certified Financial Planner) NLG Extension & True Deep Learning Bridge
 // =====================================================================
 
 window.AIControlCenter = {
@@ -49,7 +50,7 @@ window.AIControlCenter = {
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>AiDAPC - Executive FA Diagnostics V5.6</title>
+            <title>AiDAPC - Executive CFP Diagnostics V5.6</title>
             <script src="https://cdn.tailwindcss.com"><\/script>
             <script src="https://cdn.jsdelivr.net/npm/chart.js"><\/script>
             <style>
@@ -78,7 +79,7 @@ window.AIControlCenter = {
                     <div class="text-3xl drop-shadow-[0_0_10px_rgba(56,189,248,0.8)]">🧠</div>
                     <div>
                         <h1 class="text-lg font-bold text-white tracking-wide uppercase flex items-center gap-2">
-                            AiDAPC <span class="text-slate-400 text-sm normal-case">| Executive AI Diagnostics V5.6</span> <span class="status-dot ml-2" id="db_status_dot"></span>
+                            AiDAPC <span class="text-slate-400 text-sm normal-case">| Executive CFP Diagnostics V5.6</span> <span class="status-dot ml-2" id="db_status_dot"></span>
                         </h1>
                         <div class="flex items-center gap-2 mt-1">
                             <input type="text" id="client_search" onkeyup="window.filterClientDropdown()" placeholder="🔍 ค้นหาตามตัวอักษร..." class="text-xs bg-slate-800 text-slate-200 border border-slate-600 rounded px-2 py-1 outline-none w-32 placeholder-slate-500 focus:ring-1 focus:ring-cyan-500 transition-all">
@@ -115,11 +116,11 @@ window.AIControlCenter = {
 
                     <div class="glass-panel rounded-xl p-5 lg:col-span-1 flex flex-col h-[320px]">
                         <div class="card-header flex justify-between items-center shrink-0">
-                            <h2 class="text-sm font-bold text-pink-400 uppercase tracking-wider">💬 2. NLP Sentiment Analysis</h2>
+                            <h2 class="text-sm font-bold text-pink-400 uppercase tracking-wider">💬 2. Lexical Sentiment Analysis</h2>
                             <span class="text-[9px] bg-pink-900/30 px-2 py-0.5 rounded text-pink-300 border border-pink-500/30">Text Intent</span>
                         </div>
                         <div class="flex-1 bg-slate-900 rounded-lg p-3 border border-slate-800 text-xs text-slate-300 flex flex-col gap-2 overflow-hidden">
-                            <p class="text-[10px] text-slate-500 font-bold uppercase shrink-0">FA Notes / Client Chat:</p>
+                            <p class="text-[10px] text-slate-500 font-bold uppercase shrink-0">CFP Notes / Client Chat:</p>
                             <div id="log_nlp_text" class="italic text-slate-400 flex-1 leading-relaxed overflow-y-auto custom-scrollbar">รอการอ่านข้อความ...</div>
                             <div class="mt-2 pt-2 border-t border-slate-800 flex justify-between items-center shrink-0">
                                 <span class="text-slate-400">Financial Anxiety:</span>
@@ -142,7 +143,7 @@ window.AIControlCenter = {
                                 <div class="w-full bg-slate-800 rounded-full h-1.5"><div id="bar_conf" class="bg-teal-500 h-1.5 rounded-full transition-all duration-1000" style="width: 0%"></div></div>
                             </div>
                             <div class="bg-slate-900 p-3 rounded border border-slate-700 text-[11px] leading-relaxed" id="log_outlier_warning">
-                                <p class="text-slate-500 italic text-center mt-4">รอตรวจสอบความผิดปกติของข้อมูลและให้คำอธิบาย...</p>
+                                <p class="text-slate-500 italic text-center mt-4">รอตรวจสอบข้อมูลเบื้องต้นและให้คำอธิบาย...</p>
                             </div>
                         </div>
                     </div>
@@ -154,13 +155,13 @@ window.AIControlCenter = {
                     <div class="glass-panel rounded-xl p-5 lg:col-span-1 flex flex-col min-h-[360px]">
                         <div class="card-header flex justify-between items-center">
                             <h2 class="text-sm font-bold text-purple-400 uppercase tracking-wider">🧠 4. Deep Learning Core</h2>
-                            <span class="text-[9px] bg-purple-900/30 px-2 py-0.5 rounded text-purple-300 border border-purple-500/30">Survival Prob.</span>
+                            <span class="text-[9px] bg-purple-900/30 px-2 py-0.5 rounded text-purple-300 border border-purple-500/30">Readiness Prob.</span>
                         </div>
                         <div class="flex-1 flex flex-col items-center justify-center bg-slate-800/50 rounded-lg p-4 border border-slate-700 relative overflow-hidden">
                             <div class="absolute inset-0 bg-gradient-to-b from-purple-500/5 to-transparent"></div>
                             <div class="text-center z-10 w-full flex-1 flex flex-col justify-center">
                                 <p class="text-5xl font-black text-purple-400 drop-shadow-[0_0_15px_rgba(168,85,247,0.5)]" id="log_nn_score">--%</p>
-                                <p class="text-[10px] text-slate-400 mt-2 font-bold uppercase tracking-widest">Base Success Probability</p>
+                                <p class="text-[10px] text-slate-400 mt-2 font-bold uppercase tracking-widest">Base Readiness Probability</p>
                             </div>
                             <div class="mt-auto w-full bg-slate-900/80 p-3 rounded border border-purple-500/30 text-[10.5px] text-purple-200 shadow-inner text-left leading-relaxed z-10">
                                 <span id="log_nn_desc" class="text-slate-400 italic">รอวิเคราะห์...</span>
@@ -173,7 +174,7 @@ window.AIControlCenter = {
                             <h2 class="text-sm font-bold text-cyan-400 uppercase tracking-wider">🔍 5. XAI Feature Drivers</h2>
                         </div>
                         <div class="flex-1 bg-slate-900 rounded-lg p-3 text-xs text-slate-300 overflow-y-auto custom-scrollbar border border-slate-800 space-y-2" id="log_xai_drivers">
-                            <p class="text-slate-500 italic code-font text-center mt-10">รอสกัดปัจจัยความสำเร็จและคำอธิบายเชิงลึก...</p>
+                            <p class="text-slate-500 italic code-font text-center mt-10">รอสกัดปัจจัยความพร้อมและคำอธิบายเชิงลึก...</p>
                         </div>
                     </div>
 
@@ -183,9 +184,9 @@ window.AIControlCenter = {
                             <span class="text-[9px] bg-amber-900/30 px-2 py-0.5 rounded text-amber-300 border border-amber-500/30">"What-If" AI</span>
                         </div>
                         <div class="flex-1 bg-slate-900 rounded-lg p-3 border border-slate-800 flex flex-col gap-2">
-                            <p class="text-[10px] text-slate-400 font-bold">จำลองเส้นทางทางเลือก (Pos/Neg/Neutral Impacts):</p>
+                            <p class="text-[10px] text-slate-400 font-bold">จำลองเส้นทางทางเลือกเพื่อช่วยลูกค้า (Advisory Alternatives):</p>
                             <div id="log_counterfactual" class="space-y-2 mt-1 overflow-y-auto custom-scrollbar flex-1">
-                                <p class="text-slate-500 italic text-xs text-center mt-10">รอจำลองเส้นทางทางเลือกเพื่อหาจุดคุ้มทุน...</p>
+                                <p class="text-slate-500 italic text-xs text-center mt-10">รอจำลองเส้นทางเพื่อหาจุดสมดุลที่ดีที่สุด...</p>
                             </div>
                         </div>
                     </div>
@@ -288,11 +289,11 @@ window.AIControlCenter = {
                             </div>
                             <div class="flex-1 flex flex-col">
                                 <div class="mb-3 bg-slate-800 p-3.5 rounded-lg border border-slate-600 text-[10.5px] text-slate-300 leading-relaxed text-left shadow-md">
-                                    <b class="text-indigo-400 text-xs block mb-1">📖 Definition (นิยามและการใช้งานสำหรับ FA):</b>
-                                    <span class="text-white font-bold">"Final Adjusted Score (คะแนนความสำเร็จสุทธิ)"</span> คือตัวชี้วัดศักยภาพทางการเงินที่สะท้อน <b>"โลกความเป็นจริง"</b> มากที่สุด โดยระบบจะนำคะแนนศักยภาพตั้งต้น (Base Score) มาหักลบด้วย <b>"อคติและพฤติกรรมเสี่ยง (Behavioral Constraints)"</b> เช่น การก่อหนี้บริโภค หรือการใช้เงินเกินตัว<br><br>
-                                    <b class="text-emerald-400">💡 FA Action Plan & Trade-off:</b> ใช้คะแนนนี้เพื่อทำ <b>Reality Check</b> กับลูกค้า หากคะแนนนี้ต่ำกว่า Base Score มากๆ (โดน Penalty สูง) FA ต้องเปิดใจลูกค้าให้เห็นว่า <i>"พฤติกรรมใดกำลังทำลายแผน"</i> และให้ลูกค้าพิจารณา <b>Trade-off</b> ระหว่าง "ความสุขระยะสั้น (ใช้เงินเกินตัว)" กับ "ความมั่นคงระยะยาว" พร้อมเสนอ <b>"การปรับโครงสร้างหนี้/ลดรายจ่าย"</b> ควบคู่ไปกับการเสนอโปรดักส์ เพื่อสร้างความน่าเชื่อถือระดับที่ปรึกษามืออาชีพ
+                                    <b class="text-indigo-400 text-xs block mb-1">📖 บทบาทที่ปรึกษาการเงิน (CFP Action):</b>
+                                    <span class="text-white font-bold">คะแนนหลังประเมินตามความเป็นจริง</span> ถูกออกแบบมาเพื่อเตือนใจว่า <b>อย่าเพิ่งเร่งรัด</b> หากคะแนนลดลงแปลว่าลูกค้ากำลังแบกความท้าทายอยู่ CFP มีหน้าที่ยื่นมือเข้าไปช่วยปลดล็อก ลดทอนรายจ่าย เพื่อให้ลูกค้าก้าวเดินได้อย่างมั่นคงตามหลัก Wealth Planning ครับ<br><br>
+                                    <b class="text-emerald-400">💡 CFP Action Plan & Trade-off:</b> ใช้คะแนนนี้เพื่อทำ <b>Reality Check</b> กับลูกค้า หากคะแนนนี้ต่ำกว่า Base Score มากๆ CFP ต้องเปิดใจลูกค้าให้เห็นว่า <i>"พฤติกรรมใดกำลังทำลายแผนระยะยาว"</i> และให้ลูกค้าพิจารณา <b>Trade-off</b> ระหว่าง "ความสุขระยะสั้น" กับ "อิสรภาพทางการเงิน (Financial Independence)" พร้อมเสนอ <b>"การปรับโครงสร้างหนี้/การจัดการภาษี"</b> ควบคู่ไปกับการเสนอแผนการเงินองค์รวม
                                 </div>
-                                <p class="text-[10px] text-slate-400 mb-1 font-bold">Rule Execution Log (Detailed Traceability):</p>
+                                <p class="text-[10px] text-slate-400 mb-1 font-bold">Rule Execution Log (กระบวนการคิดคำนวณปรับลดคะแนน):</p>
                                 <div class="bg-slate-900 rounded-lg p-3 text-[11px] text-slate-300 flex-1 overflow-y-auto border border-slate-800 custom-scrollbar space-y-3 shadow-inner" id="log_consensus_exp">
                                     <p class="text-slate-500 italic code-font text-center mt-4">รอการตรวจสอบกฎเกณฑ์ธุรกิจ...</p>
                                 </div>
@@ -304,7 +305,7 @@ window.AIControlCenter = {
                 <div class="glass-panel rounded-xl p-6 border-fuchsia-500/50 shadow-[0_0_20px_rgba(217,70,239,0.15)] mt-6 flex flex-col relative overflow-hidden">
                     <div class="absolute -right-4 -top-4 text-8xl opacity-5 select-none pointer-events-none">🤖</div>
                     <div class="card-header flex justify-between items-center border-fuchsia-500/30">
-                        <h2 class="text-sm font-bold text-fuchsia-400 uppercase tracking-wider flex items-center gap-2">✨ 11. Executive AI Synthesis (สรุปกลยุทธ์จาก AI)</h2>
+                        <h2 class="text-sm font-bold text-fuchsia-400 uppercase tracking-wider flex items-center gap-2">✨ 11. Executive AI Synthesis (สรุปกลยุทธ์จาก AI ระดับ CFP)</h2>
                         <span class="text-[9px] bg-fuchsia-900/30 px-2 py-0.5 rounded text-fuchsia-300 border border-fuchsia-500/30">Auto-Generated by Local NLG</span>
                     </div>
                     <div id="log_executive_summary" class="text-[13px] text-slate-300 leading-relaxed space-y-4 relative z-10">
@@ -315,8 +316,8 @@ window.AIControlCenter = {
                 <!-- 🌟🌟🌟 MODULE 12: FA INTERACTIVE SANDBOX SIMULATOR 🌟🌟🌟 -->
                 <div class="glass-panel rounded-xl p-5 border-cyan-500/50 shadow-[0_0_20px_rgba(6,182,212,0.15)] mt-6 flex flex-col min-h-[300px]">
                     <div class="card-header flex justify-between items-center border-cyan-500/30">
-                        <h2 class="text-sm font-bold text-cyan-400 uppercase tracking-wider flex items-center gap-2">🎛️ 12. FA Interactive Sandbox (What-If Simulator)</h2>
-                        <span class="text-[9px] bg-cyan-900/30 px-2 py-0.5 rounded text-cyan-300 border border-cyan-500/30">Custom Portfolio & FA Pitching Guide</span>
+                        <h2 class="text-sm font-bold text-cyan-400 uppercase tracking-wider flex items-center gap-2">🎛️ 12. CFP Interactive Sandbox (What-If Simulator)</h2>
+                        <span class="text-[9px] bg-cyan-900/30 px-2 py-0.5 rounded text-cyan-300 border border-cyan-500/30">Custom Portfolio & Pitching Guide</span>
                     </div>
                     <div class="flex flex-col lg:flex-row gap-6 mt-2">
                         <!-- Left: Inputs -->
@@ -337,7 +338,7 @@ window.AIControlCenter = {
                                 <div id="sandbox_riders_container" class="space-y-2 max-h-[150px] overflow-y-auto custom-scrollbar pr-1"></div>
                             </div>
                             <button onclick="window.runSandboxSimulation()" class="w-full bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white px-4 py-2.5 rounded-lg text-xs font-bold transition shadow-[0_0_10px_rgba(6,182,212,0.4)] flex justify-center items-center gap-2">
-                                🔄 จำลองผลกระทบ & วิเคราะห์ Trade-off
+                                🔄 จำลองผลกระทบ & วิเคราะห์ Trade-off เชิงลึก
                             </button>
                         </div>
                         <!-- Right: Output Mini Report -->
@@ -627,9 +628,10 @@ window.AIControlCenter = {
 
                             let tInc = sumVals(dyn.c_inc);
                             
+                            // 🌟 FIX: เพิ่มการรองรับโครงสร้าง JSON แบบ catValue และ catText
                             let tAst = 0; let liquidAssets = 0;
                             (dyn.c_assets || []).forEach(item => {
-                                let cat = String(item.type || item[0] || "").trim(); 
+                                let cat = String(item.catValue || item.catText || item.type || item[0] || "").trim(); 
                                 let v = Number(item.val || item[2] || item[1]) || 0; 
                                 tAst += v;
                                 if (cat === "สินทรัพย์สภาพคล่อง") liquidAssets += v;
@@ -638,7 +640,7 @@ window.AIControlCenter = {
 
                             let tExp = 0; let totalDebtPmt = 0;
                             (dyn.c_exp || []).forEach(item => {
-                                let cat = String(item.type || item[0] || "").trim();
+                                let cat = String(item.catValue || item.catText || item.type || item[0] || "").trim();
                                 let v = Number(item.val || item[2] || item[1]) || 0;
                                 tExp += v;
                                 if (cat === "เงินชำระคืนหนี้สิน") totalDebtPmt += v;
@@ -646,7 +648,7 @@ window.AIControlCenter = {
 
                             let tLiab = 0; let badDebt = 0;
                             (dyn.c_liab || []).forEach(item => {
-                                let cat = String(item.type || item[0] || "").trim();
+                                let cat = String(item.catValue || item.catText || item.type || item[0] || "").trim();
                                 let v = Number(item.val || item[2] || item[1]) || 0;
                                 tLiab += v;
                                 if (cat === "หนี้สินระยะสั้น") badDebt += v;
@@ -658,7 +660,13 @@ window.AIControlCenter = {
                                     totalDebtPmt += pmt;
                                 });
                             }
-                            if (totalDebtPmt === 0 && tLiab > 0) totalDebtPmt = tLiab * 0.03; 
+                                if (totalDebtPmt === 0 && tLiab > 0) {
+                                if (tAst > 50000000) { 
+                                    totalDebtPmt = tLiab * 0.005; // กลุ่มเศรษฐี (สินทรัพย์ > 50M) หนี้มักเป็นสินเชื่อธุรกิจ/ที่ดิน ประเมินยอดส่งแค่ 0.5% 
+                                } else {
+                                    totalDebtPmt = tLiab * 0.03;  // กลุ่มทั่วไป ประเมินขั้นต่ำ 3%
+                                }
+                            }
                             
                             let currentInsurance = dyn.c_ins || [];
                             let smartGoals = dyn.c_goals || [];
@@ -724,43 +732,49 @@ window.AIControlCenter = {
                 };
 
                 // ==========================================
-                // 🧠 AI Engine Core
+                // 🧠 AI Engine Core (True Neural Network Bridge)
                 // ==========================================
                 window.AIEngineCore = {
                     predictSuccessProbability: function(data) {
-                        let age = parseFloat(data.age) || 30;
+                        // 🌟 [TRUE DEEP LEARNING BRIDGE] 🌟
+                        // วิ่งกลับไปเรียกใช้ Neural Network (Matrix Weights) ของแท้ที่หน้าต่างหลัก
+                        try {
+                            if (window.opener && typeof window.opener.predictSuccessProbability === 'function') {
+                                // แปลง Format ข้อมูลให้ตรงกับที่สมองหลักต้องการ
+                                let nnInput = {
+                                    Age: data.age,
+                                    Income_Monthly: data.inc,
+                                    Total_Expenses_Monthly: data.exp,
+                                    Net_Worth: data.nw,
+                                    Total_Debt: data.liabilities,
+                                    Dependents: data.dependents,
+                                    DTI_Ratio: data.dti,
+                                    Liquid_Cash: data.liquidAssets || 0,
+                                    Investments: data.assets - (data.liquidAssets || 0),
+                                    Debt_Asset_Ratio: data.assets > 0 ? (data.liabilities / data.assets) : 0,
+                                    Savings_Ratio: data.inc > 0 ? Math.max(0, (data.inc - data.exp) / data.inc) : 0
+                                };
+                                
+                                let trueScore = window.opener.predictSuccessProbability(nnInput);
+                                if (trueScore !== null && !isNaN(trueScore)) {
+                                    termLog("🧠 Executed True Deep Learning Forward Pass.", "highlight");
+                                    return trueScore; // คืนค่าจาก Neural Network ของจริง
+                                }
+                            }
+                        } catch(e) {
+                            termLog("⚠️ Neural Network offline, using fallback math.", "warn");
+                        }
+
+                        // 🛡️ [FALLBACK ZERO-DOMINO] ถ้าหน้าต่างหลักปิดไป หรือ AI รันไม่ขึ้น ให้ใช้สมการเดิม
                         let inc = parseFloat(data.inc) || 0;
                         let nw = parseFloat(data.nw) || 0;
                         let liab = parseFloat(data.liabilities) || 0;
                         let dti = parseFloat(data.dti) || 0;
                         let dep = parseFloat(data.dependents) || 0;
+                        let occRiskScore = String(data.occ||"").includes('ราชการ') ? 5 : (String(data.occ||"").includes('อิสระ') ? -5 : 0);
 
-                        let occ = String(data.occ || "").toLowerCase();
-                        let occRiskScore = 0;
-                        let occType = "ทั่วไป (ปานกลาง)";
-                        if(occ.includes('ข้าราชการ') || occ.includes('รัฐวิสาหกิจ') || occ.includes('ประจำ') || occ.includes('แพทย์') || occ.includes('ครู')) {
-                            occRiskScore = 5; 
-                            occType = "มั่นคงสูง (Low Volatility)";
-                        } else if(occ.includes('อิสระ') || occ.includes('ค้าขาย') || occ.includes('freelance') || occ.includes('ร้าน') || occ.includes('ธุรกิจ')) {
-                            occRiskScore = -5; 
-                            occType = "ผันผวนสูง (High Volatility)";
-                        } else {
-                            occRiskScore = 0;
-                            occType = "ปานกลาง (Medium Volatility)";
-                        }
-                        data.occType = occType;
-
-                        let base = 50;
-                        let incScore = (inc / 100000) * 10;
-                        let nwScore = (nw / 1000000) * 5;
-                        let debtPenalty = (liab / 500000) * 2;
-                        let dtiPenalty = (dti * 100) * 0.6; 
-                        let depPenalty = dep * 2;
-
-                        let scoreRaw = base + incScore + nwScore - debtPenalty - dtiPenalty - depPenalty + occRiskScore;
-                        let finalScore = 100 / (1 + Math.exp(-0.05 * (scoreRaw - 50)));
-                        
-                        return Math.max(1.0, Math.min(99.9, finalScore));
+                        let scoreRaw = 50 + ((inc/100000)*10) + ((nw/1000000)*5) - ((liab/500000)*2) - (dti*60) - (dep*2) + occRiskScore;
+                        return Math.max(1.0, Math.min(99.9, 100 / (1 + Math.exp(-0.05 * (scoreRaw - 50)))));
                     },
 
                     detectOutliers: function(data) {
@@ -769,20 +783,28 @@ window.AIControlCenter = {
                         
                         const textVariations = {
                             highIncLowNw: [
-                                "⚠️ <b class='text-orange-400'>ตรวจพบความขัดแย้ง:</b> รายได้ของลูกค้าจัดอยู่ในกลุ่มสูงมาก แต่มูลค่าทรัพย์สินสุทธิกลับต่ำผิดปกติ ชี้ให้เห็นถึงความน่าจะเป็นของ 'หนี้แฝง' หรือ 'รายจ่ายที่ควบคุมไม่ได้' นอกระบบ",
-                                "⚠️ <b class='text-orange-400'>สัญญาณอันตราย:</b> Cashflow รับเข้ามาสูง แต่ไม่มีการสะสมสินทรัพย์ (Low Wealth Accumulation) โมเดลเตือนว่าลูกค้าอาจขาดวินัยการออมอย่างรุนแรง"
+                                "💡 <b class='text-orange-400'>ข้อสังเกตด้านการสะสมความมั่งคั่ง:</b> รายได้อยู่ในเกณฑ์สูง แต่อาจมีรอยรั่วค่าใช้จ่ายแฝง เป็นโอกาสดีที่เราจะเข้าไปช่วยจัดสรรโครงสร้างใหม่ให้เงินทำงานได้เต็มที่ขึ้นครับ",
+                                "💡 <b class='text-orange-400'>คำแนะนำสภาพคล่อง:</b> มีรายรับเข้ามาสม่ำเสมอ แต่สินทรัพย์สะสมยังไม่สัมพันธ์กัน แนะนำให้ทำความเข้าใจไลฟ์สไตล์ลูกค้าเพิ่มเติม เพื่อหารูปแบบการออมที่ตรงใจ",
+                                "💡 <b class='text-orange-400'>มุมมองแบบ CFP:</b> รายได้กระแสเงินสดสูงมาก แต่การเปลี่ยนเป็น Net Worth ยังทำได้ไม่เต็มประสิทธิภาพ นี่คือโอกาสในการทำ Tax Planning และปรับพอร์ตลงทุน (Asset Allocation) เพื่อเร่งการเติบโตของความมั่งคั่งครับ",
+                                "💡 <b class='text-orange-400'>การจัดการสินทรัพย์:</b> รายรับดีเยี่ยม แต่ต้องระวัง Lifestyle Inflation ในฐานะ CFP เราจะเข้าไปช่วยจัดสรรโครงสร้างผ่านระบบบัญชีแยกประเภท (Bucket Strategy) ครับ"
                             ],
                             highDti: [
-                                "🚨 <b class='text-rose-400'>วิกฤตสภาพคล่อง:</b> อัตราส่วนภาระผ่อนชำระหนี้ (DTI) พุ่งทะลุ 80% ซึ่งเป็น Red Zone ลูกค้าอยู่ในสภาวะเตรียมล้มละลายหากเกิดเหตุฉุกเฉิน",
-                                "🚨 <b class='text-rose-400'>Overleveraged:</b> ภาระหนี้สินหนักเกินกว่าที่กระแสเงินสดจะรับไหว การเสนอแผนลงทุนใดๆ ในเวลานี้แทบเป็นไปไม่ได้"
+                                "🚨 <b class='text-rose-400'>สัญญาณแจ้งเตือนภาระหนี้:</b> สัดส่วนหนี้สิน (DTI) ค่อนข้างตึงตัวมาก แนะนำให้ให้คำปรึกษาเรื่องการรวบหนี้ (Debt Consolidation) เพื่อคืนรอยยิ้มและสภาพคล่องให้ลูกค้าก่อนเสนอแผนลงทุน",
+                                "🚨 <b class='text-rose-400'>สภาพคล่องค่อนข้างจำกัด:</b> ภาระรายเดือนอยู่ในจุดที่ต้องระมัดระวัง การนำเสนอแผนควรเน้นความยืดหยุ่นและไม่สร้างภาระผูกพันระยะยาวจนเกินไปในเวลานี้",
+                                "🚨 <b class='text-rose-400'>CFP Alert:</b> DTI อยู่ในระดับอันตรายต่อแผนเกษียณ (Retirement Plan) และสภาพคล่องสุทธิ ต้องนำเสนอการปรับโครงสร้างหนี้ (Debt Restructuring) ก่อนพิจารณาเพิ่มพอร์ตความเสี่ยงใดๆ",
+                                "🚨 <b class='text-rose-400'>ข้อควรระวังเรื่อง Leverage:</b> การใช้ Leverage (หนี้) ของลูกค้าค่อนข้าง Over-leveraged อาจทำให้ทนทานต่อสภาวะดอกเบี้ยขาขึ้นได้ต่ำ ควรพิจารณาปกป้อง Asset หลักก่อน"
                             ],
                             negCf: [
-                                "🔥 <b class='text-red-500'>เงินติดลบ:</b> รายจ่ายต่อเดือนแซงหน้ารายได้ไปแล้ว ลูกค้ากำลังใช้เงินในอนาคต หรือต้องกู้หนี้ยืมสินมาจุนเจือชีวิตประจำวัน",
-                                "🔥 <b class='text-red-500'>Deficit Cashflow:</b> สัญญาณการพังทลายของฐานะการเงิน การประเมินผลตอบแทนใดๆ จะบิดเบือนเพราะลูกค้าไม่มีเงินเหลือเก็บ"
+                                "🌱 <b class='text-red-500'>ข้อกังวลด้านกระแสเงินสด:</b> ปัจจุบันรายจ่ายอาจเกินกรอบรายรับเล็กน้อย FA สามารถแสดงบทบาทที่ปรึกษาที่เข้าอกเข้าใจ ช่วยชี้เป้ารายจ่ายที่ลดได้ เพื่อพลิกฟื้นสภาพคล่องให้กลับมาเป็นบวก",
+                                "🌱 <b class='text-red-500'>ความท้าทายระยะสั้น:</b> สภาพคล่องยังคงติดลบ สิ่งสำคัญที่สุดตอนนี้คือการวางแผนตั้งรับและบริหารหนี้สิน มากกว่าการมุ่งเน้นผลตอบแทนจากการลงทุน",
+                                "🌱 <b class='text-red-500'>วิเคราะห์กระแสเงินสดตึงตัว:</b> ปัญหา Negative Cashflow จะส่งผลเสียต่อแผนการเงินระยะยาวทั้งหมด CFP จะต้องช่วยทำ Cashflow Management และหาโอกาสลดรายจ่ายฟุ่มเฟือยครับ",
+                                "🌱 <b class='text-red-500'>ความเสี่ยงขาดสภาพคล่อง:</b> แผนฉุกเฉิน (Emergency Fund) อาจถูกดึงมาใช้ในภาวะนี้ ให้เน้นการระงับรูรั่ว และเตรียมแผนสำรองสำหรับประกันภัยที่ครอบคลุมหนี้สินระยะสั้น"
                             ],
                             normal: [
-                                "✅ <b class='text-emerald-400'>Normal Distribution:</b> โครงสร้างรายได้และสินทรัพย์มีความสมดุลสอดคล้องกัน AI สามารถวิเคราะห์แผนนี้ได้อย่างแม่นยำสูง",
-                                "✅ <b class='text-emerald-400'>Data Consistency:</b> ไม่พบความผิดปกติหรือความขัดแย้งในตัวเลขทางการเงิน โมเดลให้ความเชื่อมั่นในระดับที่ดีเยี่ยม"
+                                "✅ <b class='text-emerald-400'>โครงสร้างการเงินสมดุล:</b> โครงสร้างรายได้และสินทรัพย์มีความสมดุลสอดคล้องกัน AI สามารถวิเคราะห์แผนนี้ได้อย่างแม่นยำสูง",
+                                "✅ <b class='text-emerald-400'>วินัยการเงินแข็งแกร่ง:</b> ไม่พบความผิดปกติหรือความขัดแย้งในตัวเลขทางการเงิน โมเดลให้ความเชื่อมั่นในระดับที่ดีเยี่ยม",
+                                "✅ <b class='text-emerald-400'>เสถียรภาพทางความมั่งคั่ง:</b> สัดส่วนตัวเลขพื้นฐานผ่านเกณฑ์มาตรฐาน CFP (Health Check) ทำให้มีอิสระในการนำเสนอพอร์ตโฟลิโอแบบ Global Allocation ได้อย่างมั่นใจ",
+                                "✅ <b class='text-emerald-400'>ศักยภาพการเติบโตสูง:</b> ด้วยพื้นฐานและวินัยที่ดี เป็นจังหวะที่เหมาะสมสำหรับการผลักดันสู่การวางแผนประหยัดภาษีขั้นสูงและต่อยอดมรดก (Legacy Planning)"
                             ]
                         };
 
@@ -808,7 +830,7 @@ window.AIControlCenter = {
                         let positiveWords = ['สนใจ', 'ลดหย่อน', 'ลงทุน', 'มรดก', 'ออม', 'เกษียณ', 'วางแผน', 'เป้าหมาย', 'มั่นคง', 'พร้อม'];
                         
                         let anxietyScore = 30; 
-                        let highlights = safeText || "ไม่มีบันทึกประวัติการสนทนาในระบบ (No NLP Data)";
+                        let highlights = safeText || "ไม่มีประวัติการพูดคุยในระบบ";
 
                         anxietyWords.forEach(w => {
                             let idx = textLower.indexOf(w);
@@ -835,6 +857,29 @@ window.AIControlCenter = {
                     },
 
                     generateXAIReport: function(data, currentProb) {
+                        // 🌟 [TRUE XAI BRIDGE] ใช้ XAI Engine ของจริงจากหน้าต่างหลักถ้าเป็นไปได้
+                        try {
+                            if (window.opener && typeof window.opener.generateXAIReport === 'function') {
+                                let nnInput = {
+                                    Age: data.age, Income_Monthly: data.inc, Total_Expenses_Monthly: data.exp,
+                                    Net_Worth: data.nw, Total_Debt: data.liabilities, Dependents: data.dependents,
+                                    DTI_Ratio: data.dti, Liquid_Cash: data.liquidAssets || 0, Investments: data.assets - (data.liquidAssets || 0),
+                                    Debt_Asset_Ratio: data.assets > 0 ? (data.liabilities / data.assets) : 0,
+                                    Savings_Ratio: data.inc > 0 ? Math.max(0, (data.inc - data.exp) / data.inc) : 0
+                                };
+                                let trueXAI = window.opener.generateXAIReport(nnInput, currentProb);
+                                if (trueXAI && trueXAI.length > 0) {
+                                    return trueXAI.map(x => ({
+                                        feature: x.feature,
+                                        impactValue: x.impactValue,
+                                        isPositiveFactor: x.isPositiveFactor,
+                                        logicReason: x.nlgMessage // Map key กลับมาให้ UI ฝั่งนี้ใช้ได้
+                                    }));
+                                }
+                            }
+                        } catch(e) {}
+                        
+                        // 🛡️ [FALLBACK] โค้ด XAI เดิมของคุณ
                         const features = ['inc', 'nw', 'liabilities', 'dti', 'exp', 'dependents']; 
                         let explanations = [];
                         const PERTURBATION_RATE = 0.1; 
@@ -861,50 +906,68 @@ window.AIControlCenter = {
                                 const xaiNLG = {
                                     inc: {
                                         pos: [
-                                            "เสมือน 'เครื่องยนต์หลัก' ในการสร้างความมั่งคั่ง ยิ่งกระแสเงินสดแข็งแกร่ง ยิ่งเพิ่มความยืดหยุ่นในการจัดพอร์ตให้ทนทานต่อความผันผวน", 
-                                            "กระแสเงินสดรับที่สม่ำเสมอ เปิดโอกาสให้ FA สามารถวางแผน Asset Allocation ได้หลากหลายและรับความเสี่ยงได้มากขึ้น"
+                                            "AI มองว่ารายได้ที่สม่ำเสมอของลูกค้าเปรียบเสมือน 'ลมใต้ปีก' จึงคำนวณบวกคะแนนเพิ่ม เพราะจะช่วยผลักดันให้พอร์ตการออมเติบโตได้อย่างสบายๆ", 
+                                            "ระบบพบกระแสเงินสดรับที่แข็งแกร่ง จึงวิเคราะห์ว่า FA สามารถวางแผน Asset Allocation ได้หลากหลายและรับความเสี่ยงได้มากขึ้น",
+                                            "ในมุมมองของนักวางแผนการเงิน (CFP) รายได้ที่แข็งแกร่งคือ 'กระสุน' ชั้นดีสำหรับการทำ Dollar-Cost Averaging (DCA) ในพอร์ตสินทรัพย์เสี่ยงเพื่อสร้าง Alpha ระยะยาว",
+                                            "การที่รายได้ (Active Income) อยู่ในเกณฑ์ดี สะท้อนถึง Human Capital ที่สูง ซึ่งเป็นฐานที่ยอดเยี่ยมสำหรับการกระจายความเสี่ยงไปสู่ Passive Income ด้วยกลยุทธ์ภาษีที่เหมาะสม"
                                         ],
                                         neg: [
-                                            "กระแสเงินสดเข้ามีจำกัดเมื่อเทียบกับความคาดหวัง ทำให้พอร์ตเติบโตช้าลงและต้องอาศัยวินัยที่สูงมาก", 
-                                            "รายได้ค่อนข้างตึงตัว FA ควรระมัดระวังในการเสนอผลิตภัณฑ์ที่ต้องชำระเบี้ยระยะยาวสูงๆ เพื่อหลีกเลี่ยงภาระระยะยาว"
+                                            "AI คำนวณพบว่ากระแสเงินสดอาจจะยังตึงตัว จึงลดคะแนนลงเพื่อเตือนให้หลีกเลี่ยงแผนที่สร้างภาระผูกพันระยะยาว", 
+                                            "ระบบประเมินจากฐานรายได้แล้วพบความตึงตัว จึงแนะนำให้ FA ระมัดระวังในการเสนอผลิตภัณฑ์ที่ต้องชำระเบี้ยสูงๆ",
+                                            "CFP ควรพิจารณาให้ลูกค้าสำรองกองทุนฉุกเฉิน (Emergency Fund) ให้แน่นขึ้น แทนที่จะสร้างภาระเพิ่มเติมจากรายได้ที่จำกัดในขณะนี้",
+                                            "ระบบพบความเปราะบางทางด้านรายรับ (Income Volatility) ควรหลีกเลี่ยงพอร์ตที่มีความผันผวนสูง (High Beta) จนกว่ารายได้จะมีเสถียรภาพ"
                                         ]
                                     },
                                     nw: {
                                         pos: [
-                                            "ทำหน้าที่เป็น 'เบาะลมกันกระแทก' ชั้นยอด ช่วยปกป้องความมั่งคั่งจากวิกฤตเศรษฐกิจ หรือเหตุฉุกเฉินได้สบาย", 
-                                            "ฐานทุนตั้งต้นมีขนาดใหญ่พอที่จะต่อยอดด้วยการลงทุน (Wealth Accumulation) โดยไม่ต้องกังวลปัญหาสภาพคล่อง"
+                                            "AI ให้คะแนนบวกเพราะเห็นว่า 'ความมั่งคั่งสะสม' จะเป็นเบาะรองรับชั้นดี ช่วยเปิดโอกาสให้ลูกค้ารับความเสี่ยงเพื่อผลตอบแทนที่สูงขึ้นได้", 
+                                            "ระบบตรวจพบฐานทุนตั้งต้นที่มีขนาดใหญ่พอ จึงมั่นใจว่าสามารถต่อยอดด้วยการลงทุนได้โดยไม่ต้องกังวลปัญหาสภาพคล่อง",
+                                            "ด้วยฐาน Net Worth ที่สูง CFP สามารถพิจารณากลยุทธ์ Wealth Preservation และ Estate Planning เพื่อส่งต่อความมั่งคั่งข้ามรุ่น (Intergenerational Wealth) ได้อย่างมีประสิทธิภาพ",
+                                            "สินทรัพย์สุทธิที่เติบโตบ่งบอกถึงฐานะทางการเงินที่มั่งคั่ง เป็นโอกาสให้ใช้ Financial Leverage ผ่าน Unit-Linked ระดับบนเพื่อจัดการภาษีและการส่งมอบมรดกแบบไร้รอยต่อ"
                                         ],
                                         neg: [
-                                            "ฐานทุนสะสมยังน้อยเกินไปเมื่อเทียบกับอายุหรือภาระ อาจต้องพึ่งพาดอกเบี้ยทบต้นอีกยาวนานกว่าจะถึงเป้า", 
-                                            "ขาดกันชนทางการเงิน หากเกิดเหตุไม่คาดฝัน แผนทั้งหมดที่วางไว้อาจพังทลายลงทันที แนะนำให้รีบโอนความเสี่ยง"
+                                            "AI หักคะแนนความพร้อมลง เนื่องจากฐานสินทรัพย์ยังอยู่ในช่วงเริ่มต้นสร้างตัว ควรเน้นการปกป้องความเสี่ยง (Protection) พื้นฐานก่อน", 
+                                            "ระบบจำลองสถานการณ์แล้วพบว่าลูกค้ายังขาด 'กันชนทางการเงิน' จึงส่งสัญญาณให้ FA รีบโอนความเสี่ยงให้บริษัทประกัน",
+                                            "การเติบโตของ Net Worth ในปัจจุบันยังไม่เพียงพอต่อเป้าหมายเกษียณอายุ (Retirement Shortfall) CFP ต้องช่วยจัดพอร์ตการลงทุนที่มีศักยภาพเอาชนะเงินเฟ้อ",
+                                            "สินทรัพย์ตั้งต้นยังมีจำกัด การเลือกสินทรัพย์ที่มีค่าธรรมเนียมสูงจะกัดกินผลตอบแทน จึงแนะนำให้เน้น Protection ควบคู่กับการลงทุนแบบ Passive เพื่อสะสมทุนก่อน"
                                         ]
                                     },
                                     liabilities: {
                                         neg: [
-                                            "เปรียบเสมือน 'รอยรั่ว' ภาระดอกเบี้ยจ่ายกำลังบั่นทอนผลตอบแทนทบต้น FA ควรแนะนำกลยุทธ์รวมหนี้ (Debt Consolidation) เพื่อเพิ่มสภาพคล่อง", 
-                                            "ก้อนหนี้ขนาดใหญ่นี้คือตัวฉุดรั้งสภาพคล่อง FA ควรโฟกัสที่การทำ Debt Restructuring ควบคู่กับการปกป้องสินทรัพย์"
+                                            "AI คำนวณพบว่าภาระหนี้สินปัจจุบันดึงสภาพคล่องไปมาก จึงลดคะแนนลง เพื่อให้ FA โฟกัสการแนะนำแนวทางบริหารหนี้", 
+                                            "ระบบตรวจจับก้อนหนี้ที่ฉุดรั้งสภาพคล่อง จึงชี้เป้าให้ FA เข้าไปช่วยทำ Debt Restructuring ควบคู่กับการปกป้องสินทรัพย์",
+                                            "สัดส่วนหนี้สินในปัจจุบันทำให้พอร์ตมีความเปราะบางสูง CFP ควรเสนอแผนประเมินสภาพคล่องและแนะนำการลดระดับการก่อหนี้ (Deleveraging) อย่างเป็นระบบ",
+                                            "มีแนวโน้มว่าหนี้สินส่วนใหญ่จะไม่เกิดประโยชน์ (Bad Debt) การระงับการรั่วไหลของดอกเบี้ยจ่ายคือกลยุทธ์ทางเลือก (Counterfactual) ที่ให้ผลตอบแทนดีที่สุดในเวลานี้"
                                         ]
                                     },
                                     dti: {
                                         pos: [
-                                            "สภาพคล่องเหลือเฟือ! ลูกค้าปลอดหนี้หรือมีหนี้ต่ำมาก ทำให้มี Free Cash Flow นำไปลงทุนต่อยอดได้อย่างเต็มประสิทธิภาพ", 
-                                            "อัตราส่วนชำระหนี้ปลอดภัย ไร้แรงกดดันทางการเงิน ลูกค้าพร้อมรับฟังแผนการออมระยะยาว"
+                                            "AI ให้คะแนนบวกอย่างมาก เนื่องจากอัตราภาระหนี้อยู่ในเกณฑ์ต่ำ ลูกค้ามีสภาพคล่องเหลือเฟือ พร้อมเปิดรับคำแนะนำการลงทุน", 
+                                            "ระบบยืนยันว่าอัตราส่วนชำระหนี้ปลอดภัย ไร้แรงกดดันทางการเงิน ลูกค้ามีความพร้อมสูงสำหรับแผนการออมระยะยาว",
+                                            "อัตราส่วน DTI ที่ต่ำกว่าเกณฑ์สะท้อนถึงการมี Free Cashflow จำนวนมาก CFP สามารถออกแบบกลยุทธ์ Core-Satellite Portfolio เพื่อเพิ่มผลตอบแทนได้",
+                                            "ความกดดันหนี้สินรายเดือนน้อยมาก เป็นจุดเด่นที่ทำให้เราสามารถนำเสนอผลิตภัณฑ์ที่ล็อกเงินได้นานขึ้น เพื่อรีดประสิทธิภาพทางภาษีและผลตอบแทนในระยะยาว"
                                         ],
                                         neg: [
-                                            "รายจ่ายชำระหนี้ต่อเดือนเบียดเบียนพื้นที่เงินออม ทำให้แผนเดินหน้ายาก และเสี่ยงต่อการสะดุดล้มกลางทาง", 
-                                            "หนี้รัดตัวจนสภาพคล่องติดขัด เป็นความเสี่ยงหลักที่ทำให้คะแนนความสำเร็จของแผนลดฮวบ ต้องระวังการสร้างภาระเพิ่ม"
+                                            "AI หักคะแนนลงอย่างมีนัยสำคัญจากความกดดันของภาระหนี้ (DTI) เพื่อสะท้อนความจริงว่าควรเริ่มต้นด้วยเป้าหมายเล็กๆ", 
+                                            "ระบบคำนวณพบว่าหนี้รัดตัวจนสภาพคล่องติดขัด จึงเตือนให้ FA ระวังการสร้างภาระรายเดือนเพิ่มเติมให้ลูกค้า",
+                                            "DTI ที่สูงระดับนี้เป็นสัญญาณเตือนภัยสีแดงสำหรับนักวางแผนการเงิน ต้องมุ่งเน้นการแก้ปัญหาหนี้เสียและการบริหารดอกเบี้ยบัตรเครดิต ก่อนที่จะคิดถึงเรื่องความมั่งคั่ง",
+                                            "สัดส่วนภาระรายเดือน (DTI) สูงจนน่าเป็นห่วง การรับความเสี่ยงผ่าน Unit-Linked ควรถูกพับไว้ก่อน ให้เสนอเพียง Protection ที่จำเป็นในงบที่จำกัดที่สุดเท่านั้น"
                                         ]
                                     },
                                     exp: {
                                         neg: [
-                                            "รอยรั่วทางการเงินที่กว้างเกินไป ทำให้เกิดค่าเสียโอกาส (Opportunity Cost) มหาศาลในการนำเงินไปทำให้งอกเงย", 
-                                            "ไลฟ์สไตล์ที่สูงเกินสมดุลรายได้ กำลังทำลายพลังของดอกเบี้ยทบต้น ควรแนะนำการตั้งงบประมาณ (Budgeting)"
+                                            "AI จับสัญญาณได้ว่ามีรายจ่ายที่อาจเป็น 'รูรั่ว' จึงลดคะแนนลง เพื่อให้ FA ช่วยลูกค้าตั้งงบประมาณ (Budgeting) อย่างระมัดระวัง", 
+                                            "ระบบประเมินไลฟ์สไตล์เทียบกับรายได้แล้วพบความเสี่ยง จึงส่งสัญญาณเตือนว่าพลังของดอกเบี้ยทบต้นอาจทำงานได้ไม่เต็มที่",
+                                            "จากแบบจำลองกระแสเงินสด ค่าใช้จ่ายคงที่ (Fixed Expenses) สูงเกินสัดส่วนที่ CFP แนะนำ การแนะนำให้ทำ Zero-based budgeting จะเป็นประโยชน์อย่างมาก",
+                                            "สัดส่วนการบริโภค (Consumption Ratio) สูงกว่าปกติ ซึ่งจะกลืนกินพื้นที่ของเงินออม (Savings Ratio) ไปจนหมด ต้องปรับพฤติกรรมด่วนเพื่อหลีกเลี่ยงความยากจนในวัยเกษียณ"
                                         ]
                                     },
                                     dependents: {
                                         neg: [
-                                            "ภาระดูแลผู้อื่นบังคับให้ต้องกระจายความเสี่ยง (Diversify) และเตรียมเงินก้อนฉุกเฉินมากขึ้น ทำให้พอร์ตโตช้าลง", 
-                                            "ยิ่งมีคนข้างหลังเยอะ ยิ่งมีค่าใช้จ่ายแฝงมาก FA ควรเน้นปิดความเสี่ยง (Protection) ให้คนเหล่านี้ก่อนการลงทุน"
+                                            "AI นำจำนวนผู้ในอุปการะมาเป็นตัวหารสภาพคล่อง เพื่อให้ FA ให้ความสำคัญกับการเสนอแผนปกป้องคนข้างหลัง (Protection) เป็นอันดับแรก", 
+                                            "ระบบประเมินค่าใช้จ่ายแฝงจากจำนวนผู้ในอุปการะ จึงลดคะแนนความพร้อมสำหรับการลงทุนที่มีความเสี่ยงสูงลง",
+                                            "ภาระพึ่งพิง (Dependency Ratio) ภายในครอบครัวสูง CFP ต้องประเมินทุนประกันชีวิตขั้นต่ำให้ครอบคลุมค่าใช้จ่ายของคนข้างหลัง (Income Replacement) อย่างเร่งด่วน",
+                                            "มีผู้ที่ต้องดูแลอยู่หลายคน ความเสี่ยงจากการสูญเสียรายได้หลัก (Key Person Risk) จึงรุนแรงมาก การถ่ายโอนความเสี่ยงไปยังบริษัทประกันคือพันธกิจแรกของแผนนี้"
                                         ]
                                     }
                                 };
@@ -917,7 +980,7 @@ window.AIControlCenter = {
                                         reason = pickNLG(xaiNLG[feat]['neg']); 
                                     }
                                 } else {
-                                    reason = "ปัจจัยนี้ส่งผลกระทบต่อคะแนนความสำเร็จของแผนการเงินในระดับที่มีนัยสำคัญตามหลักคณิตศาสตร์ประกันภัย";
+                                    reason = "ระบบคำนวณทางคณิตศาสตร์ประกันภัยพบว่าปัจจัยนี้ส่งผลกระทบต่อโอกาสความสำเร็จอย่างมีนัยสำคัญ";
                                 }
 
                                 explanations.push({
@@ -937,12 +1000,21 @@ window.AIControlCenter = {
                         if (data.dti > 0.4) {
                             let reduceDebt = (data.dti - 0.35) * data.inc;
                             if (reduceDebt > 0) {
-                                plans.push('<div class="bg-emerald-900/20 border border-emerald-500/30 p-3 rounded-lg text-xs mb-3 shadow-sm"><span class="text-emerald-400 font-bold block mb-1">🔼 ทางเลือกเชิงรุก (Positive Action):</span> หากสามารถทำ <b>Debt Consolidation (รวบหนี้)</b> ลดภาระส่งหนี้ต่อเดือนลงได้ ' + formatB(reduceDebt) + ' บาท จะเป็นการปลดล็อกสภาพคล่อง ดันคะแนนความสำเร็จให้พุ่งขึ้นทันทีและเพิ่มกระแสเงินสดส่วนเกิน (Free Cashflow) สำหรับต่อยอดการลงทุน</div>');
+                                plans.push('<div class="bg-emerald-900/20 border border-emerald-500/30 p-3 rounded-lg text-xs mb-3 shadow-sm"><span class="text-emerald-400 font-bold block mb-1">🔼 ทางเลือกเสริมสภาพคล่อง (Advisory Action):</span> หากสามารถทำ <b>Debt Consolidation (รวบหนี้)</b> ลดภาระส่งหนี้ต่อเดือนลงได้ ' + formatB(reduceDebt) + ' บาท จะเป็นการปลดล็อกสภาพคล่อง ดันคะแนนความสำเร็จให้พุ่งขึ้นทันทีและเพิ่มกระแสเงินสดส่วนเกิน (Free Cashflow) สำหรับต่อยอดการลงทุน</div>');
                             }
                         } else {
-                            plans.push('<div class="bg-emerald-900/20 border border-emerald-500/30 p-3 rounded-lg text-xs mb-3 shadow-sm"><span class="text-emerald-400 font-bold block mb-1">🔼 ทางเลือกเชิงรุก (Positive Action):</span> เพียงแค่ตั้งระบบตัดเงินอัตโนมัติ โยกเงิน ' + formatB(data.inc * 0.1) + '/เดือน มาลงทุนแบบประจำ (Dollar Cost Averaging) พลังของดอกเบี้ยทบต้นจะช่วยร่นระยะเวลาบรรลุเป้าหมายทางการเงินให้เร็วขึ้นอย่างชัดเจน</div>');
+                            plans.push('<div class="bg-emerald-900/20 border border-emerald-500/30 p-3 rounded-lg text-xs mb-3 shadow-sm"><span class="text-emerald-400 font-bold block mb-1">🔼 ทางเลือกสร้างวินัยเชิงบวก (Positive Action):</span> เพียงแค่ตั้งระบบตัดเงินอัตโนมัติ โยกเงิน ' + formatB(data.inc * 0.1) + '/เดือน มาลงทุนแบบประจำ (Dollar Cost Averaging) พลังของดอกเบี้ยทบต้นจะช่วยร่นระยะเวลาบรรลุเป้าหมายทางการเงินให้เร็วขึ้นอย่างชัดเจน</div>');
                         }
-                        plans.push('<div class="bg-blue-900/20 border border-blue-500/30 p-3 rounded-lg text-xs mb-3 shadow-sm"><span class="text-blue-400 font-bold block mb-1">⏩ ทางเลือกสายกลาง (Neutral Alternative):</span> การ <b>"ยืดระยะเวลาเป้าหมายออกไป"</b> หรือลดสัดส่วนการลงทุนในสินทรัพย์เสี่ยงสูง จะช่วยรักษาสภาพคล่องในปัจจุบันไว้ได้ โดยที่คะแนนความสำเร็จรวมจะไม่ตกลง เหมาะสำหรับปรับใช้ในช่วงที่เศรษฐกิจมีความผันผวนสูง</div>');
+                        plans.push('<div class="bg-blue-900/20 border border-blue-500/30 p-3 rounded-lg text-xs mb-3 shadow-sm"><span class="text-blue-400 font-bold block mb-1">⏩ ทางเลือกสายกลาง (Flexible Alternative):</span> การ <b>"ยืดระยะเวลาเป้าหมายออกไป"</b> หรือลดสัดส่วนการลงทุนในสินทรัพย์เสี่ยงสูง จะช่วยรักษาสภาพคล่องในปัจจุบันไว้ได้ โดยที่คะแนนความสำเร็จรวมจะไม่ตกลง เหมาะสำหรับปรับใช้ในช่วงที่เศรษฐกิจมีความผันผวนสูง</div>');
+                        
+                        // New CFP Counterfactuals
+                        let potentialTaxSavings = data.inc > 50000 ? (data.inc * 12 * 0.15) : 0;
+                        if (potentialTaxSavings > 0) {
+                            plans.push('<div class="bg-purple-900/20 border border-purple-500/30 p-3 rounded-lg text-xs mb-3 shadow-sm"><span class="text-purple-400 font-bold block mb-1">📈 ทางเลือกด้านภาษี & การจัดสรรสินทรัพย์ (CFP Tax Planning):</span> การใช้สิทธิลดหย่อนภาษีสูงสุดผ่านเครื่องมือการเงินอย่างประกันบำนาญ หรือ SSF/RMF จะช่วยคืนสภาพคล่องกลับมาให้คุณลูกค้าได้อย่างน้อย ' + formatB(potentialTaxSavings * 0.1) + ' บาท/ปี ซึ่งเป็นเงินฟรีที่เรานำมาเพิ่มมูลค่าพอร์ตโดยไม่ต้องหาเงินใหม่ครับ</div>');
+                        }
+                        
+                        plans.push('<div class="bg-indigo-900/20 border border-indigo-500/30 p-3 rounded-lg text-xs mb-3 shadow-sm"><span class="text-indigo-400 font-bold block mb-1">🛡️ ทางเลือกจัดการมรดก (Estate Preservation):</span> หากแปลงสภาพสินทรัพย์ที่ไม่มีสภาพคล่องบางส่วน (Illiquid Assets) มาชำระเบี้ยแบบส่งสั้น (Single หรือ 5 Pay) จะสร้างกองทุนมรดก (Legacy Fund) ที่ส่งมอบความมั่งคั่งได้ทันทีโดยไม่ต้องผ่านกระบวนการจัดการมรดกที่ยืดเยื้อ ซึ่งเป็นเครื่องมือชั้นสูงของ CFP ครับ</div>');
+
                         return plans;
                     },
 
@@ -972,24 +1044,24 @@ window.AIControlCenter = {
 
                         if (gapEmergency > 0) {
                             let prem = data.inc * 0.05 * 12;
-                            products.push({ name: "Emergency Fund Allocation", match: 92, basePlan: "AIA Smart Select (Unit Linked)", rider: "ไม่มี", gapImpact: "ปิดรอยรั่ว Emergency Gap", reason: "ทำหน้าที่เป็นถังพักเงินฉุกเฉิน สภาพคล่องสูง ถอนได้ไม่เจ็บตัว พร้อมโอกาสรับผลตอบแทนที่เอาชนะเงินฝากธนาคารได้ <br><b class='text-emerald-400'>[Trade-off Analysis]:</b> ต้นทุนเสียโอกาส (Opportunity Cost) ต่ำ แลกกับสภาพคล่องและผลตอบแทนที่ยืดหยุ่น เหมาะสำหรับพักเงินเพื่อรอจังหวะลงทุน (Investment Route) เพื่อปกป้องสภาพคล่องหลักจากการถูกดึงไปใช้ผิดประเภท", premium: prem });
+                            products.push({ name: "Emergency Fund Allocation", match: 92, basePlan: "AIA Smart Select (Unit Linked)", rider: "ไม่มี", gapImpact: "เสริมเบาะรองรับยามฉุกเฉิน", reason: "เตรียมเงินก้อนพร้อมใช้ที่ถอนง่าย ไม่เจ็บตัว เพื่อให้ลูกค้าอุ่นใจว่าหากสะดุด จะมีเงินก้อนนี้ดูแลครอบครัวได้ทันที <br><b class='text-emerald-400'>[Trade-off Analysis]:</b> ต้นทุนเสียโอกาส (Opportunity Cost) ต่ำ แลกกับสภาพคล่องและผลตอบแทนที่ยืดหยุ่น เหมาะสำหรับพักเงินเพื่อรอจังหวะลงทุน (Investment Route) เพื่อปกป้องสภาพคล่องหลักจากการถูกดึงไปใช้ผิดประเภท", premium: prem });
                             totalPremiumRec += (prem / 12);
                         }
                         if (gapLife > 0) {
                             let sa = Math.max(100000, gapLife);
                             let prem = data.inc * 0.05 * 12;
-                            products.push({ name: "Life & Debt Protection", match: 95, basePlan: "AIA 20 Pay Life", rider: "ไม่มี", gapImpact: "คุ้มครอง Life/Family Gap " + formatB(sa) + " บาท", reason: "สร้างกำแพงปกป้องความเสี่ยงหนี้สินด้วยทุนชีวิต หากเกิดเหตุไม่คาดฝัน ครอบครัวจะปลอดภัยและไม่รับภาระหนี้ตกทอด <br><b class='text-blue-400'>[Trade-off Analysis]:</b> ยอมจ่ายเบี้ยหลักหมื่น (Fixed Cost) เพื่อปกป้องความมั่งคั่งหลักล้าน (High Leverage Benefit) เป็นการสร้างหลักประกันเพื่อป้องกันการถูกบังคับขายสินทรัพย์ (Forced Liquidation) ในภาวะฉุกเฉิน ซึ่งเป็นหายนะของการลงทุน", premium: prem });
+                            products.push({ name: "Life & Debt Protection", match: 95, basePlan: "AIA 20 Pay Life", rider: "ไม่มี", gapImpact: "ดูแลครอบครัววงเงิน " + formatB(sa) + " บาท", reason: "สร้างความอุ่นใจว่าความพยายามทั้งหมดของลูกค้าจะไม่สูญเปล่า และไม่ทิ้งภาระไว้ให้คนที่รักหากเกิดเหตุไม่คาดฝัน <br><b class='text-blue-400'>[Trade-off Analysis]:</b> ยอมจ่ายเบี้ยหลักหมื่น (Fixed Cost) เพื่อปกป้องความมั่งคั่งหลักล้าน (High Leverage Benefit) เป็นการสร้างหลักประกันเพื่อป้องกันการถูกบังคับขายสินทรัพย์ (Forced Liquidation) ในภาวะฉุกเฉิน ซึ่งเป็นหายนะของการลงทุน", premium: prem });
                             totalPremiumRec += (prem / 12);
                         }
                         if (gapHealth) {
                             let totalHealthPrem = 25000; 
-                            products.push({ name: "Health & CI Protection", match: 88, basePlan: "AIA 20 Pay Life (ทุนขั้นต่ำ)", rider: "AIA Health Happy + CI Plus", gapImpact: "อุดช่องโหว่ค่ารักษาพยาบาลและโรคร้ายแรง", reason: "ปิดหลุมดำค่าใช้จ่ายรักษาโรคร้าย (เฉลี่ย 1-3 ล้านบาท) การโอนความเสี่ยงก้อนนี้ให้บริษัทประกัน คือกุญแจสำคัญที่ช่วยปกป้องความมั่งคั่งไม่ให้ล้มละลาย <br><b class='text-pink-400'>[Trade-off Analysis]:</b> จ่ายเบี้ยคงที่ แลกกับการล็อกเพดานความเสียหายทางการแพทย์แบบ 100% (Unlimited Risk to Fixed Cost) ถือเป็นการลงทุนซื้อ 'เวลาและทางเลือก' ในการรักษา โดยไม่ต้องเบียดเบียนพอร์ตเกษียณอายุ (Retirement Portfolio)", premium: totalHealthPrem });
+                            products.push({ name: "Health & CI Protection", match: 88, basePlan: "AIA 20 Pay Life (ทุนขั้นต่ำ)", rider: "AIA Health Happy + CI Plus", gapImpact: "ปิดความกังวลค่ารักษาพยาบาล", reason: "ยุคนี้ค่ารักษาพยาบาลคือตัวแปรที่ควบคุมยากที่สุด การมีสวัสดิการก้อนนี้จะช่วยล็อกความเสี่ยงให้ลูกค้าไม่ต้องควักเงินเก็บมาจ่ายค่ายา <br><b class='text-pink-400'>[Trade-off Analysis]:</b> จ่ายเบี้ยคงที่ แลกกับการล็อกเพดานความเสียหายทางการแพทย์แบบ 100% (Unlimited Risk to Fixed Cost) ถือเป็นการลงทุนซื้อ 'เวลาและทางเลือก' ในการรักษา โดยไม่ต้องเบียดเบียนพอร์ตเกษียณอายุ (Retirement Portfolio)", premium: totalHealthPrem });
                             totalPremiumRec += (totalHealthPrem / 12);
                         }
                         
                         if (gapLife <= 0 && !gapHealth) {
                             let prem = data.inc * 0.10 * 12;
-                            products.push({ name: "Wealth Accumulation", match: 98, basePlan: "AIA Issara Plus (Unit Linked)", rider: "ไม่มี", gapImpact: "เร่งการเติบโตของสินทรัพย์ (Wealth Optimization)", reason: "ลูกค้ามีความพร้อมด้านสภาพคล่องระดับสูง เหมาะสมอย่างยิ่งกับการหาผลตอบแทนชนะเงินเฟ้อด้วยพอร์ตลงทุนที่ปรับสัดส่วนได้อย่างอิสระ <br><b class='text-cyan-400'>[Trade-off Analysis]:</b> ล็อกเงินสดไว้ระยะยาว (Liquidity Lock) แลกกับโอกาสเติบโตของเงินทุน (Capital Gain) ชนะอัตราเงินเฟ้อ ถือเป็นการ Shift จาก Risk Protection สู่ Wealth Generation อย่างเต็มตัว", premium: prem });
+                            products.push({ name: "Wealth Accumulation", match: 98, basePlan: "AIA Issara Plus (Unit Linked)", rider: "ไม่มี", gapImpact: "เพิ่มโอกาสรับผลตอบแทนระยะยาว", reason: "โครงสร้างความคุ้มครองพื้นฐานของลูกค้าแน่นหนาแล้ว ตอนนี้คือจังหวะเวลาที่เหมาะสมในการให้เงินออมทำงานหนักขึ้นเพื่อเอาชนะเงินเฟ้อ <br><b class='text-cyan-400'>[Trade-off Analysis]:</b> ล็อกเงินสดไว้ระยะยาว (Liquidity Lock) แลกกับโอกาสเติบโตของเงินทุน (Capital Gain) ชนะอัตราเงินเฟ้อ ถือเป็นการ Shift จาก Risk Protection สู่ Wealth Generation อย่างเต็มตัว", premium: prem });
                             totalPremiumRec += (prem / 12);
                         }
 
@@ -1004,19 +1076,19 @@ window.AIControlCenter = {
                         let score = 5;
                         let drivers = [];
                         
-                        if(data.dti > SYS_CONFIG.WARNING_DTI) { score += 40; drivers.push("🚨 <b>ระดับ DTI วิกฤต:</b> ภาระผ่อนชำระหนี้รัดตัวทำให้ความทนทานในการส่งเบี้ยประกันต่ำมาก หากเศรษฐกิจสะดุดเล็กน้อย ลูกค้ามีโอกาสทิ้งกรมธรรม์สูง"); }
-                        else if(data.dti > SYS_CONFIG.SAFE_DTI) { score += 15; drivers.push("⚠️ <b>หนี้เริ่มตึงตัว:</b> ต้องระวังการเสนอเบี้ยประกันที่หนักหรือตึงมือเกินไป อาจกระทบเป้าหมายการเงินอื่นๆ ของลูกค้า"); }
+                        if(data.dti > SYS_CONFIG.WARNING_DTI) { score += 40; drivers.push("🚨 <b>ความท้าทายด้าน DTI:</b> ภาระผ่อนชำระหนี้รัดตัวทำให้ความทนทานในการส่งเบี้ยประกันต่ำมาก หากเศรษฐกิจสะดุดเล็กน้อย ลูกค้ามีโอกาสทิ้งกรมธรรม์สูง"); }
+                        else if(data.dti > SYS_CONFIG.SAFE_DTI) { score += 15; drivers.push("⚠️ <b>ข้อสังเกตภาระหนี้:</b> ต้องระวังการเสนอเบี้ยประกันที่หนักหรือตึงมือเกินไป อาจกระทบเป้าหมายการเงินอื่นๆ ของลูกค้า"); }
 
-                        if(data.inc < 30000) { score += 20; drivers.push("⚠️ <b>สภาพคล่องเปราะบาง:</b> รายได้ยังไม่สูงพอ โอกาสที่กรมธรรม์จะสะดุดจากรายจ่ายฉุกเฉินมีค่อนข้างสูง"); }
-                        if(data.exp > data.inc && data.inc > 0) { score += 30; drivers.push("🔥 <b>กระแสเงินสดตึงตัว:</b> หากเพิ่มภาระเบี้ยประกันในเวลานี้ มีความเสี่ยงสูงที่ลูกค้าจะทิ้งกรมธรรม์กลางทาง ควรเน้นแก้ปัญหาสภาพคล่องก่อน"); }
+                        if(data.inc < 30000) { score += 20; drivers.push("🌱 <b>สเต็ปเริ่มต้น:</b> รายได้ยังไม่สูงพอ โอกาสที่กรมธรรม์จะสะดุดจากรายจ่ายฉุกเฉินมีค่อนข้างสูง"); }
+                        if(data.exp > data.inc && data.inc > 0) { score += 30; drivers.push("🔥 <b>สภาพคล่องเป็นเรื่องหลัก:</b> หากเพิ่มภาระเบี้ยประกันในเวลานี้ มีความเสี่ยงสูงที่ลูกค้าจะทิ้งกรมธรรม์กลางทาง ควรเน้นแก้ปัญุนสภาพคล่องก่อน"); }
 
                         if(data.badDebtRatio > 0.5 && data.liabilities > 0) {
-                            score += 25; drivers.push("🧨 <b>หนี้พิษ (Toxic Debt):</b> โครงสร้างหนี้ส่วนใหญ่เป็น 'หนี้บริโภคดอกเบี้ยสูง' (Bad Debt) โอกาสผิดนัดชำระเบี้ยประกันสูงมาก ควรโฟกัส Debt Management ก่อน");
+                            score += 25; drivers.push("💡 <b>ภาระหนี้ระยะสั้น:</b> โครงสร้างหนี้ส่วนใหญ่เป็น 'หนี้บริโภคดอกเบี้ยสูง' (Bad Debt) โอกาสผิดนัดชำระเบี้ยประกันสูงมาก ควรโฟกัส Debt Management ก่อน");
                         } else if (data.liabilities > 0 && data.badDebtRatio <= 0.2) {
-                            score -= 10; drivers.push("✅ <b>หนี้มีคุณภาพ:</b> โครงสร้างหนี้ส่วนใหญ่เป็น 'หนี้ดี' (สินเชื่อบ้าน/ธุรกิจเพื่อการเติบโต) สะท้อนถึงวินัยทางการเงินที่ดีเยี่ยม");
+                            score -= 10; drivers.push("✅ <b>เครดิตและวินัยดีเยี่ยม:</b> โครงสร้างหนี้ส่วนใหญ่เป็น 'หนี้ดี' (สินเชื่อบ้าน/ธุรกิจเพื่อการเติบโต) สะท้อนถึงวินัยทางการเงินที่ดีเยี่ยม");
                         }
 
-                        if(score <= 15) drivers.push("🌟 <b>พฤติกรรมมั่นคง:</b> โครงสร้าง Cashflow หนาแน่น การรักษาอัตราความคงอยู่ของกรมธรรม์ (Persistency) มีความแน่นอนสูง เหมาะสมกับการวางแผน Wealth ทุกรูปแบบ");
+                        if(score <= 15) drivers.push("🌟 <b>ความมั่นคงสูง:</b> โครงสร้าง Cashflow หนาแน่น การรักษาอัตราความคงอยู่ของกรมธรรม์ (Persistency) มีความแน่นอนสูง เหมาะสมกับการวางแผน Wealth ทุกรูปแบบ");
 
                         return { score: Math.min(99, Math.max(1, score)), drivers: drivers };
                     },
@@ -1047,6 +1119,18 @@ window.AIControlCenter = {
                                 let dist = Math.sqrt(sum);
                                 if (dist < minDist) { minDist = dist; closest = c; tVec = cent; }
                             }
+                            
+                            // 🌟 [TRUE HYBRID AI BRIDGE] เรียกใช้ JSON Rule Engine ของจริง
+                            try {
+                                if (window.opener && typeof window.opener.classifyUserKMeans === 'function') {
+                                    let truePersona = window.opener.classifyUserKMeans(
+                                        data.age, data.inc, data.nw, data.risk, data.dti, data.recency, data.frequency, data.discipline, data.dependents
+                                    );
+                                    termLog("📊 Executed True Decision Tree Rules.", "highlight");
+                                    return { persona: truePersona, clientVector: norm, centroidVector: tVec };
+                                }
+                            } catch(e) {}
+
                             return { persona: closest, clientVector: norm, centroidVector: tVec };
                         }
                     },
@@ -1056,24 +1140,44 @@ window.AIControlCenter = {
                         let discount = 0; let cap = 100;
 
                         if (features.exp > features.inc && features.inc > 0) {
-                            cap = 30; auditTrail.push('<div class="flex justify-between text-rose-500 border-b border-slate-800 pb-2 mb-2"><span><b>[CRITICAL CAP]</b> กระแสเงินสดติดลบ (รายจ่ายสูงกว่ารายได้) ซึ่งตามหลักการเงินถือเป็นภาวะล้มละลายทางสภาพคล่อง</span><span class="font-bold whitespace-nowrap ml-2">Max 30%</span></div>');
-                        }
+                            let monthlyDeficit = features.exp - features.inc; // ยอดติดลบต่อเดือน
+                            let liquidBuffer = features.liquidAssets || 0; // เงินสำรองที่มี
+                            let survivalMonths = liquidBuffer > 0 ? (liquidBuffer / monthlyDeficit) : 0; // อยู่รอดได้กี่เดือน
+
+                            if (survivalMonths < 3) {
+                                // อันตรายมาก: เงินสำรองจะหมดใน 3 เดือน (สมควรโดน Cap ที่ 30%)
+                                cap = 30; 
+                                auditTrail.push('<div class="flex justify-between text-rose-500 border-b border-slate-800 pb-2 mb-2"><span><b class="uppercase text-rose-400">[AI Logic: Critical Burn Rate]</b> กระแสเงินสดติดลบ และเงินสำรองจะหมดในไม่ถึง 3 เดือน ➡️ <b>AI Decision:</b> จำกัดคะแนนไม่เกิน 30% วิกฤตสภาพคล่องขั้นรุนแรง</span><span class="font-bold ml-2">Max 30%</span></div>');
+                            } else if (survivalMonths < 12) {
+                                // เฝ้าระวัง: เงินสำรองจะหมดใน 1 ปี
+                                cap = 55;
+                                discount += 20;
+                                auditTrail.push('<div class="flex justify-between text-orange-400 border-b border-slate-800 pb-2 mb-2"><span><b class="uppercase text-orange-300">[AI Logic: High Burn Rate]</b> กระแสเงินสดติดลบ แม้มีเงินสำรองแต่จะหมดภายในปีนี้ ➡️ <b>AI Decision:</b> หักคะแนนอย่างหนักเพื่อกระตุ้นให้รัดเข็มขัด</span><span class="font-bold ml-2">-20%</span></div>');
+                            } else {
+                                // กรณี UHNW: เงินสำรองเยอะมาก อยู่ได้เป็นปีๆ แบบเคสคุณพอร์ช
+                                discount += 5;
+                                auditTrail.push('<div class="flex justify-between text-yellow-400 border-b border-slate-800 pb-2 mb-2"><span><b class="uppercase text-yellow-300">[AI Logic: Safe Burn Rate]</b> กระแสเงินสดติดลบ แต่มีสินทรัพย์สภาพคล่องหนาแน่นรองรับได้เกิน 1 ปี ➡️ <b>AI Decision:</b> ปรับลดคะแนนเล็กน้อยเป็นเชิงสัญลักษณ์ ให้ความสำคัญกับ Asset Reallocation มากกว่าการลดรายจ่าย</span><span class="font-bold ml-2">-5%</span></div>');
+                            }
+                        } 
                         else if (features.dti >= SYS_CONFIG.WARNING_DTI) {
-                            cap = 45; auditTrail.push('<div class="flex justify-between text-rose-400 border-b border-slate-800 pb-2 mb-2"><span><b>[HARD CAP]</b> หนี้สินวิกฤต (DTI > 60%) โครงสร้างการเงินเปราะบาง เสี่ยงต่อการล้มละลายหากเกิดเหตุฉุกเฉิน</span><span class="font-bold whitespace-nowrap ml-2">Max 45%</span></div>');
+                            cap = 45; 
+                            auditTrail.push('<div class="flex justify-between text-orange-400 border-b border-slate-800 pb-2 mb-2"><span><b class="uppercase text-orange-300">[AI Logic: Hard Cap]</b> หนี้สินตึงตัว...</span><span class="font-bold ml-2">Max 45%</span></div>');
                         } else if (features.dti >= SYS_CONFIG.SAFE_DTI) {
-                            discount += 15; auditTrail.push('<div class="flex justify-between text-orange-400 border-b border-slate-800 pb-2 mb-2"><span><b>[PENALTY]</b> ภาระหนี้สินอยู่ในระดับเตือนภัย ระบบได้หักลบคะแนนเผื่อความผันผวนของดอกเบี้ยและรายจ่ายแล้ว</span><span class="font-bold whitespace-nowrap ml-2">-15%</span></div>');
+                            discount += 15; 
+                            auditTrail.push('<div class="flex justify-between text-yellow-400 border-b border-slate-800 pb-2 mb-2"><span><b class="uppercase text-yellow-300">[AI Logic: Adjustment]</b> ประเมินเผื่อความผันผวน...</span><span class="font-bold ml-2">-15%</span></div>');
                         } else {
-                            auditTrail.push('<div class="flex justify-between text-emerald-400 border-b border-slate-800 pb-2 mb-2"><span><b>[PASS]</b> เกณฑ์หนี้สินสุขภาพดี (DTI Safe) โครงสร้าง Cashflow แข็งแกร่ง</span><span class="font-bold whitespace-nowrap ml-2">0%</span></div>');
+                            auditTrail.push('<div class="flex justify-between text-emerald-400 border-b border-slate-800 pb-2 mb-2"><span><b class="uppercase text-emerald-300">[AI Logic: Healthy]</b> สัดส่วนหนี้ปลอดภัย ไร้ข้อกังวล ➡️ <b>AI Decision:</b> คงคะแนนไว้ตามเดิม</span><span class="font-bold whitespace-nowrap ml-2">0%</span></div>');
                         }
 
                         if (features.dependents > 2) {
-                            discount += 5; auditTrail.push('<div class="flex justify-between text-orange-400 border-b border-slate-800 pb-2 mb-2"><span><b>[PENALTY]</b> มีภาระดูแลครอบครัวใหญ่ ทำให้สภาพคล่องส่วนเกินลดลงและแผนการเงินมีโอกาสสะดุดง่ายขึ้น</span><span class="font-bold whitespace-nowrap ml-2">-5%</span></div>');
+                            discount += 5; 
+                            auditTrail.push('<div class="flex justify-between text-yellow-400 border-b border-slate-800 pb-2 mb-2"><span><b class="uppercase text-yellow-300">[AI Logic: Care Factor]</b> มีบุคคลที่ต้องดูแลหลายคน ➡️ <b>AI Decision:</b> หักคะแนนเผื่อสำรองค่าใช้จ่ายครอบครัวฉุกเฉิน (Income Protection Gap)</span><span class="font-bold whitespace-nowrap ml-2">-5%</span></div>');
                         }
 
                         let finalScore = mlScore - discount;
                         finalScore = Math.max(1.0, Math.min(finalScore, cap));
 
-                        auditTrail.push('<div class="mt-3 text-indigo-300 text-center italic text-xs leading-relaxed bg-indigo-900/20 p-2 rounded">"การปรับจูนเสร็จสิ้น! ระบบได้หักลบจุดบอดของแบบจำลอง Neural Network ด้วย Financial Expert Rules เพื่อสะท้อนหลักเศรษฐศาสตร์พฤติกรรม (Behavioral Economics) ทำให้การวิเคราะห์มีความแม่นยำและอิงตามโลกความเป็นจริงได้สมบูรณ์แบบที่สุด"</div>');
+                        auditTrail.push('<div class="mt-3 text-indigo-300 text-center italic text-xs leading-relaxed bg-indigo-900/20 p-2 rounded">"สรุปกระบวนการคิดแบบ CFP: ระบบ AI ได้นำคะแนนดิบ (ML Score) มาผ่านตัวกรอง (Rule-based Filter) เพื่อปรับคะแนนให้สอดคล้องกับจังหวะชีวิตจริง (Reality-Adjusted) ทำให้เราสามารถให้คำปรึกษาองค์รวม (Holistic Advisory) ที่จับต้องได้ และมีความเข้าอกเข้าใจมากที่สุดครับ"</div>');
 
                         return { finalScore: finalScore, discount: discount, auditTrail: auditTrail };
                     },
@@ -1084,17 +1188,17 @@ window.AIControlCenter = {
                         let tone = finalScore > 80 ? "positive" : (finalScore < 50 ? "critical" : "warning");
 
                         let p1 = '<div class="border-b border-fuchsia-500/30 pb-2 mb-2">' +
-                                 '<b class="text-fuchsia-300 text-sm">📊 1. บทสรุปสถานะลูกค้า (Client Status):</b><br>' +
-                                 '<span class="text-slate-300">จัดอยู่ในกลุ่ม <b>"' + p + '"</b> มีโอกาสสำเร็จภาพรวมที่ <b>' + finalScore.toFixed(1) + '%</b></span><br>';
+                                 '<b class="text-fuchsia-300 text-sm">📊 1. บทสรุปสถานะลูกค้าแบบองค์รวม (Holistic Client Status):</b><br>' +
+                                 '<span class="text-slate-300">จัดอยู่ในกลุ่ม <b>"' + p + '"</b> มีโอกาสบรรลุเป้าหมายการเงินภาพรวมที่ <b>' + finalScore.toFixed(1) + '%</b></span><br>';
                                  
-                        if (tone === "critical") p1 += '<span class="text-rose-400 font-bold mt-1 block">🚨 โอกาสในการเข้าพบ (Strategic Approach): ลูกค้ามีโครงสร้างสภาพคล่องที่เปราะบางและท้าทาย แนะนำให้เข้าพบในฐานะที่ปรึกษาเพื่อ "ผ่าตัดโครงสร้างหนี้ (Debt Restructuring)" หรือวางแผนรัดเข็มขัด (Budgeting) ควรชะลอการเสนอพอร์ตการลงทุนที่มีความเสี่ยงสูงออกไปก่อนจนกว่ากระแสเงินสดจะนิ่ง</span>';
-                        else if (tone === "positive") p1 += '<span class="text-emerald-400 font-bold mt-1 block">🌟 โอกาสในการเข้าพบ (Strategic Approach): ฐานะการเงินแข็งแกร่งมาก พร้อมสำหรับการพูดคุยเรื่องการจัดพอร์ตเพื่อปกป้องและต่อยอดความมั่งคั่ง (Wealth Accumulation & Legacy Planning) รวมถึงการส่งต่อมรดกให้เต็มศักยภาพสูงสุด</span>';
-                        else p1 += '<span class="text-orange-400 font-bold mt-1 block">⚠️ โอกาสในการเข้าพบ (Strategic Approach): สถานะโดยรวมอยู่ในเกณฑ์ดี แต่อาจมีรอยรั่วที่ต้องช่วยลูกค้าอุดเพื่อป้องกันแผนสะดุดในระยะยาว (Risk Mitigation) แนะนำให้เจาะประเด็นเรื่องค่าใช้จ่ายแฝงหรือประกันที่ยังไม่ครอบคลุม</span>';
+                        if (tone === "critical") p1 += '<span class="text-rose-400 font-bold mt-1 block">🤝 แนวทางการเข้าพบระดับ CFP (Advisory Strategy): แนะนำให้เข้าพบในฐานะ "ที่ปรึกษาองค์รวม" รับฟังปัญหาและช่วยวางแผนโครงสร้างหนี้ (Debt Mgt) หรือเสนอให้เริ่มออมในจำนวนที่สบายใจที่สุด (Quick Win) พร้อมแนะนำกลยุทธ์ภาษีเบื้องต้นเพื่อสร้างกำลังใจ แทนที่จะกดดันด้วยพอร์ตประกันขนาดใหญ่ครับ</span>';
+                        else if (tone === "positive") p1 += '<span class="text-emerald-400 font-bold mt-1 block">🌟 แนวทางการเข้าพบระดับ CFP (Advisory Strategy): ลูกค้ามีความพร้อมเต็มที่ เหมาะมากที่จะพูดคุยถึงวิสัยทัศน์ระยะยาว การจัดพอร์ตแบบ Asset Allocation, การวางแผนลดหย่อนภาษีขั้นสูง, หรือการส่งต่อมรดก (Estate Planning) ซึ่งเปิดโอกาสให้โชว์ความเป็นมืออาชีพแบบครบวงจรครับ</span>';
+                        else p1 += '<span class="text-orange-400 font-bold mt-1 block">💡 แนวทางการเข้าพบระดับ CFP (Advisory Strategy): ภาพรวมไปได้ดี แต่อาจมีรายละเอียดด้านสภาพคล่องหรือภาษีที่ที่ปรึกษาการเงินสามารถช่วยเติมเต็มได้ (เช่น ปิดช่องโหว่ความเสี่ยงสุขภาพ หรือลดค่าใช้จ่ายแฝง) เพื่อให้แผนการเงินของลูกค้าทนทานต่อสภาวะเศรษฐกิจมากขึ้นครับ</span>';
                         
-                        p1 += '<span class="text-indigo-300 mt-2 pt-2 border-t border-indigo-500/30 block text-[11px] leading-relaxed"><b>🔍 วิเคราะห์ภาพรวมการเงิน (Financial Health Overview):</b> ระบบประเมินจากกระแสเงินสด (Cashflow), สินทรัพย์สภาพคล่อง (Liquidity), และสัดส่วนภาระหนี้สิน (Leverage) พบว่าลูกค้ามีมูลค่าความมั่งคั่งสุทธิ ' + formatB(data.nw) + ' บาท โครงสร้างรายรับเทียบรายจ่ายแสดงให้เห็นถึงเสถียรภาพในระดับ ' + tone.toUpperCase() + ' คะแนน ' + finalScore.toFixed(1) + '% นี้สะท้อนความน่าจะเป็นที่ลูกค้าจะบรรลุเป้าหมายการเงินระยะยาวโดยไม่เกิดภาวะล้มละลาย (Insolvency) กลางทาง แนะนำให้ FA เข้าพบเพื่อชี้แจงสถานะปัจจุบัน และเสนอโซลูชันแบบ Tailor-made ที่เหมาะสมกับระดับความเสี่ยงที่วิเคราะห์ได้จาก 9D Persona ครับ</span>';
+                        p1 += '<span class="text-indigo-300 mt-2 pt-2 border-t border-indigo-500/30 block text-[11px] leading-relaxed"><b>🔍 บริบทการเงิน (Contextual Recap):</b> จากโครงสร้างรายได้ ทรัพย์สิน และภาษี ระบบมองเห็นศักยภาพการเติบโตที่น่าสนใจ แต่ก็ยังมีจุดแข็งจุดอ่อนตามวัย คะแนน ' + finalScore.toFixed(1) + '% สะท้อนความพร้อมในวันนี้ ซึ่ง CFP จะเป็นกุญแจสำคัญในการนำทางพาลูกค้าขยับเข้าใกล้ 100% ด้วยการออกแบบเครื่องมือการเงินที่ "พอดีตัว" อย่างมืออาชีพครับ</span>';
                         p1 += '</div>';
 
-                        let p3 = '<div><b class="text-fuchsia-300 text-sm">💼 2. แผนที่ควรเสนอเป็นแนวทาง (Suggested Focus):</b><br><ul class="list-disc pl-5 mt-1 text-slate-300 space-y-1">';
+                        let p3 = '<div><b class="text-fuchsia-300 text-sm">💼 2. แผนที่ควรเสนอเป็นแนวทาง (Suggested Portfolio Focus):</b><br><ul class="list-disc pl-5 mt-1 text-slate-300 space-y-1">';
                         results.rec.products.forEach(prod => {
                             p3 += '<li><b>' + prod.name + ':</b> ' + prod.reason + '</li>';
                         });
@@ -1105,7 +1209,7 @@ window.AIControlCenter = {
                 };
 
                 // ==========================================
-                // 🧪 12. FA Sandbox Simulator Functions
+                // 🧪 12. CFP Sandbox Simulator Functions
                 // ==========================================
                 window.initSandboxDropdowns = function() {
                     const baseSelect = document.getElementById('sandbox_base_plan');
@@ -1214,17 +1318,17 @@ window.AIControlCenter = {
                     let tradeOffHtml = '';
                     
                     if (premiumRatio > 20) {
-                        verdictHtml = '<span class="text-rose-400 block mb-1">🚨 <b>สภาพคล่องตึงเครียด (High Premium Burden):</b></span> อัตราส่วนชำระเบี้ยประกันต่อรายได้ (Premium to Income Ratio: PIR) พุ่งไปถึง ' + premiumRatio.toFixed(1) + '% ซึ่งเกินเกณฑ์มาตรฐานปลอดภัยที่ 10-15% อาจส่งผลกระทบต่อค่าใช้จ่ายในชีวิตประจำวันและเกิดปัญหาสภาพคล่องช็อต (Liquidity Crunch) แนะนำให้ปรับโครงสร้างพอร์ตด่วน';
-                        tradeOffHtml = '<br><br><span class="text-rose-300">⚖️ <b>Trade-off Analysis & Action:</b> <span class="text-slate-300">ต้นทุน (Cost) สูงเกินไปจนบีบคั้นสภาพคล่องปัจจุบัน (Negative Cost/Benefit) ซึ่งขัดหลักการบริหารความเสี่ยง FA ต้อง Take Action เชิงรุกโดยการลดทุนประกัน (SA) หรือถอด Rider ที่ทับซ้อนออก เพื่อดึงพอร์ตกลับมาสู่โซนปลอดภัย ป้องกันการบังคับเวนคืนกรมธรรม์ในอนาคต</span></span>';
+                        verdictHtml = '<span class="text-rose-400 block mb-1">🚨 <b>ความท้าทายด้านสภาพคล่อง (High Premium Burden):</b></span> อัตราส่วนชำระเบี้ยประกันต่อรายได้ (Premium to Income Ratio: PIR) พุ่งไปถึง ' + premiumRatio.toFixed(1) + '% ซึ่งเกินเกณฑ์มาตรฐานปลอดภัยที่ 10-15% อาจส่งผลกระทบต่อค่าใช้จ่ายในชีวิตประจำวันและเกิดปัญหาสภาพคล่องช็อต (Liquidity Crunch) แนะนำให้ปรับโครงสร้างพอร์ตด่วน';
+                        tradeOffHtml = '<br><br><span class="text-rose-300">⚖️ <b>มุมมองที่ปรึกษา (Advisory Action):</b> <span class="text-slate-300">ต้นทุน (Cost) สูงเกินไปจนบีบคั้นสภาพคล่องปัจจุบัน (Negative Cost/Benefit) ซึ่งขัดหลักการบริหารความเสี่ยง CFP ต้อง Take Action เชิงรุกโดยการลดทุนประกัน (SA) หรือถอด Rider ที่ทับซ้อนออก เพื่อดึงพอร์ตกลับมาสู่โซนปลอดภัย ป้องกันการบังคับเวนคืนกรมธรรม์ในอนาคต</span></span>';
                     } else if (premiumRatio > 15) {
-                        verdictHtml = '<span class="text-orange-400 block mb-1">⚠️ <b>ข้อควรระวัง (Cashflow Warning):</b></span> อัตราส่วนชำระเบี้ยประกันต่อรายได้ (PIR) อยู่ที่ ' + premiumRatio.toFixed(1) + '% เริ่มค่อนข้างตึงมือตามสัดส่วนการเงินส่วนบุคคล FA ควรวิเคราะห์กระแสเงินสดสำรอง (Emergency Fund) เชิงลึกให้แน่ใจก่อนการประทับตรานำเสนอ';
-                        tradeOffHtml = '<br><br><span class="text-orange-300">⚖️ <b>Trade-off Analysis & Action:</b> <span class="text-slate-300">แม้จะได้ผลประโยชน์ (Benefit) สูงในการอุดรอยรั่วที่กว้างขึ้น แต่ต้องแลกมากับต้นทุนคงที่ (Fixed Cost) ที่ค่อนข้างหนัก FA ควรถามเพื่อดึง Commitment จากลูกค้า และให้ฉุกคิดว่า หากขาดรายได้ 3-6 เดือน จะยังรักษาความคุ้มครองนี้ไว้ได้หรือไม่? หากยังไม่พร้อม ควรพิจารณาปรับลดแผนลงก่อน</span></span>';
+                        verdictHtml = '<span class="text-orange-400 block mb-1">⚠️ <b>ข้อควรระวัง (Gentle Reminder):</b></span> อัตราส่วนชำระเบี้ยประกันต่อรายได้ (PIR) อยู่ที่ ' + premiumRatio.toFixed(1) + '% เริ่มค่อนข้างตึงมือตามสัดส่วนการเงินส่วนบุคคล CFP ควรวิเคราะห์กระแสเงินสดสำรอง (Emergency Fund) เชิงลึกให้แน่ใจก่อนการประทับตรานำเสนอ';
+                        tradeOffHtml = '<br><br><span class="text-orange-300">⚖️ <b>มุมมองที่ปรึกษา (Advisory Action):</b> <span class="text-slate-300">แม้จะได้ผลประโยชน์ (Benefit) สูงในการอุดรอยรั่วที่กว้างขึ้น แต่ต้องแลกมากับต้นทุนคงที่ (Fixed Cost) ที่ค่อนข้างหนัก CFP ควรถามเพื่อดึง Commitment จากลูกค้า และให้ฉุกคิดว่า หากขาดรายได้ 3-6 เดือน จะยังรักษาความคุ้มครองนี้ไว้ได้หรือไม่? หากยังไม่พร้อม ควรพิจารณาปรับลดแผนลงก่อน</span></span>';
                     } else if (gapLifeClosed > 0 || gapHealthClosed) {
-                        verdictHtml = '<span class="text-emerald-400 block mb-1">✅ <b>ความคุ้มค่าระดับสูง (Optimal Cost/Benefit):</b></span> อัตราส่วนชำระเบี้ยประกันต่อรายได้ (PIR) อยู่ที่ ' + premiumRatio.toFixed(1) + '% ซึ่งเป็นสัดส่วนที่ชาญฉลาด สามารถถ่ายโอนความเสี่ยงก้อนใหญ่ (Risk Transfer) ให้บริษัทประกันได้สำเร็จ ถือเป็นการจัดสรรเงิน (Good Expense) ที่มีประสิทธิภาพยอดเยี่ยมตามมาตรฐานสากล';
-                        tradeOffHtml = '<br><br><span class="text-emerald-300">⚖️ <b>Trade-off Analysis & Action:</b> <span class="text-slate-300">การจัดสรรกระแสเงินสดปัจจุบันในระดับที่เหมาะสม (Low Cost) แลกกับการอุดรอยรั่วทางการเงินระดับล้านบาท และปกป้องเงินเก็บทั้งชีวิต (High Benefit) ถือเป็นจุดสมดุล (Sweet Spot) ที่คุ้มค่าที่สุด FA สามารถมั่นใจในการนำเสนอแผนนี้ให้ลูกค้าพิจารณาตัดสินใจ (Execute) ได้ทันที</span></span>';
+                        verdictHtml = '<span class="text-emerald-400 block mb-1">✅ <b>ความอุ่นใจที่คุ้มค่า (Optimal Balance):</b></span> อัตราส่วนชำระเบี้ยประกันต่อรายได้ (PIR) อยู่ที่ ' + premiumRatio.toFixed(1) + '% ซึ่งเป็นสัดส่วนที่ชาญฉลาด สามารถถ่ายโอนความเสี่ยงก้อนใหญ่ (Risk Transfer) ให้บริษัทประกันได้สำเร็จ ถือเป็นการจัดสรรเงิน (Good Expense) ที่มีประสิทธิภาพยอดเยี่ยมตามมาตรฐานการวางแผนการเงิน';
+                        tradeOffHtml = '<br><br><span class="text-emerald-300">⚖️ <b>มุมมองที่ปรึกษา (Advisory Action):</b> <span class="text-slate-300">การจัดสรรกระแสเงินสดปัจจุบันในระดับที่เหมาะสม (Low Cost) แลกกับการอุดรอยรั่วทางการเงินระดับล้านบาท และปกป้องเงินเก็บทั้งชีวิต (High Benefit) ถือเป็นจุดสมดุล (Sweet Spot) ที่คุ้มค่าที่สุด CFP สามารถมั่นใจในการนำเสนอแผนนี้ให้ลูกค้าพิจารณาตัดสินใจ (Execute) ได้ทันที</span></span>';
                     } else {
-                        verdictHtml = '<span class="text-blue-400 block mb-1">ℹ️ <b>แผนสะสมความมั่งคั่ง (Wealth Building):</b></span> สัดส่วนเบี้ย ' + premiumRatio.toFixed(1) + '% ของรายได้ อยู่ในเกณฑ์ที่ยอดเยี่ยม ลูกค้าสามารถจ่ายได้สบายและมีเสถียรภาพ เหมาะสำหรับการต่อยอด Asset Allocation หรือสร้างกองทุนเกษียณอายุระยะยาว';
-                        tradeOffHtml = '<br><br><span class="text-blue-300">⚖️ <b>Trade-off Analysis & Action:</b> <span class="text-slate-300">การเจียดสภาพคล่องปัจจุบัน (Cost) เพื่อแลกกับโอกาสรับผลตอบแทนและเป้าหมายในอนาคต (Future Benefit) เป็นการเดินเกมสู่ความมั่งคั่ง FA ควรชี้ชวนให้เห็นถึงพลังของดอกเบี้ยทบต้น (Compound Interest) และตรวจสอบให้แน่ใจอีกครั้งว่าฐานรากปิระมิดการเงินด้านความคุ้มครองของลูกค้านั้นแข็งแกร่งเพียงพอแล้วก่อนขยับมาโฟกัสที่ Wealth Portfolio</span></span>';
+                        verdictHtml = '<span class="text-blue-400 block mb-1">ℹ️ <b>แผนสะสมความสุขและมรดก (Wealth & Legacy):</b></span> สัดส่วนเบี้ย ' + premiumRatio.toFixed(1) + '% ของรายได้ อยู่ในเกณฑ์ที่ยอดเยี่ยม ลูกค้าสามารถจ่ายได้สบายและมีเสถียรภาพ เหมาะสำหรับการต่อยอด Asset Allocation, Tax Planning หรือสร้างกองทุนเกษียณอายุระยะยาว';
+                        tradeOffHtml = '<br><br><span class="text-blue-300">⚖️ <b>มุมมองที่ปรึกษา (Advisory Action):</b> <span class="text-slate-300">การเจียดสภาพคล่องปัจจุบัน (Cost) เพื่อแลกกับโอกาสรับผลตอบแทนและสิทธิประโยชน์ทางภาษีในอนาคต (Future Benefit) เป็นการเดินเกมสู่ความมั่งคั่ง CFP ควรชี้ชวนให้เห็นถึงพลังของดอกเบี้ยทบต้น (Compound Interest) และตรวจสอบให้แน่ใจอีกครั้งว่าฐานรากปิระมิดการเงินด้านความคุ้มครองของลูกค้านั้นแข็งแกร่งเพียงพอแล้วก่อนขยับมาโฟกัสที่ Wealth Portfolio</span></span>';
                     }
                     
                     verdictHtml += tradeOffHtml;
@@ -1234,18 +1338,18 @@ window.AIControlCenter = {
                         gapStatusHtml += '<div class="text-[11px] text-blue-300 mt-1.5 flex items-start gap-1"><span>🛡️</span><span><b>Life Gap:</b> ปิดความเสี่ยงได้ <b>' + coverageLifePercent.toFixed(1) + '%</b> ของความเสี่ยงทั้งหมด สร้างหลักประกันมรดกและปิดตายความเสี่ยงหนี้ตกทอดได้ทันที <b>' + formatB(gapLifeClosed) + '</b> บาท</span></div>';
                     }
                     if (gapHealthClosed) {
-                        gapStatusHtml += '<div class="text-[11px] text-pink-300 mt-1 flex items-start gap-1"><span>🏥</span><span><b>Health Gap:</b> ความเสี่ยงด้านค่ารักษาพยาบาล/โรคร้ายแรง ถูกโอนย้ายไปยังบริษัทประกัน <b>100%</b> (Safe Zone) ตัดปัญหาล้มละลายจากค่ารักษาพยาบาล</span></div>';
+                        gapStatusHtml += '<div class="text-[11px] text-pink-300 mt-1 flex items-start gap-1"><span>🏥</span><span><b>Health Gap:</b> ความเสี่ยงด้านค่ารักษาพยาบาล/โรคร้ายแรง ถูกโอนย้ายไปยังบริษัทประกัน <b>100%</b> (Safe Zone) ตัดปัญหาล้มละลายจากค่ารักษาพยาบาล และรักษาสภาพคล่องไว้ได้</span></div>';
                     }
 
                     // 5. Compile Master Report (Add Deep FA Talking Points)
                     let faTalkingPoints = '<div class="mt-4 bg-indigo-900/30 p-3 rounded-lg border border-indigo-500/50 shadow-sm">' +
-                        '<span class="text-[10px] text-indigo-400 font-bold uppercase tracking-wider block mb-1.5">💬 4. FA Talking Points & Objection Handling (บทสนทนา & การตอบข้อโต้แย้ง)</span>' +
+                        '<span class="text-[10px] text-indigo-400 font-bold uppercase tracking-wider block mb-1.5">💬 4. CFP Talking Points & Objection Handling (บทสนทนา & การตอบข้อโต้แย้งระดับองค์รวม)</span>' +
                         '<ul class="list-disc pl-4 text-[11px] text-slate-300 space-y-2 leading-relaxed">' +
-                            '<li><b>ภาพรวมการเงิน (Financial Overview):</b> "ตอนนี้โครงสร้างกระแสเงินสดและหนี้สินของคุณลูกค้าอยู่ในเกณฑ์ที่บริหารจัดการได้ดีครับ แต่จากข้อมูลเชิงลึก ระบบพบว่าเรายังมีช่องโหว่ (Risk Gap) ในส่วนของ..."</li>' +
-                            '<li><b>การปิดความเสี่ยง (Risk Gap Action):</b> "หากเกิดเหตุไม่คาดฝัน ครอบครัวจะต้องรับภาระความเสี่ยงถึง ' + formatB(initialLifeGap) + ' บาท แต่แผนที่เราจัดสรรนี้ ใช้เงินเพียง ' + formatB(totalPremium) + '/ปี เพื่อโอนย้ายความเสี่ยงทั้งหมดไปให้บริษัทประกันรับผิดชอบแทนครับ มูลค่าความคุ้มครองที่ ' + formatB(gapLifeClosed) + ' บาท สามารถครอบคลุมความเสี่ยงได้ถึง ' + coverageLifePercent.toFixed(1) + '% ของความเสี่ยงทั้งหมดเลยครับ"</li>' +
-                            '<li><b>การลงทุน & ความคุ้มค่า (Cost vs Benefit):</b> "เงินก้อนนี้คิดเป็นเพียง ' + premiumRatio.toFixed(1) + '% ของรายได้ต่อปี ซึ่งตามทฤษฎีการจัดสรรเงินออม (Rule of Thumb) จะไม่ทำให้เกิดปัญหาสภาพคล่องช็อต ถือเป็นการลงทุน (Allocation) ที่คุ้มค่ามาก (Low Cost / High Benefit) เพราะมันคือโล่กำบังที่ช่วยปกป้องความมั่งคั่ง (Net Worth) และพอร์ตการลงทุน ' + formatB(data.assets) + ' ที่คุณลูกค้าสร้างมาทั้งชีวิต ไม่ให้ถูกบังคับขาย (Forced Liquidation) เพื่อนำมาจ่ายค่ารักษาพยาบาลครับ"</li>' +
-                            '<li><b>การตอบข้อโต้แย้ง (Handling Objection):</b> หากลูกค้าบอกว่าเบี้ยประกันแพงไป หรือรู้สึกเสียดายเงิน: <br><span class="text-indigo-200">"ผมเข้าใจครับว่าเบี้ยก้อนนี้อาจดูเหมือนรายจ่ายที่เพิ่มขึ้น แต่ในมุมมองการวางแผนการเงิน แท้จริงแล้วมันคือการ <b>&quot;ซื้อเวลาและอิสรภาพทางการเงิน&quot;</b> ให้กับครอบครัวครับ การเสียเบี้ยคงที่หลักหมื่นในวันนี้ เพื่อล็อกความเสี่ยงแบบ 100% ดีกว่าปล่อยให้ความเสี่ยงหลักล้านที่มองไม่เห็นมากัดกินเงินเก็บทั้งหมดในอนาคตครับ"</span></li>' +
-                            '<li><b>Commitment Check:</b> "เบี้ยก้อนนี้จะไม่กระทบแผนการเงินอื่น หรือเงินสำรองฉุกเฉินที่คุณลูกค้าเตรียมไว้ใช่ไหมครับ? ถ้าระบบของเราเช็คแล้วว่า Cashflow ปลอดภัย เราสามารถเริ่มต้นสร้างเกราะป้องกันนี้ได้เลยอย่างสบายใจครับ"</li>' +
+                            '<li><b>ภาพรวมการเงิน (Financial Overview):</b> "ในฐานะนักวางแผนการเงิน โครงสร้างกระแสเงินสดและหนี้สินของคุณลูกค้าอยู่ในเกณฑ์ที่บริหารจัดการได้ดีครับ แต่เมื่อเรามองในมุมของการส่งต่อความมั่งคั่งและภาษี ระบบพบว่าเรายังมีจุดที่สามารถ Optimize ให้ดีขึ้นได้ในส่วนของ..."</li>' +
+                            '<li><b>การปิดความเสี่ยง (Risk Gap Action):</b> "หากเกิดวิกฤตเศรษฐกิจหรือเหตุไม่คาดฝัน พอร์ตการลงทุนที่เราสร้างมาอาจสะดุด แผนที่เราจัดสรรนี้ ใช้เงินเพียง ' + formatB(totalPremium) + '/ปี เพื่อสร้าง Firewall ปกป้องความมั่งคั่งทั้งหมดครับ มูลค่าความคุ้มครองที่ ' + formatB(gapLifeClosed) + ' บาท สามารถครอบคลุมความเสี่ยงได้ถึง ' + coverageLifePercent.toFixed(1) + '% ของแผนชีวิตคุณลูกค้าครับ"</li>' +
+                            '<li><b>การลงทุน & ภาษี (Wealth & Tax Benefit):</b> "เงินก้อนนี้คิดเป็นเพียง ' + premiumRatio.toFixed(1) + '% ของรายได้ต่อปี ซึ่งต่ำกว่าเกณฑ์ 15% ตามหลัก CFP ทำให้สภาพคล่องไม่ช็อต แถมยังได้ประโยชน์ในการกระจายความเสี่ยง (Diversification) และสิทธิประโยชน์ทางภาษี (Tax Shield) เต็มจำนวน เป็นการปกป้อง Net Worth ที่ ' + formatB(data.assets) + ' จากภาวะฉุกเฉินครับ"</li>' +
+                            '<li><b>การตอบข้อโต้แย้ง (Handling Objection):</b> หากลูกค้าบอกว่าเบี้ยประกันแพงไป แนะนำให้ลงทุนเองดีกว่า: <br><span class="text-indigo-200">"ผมเห็นด้วยครับว่าการลงทุนให้ผลตอบแทนที่จูงใจกว่า แต่ตามหลักปิระมิดการเงิน (Financial Pyramid) สินทรัพย์การลงทุน (Investment Asset) มีความผันผวนสูง หากเกิดเหตุฉุกเฉินทางการแพทย์ เราอาจถูกบังคับขายหุ้นหรือกองทุนในจุดที่ขาดทุน (Forced Liquidation) การกันเงินก้อนเล็กๆ ไว้ตรงนี้ คือการซื้อความอิสระให้พอร์ตการลงทุนได้เติบโตโดยไม่ต้องกังวลถึงความเสี่ยงครับ"</span></li>' +
+                            '<li><b>Commitment Check:</b> "แผนการเงินแบบองค์รวมนี้ จะไม่กระทบสภาพคล่องและแผนเกษียณที่คุณลูกค้าวางไว้ใช่ไหมครับ? ถ้าระบบของเราเช็คแล้วว่า Cashflow ปลอดภัย เราสามารถเริ่ม Execute ตามแผนที่วางไว้เพื่อสร้างเกราะกำบังนี้ได้เลยครับ"</li>' +
                         '</ul>' +
                     '</div>';
 
@@ -1259,7 +1363,7 @@ window.AIControlCenter = {
                         '</div>' +
                     '</div>' +
                     '<div class="mb-3 border-b border-slate-700 pb-3">' +
-                        '<span class="text-[10px] text-cyan-400 font-bold uppercase tracking-wider block mb-2">📦 2. การจัดสรรพอร์ตประกัน (Proposed Portfolio)</span>' +
+                        '<span class="text-[10px] text-cyan-400 font-bold uppercase tracking-wider block mb-2">📦 2. การจัดสรรพอร์ต (Proposed CFP Portfolio)</span>' +
                         '<div class="bg-slate-900/50 p-2.5 rounded border border-slate-700 shadow-inner space-y-1">' +
                             portfolioHtml +
                             '<div class="flex justify-between items-center border-t border-slate-700 mt-2 pt-2">' +
@@ -1273,7 +1377,7 @@ window.AIControlCenter = {
                         '</div>' +
                     '</div>' +
                     '<div class="bg-slate-800/80 p-3 rounded-lg border border-slate-600 shadow-sm">' +
-                        '<span class="text-[10px] text-orange-400 font-bold uppercase tracking-wider block mb-1.5">🧠 3. AI Verdict (วิเคราะห์ความเหมาะสม & Risk Gap)</span>' +
+                        '<span class="text-[10px] text-orange-400 font-bold uppercase tracking-wider block mb-1.5">🧠 3. AI Verdict (วิเคราะห์ความเหมาะสมองค์รวม)</span>' +
                         '<p class="text-[11px] text-slate-300 leading-relaxed">' + verdictHtml + '</p>' +
                         '<div class="mt-2 pt-2 border-t border-slate-700">' +
                             (gapStatusHtml || '<p class="text-[10px] text-slate-500 italic">- ไม่ได้จัดสรรแผนเพื่อปิดช่องโหว่ด้าน Life / Health โดยตรง -</p>') +
@@ -1281,7 +1385,7 @@ window.AIControlCenter = {
                     '</div>' + faTalkingPoints;
 
                     document.getElementById('sandbox_results').innerHTML = reportHtml;
-                    termLog("🎛️ FA Custom Portfolio Simulated Successfully.", "success");
+                    termLog("🎛️ CFP Custom Portfolio Simulated Successfully.", "success");
                 };
 
                 // ==========================================
@@ -1327,14 +1431,14 @@ window.AIControlCenter = {
                     let nnScore = window.AIEngineCore.predictSuccessProbability(data);
                     document.getElementById('log_nn_score').innerText = nnScore.toFixed(1) + "%";
                     
-                    let posFactors = '- ➕ ปัจจัยบวก: รายได้ (' + formatB(data.inc) + ')' + (data.nw >= 0 ? ' และ ความมั่งคั่งสุทธิ (' + formatB(data.nw) + ')' : '') + '<br>';
-                    let negFactors = '- ➖ ปัจจัยลบ: หนี้สะสม (' + formatB(data.liabilities) + ')' + (data.nw < 0 ? ', ความมั่งคั่งสุทธิติดลบ (' + formatB(data.nw) + ')' : '') + ', ภาระผ่อน (DTI ' + (data.dti*100).toFixed(0) + '%), ภาระดูแล (' + data.dependents + ' คน)';
+                    let posFactors = '- ➕ <b>(บวก) ปัจจัยหนุน:</b> รายได้ (' + formatB(data.inc) + ')' + (data.nw >= 0 ? ' และ ความมั่งคั่งสุทธิ (' + formatB(data.nw) + ')' : '') + '<br>';
+                    let negFactors = '- ➖ <b>(ลบ) ปัจจัยกดดัน:</b> หหนี้สะสม (' + formatB(data.liabilities) + ')' + (data.nw < 0 ? ', ความมั่งคั่งสุทธิติดลบ (' + formatB(data.nw) + ')' : '') + ', ภาระผ่อน (DTI ' + (data.dti*100).toFixed(0) + '%), ภาระดูแล (' + data.dependents + ' คน)';
                     
                     let nnDescHtml = '<div class="space-y-1.5">' +
-                        '<b class="text-purple-300 text-[11px]">⚙️ ตรรกะการคำนวณ (Cause & Effect):</b><br>' +
-                        '<span class="text-emerald-400 block mt-1 leading-snug"><b>จุดเริ่มต้น (Inputs):</b> <br>' + posFactors + negFactors + '</span>' +
-                        '<span class="text-sky-300 block mt-1 leading-snug"><b>📊 การวิเคราะห์ความเสี่ยงรายได้ (Income Stability):</b> <br>- อาชีพ: ' + escapeHTML(data.occ) + ' ➡️ ความสม่ำเสมอ: ' + escapeHTML(data.occType || "ปานกลาง") + '</span>' +
-                        '<span class="text-purple-300 block mt-2 pt-2 border-t border-purple-500/30"><b>ผลลัพธ์ (Result):</b> <br>➡️ AI ให้น้ำหนักปัจจัยบวก/ลบ และความเสี่ยงของแหล่งรายได้ สรุปคะแนนศักยภาพตั้งต้นที่ <b>' + nnScore.toFixed(1) + '%</b> ซึ่งคะแนนนี้สะท้อนความน่าจะเป็นที่ลูกค้าจะบรรลุเป้าหมายการเงินระยะยาวโดยไม่เกิดภาวะล้มละลาย (Insolvency) กลางทาง</span>' +
+                        '<b class="text-purple-300 text-[11px]">🧠 AI Thinking Process (กระบวนการวิเคราะห์ของระบบ):</b><br>' +
+                        '<span class="text-slate-300 block mt-1 leading-snug"><b>Step 1 (รวบรวมตัวแปรทางตรง):</b> <br>' + posFactors + negFactors + '</span>' +
+                        '<span class="text-slate-300 block mt-1 leading-snug"><b>Step 2 (ชั่งน้ำหนักเสถียรภาพอาชีพ):</b> <br>- ประเมินอาชีพ ' + escapeHTML(data.occ) + ' ให้อยู่ในกลุ่ม <span class="text-sky-300">"' + escapeHTML(data.occType || "ปานกลาง") + '"</span> ซึ่งมีผลต่อกำลังการส่งเบี้ยในระยะยาว</span>' +
+                        '<span class="text-emerald-400 block mt-2 pt-2 border-t border-purple-500/30"><b>Step 3 (สังเคราะห์ผลลัพธ์):</b> <br>➡️ AI คำนวณความน่าจะเป็นที่จะบรรลุเป้าหมายโดยไม่สะดุดอยู่ที่ <b>' + nnScore.toFixed(1) + '%</b> ให้ CFP ใช้เป็นตัวเลขตั้งต้นเพื่อประเมินศักยภาพลูกค้าครับ</span>' +
                     '</div>';
                     document.getElementById('log_nn_desc').innerHTML = nnDescHtml;
 
@@ -1438,22 +1542,22 @@ window.AIControlCenter = {
                     let lapse = window.AIEngineCore.calculateLapseRisk(data);
                     document.getElementById('log_lapse_score').innerText = lapse.score + "%";
                     let lapseHtml = '<div class="bg-slate-800 p-2.5 rounded-lg border border-slate-700 shadow-sm leading-relaxed mb-2">' +
-                        '<span class="text-red-300 font-bold text-[10px] block mb-1">⚙️ กลไกคำนวณ (Cause & Effect):</span>' +
-                        '<span class="text-[10.5px] text-slate-400">ประเมินความเสี่ยงทิ้งกรมธรรม์จาก <b>คุณภาพหนี้สิน (หนี้เสีย vs หนี้ดี)</b> และ <b>กระแสเงินสดสุทธิ</b> การรักษาอัตราความคงอยู่ของกรมธรรม์ (Persistency) คือหัวใจสำคัญของการรับผลประโยชน์สูงสุด</span>' +
+                        '<span class="text-red-300 font-bold text-[10px] block mb-1">🧠 AI Thinking Process (วิธีประเมินความเสี่ยงทิ้งกรมธรรม์):</span>' +
+                        '<span class="text-[10.5px] text-slate-400">ระบบประเมินจาก <b>สัดส่วนหนี้บริโภค (Bad Debt)</b> และ <b>สภาพคล่องสุทธิ</b> เพื่อช่วยให้ที่ปรึกษาการเงิน ออกแบบแผนออมที่ลูกค้าสามารถรักษาไว้ได้อย่างสบายใจตลอดสัญญา ป้องกันปัญหาทิ้งกรมธรรม์กลางทางครับ</span>' +
                         '</div>';
                     lapseHtml += lapse.drivers.map(d => '<p class="bg-slate-800 p-2.5 rounded-lg border border-slate-700 shadow-sm leading-relaxed mb-1.5">' + d + '</p>').join('');
                     document.getElementById('log_lapse_drivers').innerHTML = lapseHtml;
 
                     let con = window.AIEngineCore.runConsensus(data, nnScore, cluster.persona);
                     document.getElementById('log_crm_original').innerText = data.originalScore.toFixed(1) + "%"; 
-                    document.getElementById('log_base_audit').innerText = nnScore.toFixed(1) + "%";
+                    document.getElementById('log_base_audit').innerText = (con.baseWithGoals || nnScore).toFixed(1) + "%";
                     document.getElementById('log_discount_audit').innerText = "-" + con.discount.toFixed(1) + "%";
                     document.getElementById('log_final_score').innerText = con.finalScore.toFixed(1) + "%";
                     
                     let consensusHtml = '<div class="mb-3 bg-slate-800 p-3.5 rounded-lg border border-slate-600 text-[10.5px] text-slate-300 leading-relaxed text-left shadow-md">' +
-                        '<b class="text-indigo-400 text-xs block mb-1">📖 Definition (นิยามและการใช้งานสำหรับ FA):</b>' +
-                        '<span class="text-white font-bold">"Final Adjusted Score (คะแนนความสำเร็จสุทธิ)"</span> คือตัวชี้วัดศักยภาพทางการเงินที่สะท้อน <b>"โลกความเป็นจริง"</b> มากที่สุด โดยระบบจะนำคะแนนศักยภาพตั้งต้น (Base Score) มาหักลบด้วย <b>"อคติและพฤติกรรมเสี่ยง (Behavioral Constraints)"</b> เช่น การก่อหนี้บริโภค หรือการใช้เงินเกินตัว<br><br>' +
-                        '<b class="text-emerald-400">💡 FA Action Plan & Trade-off:</b> ใช้คะแนนนี้เพื่อทำ <b>Reality Check</b> กับลูกค้า หากคะแนนนี้ต่ำกว่า Base Score มากๆ (โดน Penalty สูง) FA ต้องเปิดใจลูกค้าให้เห็นว่า <i>"พฤติกรรมใดกำลังทำลายแผน"</i> และให้ลูกค้าพิจารณา <b>Trade-off</b> ระหว่าง "ความสุขระยะสั้น (ใช้เงินเกินตัว)" กับ "ความมั่นคงระยะยาว" พร้อมเสนอ <b>"การปรับโครงสร้างหนี้/ลดรายจ่าย"</b> ควบคู่ไปกับการเสนอโปรดักส์ เพื่อสร้างความน่าเชื่อถือระดับที่ปรึกษามืออาชีพ' +
+                        '<b class="text-indigo-400 text-xs block mb-1">📖 บทบาทที่ปรึกษาการเงิน (CFP Action):</b>' +
+                        '<span class="text-white font-bold">"คะแนนหลังประเมินตามความเป็นจริง"</span> ถูกออกแบบมาเพื่อเตือนใจว่า <b>อย่าเพิ่งเร่งรัด</b> หากคะแนนลดลงแปลว่าลูกค้ากำลังแบกความท้าทายอยู่ CFP มีหน้าที่ยื่นมือเข้าไปช่วยปลดล็อก ลดทอนรายจ่าย เพื่อให้ลูกค้าก้าวเดินได้อย่างมั่นคงครับ<br><br>' +
+                        '<b class="text-emerald-400">💡 CFP Action Plan & Trade-off:</b> ใช้คะแนนนี้เพื่อทำ <b>Reality Check</b> กับลูกค้า หากคะแนนนี้ต่ำกว่า Base Score มากๆ CFP ต้องเปิดใจลูกค้าให้เห็นว่า <i>"พฤติกรรมใดกำลังทำลายแผน"</i> และให้ลูกค้าพิจารณา <b>Trade-off</b> ระหว่าง "ความสุขระยะสั้น" กับ "อิสรภาพทางการเงิน (Financial Independence)" พร้อมเสนอ <b>"การปรับโครงสร้างหนี้/การจัดการภาษี"</b> ควบคู่ไปกับการเสนอแผนการเงินองค์รวม' +
                     '</div>';
                     consensusHtml += con.auditTrail.join('');
                     document.getElementById('log_consensus_exp').innerHTML = consensusHtml;
@@ -1487,7 +1591,7 @@ window.AIControlCenter = {
                     window.initCRMSelector();
                     setTimeout(() => { if(window.initSandboxDropdowns) window.initSandboxDropdowns(); }, 500);
                 };
-            </script>
+            <\/script>
         </body>
         </html>`;
 
