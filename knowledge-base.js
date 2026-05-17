@@ -1843,139 +1843,234 @@ window.systemDictionary = {
                 
                 <div class="bg-gradient-to-r from-slate-900 to-indigo-900 text-white p-6 rounded-2xl shadow-lg relative overflow-hidden">
                     <div class="absolute -right-4 -top-4 text-7xl opacity-10 select-none pointer-events-none">⚙️</div>
-                    <h3 class="text-xl font-bold mb-2 relative z-10 text-indigo-300">AiDAPC: Executive AI Diagnostics V5.6</h3>
-                    <p class="text-gray-300 relative z-10">
-                        <b>จุดประสงค์:</b> เปลี่ยนระบบ AI จากที่เป็นเพียง "กล่องดำ (Black-box)" ให้กลายเป็น "ผู้ช่วยคิดเชิงกลยุทธ์แบบโปร่งใส (White-box Co-Pilot)" 
-                        เวอร์ชันล่าสุดนี้ทำงานบนฐานข้อมูลที่มีโครงสร้างชัดเจน (Structured Data) ทำให้ประเมินพฤติกรรมแบบ 9 มิติ (9D) ได้แม่นยำ พร้อมเพิ่มระบบ <b>FA Interactive Sandbox</b> ที่ให้ FA จำลองพอร์ตโฟลิโอและวิเคราะห์ความคุ้มค่า (Cost/Benefit) ได้แบบเรียลไทม์
+                    <h3 class="text-2xl font-bold mb-2 relative z-10 text-indigo-300">AiDAPC: Executive AI Diagnostics V5.6</h3>
+                    <p class="text-gray-300 relative z-10 text-xs md:text-sm leading-relaxed">
+                        <b>จุดประสงค์หลัก:</b> เปลี่ยนระบบ AI จาก "กล่องดำ (Black-box)" ให้กลายเป็น <b>"ผู้ช่วยคิดเชิงกลยุทธ์แบบโปร่งใส (White-box Co-Pilot)"</b> <br><br>
+                        คู่มือฉบับนี้จะเปิดเผย "ทุกสมการ" และ "ทุกเงื่อนไข" ที่ AI ใช้ในการประเมินลูกค้าของคุณแบบ 100% ไม่มีปิดบัง เพื่อให้ที่ปรึกษาการเงิน (CFP/FA) สามารถอธิบายที่มาที่ไปของคะแนนให้ลูกค้าฟังได้อย่างมีน้ำหนัก น่าเชื่อถือ และนำไปสู่การปิดการขายด้วยเหตุผลทางคณิตศาสตร์และจิตวิทยา (Data-Driven Empathy)
                     </p>
                 </div>
 
-                <div>
-                    <h4 class="font-bold text-lg text-indigo-800 border-b-2 border-indigo-100 pb-2 mb-4 flex items-center gap-2">
-                        <span class="text-2xl">🔄</span> กระบวนการทำงาน (12 Enterprise Modules)
-                    </h4>
-                    <div class="space-y-4">
-                        
-                        <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 relative pl-12">
-                            <div class="absolute left-4 top-4 w-6 h-6 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold text-xs">1</div>
-                            <h5 class="font-bold text-blue-700 mb-1">Full Data Ingestion (แปลงและดึงข้อมูล 100%)</h5>
-                            <p class="text-xs text-gray-600">ระบบจะสกัดข้อมูลจาก <b>หมวดหมู่ (Dropdown)</b> ที่ FA จัดกลุ่มไว้แล้วโดยตรง ทำให้จำแนก "สินทรัพย์สภาพคล่อง" และ "หนี้เสีย" ได้แม่นยำ 100% พร้อมแปลงชื่อตัวแปร AI เป็นคำนิยามภาษาไทยให้ FA อ่านเข้าใจทันที</p>
-                        </div>
-
-                        <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 relative pl-12">
-                            <div class="absolute left-4 top-4 w-6 h-6 bg-pink-100 text-pink-600 rounded-full flex items-center justify-center font-bold text-xs">2</div>
-                            <h5 class="font-bold text-pink-700 mb-1">NLP Sentiment Analysis (ถอดรหัสความกังวลอัจฉริยะ)</h5>
-                            <p class="text-xs text-gray-600">วิเคราะห์ข้อความบันทึกย่อ (FA Notes) ด้วยระบบ <b>Negation Handling (เข้าใจบริบทการปฏิเสธ เช่น "ไม่กังวล")</b> เพื่อประเมินคะแนน Financial Anxiety ที่แท้จริง ไม่ตื่นตูมไปกับคีย์เวิร์ดหลอก</p>
-                        </div>
-
-                        <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 relative pl-12">
-                            <div class="absolute left-4 top-4 w-6 h-6 bg-teal-100 text-teal-600 rounded-full flex items-center justify-center font-bold text-xs">3</div>
-                            <h5 class="font-bold text-teal-700 mb-1">Outlier & Confidence (เช็คความสมเหตุสมผล)</h5>
-                            <p class="text-xs text-gray-600">ตรวจสอบความขัดแย้งของข้อมูลแบบเรียลไทม์ (เช่น รายได้สูงแต่ทรัพย์สินต่ำ ชี้เป้าหนี้แฝง หรือ สภาพคล่องติดลบ) เพื่อป้องกันไม่ให้ FA นำผลลัพธ์ที่ผิดพลาดไปนำเสนอลูกค้า</p>
-                        </div>
-
-                        <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 relative pl-12">
-                            <div class="absolute left-4 top-4 w-6 h-6 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center font-bold text-xs">4</div>
-                            <h5 class="font-bold text-purple-700 mb-1">Deep Learning Core (วิเคราะห์ศักยภาพแบบไดนามิก)</h5>
-                            <p class="text-xs text-gray-600">คำนวณคะแนนดิบผ่านฟังก์ชัน Sigmoid โดยประเมิน <b>ความมั่งคั่งสุทธิ (Net Worth)</b> แบบแยกทิศทาง หากมีค่าเป็นบวก (มีทรัพย์สิน) จะหนุนคะแนนขึ้น แต่หาก <b>ติดลบ (หนี้ท่วม)</b> จะถูกจับเป็นปัจจัยฉุดรั้ง (Negative Factor) ทันที</p>
-                        </div>
-
-                        <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 relative pl-12">
-                            <div class="absolute left-4 top-4 w-6 h-6 bg-cyan-100 text-cyan-600 rounded-full flex items-center justify-center font-bold text-xs">5</div>
-                            <h5 class="font-bold text-cyan-700 mb-1">XAI Feature Drivers (แกะกล่องดำ AI)</h5>
-                            <p class="text-xs text-gray-600">ระบบจะแกว่งค่าตัวแปร (Perturbation Rate 10%) เพื่อหาว่าปัจจัยใดเป็น <b>"จุดแข็ง"</b> และ <b>"จุดอ่อน"</b> พร้อมอธิบายเป็นภาษาไทยตามหลักการเงิน เพื่อชี้เป้าให้ FA นำไปคุยต่อได้ทันที</p>
-                        </div>
-
-                        <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 relative pl-12">
-                            <div class="absolute left-4 top-4 w-6 h-6 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center font-bold text-xs">6</div>
-                            <h5 class="font-bold text-amber-700 mb-1">Counterfactual Path (จำลองทางเลือก 3 มิติ)</h5>
-                            <p class="text-xs text-gray-600">AI จำลองทางเลือกให้ลูกค้าเห็นภาพ: <b>ทางรุก (Positive)</b> เช่น การรวบหนี้/DCA, <b>ทางสายกลาง (Neutral)</b> เช่น เลื่อนเวลาเป้าหมายออกไป และ <b>ทางเสี่ยง (Negative)</b> หากก่อหนี้เพิ่ม</p>
-                        </div>
-
-                        <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 relative pl-12">
-                            <div class="absolute left-4 top-4 w-6 h-6 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center font-bold text-xs">7</div>
-                            <h5 class="font-bold text-orange-700 mb-1">3D Risk Gap & Product Mapping (จัดพอร์ตสินค้าอัตโนมัติ)</h5>
-                            <p class="text-xs text-gray-600">คำนวณส่วนขาด 3 มิติ (ใช้ Asset สภาพคล่องของจริง) และจับคู่ <b>AIA Product Matrix</b> เชิงกลยุทธ์ พร้อมคำนวณเป้าหมายเบี้ยประกันเบื้องต้น และอธิบาย <b>Trade-off Analysis</b> สำหรับแผนนั้นๆ</p>
-                        </div>
-
-                        <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 relative pl-12">
-                            <div class="absolute left-4 top-4 w-6 h-6 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center font-bold text-xs">8</div>
-                            <h5 class="font-bold text-emerald-700 mb-1">9D Persona Clustering (จัดอัตลักษณ์ลูกค้า 9 มิติ)</h5>
-                            <p class="text-xs text-gray-600">ผสานมิติพฤติกรรม (Risk, Recency, Frequency, Discipline) เข้ากับมิติการเงิน รวม 9 แกน ผ่าน <b>Spider Chart</b> (เส้นสีเขียว = ลูกค้า, เส้นประสีเทา = ค่าเฉลี่ยกลุ่ม) เพื่อให้ FA รู้ลึกถึงพฤติกรรมทางการเงิน</p>
-                        </div>
-
-                        <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 relative pl-12">
-                            <div class="absolute left-4 top-4 w-6 h-6 bg-red-100 text-red-600 rounded-full flex items-center justify-center font-bold text-xs">9</div>
-                            <h5 class="font-bold text-red-700 mb-1">Predictive Lapse Risk (วิเคราะห์อัตราความคงอยู่)</h5>
-                            <p class="text-xs text-gray-600">ประเมินความเสี่ยงทิ้งกรมธรรม์ (Churn Rate) เจาะลึกคุณภาพหนี้และวินัย <br><b class="text-red-500">⚙️ Auto Safety Guard:</b> หากพบความเสี่ยงทิ้งกรมธรรม์ระดับ Medium/High ระบบจะสั่งใช้ <b>Safety Multiplier หั่นงบประมาณ AI ทิ้งเหลือ 85% หรือ 60% อัตโนมัติ</b> เพื่อป้องกันการจัดเบี้ยประกันที่หนักเกินไปจนลูกค้าส่งไม่ไหว</p>
-                        </div>
-
-                        <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 relative pl-12">
-                            <div class="absolute left-4 top-4 w-6 h-6 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center font-bold text-xs">10</div>
-                            <h5 class="font-bold text-indigo-700 mb-1">Hybrid Consensus (ปรับจูนคะแนนโลกความจริง)</h5>
-                            <p class="text-xs text-gray-600">นำคะแนน ML มาหักลบด้วยกฎผู้เชี่ยวชาญ (เช่น หนี้สินวิกฤต หรือกระแสเงินสดติดลบ) ออกมาเป็น <b>Final Adjusted Score</b> เพื่อเป็นเครื่องเตือนสติ (Reality Check) ให้สะท้อนโลกความเป็นจริงมากที่สุด</p>
-                        </div>
-
-                        <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 relative pl-12">
-                            <div class="absolute left-4 top-4 w-6 h-6 bg-fuchsia-100 text-fuchsia-600 rounded-full flex items-center justify-center font-bold text-xs">11</div>
-                            <h5 class="font-bold text-fuchsia-700 mb-1">Executive AI Synthesis (บทสรุปกลยุทธ์ FA)</h5>
-                            <p class="text-xs text-gray-600">รวบรวมข้อมูลทั้งหมดมาเขียนสรุปด้วยโทนภาษาแบบ Consultative Selling ชี้เป้าว่า "เคสนี้ควรเข้าพบด้วยกลยุทธ์ไหน และควรระวังความเสี่ยงใดเป็นพิเศษ"</p>
-                        </div>
-
-                        <div class="bg-white p-4 rounded-xl shadow-sm border border-cyan-300 relative pl-12 bg-cyan-50">
-                            <div class="absolute left-4 top-4 w-6 h-6 bg-cyan-500 text-white rounded-full flex items-center justify-center font-bold text-xs">12</div>
-                            <h5 class="font-bold text-cyan-700 mb-1">FA Interactive Sandbox (จำลองผลกระทบแบบ What-If) <span class="bg-cyan-200 text-cyan-800 text-[10px] px-2 py-0.5 rounded ml-2">NEW</span></h5>
-                            <p class="text-xs text-gray-700">ฟีเจอร์ระดับสูงให้ FA เป็นคน <b>เลือกสัญญาหลัก + สัญญาเพิ่มเติม และระบุเบี้ยประกันเอง</b> เพื่อดูผลกระทบแบบเรียลไทม์ AI จะวิเคราะห์สัดส่วน <b>Premium to Income Ratio (PIR)</b>, การปิด Risk Gap และจัดทำ <b>Cost/Benefit & Trade-off Analysis Report</b> พร้อมสคริปต์พูดคุยเพื่อปิดการขาย</p>
-                        </div>
-
-                    </div>
+                <!-- 🚀 ภาคปฏิบัติ: การใช้งานระบบ (Step-by-Step) -->
+                <div class="bg-blue-50 border border-blue-200 p-6 rounded-xl mt-6 shadow-sm">
+                    <h4 class="font-bold text-blue-800 mb-4 flex items-center gap-2 border-b border-blue-200 pb-3"><span class="text-2xl">🚀</span> ภาคปฏิบัติ: ขั้นตอนการใช้งานระบบ (Step-by-Step Workflow)</h4>
+                    <ol class="list-decimal pl-6 text-sm text-blue-900 space-y-4">
+                        <li>
+                            <b class="text-blue-700">การดึงข้อมูล (Data Syncing):</b> 
+                            <p class="mt-1 text-xs text-gray-600">เมื่อเปิดหน้าต่าง AiDAPC ระบบจะพยายามเชื่อมต่อผ่าน <code>window.opener</code> (หน่วยความจำสด) หรือ <code>LocalStorage Bridge</code> (ความจำสำรอง) อัตโนมัติ หากข้อมูลไม่ขึ้น ให้กดปุ่ม <code>🔄 Sync DB</code> ระบบจะทำการสแกนประวัติลูกค้าทั้งหมดและดึงข้อมูล <b>Full Payload</b> มาแปลงค่าทันที</p>
+                        </li>
+                        <li>
+                            <b class="text-blue-700">สั่งการสมองกล (Execution):</b> 
+                            <p class="mt-1 text-xs text-gray-600">เลือกลูกค้าจาก Dropdown (พิมพ์ค้นหาชื่อได้) จากนั้นกดปุ่ม <code>▶️ Execute White-Box AI</code> ด้านบนขวา ระบบจะยิงข้อมูลผ่าน 12 โมดูลและแสดง Log การคำนวณสดๆ ใน <b>System Terminal</b> ด้านล่างสุด (FA ควรอ่าน Terminal เพื่อดูว่า AI หัก/บวกคะแนนจากสมการไหน)</p>
+                        </li>
+                        <li>
+                            <b class="text-blue-700">วิเคราะห์จุดอ่อนผ่าน 3D Risk Gap & XAI:</b> 
+                            <p class="mt-1 text-xs text-gray-600">ดูที่โมดูล <b>XAI Feature Drivers</b> เพื่อดูว่าตัวแปรไหนมีแถบสีแดง (ฉุดรั้ง) และดูโมดูล <b>3D Risk Gap</b> ว่าลูกค้าขาดเงินสำรองฉุกเฉิน, ทุนประกันชีวิต, หรือค่ารักษาพยาบาลอยู่เท่าไหร่ เพื่อใช้เป็น "ประเด็นเปิดใจ" (Pain Point Hooking) ในการคุยกับลูกค้า</p>
+                        </li>
+                        <li>
+                            <b class="text-blue-700">จำลองการจัดพอร์ต (CFP Sandbox):</b> 
+                            <p class="mt-1 text-xs text-gray-600">ลงมาที่โมดูลที่ 12 เลือกสัญญาหลักและทุนประกัน (ระบบจะคำนวณเบี้ยขั้นต่ำให้อัตโนมัติด้วยฟังก์ชัน <code>calculateExactPremium</code>) และเพิ่ม Rider จากนั้นกดปุ่ม <b>"จำลองผลกระทบ"</b> ระบบจะคายสคริปต์พูดคุยและบทวิเคราะห์ว่าเบี้ยที่จัดไปนั้น "ถูก/แพง/คุ้มค่า" แค่ไหนเมื่อเทียบกับรายได้ลูกค้า (PIR Ratio)</p>
+                        </li>
+                        <li>
+                            <b class="text-blue-700">การเรียนรู้ย้อนกลับ (White-Box Training):</b> 
+                            <p class="mt-1 text-xs text-gray-600">หลังจบการนำเสนอและลูกค้าตกลงทำแผน ให้กลับมาที่ AiDAPC กดปุ่ม <code>🎓 Train AI</code> แล้วใส่ % ความสำเร็จจริงที่เกิดขึ้น ระบบจะคำนวณ <b>Gradient Descent & Momentum</b> เพื่อปรับค่าน้ำหนักสมองกล (Weights) และขยับจุดพิกัดพฤติกรรม (Centroids) ให้ฉลาดขึ้นสำหรับเคสถัดไปแบบฝังคาเครื่อง</p>
+                        </li>
+                    </ol>
                 </div>
 
-                <div class="bg-emerald-50 border border-emerald-200 p-5 rounded-xl mt-6">
-                    <h4 class="font-bold text-emerald-800 mb-2 flex items-center gap-2"><span class="text-xl">📊</span> ผลลัพธ์ที่ได้จาก AiDAPC V5.6</h4>
-                    <ul class="list-disc pl-5 text-sm text-emerald-700 space-y-2">
-                        <li><b>100% Absolute Accuracy:</b> จำแนกข้อมูลเชิงโครงสร้างแม่นยำ และแยกการประเมินเบี้ยประกันออกจาก DTI (เพราะประกันไม่ใช่หนี้สิน)</li>
-                        <li><b>Interactive FA Control:</b> FA ควบคุมการจัดพอร์ตเองได้ 100% (Sandbox) ระบบเพียงทำหน้าที่เป็น "กระจกสะท้อน" (Mirror) ความเสี่ยงและความคุ้มค่า</li>
-                        <li><b>Executive Readiness & Objection Handling:</b> มีบทวิเคราะห์ <i>Trade-off</i> พร้อม <i>FA Talking Points</i> ช่วยให้ FA รับมือข้อโต้แย้งเรื่องเบี้ยประกันได้อย่างเฉียบขาด</li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h4 class="font-bold text-lg text-slate-800 border-b-2 border-slate-200 pb-2 mb-4 mt-8 flex items-center gap-2">
-                        <span class="text-2xl">🗣️</span> ไกด์การสื่อสารจากโมดูล Sandbox (How to Talk)
+                <!-- 🧠 เจาะลึก 12 โมดูล -->
+                <div class="mt-8">
+                    <h4 class="font-bold text-xl text-indigo-900 border-b-2 border-indigo-200 pb-2 mb-6 flex items-center gap-2">
+                        <span class="text-3xl">🧠</span> เปิดกล่องดำ: เจาะลึกกลไก 12 Enterprise Modules
                     </h4>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="space-y-6">
                         
-                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                            <h5 class="font-bold text-emerald-600 text-sm mb-2">เมื่อแผนมีความคุ้มค่าสูง (Optimal Cost/Benefit)</h5>
-                            <p class="text-xs text-gray-600 mb-3"><b>เป้าหมาย:</b> ชี้ให้เห็นถึงความได้เปรียบของการโอนความเสี่ยง</p>
-                            <div class="bg-white p-3 rounded border border-gray-100 text-xs italic text-gray-700">
-                                "แผนที่เราจัดสรรนี้ ใช้เงินเพียงส่วนน้อยจากรายได้ต่อปี เพื่อโอนย้ายความเสี่ยงก้อนใหญ่ไปให้บริษัทประกันรับผิดชอบแทนครับ มูลค่าความคุ้มครองที่ได้ สามารถปกป้องความมั่งคั่งที่คุณลูกค้าสร้างมาทั้งชีวิต ไม่ให้ถูกบังคับขายเพื่อนำมาจ่ายค่ารักษาพยาบาลครับ"
+                        <!-- MODULE 1 -->
+                        <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 relative pl-16 hover:shadow-md transition">
+                            <div class="absolute left-4 top-5 w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-black text-sm border border-blue-200">1</div>
+                            <h5 class="font-bold text-blue-800 text-base mb-2">Full Ingested Data (การจัดการข้อมูลดิบ)</h5>
+                            <div class="text-xs text-gray-600 space-y-2">
+                                <p><b>กลไก (Mechanism):</b> ดึงข้อมูล JSON จาก CRM มาทำ Data Cleansing & Translation</p>
+                                <p><b>สูตรคณิตศาสตร์/ตรรกะที่ซ่อนอยู่:</b></p>
+                                <ul class="list-disc pl-4 space-y-1 text-slate-500">
+                                    <li><b>สภาพคล่อง (Liquid Assets):</b> หากลูกค้าไม่ได้กรอกสินทรัพย์สภาพคล่องมา แต่มีสินทรัพย์รวม ระบบจะ <i>ทึกทักเบื้องต้น (Fallback)</i> ให้เท่ากับ 30% ของสินทรัพย์รวม</li>
+                                    <li><b>หนี้สิน (Debt Payments):</b> หากลูกค้ามีหนี้แต่ไม่ได้ระบุยอดผ่อนชำระ ระบบจะคิดยอดผ่อนขั้นต่ำที่ <b>3% ของหนี้รวม</b> แต่ถ้าเป็นลูกค้าระดับ UHNW (สินทรัพย์ > 50 ล้านบาท) ระบบจะมองว่าเป็นสินเชื่อธุรกิจ/ที่ดิน และปรับยอดส่งเหลือเพียง <b>0.5%</b></li>
+                                    <li><b>หนี้เสีย (Bad Debt):</b> จะถูกคัดแยกเฉพาะประเภท "หนี้สินระยะสั้น" เพื่อนำไปคำนวณความเสี่ยง Lapse Risk ในโมดูลที่ 9</li>
+                                </ul>
                             </div>
                         </div>
 
-                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                            <h5 class="font-bold text-cyan-600 text-sm mb-2">เมื่อแนะนำแผนเพื่อการลงทุน (Wealth Building)</h5>
-                            <p class="text-xs text-gray-600 mb-3"><b>เป้าหมาย:</b> เน้นวินัยและโอกาสในอนาคต</p>
-                            <div class="bg-white p-3 rounded border border-gray-100 text-xs italic text-gray-700">
-                                "การเจียดสภาพคล่องปัจจุบันเพื่อแลกกับโอกาสรับผลตอบแทนในอนาคต คือเส้นทางสู่ความมั่งคั่งครับ ถ้าระบบของเราเช็คแล้วว่า Cashflow ปลอดภัย เรามาเริ่มต้นสร้างกองทุนเกษียณอายุนี้ด้วยการ DCA ไปด้วยกันเลยนะครับ"
+                        <!-- MODULE 2 -->
+                        <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 relative pl-16 hover:shadow-md transition">
+                            <div class="absolute left-4 top-5 w-8 h-8 bg-pink-100 text-pink-600 rounded-full flex items-center justify-center font-black text-sm border border-pink-200">2</div>
+                            <h5 class="font-bold text-pink-800 text-base mb-2">Lexical Sentiment Analysis (ถอดรหัสความกังวล)</h5>
+                            <div class="text-xs text-gray-600 space-y-2">
+                                <p><b>กลไก (Mechanism):</b> อ่านข้อความจาก "บันทึกย่อ (Notes)" เพื่อหาค่าความกังวลทางการเงิน (Financial Anxiety) เริ่มต้นที่ 30%</p>
+                                <p><b>สูตรคณิตศาสตร์/ตรรกะที่ซ่อนอยู่:</b></p>
+                                <ul class="list-disc pl-4 space-y-1 text-slate-500">
+                                    <li><b>Anxiety Keywords (+15% ต่อคำ):</b> หากพบคำว่า 'กังวล', 'เครียด', 'ไม่พอ', 'บ่น', 'หนี้', 'จ่ายขั้นต่ำ', 'ไม่มีเงิน', 'ป่วย', 'หนักใจ' (Highlight สีแดง)</li>
+                                    <li><b>Positive Keywords (-10% ต่อคำ):</b> หากพบคำว่า 'สนใจ', 'ลดหย่อน', 'ลงทุน', 'มรดก', 'ออม', 'เกษียณ', 'วางแผน', 'พร้อม' (Highlight สีเขียว)</li>
+                                    <li><b>Negation Handling (กัน AI โง่):</b> หากพบ Anxiety Keyword แต่ <i>ย้อนกลับไป 15 ตัวอักษร</i> มีคำปฏิเสธ เช่น <b>"ไม่"</b>, <b>"หาย"</b>, <b>"ลด"</b> (เช่น "ตอนนี้<u>ไม่</u>ค่อย<b>เครียด</b>เรื่องหนี้แล้ว") ระบบจะไม่บวกความเครียด และให้ไฮไลต์เป็นสีเขียวแทน!</li>
+                                </ul>
                             </div>
                         </div>
 
-                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                            <h5 class="font-bold text-orange-600 text-sm mb-2">เมื่อตอบข้อโต้แย้ง "เบี้ยแพงไป" (Objection)</h5>
-                            <p class="text-xs text-gray-600 mb-3"><b>เป้าหมาย:</b> เปลี่ยนมุมมองจาก "รายจ่าย" เป็น "การซื้อเวลา"</p>
-                            <div class="bg-white p-3 rounded border border-gray-100 text-xs italic text-gray-700">
-                                "ผมเข้าใจครับว่าเบี้ยก้อนนี้อาจดูเหมือนรายจ่ายที่เพิ่มขึ้น แต่ในมุมมองการเงิน แท้จริงแล้วมันคือการ <b>'ซื้อเวลาและอิสรภาพ'</b> ให้กับครอบครัวครับ การเสียเบี้ยคงที่หลักหมื่นในวันนี้ ดีกว่าปล่อยให้ความเสี่ยงหลักล้านกัดกินเงินเก็บทั้งหมดในอนาคตครับ"
+                        <!-- MODULE 3 -->
+                        <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 relative pl-16 hover:shadow-md transition">
+                            <div class="absolute left-4 top-5 w-8 h-8 bg-teal-100 text-teal-600 rounded-full flex items-center justify-center font-black text-sm border border-teal-200">3</div>
+                            <h5 class="font-bold text-teal-800 text-base mb-2">Outlier & Confidence (เช็คความสมเหตุสมผลของข้อมูล)</h5>
+                            <div class="text-xs text-gray-600 space-y-2">
+                                <p><b>กลไก (Mechanism):</b> ประเมินความมั่นใจของ AI เริ่มต้นที่ 95% หากเจอข้อมูลที่ขัดแย้งกับหลักการทางการเงิน Confidence จะถูกหักลง</p>
+                                <p><b>สูตรคณิตศาสตร์/ตรรกะที่ซ่อนอยู่:</b></p>
+                                <ul class="list-disc pl-4 space-y-1 text-slate-500">
+                                    <li><b>High Income Low NW (-18%):</b> รายได้ > 200,000/เดือน แต่ทรัพย์สินรวม < 100,000 สะท้อนภาวะเงินรั่วไหล (Lifestyle Inflation) ขั้นรุนแรง</li>
+                                    <li><b>Critical DTI (-15%):</b> ภาระหนี้ต่อรายได้ (DTI) > 80% (0.8) แผนการเงินมีความเสี่ยงสูงที่จะล้มเหลว</li>
+                                    <li><b>Negative Cashflow (-20%):</b> รายจ่าย > รายรับ สะท้อนความวิกฤตขั้นสูงสุด</li>
+                                </ul>
                             </div>
                         </div>
 
-                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                            <h5 class="font-bold text-red-600 text-sm mb-2">เมื่อแผนเสี่ยงเกินไป (High Premium Burden)</h5>
-                            <p class="text-xs text-gray-600 mb-3"><b>เป้าหมาย:</b> แสดงความจริงใจ และปรับสัดส่วนเพื่อรักษาลูกค้า</p>
-                            <div class="bg-white p-3 rounded border border-gray-100 text-xs italic text-gray-700">
-                                "ระบบวิเคราะห์พบว่าเบี้ยประกันรวมเริ่มสูงเกินเกณฑ์มาตรฐาน ซึ่งอาจกดดันสภาพคล่องของคุณลูกค้าในระยะยาวได้ เพื่อไม่ให้เป็นภาระ ผมขออนุญาตปรับลดความคุ้มครองบางส่วนลง เพื่อให้อยู่ในโซนปลอดภัยที่คุณลูกค้าส่งไหวแน่นอนดีกว่าครับ"
+                        <!-- MODULE 4 -->
+                        <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 relative pl-16 hover:shadow-md transition">
+                            <div class="absolute left-4 top-5 w-8 h-8 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center font-bold text-sm border border-purple-200">4</div>
+                            <h5 class="font-bold text-purple-800 text-base mb-2">Deep Learning Core (ความน่าจะเป็นเบื้องต้น)</h5>
+                            <div class="text-xs text-gray-600 space-y-2">
+                                <p><b>กลไก (Mechanism):</b> ส่ง Vector ข้อมูลเข้าโครงข่ายประสาทเทียม หรือใช้ Fallback Math หากรันแบบ Standalone</p>
+                                <p><b>สูตรคณิตศาสตร์/ตรรกะที่ซ่อนอยู่ (Fallback Math Equation):</b></p>
+                                <div class="bg-slate-900 p-3 rounded font-mono text-purple-300 text-[10px] overflow-x-auto whitespace-nowrap">
+                                    RawScore = 50<br>
+                                    &nbsp;&nbsp;+ (Income / 100,000) * 10 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// ทุก 1 แสน ได้ 10 แต้ม<br>
+                                    &nbsp;&nbsp;+ (NetWorth / 1,000,000) * 5 &nbsp;&nbsp;// ทุก 1 ล้าน ได้ 5 แต้ม<br>
+                                    &nbsp;&nbsp;- (Liabilities / 500,000) * 2 &nbsp;// ทุก 5 แสนโดนหัก 2 แต้ม<br>
+                                    &nbsp;&nbsp;- (DTI * 60) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// ยิ่งผ่อนหนักยิ่งโดนหักเยอะ (สูงสุด 60 แต้ม)<br>
+                                    &nbsp;&nbsp;- (Dependents * 2) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// ลูก 1 คน หัก 2 แต้ม<br>
+                                    &nbsp;&nbsp;+ (ราชการ ? +5 : อิสระ ? -5 : 0) // น้ำหนักความมั่นคงทางอาชีพ<br><br>
+                                    FinalScore = Sigmoid(RawScore) // คุมกำเนิดค่าให้อยู่ระหว่าง 1.0% - 99.9%
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- MODULE 5 -->
+                        <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 relative pl-16 hover:shadow-md transition">
+                            <div class="absolute left-4 top-5 w-8 h-8 bg-cyan-100 text-cyan-600 rounded-full flex items-center justify-center font-bold text-sm border border-cyan-200">5</div>
+                            <h5 class="font-bold text-cyan-800 text-base mb-2">10x Context-Aware XAI (ถอดรหัสจุดแข็ง/จุดอ่อน)</h5>
+                            <div class="text-xs text-gray-600 space-y-2">
+                                <p><b>กลไก (Mechanism):</b> เปลี่ยนค่าตัวแปรแต่ละตัวขึ้น-ลง 10% (Perturbation) แล้วป้อนกลับเข้าสมการ เพื่อหาว่าตัวไหนกระชากคะแนนแรงสุด</p>
+                                <p><b>สูตรคณิตศาสตร์/ตรรกะที่ซ่อนอยู่:</b></p>
+                                <ul class="list-disc pl-4 space-y-1 text-slate-500">
+                                    <li><b>The Noise Filter:</b> กรองเอาเฉพาะตัวแปรที่ขยับแล้วทำให้คะแนนเปลี่ยน <b>เกิน 1.0%</b> เท่านั้น (ตัดตัวแปรยิบย่อยออก)</li>
+                                    <li><b>Context Engine (10x Upgrade):</b> นำตัวแปรไปวิเคราะห์ร่วมกับบริบท เช่น หากมีหนี้สูง (DTI) AI จะเช็ค <code>isHighIncome</code> ก่อน ถ้ารายได้สูงด้วย จะแจ้งเตือน <i>"HENRYs Syndrome (รวยแต่เปลือก)"</i> แต่ถ้ารายได้ต่ำ จะแจ้งเตือน <i>"Liquidity Crunch (วิกฤตสภาพคล่อง)"</i> แทน ทำให้บทสนทนาแหลมคมระดับที่ปรึกษามืออาชีพ</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- MODULE 6 -->
+                        <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 relative pl-16 hover:shadow-md transition">
+                            <div class="absolute left-4 top-5 w-8 h-8 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center font-bold text-sm border border-amber-200">6</div>
+                            <h5 class="font-bold text-amber-800 text-base mb-2">Counterfactual Path (จำลองทางเลือกเชิงกลยุทธ์)</h5>
+                            <div class="text-xs text-gray-600 space-y-2">
+                                <p><b>กลไก (Mechanism):</b> สร้างสมมติฐานแบบ "What-if" เพื่อชี้ทางออกให้ลูกค้า</p>
+                                <ul class="list-disc pl-4 space-y-1 text-slate-500">
+                                    <li><b>ถ้า DTI > 0.4 (40%):</b> ระบบจะแนะนำให้ลด DTI ลงมาเหลือ 35% พร้อมคำนวณ <i>จำนวนเงินบาท</i> ที่ต้องรวบหนี้/ปิดหนี้ให้ทันที</li>
+                                    <li><b>ถ้า DTI <= 0.4:</b> แนะนำให้หักเงิน 10% ของรายได้มาทำ Dollar Cost Averaging (DCA)</li>
+                                    <li><b>ถ้ารายได้ > 50,000/เดือน:</b> ระบบจะแนะนำ Tax Planning พร้อมคำนวณฐานภาษี 15% และโชว์ตัวเลข "เงินคืนภาษี" ที่จะนำกลับมา Re-invest ได้</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- MODULE 7 -->
+                        <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 relative pl-16 hover:shadow-md transition">
+                            <div class="absolute left-4 top-5 w-8 h-8 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center font-bold text-sm border border-orange-200">7</div>
+                            <h5 class="font-bold text-orange-800 text-base mb-2">3D Risk Gap & Product Matrix (จัดพอร์ตพื้นฐาน)</h5>
+                            <div class="text-xs text-gray-600 space-y-2">
+                                <p><b>กลไก (Mechanism):</b> หาช่องโหว่ความเสี่ยง 3 มิติ และจับคู่ Product AIA อัตโนมัติ</p>
+                                <div class="bg-slate-50 p-3 rounded font-mono text-orange-600 text-[10px] overflow-x-auto whitespace-nowrap border border-slate-200">
+                                    <b>[Emergency Gap]</b> = (รายจ่ายเดือน x 6) - สินทรัพย์สภาพคล่อง<br>
+                                    &nbsp;↳ ถ้าติดลบ เสนอ Unit-Linked (Smart Select) พักเงินฉุกเฉิน ทุน = 5% รายได้<br><br>
+                                    <b>[Life/Family Gap]</b> = หนี้สินรวม + (รายจ่าย x 12 เดือน x 5 ปี) + (จำนวนลูก x 1 ล้าน) - สินทรัพย์สุทธิ<br>
+                                    &nbsp;↳ ถ้าติดลบ เสนอ 20 Pay Life เบี้ย = 5% รายได้<br><br>
+                                    <b>[Health/CI Gap]</b> = เช็ค Keyword จากกรมธรรม์เดิม (ขาดสุขภาพ/โรคร้าย)<br>
+                                    &nbsp;↳ ถ้าขาด เสนอ AIA Health Happy + CI Plus ประเมินเบี้ย 25,000/ปี<br><br>
+                                    <b>[Wealth Accumulation]</b> = หากไม่ขาด Life และ Health เลย<br>
+                                    &nbsp;↳ เสนอ Issara Plus ลงทุนแบบ Aggressive เบี้ย = 10% รายได้
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- MODULE 8 -->
+                        <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 relative pl-16 hover:shadow-md transition">
+                            <div class="absolute left-4 top-5 w-8 h-8 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center font-bold text-sm border border-emerald-200">8</div>
+                            <h5 class="font-bold text-emerald-800 text-base mb-2">9D Persona Clustering (หาอัตลักษณ์ลูกค้า)</h5>
+                            <div class="text-xs text-gray-600 space-y-2">
+                                <p><b>กลไก (Mechanism):</b> วิเคราะห์พฤติกรรมผ่าน K-Means และ Decision Tree</p>
+                                <ul class="list-disc pl-4 space-y-1 text-slate-500">
+                                    <li>สร้าง Normalized Vector 9 มิติให้อยู่ในสเกล [0, 1] <i>(เทคนิค: ค่าไหนที่เป็นผลเสีย เช่น DTI และ Dependents จะถูกนำไปลบกับ 1 (Inverse) เพื่อให้การพลอตกราฟ Spider Chart ดันออกไปข้างนอก = ดี)</i></li>
+                                    <li>คำนวณหาระยะ <b>L2 Norm (Euclidean Distance)</b> โดยถ่วงน้ำหนักแกน Income และ Net Worth เป็น 3 เท่า (ห้าม AI จับคนจนไปอยู่กลุ่มคนรวยเด็ดขาด)</li>
+                                    <li>ใช้ <b>JSON Decision Tree Engine (กิ่งก้านการตัดสินใจกว่า 50 node)</b> ในการประทับตรา (Label) กลุ่มลูกค้าในขั้นสุดท้าย</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- MODULE 9 -->
+                        <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 relative pl-16 hover:shadow-md transition">
+                            <div class="absolute left-4 top-5 w-8 h-8 bg-red-100 text-red-600 rounded-full flex items-center justify-center font-bold text-sm border border-red-200">9</div>
+                            <h5 class="font-bold text-red-800 text-base mb-2">Predictive Lapse Risk (ความเสี่ยงทิ้งกรมธรรม์)</h5>
+                            <div class="text-xs text-gray-600 space-y-2">
+                                <p><b>กลไก (Mechanism):</b> ป้องกัน FA ฆ่าตัวตายด้วยการเสนอเบี้ยแพงเกินตัวลูกค้า</p>
+                                <p><b>สูตรคณิตศาสตร์/ตรรกะที่ซ่อนอยู่ (Logistic Regression):</b></p>
+                                <ul class="list-disc pl-4 space-y-1 text-slate-500">
+                                    <li><b>Z-Score</b> = -3.8 + (9.5 * %เบี้ยต่อรายได้) + (3.2 * %เบี้ยต่อเงินเหลือ) + (2.5 * DTI) - (4.0 * วินัย)</li>
+                                    <li><b>Rule-based Overrides:</b> ถ้า DTI > 60% บวกความเสี่ยงเพิ่ม 40%, ถ้ารายได้ < 30,000 บวกความเสี่ยงเพิ่ม 20%, ถ้า Exp > Inc บวกเพิ่ม 30%, และถ้า หนี้เกินครึ่งเป็นหนี้บริโภค (Bad Debt) บวกเพิ่ม 25%</li>
+                                    <li><b>Churn Rate %</b> คำนวณผ่าน Sigmoid หากค่าเกิน 35% ถือว่าเสี่ยงปานกลาง เกิน 65% ถือว่าเสี่ยงทิ้งกรมธรรม์สูงมาก (เตือนให้ FA ปรับเบี้ยด่วน)</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- MODULE 10 -->
+                        <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 relative pl-16 hover:shadow-md transition">
+                            <div class="absolute left-4 top-5 w-8 h-8 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center font-bold text-sm border border-indigo-200">10</div>
+                            <h5 class="font-bold text-indigo-800 text-base mb-2">Hybrid Consensus (ปรับจูนคะแนนโลกความจริง)</h5>
+                            <div class="text-xs text-gray-600 space-y-2">
+                                <p><b>กลไก (Mechanism):</b> ดึง AI กลับสู่โลกความเป็นจริงด้วยหลักการ CFP (Rule-based Penalty)</p>
+                                <p><b>สูตรคณิตศาสตร์/ตรรกะที่ซ่อนอยู่ (Liquidity Burn Rate Analysis):</b></p>
+                                <ul class="list-disc pl-4 space-y-1 text-slate-500">
+                                    <li>ระบบวิเคราะห์ "อายุขัยเงินสำรอง" (Liquidity / Monthly Deficit) หากลูกค้ากระแสเงินสดติดลบ</li>
+                                    <li><b class="text-rose-500">Burn Rate < 3 เดือน:</b> เงินสำรองจะหมดใน 3 เดือน! <b>โดน Hard Cap จำกัดคะแนนห้ามเกิน 30% ทันที (วิกฤต)</b></li>
+                                    <li><b class="text-orange-500">Burn Rate < 12 เดือน:</b> อยู่ได้ไม่ถึงปี <b>โดน Hard Cap ที่ 55% และหัก Discount ทิ้ง 20%</b></li>
+                                    <li><b class="text-emerald-500">DTI ต่ำกว่า 40%:</b> ปลอดภัย ไม่โดนหักคะแนน แต่ถ้ามีลูกมากกว่า 2 คน จะโดนหัก 5% (เผื่อพื้นที่ Income Protection Gap)</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- MODULE 11 -->
+                        <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 relative pl-16 hover:shadow-md transition">
+                            <div class="absolute left-4 top-5 w-8 h-8 bg-fuchsia-100 text-fuchsia-600 rounded-full flex items-center justify-center font-bold text-sm border border-fuchsia-200">11</div>
+                            <h5 class="font-bold text-fuchsia-800 text-base mb-2">Executive AI Synthesis (คำแนะนำการเข้าพบ)</h5>
+                            <div class="text-xs text-gray-600 space-y-2">
+                                <p><b>กลไก (Mechanism):</b> รวบยอดเนื้อหา (NLG) เพื่อสร้าง Script การสนทนา</p>
+                                <ul class="list-disc pl-4 space-y-1 text-slate-500">
+                                    <li>คะแนน < 50%: สร้างบทพูดเน้น <b>"Empathy & Debt Management"</b> อย่าพึ่งยัดเยียดขาย</li>
+                                    <li>คะแนน 50-80%: สร้างบทพูดเน้น <b>"Gap Closure & Health Protection"</b> ปิดรอยรั่วความเสี่ยง</li>
+                                    <li>คะแนน > 80%: สร้างบทพูดเน้น <b>"Wealth, Tax, and Estate Planning"</b> ขายโชว์ความโปร</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- MODULE 12 -->
+                        <div class="bg-cyan-50 p-5 rounded-xl shadow-md border-l-4 border-cyan-400 relative pl-16 transition shadow-[0_4px_15px_rgba(6,182,212,0.1)]">
+                            <div class="absolute left-4 top-5 w-8 h-8 bg-gradient-to-br from-cyan-400 to-blue-500 text-white rounded-full flex items-center justify-center font-bold text-sm shadow">12</div>
+                            <h5 class="font-bold text-cyan-800 text-base mb-2">CFP Interactive Sandbox (จำลองผล What-If)</h5>
+                            <div class="text-xs text-gray-700 space-y-2">
+                                <p><b>กลไก (Mechanism):</b> เครื่องมือสำหรับ FA เพื่อใช้ทดลองนำเสนอแผน (Pitching) หน้างาน</p>
+                                <p><b>สูตรคณิตศาสตร์/ตรรกะที่ซ่อนอยู่:</b></p>
+                                <ul class="list-disc pl-4 space-y-1 text-slate-600">
+                                    <li><b>Auto-Calc Engine:</b> มีตารางเบี้ย <code>rateMatrix</code> แบบ Hardcoded ฝังอยู่ภายใน เมื่อพิมพ์ทุนประกัน (SA) ระบบจะคำนวณเบี้ยให้ตาม อายุ และ เพศ ทันที</li>
+                                    <li><b>PIR Ratio (Premium to Income):</b> นำเบี้ยทั้งหมดมาหารด้วยรายได้ต่อปี</li>
+                                    <li><b>Verdict Logic (ระบบพิพากษาแผน):</b> 
+                                        <br>↳ ถ้ายัดเบี้ยจน <b>PIR > 20%</b> = AI จะด่าว่า <span class="text-rose-500 font-bold">"High Premium Burden"</span> สภาพคล่องพังแน่นอน สั่งให้ FA ถอด Rider ออก
+                                        <br>↳ ถ้า <b>PIR < 15%</b> และปิด Life/Health Gap ได้ = AI จะชมว่า <span class="text-emerald-500 font-bold">"Optimal Balance"</span> คุ้มค่าที่สุด ให้ Execute ทันที
+                                    </li>
+                                    <li><b>Objection Handling:</b> สร้างสคริปต์ตอบโต้ลูกค้า (เช่น ลูกค้าบอกว่าเอาเงินไปลงทุนเองดีกว่า FA สามารถอ่านสคริปต์เรื่อง Forced Liquidation สวนกลับได้อย่างมีหลักการ)</li>
+                                </ul>
                             </div>
                         </div>
 

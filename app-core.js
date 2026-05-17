@@ -1225,7 +1225,7 @@ function getDynamicAIASolutions(diffLife, diffHealth, diffCI, personaType, netCa
         document.getElementById('print_footer').innerHTML = `
             <div class="flex justify-between items-center w-full">
                 <div class="text-left font-medium text-gray-800">
-                    <b>รายงานวิเคราะห์สุขภาพทางการเงินและแผนบริหารความมั่งคั่ง</b><br>
+                    <b>รายงานวิเคราะห์ฉบับนี้เป็นเพียงแบบจำลองเท่านั้นไม่ได้การันตีผลตอบแทนตามจริง</b><br>
                     <span class="text-[10px] text-gray-500">จัดทำโดย: ${s.creatorName} | ใบอนุญาตตัวแทน: ${s.faLicense} | IC License: ${s.icLicense}</span>
                 </div>
                 <div class="text-right text-gray-500 text-[10px]">
