@@ -1843,7 +1843,7 @@ window.systemDictionary = {
                 
                 <div class="bg-gradient-to-r from-slate-900 to-indigo-900 text-white p-6 rounded-2xl shadow-lg relative overflow-hidden">
                     <div class="absolute -right-4 -top-4 text-7xl opacity-10 select-none pointer-events-none">⚙️</div>
-                    <h3 class="text-2xl font-bold mb-2 relative z-10 text-indigo-300">AiDAPC: Executive AI Diagnostics V5.6</h3>
+                    <h3 class="text-2xl font-bold mb-2 relative z-10 text-indigo-300">AiDAPC: Executive AI Diagnostics V5.6 (SSOT Edition)</h3>
                     <p class="text-gray-300 relative z-10 text-xs md:text-sm leading-relaxed">
                         <b>จุดประสงค์หลัก:</b> เปลี่ยนระบบ AI จาก "กล่องดำ (Black-box)" ให้กลายเป็น <b>"ผู้ช่วยคิดเชิงกลยุทธ์แบบโปร่งใส (White-box Co-Pilot)"</b> <br><br>
                         คู่มือฉบับนี้จะเปิดเผย "ทุกสมการ" และ "ทุกเงื่อนไข" ที่ AI ใช้ในการประเมินลูกค้าของคุณแบบ 100% ไม่มีปิดบัง เพื่อให้ที่ปรึกษาการเงิน (CFP/FA) สามารถอธิบายที่มาที่ไปของคะแนนให้ลูกค้าฟังได้อย่างมีน้ำหนัก น่าเชื่อถือ และนำไปสู่การปิดการขายด้วยเหตุผลทางคณิตศาสตร์และจิตวิทยา (Data-Driven Empathy)
@@ -1868,7 +1868,7 @@ window.systemDictionary = {
                         </li>
                         <li>
                             <b class="text-blue-700">จำลองการจัดพอร์ต (CFP Sandbox):</b> 
-                            <p class="mt-1 text-xs text-gray-600">ลงมาที่โมดูลที่ 12 เลือกสัญญาหลักและทุนประกัน (ระบบจะคำนวณเบี้ยขั้นต่ำให้อัตโนมัติด้วยฟังก์ชัน <code>calculateExactPremium</code>) และเพิ่ม Rider จากนั้นกดปุ่ม <b>"จำลองผลกระทบ"</b> ระบบจะคายสคริปต์พูดคุยและบทวิเคราะห์ว่าเบี้ยที่จัดไปนั้น "ถูก/แพง/คุ้มค่า" แค่ไหนเมื่อเทียบกับรายได้ลูกค้า (PIR Ratio)</p>
+                            <p class="mt-1 text-xs text-gray-600">ลงมาที่โมดูลที่ 12 เลือกสัญญาหลักและทุนประกัน (ระบบจะดึงคณิตศาสตร์จากระบบแม่ <code>SSOT</code> มาคำนวณเบี้ยให้) และเพิ่ม Rider จากนั้นกดปุ่ม <b>"จำลองผลกระทบ"</b> ระบบจะคายสคริปต์พูดคุยและบทวิเคราะห์ว่าเบี้ยที่จัดไปนั้น "ถูก/แพง/คุ้มค่า" แค่ไหนเมื่อเทียบกับรายได้ลูกค้า (PIR Ratio)</p>
                         </li>
                         <li>
                             <b class="text-blue-700">การเรียนรู้ย้อนกลับ (White-Box Training):</b> 
@@ -2063,7 +2063,7 @@ window.systemDictionary = {
                                 <p><b>กลไก (Mechanism):</b> เครื่องมือสำหรับ FA เพื่อใช้ทดลองนำเสนอแผน (Pitching) หน้างาน</p>
                                 <p><b>สูตรคณิตศาสตร์/ตรรกะที่ซ่อนอยู่:</b></p>
                                 <ul class="list-disc pl-4 space-y-1 text-slate-600">
-                                    <li><b>Auto-Calc Engine:</b> มีตารางเบี้ย <code>rateMatrix</code> แบบ Hardcoded ฝังอยู่ภายใน เมื่อพิมพ์ทุนประกัน (SA) ระบบจะคำนวณเบี้ยให้ตาม อายุ และ เพศ ทันที</li>
+                                    <li><b>Auto-Calc Engine:</b> เชื่อมต่อฐานข้อมูลเบี้ยประกันแบบ <code>SSOT (Single Source of Truth)</code> ดึงเรทเบี้ยและข้อมูลสัญญาจากระบบแม่แบบ Real-time (ไร้การ Hardcode) พร้อมระบบ <b>Searchable Datalist</b> พิมพ์ค้นหาสัญญาหลักและเพิ่มเติมได้อย่างอิสระ</li>
                                     <li><b>PIR Ratio (Premium to Income):</b> นำเบี้ยทั้งหมดมาหารด้วยรายได้ต่อปี</li>
                                     <li><b>Verdict Logic (ระบบพิพากษาแผน):</b> 
                                         <br>↳ ถ้ายัดเบี้ยจน <b>PIR > 20%</b> = AI จะด่าว่า <span class="text-rose-500 font-bold">"High Premium Burden"</span> สภาพคล่องพังแน่นอน สั่งให้ FA ถอด Rider ออก

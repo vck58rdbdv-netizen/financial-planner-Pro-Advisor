@@ -1,8 +1,7 @@
 // =====================================================================
 // 🧠 AiDAPC MODULE (AI Deep Analysis & Prediction Center)
 // สถาปัตยกรรม: AI/ML Core Diagnostics Engine (White-box Dashboard) v5.6 Ultimate
-// อัปเดต: Explicit AI Thinking Process (FA White-box Communication) & Empathetic Tone
-// อัปเกรดล่าสุด: 10x XAI & NLG Overdrive, Extreme AI Lexicon, No PDF, Autonomous SGD
+// อัปเดต: Searchable Datalist & Safe SSOT Memory Injection 100% (Fixed Syntax)
 // =====================================================================
 
 window.AIControlCenter = {
@@ -44,6 +43,12 @@ window.AIControlCenter = {
             alert("⚠️ เบราว์เซอร์บล็อกหน้าต่างใหม่ กรุณาอนุญาต Pop-up ครับ");
             return;
         }
+
+        // 🌟 [SSOT Memory Injection] ดึงข้อมูลจากสมองหลัก แปลงเป็น JSON เพื่อส่งไปฝังในหน้าต่างใหม่ทันที
+        let baseMatrixStr = "{}";
+        let riderMatrixStr = "{}";
+        try { baseMatrixStr = JSON.stringify(typeof aiaBaseProductMatrix !== 'undefined' ? aiaBaseProductMatrix : {}); } catch(e){}
+        try { riderMatrixStr = JSON.stringify(typeof aiaRiderMatrix !== 'undefined' ? aiaRiderMatrix : {}); } catch(e){}
 
         const htmlContent = `<!DOCTYPE html>
         <html lang="th">
@@ -329,8 +334,11 @@ window.AIControlCenter = {
                         <div class="lg:w-1/2 space-y-4">
                             <div class="bg-slate-900 p-3 rounded border border-slate-700">
                                 <label class="text-[10px] text-slate-400 font-bold mb-1 block">📌 สัญญาหลัก (Base Plan)</label>
+                                <!-- 🌟 [FIX] เปลี่ยน Select เป็น Input + Datalist สำหรับค้นหาและพิมพ์ได้อิสระ -->
                                 <div class="flex gap-2">
-                                    <select id="sandbox_base_plan" onchange="window.handleBasePlanChange(); window.autoCalcBasePremium();" class="flex-1 text-xs bg-slate-800 text-slate-200 border border-slate-600 rounded px-2 py-1 outline-none focus:ring-1 focus:ring-cyan-500"></select>
+                                    <input type="text" id="sandbox_base_plan" list="dl_base_plans" oninput="window.handleBasePlanChange(); window.autoCalcBasePremium();" placeholder="-- พิมพ์ค้นหาหรือเลือกสัญญาหลัก --" class="flex-1 text-xs bg-slate-800 text-slate-200 border border-slate-600 rounded px-2 py-1 outline-none focus:ring-1 focus:ring-cyan-500">
+                                    <datalist id="dl_base_plans"></datalist>
+                                    
                                     <input type="number" id="sandbox_base_sa" oninput="window.autoCalcBasePremium()" placeholder="ทุน/SA" class="w-24 text-xs bg-slate-800 text-slate-200 border border-slate-600 rounded px-2 py-1 outline-none focus:ring-1 focus:ring-cyan-500">
                                     <input type="number" id="sandbox_base_prem" placeholder="เบี้ย (บาท/ปี)" class="w-28 text-xs bg-slate-800 text-slate-200 border border-slate-600 rounded px-2 py-1 outline-none focus:ring-1 focus:ring-cyan-500">
                                 </div>
@@ -370,7 +378,7 @@ window.AIControlCenter = {
 
             <script>
                 // ==========================================
-                // ⚙️ ตัวแปร Global, Product Matrix & Utils
+                // ⚙️ ตัวแปร Global & Utils
                 // ==========================================
                 
                 const SYS_CONFIG = {
@@ -383,17 +391,10 @@ window.AIControlCenter = {
 
                 let spiderChartInstance = null;
                 let rawDatabaseCache = {};
-                
-                // 🧠 [Memoization Cache]
                 let predictionCache = new Map();
 
                 const formatB = (num) => '฿' + Math.round(num || 0).toLocaleString('th-TH');
-
-                const escapeHTML = (str) => {
-                    return String(str).replace(/[&<>'"]/g, 
-                        tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
-                    );
-                };
+                const escapeHTML = (str) => String(str).replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
 
                 window.addEventListener('beforeunload', () => {
                     if(window.opener && window.opener.AIControlCenter) window.opener.AIControlCenter.windowRef = null;
@@ -409,122 +410,29 @@ window.AIControlCenter = {
 
                 const pickNLG = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
-                // -----------------------------------------------------
-                // 🗂️ 1. UNIFIED AIA PRODUCT MATRIX 
-                // -----------------------------------------------------
-                const aiaBaseProductMatrix = {
-                    "AIA 20 Pay Life": { type: "WholeLife", minSA: 100000, maxSA: 9999999, builtInRiders: ["WP"], minPremiumRPP: 0 },
-                    "AIA Pay Life Plus (20 Pay)": { type: "WholeLife", minSA: 150000, maxSA: 9999999, builtInRiders: ["WPCI", "TI"], minPremiumRPP: 0 },
-                    "AIA Life Protector 70": { type: "Term", minSA: 350000, maxSA: 5000000, builtInRiders: [], minPremiumRPP: 0 },
-                    "AIA Endowment 15/25": { type: "Saving", minSA: 100000, maxSA: Infinity, builtInRiders: [], minPremiumRPP: 0 },
-                    "AIA Excellent 20/20": { type: "Saving", minSA: 100000, maxSA: Infinity, builtInRiders: [], minPremiumRPP: 0 },
-                    "AIA Annuity Sure": { type: "Annuity", minSA: 100000, maxSA: Infinity, builtInRiders: [], minPremiumRPP: 0 },
-                    "AIA Annuity Fix": { type: "Annuity", minSA: 200000, maxSA: Infinity, builtInRiders: [], minPremiumRPP: 0 },
-                    "AIA Senior Happy": { type: "WholeLife_Senior", minSA: 50000, maxSA: 200000, builtInRiders: [], minPremiumRPP: 0 },
-                    "AIA CI ProCare": { type: "CIBase", minSA: 200000, maxSA: 8000000, builtInRiders: ["WPCI"], minPremiumRPP: 0 },
-                    "AIA CI SuperCare": { type: "CIBase", minSA: 200000, maxSA: 4999999, builtInRiders: [], minPremiumRPP: 0 },
-                    "AIA CI SuperCare Prestige": { type: "CIBase_HNW", minSA: 5000000, maxSA: Infinity, builtInRiders: [], minPremiumRPP: 0 },
-                    "AIA Issara Plus": { type: "UnitLinked", minSA: 120000, maxSA: Infinity, minPremiumRPP: 12000, builtInRiders: [] },
-                    "AIA Smart Select": { type: "UnitLinked", minSA: 500000, maxSA: Infinity, minPremiumRPP: 30000, builtInRiders: [] },
-                    "AIA Smart Select Prestige": { type: "UnitLinked_HNW", minSA: 10000000, maxSA: Infinity, minPremiumRPP: 30000, builtInRiders: [] },
-                    "AIA Legacy Prestige": { type: "WholeLife_HNW", minSA: 10000000, maxSA: Infinity, builtInRiders: [], minPremiumRPP: 0 },
-                    "AIA Legacy Prestige Plus": { type: "WholeLife_HNW", minSA: 10000000, maxSA: Infinity, builtInRiders: ["WPCI", "TI"], minPremiumRPP: 0 },
-                    "AIA Infinite Wealth Prestige": { type: "UnitLinked_HNW", minSA: 15000000, maxSA: Infinity, minPremiumRPP: 0, builtInRiders: [] },
-                    "AIA Elite Income Prestige": { type: "UnitLinked_HNW", minSA: 550000, maxSA: Infinity, minPremiumRPP: 500000, builtInRiders: [] }
-                };
+                // =====================================================================
+                // 🗂️ 1. SINGLE SOURCE OF TRUTH (SSOT) - เชื่อมฐานข้อมูลจากหน้าต่างแม่
+                // 🌟 [Safe Injection] รับค่า JSON จาก string ที่ฉีดมาระหว่างการสร้างหน้าต่าง
+                // =====================================================================
+                const aiaBaseProductMatrix = ${baseMatrixStr};
+                const aiaRiderMatrix = ${riderMatrixStr};
 
-                const aiaRiderMatrix = {
-                    "AIA Infinite Care": { category: "Health", type: "flat" },
-                    "AIA Health Starter": { category: "Health", type: "fixed_plan" },
-                    "AIA Health Happy": { category: "Health", type: "fixed_plan" },
-                    "AIA Health Saver": { category: "Health", type: "fixed_plan" },
-                    "AIA Multi-Pay CI Plus": { category: "CI", type: "per_thousand" },
-                    "AIA CI Plus": { category: "CI", type: "per_thousand" },
-                    "AIA Care for Cancer": { category: "CI", type: "per_thousand" },
-                    "AIA Health Cancer": { category: "CI", type: "flat" },
-                    "AIA HB": { category: "Compensation", type: "per_thousand" },
-                    "AIA HB Extra": { category: "Compensation", type: "per_thousand" }
-                };
-
-                const rateMatrix = {
-                    "AIA Endowment 15/25": { "M": { 30: 82, 35: 82, 36: 82, 45: 83, 50: 83, 55: 88, 60: 90, 70: 96 }, "F": { 30: 82, 35: 82, 36: 82, 45: 83, 50: 83, 55: 88, 60: 90, 70: 96 } },
-                    "AIA 20 Pay Life": { "M": { 1: 12.76, 36: 24.94, 50: 37.81, 60: 55.77, 70: 78.11 }, "F": { 1: 11.47, 36: 20.93, 50: 31.62, 60: 46.43, 70: 67.07 } },
-                    "AIA Life Protector 70": { "M": { 20: 10.94, 30: 12.75, 45: 17.78, 55: 24.23 }, "F": { 20: 8.00, 30: 9.02, 45: 11.91, 55: 15.88 } },
-                    "AIA Smart Select Prestige": { "M": { 1: 15, 30: 20, 40: 25, 50: 35, 60: 50, 70: 75 }, "F": { 1: 15, 30: 18, 40: 22, 50: 30, 60: 45, 70: 65 } },
-                    "AIA Annuity Fix": { "M": { 20: 16.20, 30: 25.70, 45: 65.60, 55: 236.50 }, "F": { 20: 16.50, 30: 25.80, 45: 65.20, 55: 234.80 } }
-                };
-
-                const riderRateMatrix_Fallback = {
-                    "AIA Health Happy": { type: "fixed_plan",
-                        "5000000": { "M": { 21: 16900, 31: 18900, 41: 23800, 51: 35000, 61: 50600, 71: 104000 },"F": { 21: 21500, 31: 22700, 41: 27800, 51: 35200, 61: 50800, 71: 107500 }}
-                    },
-                    "AIA CI Plus": { type: "per_thousand", "M": { 20: 1.85, 30: 2.65, 40: 5.45, 50: 12.80 }, "F": { 20: 1.95, 30: 2.90, 40: 6.10, 50: 11.50 } }
-                };
-
-                function findClosestRate(productMatrix, gender, age) {
-                    if(!productMatrix || !productMatrix[gender]) return null;
-                    let matrix = productMatrix[gender];
-                    let ageKeys = Object.keys(matrix).map(Number).sort((a, b) => a - b);
-                    let rate = 0;
-
-                    if (matrix[age] !== undefined) rate = matrix[age];
-                    else if (age <= ageKeys[0]) rate = matrix[ageKeys[0]];
-                    else if (age >= ageKeys[ageKeys.length - 1]) rate = matrix[ageKeys[ageKeys.length - 1]];
-                    else {
-                        let age1 = ageKeys[0]; let age2 = ageKeys[ageKeys.length - 1];
-                        for (let i = 0; i < ageKeys.length - 1; i++) {
-                            if (age > ageKeys[i] && age < ageKeys[i + 1]) { age1 = ageKeys[i]; age2 = ageKeys[i + 1]; break; }
-                        }
-                        rate = matrix[age1] + ((matrix[age2] - matrix[age1]) * (age - age1) / (age2 - age1));
+                // =====================================================================
+                // ⚙️ 2. Core Calculation Functions (Delegated to Origin)
+                // =====================================================================
+                window.calculateExactPremium = function(productName, gender, age, sumAssured) {
+                    if (window.opener && typeof window.opener.calculateExactPremium === 'function') {
+                        return window.opener.calculateExactPremium(productName, gender, age, sumAssured);
                     }
-                    return rate;
-                }
+                    return { success: false, error: "ไม่สามารถเชื่อมต่อเครื่องยนต์คำนวณจากระบบหลักได้" };
+                };
 
-                function calculateRiderPremium(riderName, gender, age, planOrSA) {
-                    if (!riderRateMatrix_Fallback[riderName]) return 0;
-                    let genderKey = (gender === "หญิง" || gender === "F") ? "F" : "M";
-                    let productType = riderRateMatrix_Fallback[riderName].type;
-                    let matrix;
-
-                    if (productType === "fixed_plan") {
-                        let planKey = planOrSA.toString();
-                        if (!riderRateMatrix_Fallback[riderName][planKey]) {
-                            let availablePlans = Object.keys(riderRateMatrix_Fallback[riderName]).filter(k => k !== "type" && k !== "category").map(Number).sort((a,b) => a-b);
-                            if (availablePlans.length === 0) return 0;
-                            planKey = availablePlans[0].toString();
-                        }
-                        matrix = riderRateMatrix_Fallback[riderName][planKey][genderKey];
-                    } else {
-                        matrix = riderRateMatrix_Fallback[riderName][genderKey];
+                window.calculateRiderPremium = function(riderName, gender, age, planOrSA) {
+                    if (window.opener && typeof window.opener.calculateRiderPremium === 'function') {
+                        return window.opener.calculateRiderPremium(riderName, gender, age, planOrSA);
                     }
-                    if (!matrix) return 0;
-                    let rate = findClosestRate({[genderKey]: matrix}, genderKey, age);
-                    if (productType === "flat" || productType === "fixed_plan") return rate; 
-                    if (productType === "per_thousand") return (planOrSA / 1000) * rate;
                     return 0;
-                }
-
-                function calculateExactPremium(productName, gender, age, sumAssured) {
-                    try {
-                        let product = aiaBaseProductMatrix[productName]; 
-                        let genderKey = (gender === "หญิง" || gender === "F") ? "F" : "M";
-
-                        if (typeof rateMatrix !== 'undefined' && rateMatrix[productName]) {
-                            let ratePerThousand = rateMatrix[productName][genderKey][age] || findClosestRate(rateMatrix[productName], genderKey, age);
-                            if (ratePerThousand) {
-                                let exactPremium = (sumAssured / 1000) * ratePerThousand;
-                                if (product && product.minPremiumRPP && exactPremium < product.minPremiumRPP) exactPremium = product.minPremiumRPP;
-                                return { success: true, premium: exactPremium };
-                            }
-                        }
-                        if (product && product.minPremiumRPP) {
-                            return { success: true, premium: Math.max(product.minPremiumRPP, sumAssured * 0.05) };
-                        }
-                        return { success: false, error: "ไม่มีข้อมูลอัตราเบี้ย" };
-                    } catch (e) {
-                        return { success: false, error: "Calculation Error" };
-                    }
-                }
+                };
 
                 // ==========================================
                 // 🧹 Reset UI Function
@@ -810,12 +718,11 @@ window.AIControlCenter = {
                 };
 
                 // ==========================================
-                // 🧠 AI Engine Core (Autonomous Engine with Massive NLG Expansion)
+                // 🧠 AI Engine Core
                 // ==========================================
                 window.AIEngineCore = {
                     localWeightsCache: null,
                     
-                    // 📚 System Massive NLG Dictionary (20x Expansion)
                     cfpDictionary: {
                         outliers: {
                             highIncLowNw: [
@@ -1156,7 +1063,7 @@ window.AIControlCenter = {
                         let plans = [];
                         let debtOptions = [
                             '<div class="bg-emerald-900/20 border border-emerald-500/30 p-3 rounded-lg text-xs mb-3 shadow-sm"><span class="text-emerald-400 font-bold block mb-1">🔼 Snowball Debt Elimination:</span> หากลูกค้าสามารถเจรจารวบหนี้ (Debt Consolidation) เพื่อลดภาระดอกเบี้ยจ่ายลงได้ จะเป็นการปลดล็อก Free Cashflow ให้มีกระสุนพร้อมสำหรับลงทุนในวัฏจักรตลาดถัดไปอย่างเต็มเม็ดเต็มหน่วย</div>',
-                            '<div class="bg-emerald-900/20 border border-emerald-500/30 p-3 rounded-lg text-xs mb-3 shadow-sm"><span class="text-emerald-400 font-bold block mb-1">🔼 Liability Re-structuring:</span> หนี้สินที่สูงคือมะเร็งร้ายของการลงทุน หากเราจัดระเบียบหนี้ใหม่เพื่อลดยอดผ่อนต่อเดือน จะดึงคะแนน AI โผล่พ้นโซนอันตรายได้ทันที และสร้างสภาพคล่องให้หายใจคล่องขึ้น</div>',
+                            '<div class="bg-emerald-900/20 border border-emerald-500/30 p-3 rounded-lg text-xs mb-3 shadow-sm"><span class="text-emerald-400 font-bold block mb-1">🔼 Liability Re-structuring:</span> หหนี้สินที่สูงคือมะเร็งร้ายของการลงทุน หากเราจัดระเบียบหนี้ใหม่เพื่อลดยอดผ่อนต่อเดือน จะดึงคะแนน AI โผล่พ้นโซนอันตรายได้ทันที และสร้างสภาพคล่องให้หายใจคล่องขึ้น</div>',
                             '<div class="bg-emerald-900/20 border border-emerald-500/30 p-3 rounded-lg text-xs mb-3 shadow-sm"><span class="text-emerald-400 font-bold block mb-1">🔼 High-Interest Debt Avalanche:</span> เสนอให้ลูกค้าระดมเงินโบนัสหรือสภาพคล่องส่วนเกิน ไปโปะหนี้บริโภคที่ดอกเบี้ยแพงที่สุดก่อน เพื่อหยุดการทำงานของดอกเบี้ยทบต้นฝั่งรายจ่าย</div>'
                         ];
                         let saveOptions = [
@@ -1396,23 +1303,41 @@ window.AIControlCenter = {
                 // 🧪 12. Interactive Sandbox Simulator Functions
                 // ==========================================
                 window.initSandboxDropdowns = function() {
-                    const baseSelect = document.getElementById('sandbox_base_plan');
-                    if(baseSelect) {
-                        let options = '<option value="">-- เลือกสัญญาหลัก --</option>';
+                    // 🌟 [FIX] สร้าง Datalist สำหรับ Base Plan
+                    const dlBase = document.getElementById('dl_base_plans');
+                    if(dlBase && Object.keys(aiaBaseProductMatrix).length > 0) {
+                        let options = '';
                         Object.keys(aiaBaseProductMatrix).forEach(p => {
                             let typeInfo = aiaBaseProductMatrix[p].type;
-                            options += '<option value="' + p + '">[' + typeInfo + '] ' + p + '</option>';
+                            options += '<option value="' + p + '">[' + typeInfo + ']</option>';
                         });
-                        baseSelect.innerHTML = options;
+                        dlBase.innerHTML = options;
                     }
+
+                    // 🌟 [FIX] เตรียม Datalist สำหรับ Rider ไว้ด้วย (ใช้ร่วมกันได้ทุกแถวที่เพิ่ม)
+                    let dlRider = document.getElementById('dl_rider_plans');
+                    if(!dlRider) {
+                        document.body.insertAdjacentHTML('beforeend', '<datalist id="dl_rider_plans"></datalist>');
+                        dlRider = document.getElementById('dl_rider_plans');
+                    }
+                    if (Object.keys(aiaRiderMatrix).length > 0) {
+                        let riderOptions = '';
+                        Object.keys(aiaRiderMatrix).forEach(r => {
+                            let cat = aiaRiderMatrix[r].category;
+                            riderOptions += '<option value="' + r + '">[' + cat + ']</option>';
+                        });
+                        dlRider.innerHTML = riderOptions;
+                    }
+
                     window.handleBasePlanChange(); 
                 };
 
                 window.handleBasePlanChange = function() {
-                    const baseSelect = document.getElementById('sandbox_base_plan');
+                    const baseInput = document.getElementById('sandbox_base_plan');
                     const btnAddRider = document.getElementById('btn_add_rider');
-                    if(baseSelect && btnAddRider) {
-                        if(baseSelect.value !== "") {
+                    if(baseInput && btnAddRider) {
+                        // เช็คว่าค่าที่ลูกค้าพิมพ์มา มีอยู่ใน Database SSOT หรือไม่
+                        if(baseInput.value.trim() !== "" && aiaBaseProductMatrix[baseInput.value.trim()]) {
                             btnAddRider.disabled = false;
                             btnAddRider.classList.remove('opacity-50', 'cursor-not-allowed');
                         } else {
@@ -1425,17 +1350,11 @@ window.AIControlCenter = {
 
                 window.addRiderRow = function() {
                     const container = document.getElementById('sandbox_riders_container');
-                    let optionsHtml = '<option value="">-- เลือกสัญญาเพิ่มเติม --</option>';
-                    Object.keys(aiaRiderMatrix).forEach(r => {
-                        let cat = aiaRiderMatrix[r].category;
-                        optionsHtml += '<option value="' + r + '">[' + cat + '] ' + r + '</option>';
-                    });
-
                     const rowId = 'rider_row_' + Date.now();
+                    
+                    // 🌟 [FIX] เปลี่ยนเป็น input type="text" คล้องกับ Datalist
                     const rowHtml = '<div id="' + rowId + '" class="flex gap-2 rider-item pb-1">' +
-                        '<select class="sandbox-rider-select flex-1 text-xs bg-slate-800 text-slate-200 border border-slate-600 rounded px-2 py-1 outline-none focus:ring-1 focus:ring-cyan-500" onchange="window.autoCalcRiderPremium(this)">' +
-                            optionsHtml +
-                        '</select>' +
+                        '<input type="text" list="dl_rider_plans" class="sandbox-rider-select flex-1 text-xs bg-slate-800 text-slate-200 border border-slate-600 rounded px-2 py-1 outline-none focus:ring-1 focus:ring-cyan-500" placeholder="-- พิมพ์ค้นหาสัญญาเพิ่มเติม --" oninput="window.autoCalcRiderPremium(this)">' +
                         '<input type="number" class="sandbox-rider-sa w-24 text-xs bg-slate-800 text-slate-200 border border-slate-600 rounded px-2 py-1 outline-none focus:ring-1 focus:ring-cyan-500" placeholder="แผน/ทุน" oninput="window.autoCalcRiderPremium(this)">' +
                         '<input type="number" class="sandbox-rider-prem w-28 text-xs bg-slate-800 text-slate-200 border border-slate-600 rounded px-2 py-1 outline-none focus:ring-1 focus:ring-cyan-500" placeholder="เบี้ย (บาท/ปี)">' +
                         '<button onclick="this.parentElement.remove()" class="text-rose-400 hover:text-rose-300 px-2 font-bold transition">✕</button>' +
@@ -1450,6 +1369,8 @@ window.AIControlCenter = {
                     let data = rawDatabaseCache[cId];
                     let baseName = document.getElementById('sandbox_base_plan').value;
                     let baseSA = parseFloat(document.getElementById('sandbox_base_sa').value) || 0;
+                    
+                    // วิ่งไปขอผลคำนวณจากหน้าต่างแม่ (SSOT)
                     if(baseName && baseSA > 0) {
                         let res = calculateExactPremium(baseName, data.gender, data.age, baseSA);
                         if(res.success) {
@@ -1465,6 +1386,8 @@ window.AIControlCenter = {
                     let row = inputEl.parentElement;
                     let rName = row.querySelector('.sandbox-rider-select').value;
                     let rSA = parseFloat(row.querySelector('.sandbox-rider-sa').value) || 0;
+                    
+                    // วิ่งไปขอผลคำนวณจากหน้าต่างแม่ (SSOT)
                     if(rName && rSA > 0) {
                         let prem = calculateRiderPremium(rName, data.gender, data.age, rSA);
                         if(prem > 0) {
@@ -1513,11 +1436,9 @@ window.AIControlCenter = {
                         }
                     }
 
-                    // 3. Financial Impact Math: Premium to Income Ratio (PIR)
                     let annualIncome = data.inc * 12;
                     let premiumRatio = annualIncome > 0 ? (totalPremium / annualIncome) * 100 : 100;
                     
-                    // Recalculate original gap for comparison and calculate coverage percentage
                     let reqLife = data.liabilities + (data.exp * 12 * 5);
                     if(data.dependents > 0) reqLife += (data.dependents * 1000000);
                     let initialLifeGap = Math.max(0, reqLife - data.nw);
@@ -1525,7 +1446,6 @@ window.AIControlCenter = {
                     
                     let coverageLifePercent = initialLifeGap > 0 ? Math.min(100, (gapLifeClosed / initialLifeGap) * 100) : (gapLifeClosed > 0 ? 100 : 0);
 
-                    // 4. Generate AI Verdict (Cost/Benefit) 
                     let verdictHtml = '';
                     let tradeOffHtml = '';
                     
